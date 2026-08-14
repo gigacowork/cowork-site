@@ -28,8 +28,17 @@ import { Button } from "@/components/ui/Button";
  * там не растёт (чата нет) — поэтому слой равен секции и работает обычный cover.
  */
 
-/** Высота полосы подложки на десктопе: hero с раскрытым чатом ≈ 1183px. */
-const BKG_BAND = "md:h-[1200px] md:bottom-auto";
+/**
+ * Полоса подложки.
+ *
+ * Мобильный: узкий высокий экран режет широкую картинку почти до полоски, и
+ * характерная «лента» уходит за правый край. Поэтому слой шире и выше секции и
+ * сдвинут влево — кадр становится крупнее, а лента заходит в центр экрана.
+ * Десктоп: слой во всю ширину и высотой под hero с раскрытым чатом (≈1183px).
+ */
+const BKG_BAND =
+  "-left-[424px] top-0 h-[150%] w-[1200px] " +
+  "md:left-0 md:h-[1200px] md:w-full";
 
 /**
  * Страховка на случай, если секция окажется выше полосы: горизонтальный
@@ -37,6 +46,21 @@ const BKG_BAND = "md:h-[1200px] md:bottom-auto";
  */
 const BKG_EDGE =
   "linear-gradient(to right, rgb(194,204,214) 0%, rgb(190,208,216) 9.1%, rgb(156,211,230) 18.2%, rgb(167,198,226) 27.3%, rgb(157,188,223) 36.4%, rgb(144,176,219) 45.5%, rgb(146,176,217) 54.5%, rgb(183,208,228) 63.6%, rgb(182,208,229) 72.7%, rgb(191,210,230) 81.8%, rgb(195,214,231) 90.9%, rgb(193,213,231) 100%)";
+
+/**
+ * Прогрессивное размытие подложки под контентом.
+ *
+ * `backdrop-filter` нельзя задать градиентом, поэтому размытие набирается
+ * стопкой слоёв: каждый следующий размывает сильнее, но его маска уже —
+ * к центральной вертикали радиусы складываются, а к краям сходят в ноль.
+ * Слои лежат МЕЖДУ картинкой (-z-10) и контентом, поэтому размывают только фон.
+ */
+const BLUR_LAYERS = [
+  { blur: 1.5, mask: "transparent 0%, black 18%, black 82%, transparent 100%" },
+  { blur: 3, mask: "transparent 8%, black 28%, black 72%, transparent 92%" },
+  { blur: 5, mask: "transparent 18%, black 36%, black 64%, transparent 82%" },
+  { blur: 8, mask: "transparent 28%, black 44%, black 56%, transparent 72%" },
+];
 
 export type HeroProps = {
   /** Слот для встроенного чата (PROTO / Hero Chat · Embedded), только desktop. */
@@ -56,7 +80,7 @@ export function Hero({ chat }: HeroProps) {
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
         style={{ backgroundImage: BKG_EDGE }}
       >
-        <div className={`absolute inset-0 ${BKG_BAND}`}>
+        <div className={`absolute ${BKG_BAND}`}>
           <Image
             src="/img/bkg.png"
             alt=""
@@ -66,6 +90,22 @@ export function Hero({ chat }: HeroProps) {
             className="object-cover [object-position:left_top] md:[object-position:center_top]"
           />
         </div>
+      </div>
+
+      {/* Размытие фона: сильнее к центральной вертикали, слабее к краям */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5]">
+        {BLUR_LAYERS.map((layer) => (
+          <div
+            key={layer.blur}
+            className="absolute inset-0"
+            style={{
+              backdropFilter: `blur(${layer.blur}px)`,
+              WebkitBackdropFilter: `blur(${layer.blur}px)`,
+              maskImage: `linear-gradient(to right, ${layer.mask})`,
+              WebkitMaskImage: `linear-gradient(to right, ${layer.mask})`,
+            }}
+          />
+        ))}
       </div>
 
       {/*
@@ -106,7 +146,7 @@ export function Hero({ chat }: HeroProps) {
         {/* Hero / CTA — только мобильный макет (1927:17366) */}
         <div className="flex w-full max-w-[358px] flex-col items-center gap-16 md:hidden">
           <Button
-            href="#lead"
+            href="/lead"
             variant="primary"
             size="lg"
             className="text-body-m!"

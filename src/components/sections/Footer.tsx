@@ -98,8 +98,8 @@ export function Footer() {
             {/* Footer / Contacts — 720:2034 */}
             <div className="flex flex-col gap-24">
               <a
-                href="https://t.me/"
-                aria-label="Telegram"
+                href="https://t.me/GenAIeffect"
+                aria-label="Telegram-канал @GenAIeffect"
                 target="_blank"
                 rel="noreferrer noopener"
                 className="block size-[27px] transition-opacity hover:opacity-70"

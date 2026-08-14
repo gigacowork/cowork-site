@@ -468,6 +468,13 @@ export function HeroChat() {
               («Active показывает выбранный сценарий» — описание компонента)
           Граница задана внутренней тенью, потому что штрихи в Figma
           выровнены внутрь и не увеличивают габарит чипа.
+
+          Hover уточнён по 3132:58205 (Chat / Scenario List, наведение на первый
+          чип): вместо смены фона на #f7f8fa — заливка градиентом
+          Gradient/Omni/Neuton 2, граница снимается, добавляется Elevation/Drop/Sm.
+          Прозрачность 70% сохраняется во всех состояниях, роль-пилюля не меняется.
+          Pressed в макете нет — на нажатии оставляем ту же заливку с более
+          собранной тенью.
         */}
         <ul className="flex w-full flex-wrap content-center items-center justify-center gap-12">
           {SCENARIOS.map((item) => {
@@ -479,10 +486,10 @@ export function HeroChat() {
                   aria-pressed={isActive}
                   disabled={isActive}
                   onClick={() => send(item)}
-                  className={`flex items-center justify-center gap-4 rounded-full p-8 opacity-70 transition-[box-shadow,background-color] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
+                  className={`flex items-center justify-center gap-4 rounded-full p-8 opacity-70 transition-[box-shadow,background-image] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
                     isActive
                       ? "cursor-default bg-bg-card shadow-[inset_0_0_0_1px_var(--color-icon-secondary)]"
-                      : "cursor-pointer bg-bg-card shadow-[inset_0_0_0_1px_var(--color-border-subtle)] hover:bg-action-secondary-hover hover:shadow-[inset_0_0_0_1px_var(--color-border-default)]"
+                      : "cursor-pointer bg-bg-card shadow-[inset_0_0_0_1px_var(--color-border-subtle)] hover:bg-[image:var(--gradient-omni-neuton-2)] hover:shadow-[var(--shadow-drop-sm)] active:bg-[image:var(--gradient-omni-neuton-2)] active:shadow-[0_2px_8px_-2px_#60738f33]"
                   }`}
                 >
                   <span className="flex items-center justify-center rounded-full bg-neutral-100 px-8 py-4 text-caption text-text-secondary">

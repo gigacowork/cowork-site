@@ -12,6 +12,16 @@ import { useEffect, useRef, type ReactNode } from "react";
  */
 
 const DURATION = 1400;
+/**
+ * Пауза между входом блока в кадр и стартом счёта.
+ *
+ * Порог 0.5 срабатывает, когда блок виден наполовину и ещё едет вверх — цифры
+ * успевали докрутиться до того, как читатель их увидит. Задержка даёт блоку
+ * встать на место, и счёт начинается уже на неподвижной секции.
+ */
+const START_DELAY = 420;
+/** Доля секции во вьюпорте, после которой отсчитывается задержка. */
+const THRESHOLD = 0.5;
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
 export function CountUp({ children }: { children: ReactNode }) {
@@ -45,6 +55,7 @@ export function CountUp({ children }: { children: ReactNode }) {
     let raf = 0;
     let start = 0;
     let done = false;
+    let delayTimer = 0;
 
     const tick = (now: number) => {
       if (!start) start = now;
@@ -68,19 +79,22 @@ export function CountUp({ children }: { children: ReactNode }) {
           if (entry.isIntersecting && !done) {
             done = true;
             observer.disconnect();
-            nodes.forEach((n) => {
-              n.textContent = "0";
-            });
-            raf = requestAnimationFrame(tick);
+            delayTimer = window.setTimeout(() => {
+              nodes.forEach((n) => {
+                n.textContent = "0";
+              });
+              raf = requestAnimationFrame(tick);
+            }, START_DELAY);
           }
         }
       },
-      { threshold: 0.35 }
+      { threshold: THRESHOLD }
     );
     observer.observe(root);
 
     return () => {
       observer.disconnect();
+      window.clearTimeout(delayTimer);
       if (raf) cancelAnimationFrame(raf);
       nodes.forEach((n, i) => {
         n.textContent = String(targets[i]);

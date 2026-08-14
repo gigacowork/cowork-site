@@ -122,15 +122,31 @@ export const NO_HOURS_CARDS: NoHoursCard[] = [
   },
 ];
 
-/* Figma card fills (Gradient / Omni / Neuton_Light) */
+/*
+  Figma card fill — Gradient / Omni / Neuton_Light.
+
+  Цвета из макета сохранены дословно, переставлены только позиции стопов.
+  В оригинале мятный уходит в голубой на отрезке 4.3%→22.9%, то есть переход
+  сжат в пятую часть карточки и читается как жёсткая граница, а остальные 70%
+  почти однотонны. Здесь те же три цвета разложены по всей диагонали
+  (0 / 52 / 100%), плюс добавлен промежуточный стоп-микс на 26% — переход
+  становится равномерным.
+*/
 const CARD_GRADIENT =
-  "bg-[linear-gradient(66.503deg,rgb(218,253,228)_4.332%,rgb(228,250,255)_22.937%,rgb(230,246,255)_92.893%)]";
+  "bg-[linear-gradient(66.503deg,rgb(218,253,228)_0%,rgb(223,252,240)_26%,rgb(228,250,255)_52%,rgb(230,246,255)_100%)]";
 
 /* Highlighted card: mobile fill (1927:17384) + desktop fill (1927:15577) */
 const CARD_GRADIENT_HIGHLIGHT =
-  "bg-[linear-gradient(226.357deg,rgba(212,226,255,0.72)_10.474%,rgba(179,235,246,0.72)_94.872%)] " +
-  "md:bg-[linear-gradient(66.111deg,rgb(166,253,220)_0.952%,rgb(177,241,255)_50.802%,rgb(207,231,255)_101.64%)] " +
+  "bg-[linear-gradient(226.357deg,rgba(212,226,255,0.72)_0%,rgba(196,231,251,0.72)_50%,rgba(179,235,246,0.72)_100%)] " +
+  "md:bg-[linear-gradient(66.111deg,rgb(166,253,220)_0%,rgb(172,247,238)_25%,rgb(177,241,255)_50%,rgb(192,236,255)_75%,rgb(207,231,255)_100%)] " +
   "border border-[#ffffff99] backdrop-blur-[8px] drop-shadow-[0_4px_8px_rgba(96,115,143,0.2)]";
+
+/*
+  Тело карточки. В макете это Caption 12px; по просьбе поднято до 13px —
+  межстрочный и трекинг взяты из той же ступени шкалы (1.2 / −0.02em),
+  чтобы 13px не выпадал из типографики остальных блоков.
+*/
+const CARD_TEXT = "text-[13px] leading-[1.2] tracking-[-0.02em]";
 
 export function NoHours() {
   return (
@@ -162,7 +178,7 @@ export function NoHours() {
           <li
             key={card.id}
             data-card-id={card.id}
-            className={`card-interactive relative flex min-h-[380px] w-[282px] shrink-0 snap-start flex-col justify-between rounded-[24px] px-32 py-40 ${
+            className={`card-interactive relative flex min-h-[404px] w-[306px] shrink-0 snap-start flex-col justify-between rounded-[24px] px-32 py-40 ${
               card.highlighted
                 ? `bg-neutral-0 ${CARD_GRADIENT_HIGHLIGHT}`
                 : CARD_GRADIENT
@@ -177,13 +193,15 @@ export function NoHours() {
               </div>
 
               {card.items ? (
-                <ul className="w-full list-disc space-y-8 pl-[18px] text-caption text-text-secondary">
+                <ul
+                  className={`w-full list-disc space-y-8 pl-[18px] text-text-secondary ${CARD_TEXT}`}
+                >
                   {card.items.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
               ) : (
-                <p className="w-full text-caption text-text-secondary">
+                <p className={`w-full text-text-secondary ${CARD_TEXT}`}>
                   {card.text}
                 </p>
               )}
@@ -196,7 +214,7 @@ export function NoHours() {
             <a
               href="#more"
               aria-label={`${card.linkLabel} — ${card.title}`}
-              className="text-link stretched-target flex cursor-pointer items-center justify-start self-start py-4 text-left text-caption focus-visible:outline-none"
+              className={`text-link stretched-target flex cursor-pointer items-center justify-start self-start py-4 text-left focus-visible:outline-none ${CARD_TEXT}`}
             >
               {card.linkLabel}
             </a>

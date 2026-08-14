@@ -11,10 +11,14 @@ import { Button } from "@/components/ui/Button";
  * Figma mobile:  1927:17444 (px 16 / py 16, logo 117×25, CTA + burger)
  */
 
+/*
+  Ссылки абсолютные, а не «#anchor»: шапка общая для всех страниц, и с
+  «Обучающих видео» якорь без слэша вёл бы в никуда.
+*/
 const NAV_ITEMS = [
-  { label: "О платформе", href: "#platform" },
-  { label: "Для кого", href: "#audience" },
-  { label: "Обучающие видео", href: "#videos" },
+  { label: "О платформе", href: "/#platform" },
+  { label: "Для кого", href: "/#audience" },
+  { label: "Обучающие видео", href: "/video" },
 ];
 
 export function Header() {
@@ -47,9 +51,12 @@ export function Header() {
             "--header-h"
           )
         ) || 0;
-      setScrolled(
-        hero ? hero.getBoundingClientRect().bottom <= headerH : window.scrollY > 8
-      );
+      /*
+        Прозрачной шапка бывает только над hero главной. На страницах без hero
+        (например «Обучающие видео») фон светлый и однотонный — там шапка
+        сплошная с самого верха, иначе пункты меню висят в воздухе.
+      */
+      setScrolled(hero ? hero.getBoundingClientRect().bottom <= headerH : true);
     };
 
     const onScroll = () => {
@@ -121,7 +128,7 @@ export function Header() {
             <Button href="#login" variant="secondary" size="md">
               Войти
             </Button>
-            <Button href="#try" variant="primary" size="md">
+            <Button href="/lead" variant="primary" size="md">
               Попробовать
             </Button>
           </div>
@@ -129,7 +136,7 @@ export function Header() {
 
         {/* Mobile actions */}
         <div className="flex items-center gap-8 md:hidden">
-          <Button href="#try" variant="primary" size="sm">
+          <Button href="/lead" variant="primary" size="sm">
             Попробовать
           </Button>
           <button

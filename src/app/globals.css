@@ -6,49 +6,49 @@
 
 @font-face {
   font-family: "SB Sans Text";
-  src: url("./fonts/SBSansTextThin.woff2") format("woff2");
+  src: url("/fonts/SBSansTextThin.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("./fonts/SBSansTextLight.woff2") format("woff2");
+  src: url("/fonts/SBSansTextLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("./fonts/SBSansTextRegular.woff2") format("woff2");
+  src: url("/fonts/SBSansTextRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("./fonts/SBSansTextMedium.woff2") format("woff2");
+  src: url("/fonts/SBSansTextMedium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("./fonts/SBSansTextSemiBold.woff2") format("woff2");
+  src: url("/fonts/SBSansTextSemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("./fonts/SBSansTextBold.woff2") format("woff2");
+  src: url("/fonts/SBSansTextBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("./fonts/SBSansTextHeavy.woff2") format("woff2");
+  src: url("/fonts/SBSansTextHeavy.woff2") format("woff2");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -56,35 +56,35 @@
 
 @font-face {
   font-family: "SB Sans Display";
-  src: url("./fonts/SBSansDisplayThin.woff2") format("woff2");
+  src: url("/fonts/SBSansDisplayThin.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Display";
-  src: url("./fonts/SBSansDisplayLight.woff2") format("woff2");
+  src: url("/fonts/SBSansDisplayLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Display";
-  src: url("./fonts/SBSansDisplayRegular.woff2") format("woff2");
+  src: url("/fonts/SBSansDisplayRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Display";
-  src: url("./fonts/SBSansDisplaySemiBold.woff2") format("woff2");
+  src: url("/fonts/SBSansDisplaySemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Display";
-  src: url("./fonts/SBSansDisplayBold.woff2") format("woff2");
+  src: url("/fonts/SBSansDisplayBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -92,14 +92,14 @@
 
 @font-face {
   font-family: "SB Sans Text Caps";
-  src: url("./fonts/SBSansTextCapsRegular.woff2") format("woff2");
+  src: url("/fonts/SBSansTextCapsRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text Caps";
-  src: url("./fonts/SBSansTextCapsBold.woff2") format("woff2");
+  src: url("/fonts/SBSansTextCapsBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -107,14 +107,14 @@
 
 @font-face {
   font-family: "Druk Wide Cyr";
-  src: url("./fonts/drukwidecyrbold.woff2") format("woff2");
+  src: url("/fonts/drukwidecyrbold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Druk Wide Cyr";
-  src: url("./fonts/drukwidecyrbolditalic.woff2") format("woff2");
+  src: url("/fonts/drukwidecyrbolditalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -201,6 +201,8 @@
 
   /* --- Radii --- */
   --radius-0: 0px;
+  /* 4px — только контрол чекбокса (843:4074) */
+  --radius-4: 4px;
   --radius-8: 8px;
   --radius-12: 12px;
   --radius-16: 16px;
@@ -288,6 +290,15 @@
   /* Alias kept for the sections written against the earlier token name. */
   --shadow-elevation-lg: 0 12px 48px -8px #60738f33;
   --shadow-elevation-xs: 0 1px 2px 0 #0000000d;
+
+  /* --- Gradients (Figma → Gradient/Omni) --- */
+  /* Gradient/Omni/Neuton 2 — заливка чипа в hover, Chat / Scenario List 3132:58205 */
+  --gradient-omni-neuton-2: linear-gradient(
+    188.5689deg,
+    #d4e2ff 10.994%,
+    #b3ebf6 79.923%,
+    #b3f6e1 101.64%
+  );
 }
 
 /* ============================================================
@@ -455,6 +466,44 @@
   }
   .chat-dot {
     animation: chat-dot 1s ease-in-out infinite;
+  }
+}
+
+/* ============================================================
+   Иллюстрации блока «Безлимитное количество токенов»
+
+   SVG вставлен инлайном, у каждой группы верхнего уровня стоит
+   `data-token-layer` и переменные --from-x / --from-y / --to-opacity /
+   --delay (их проставляет UnlimitedTokens при сборке).
+
+   Спрятанное состояние включается классом `is-js`, который вешает скрипт —
+   без JS слои просто нарисованы на месте, пустой карточки не бывает.
+   ============================================================ */
+
+[data-token-art].is-js [data-token-layer] {
+  opacity: 0;
+  transform: translate(var(--from-x, 0), var(--from-y, 0));
+  transition:
+    opacity 520ms cubic-bezier(0.33, 1, 0.68, 1) var(--delay, 0ms),
+    transform 720ms cubic-bezier(0.33, 1, 0.68, 1) var(--delay, 0ms);
+}
+
+[data-token-art].is-js.is-playing [data-token-layer] {
+  opacity: var(--to-opacity, 1);
+  transform: translate(0, 0);
+}
+
+/*
+  Обратный ход специально не описан отдельным правилом: снятие `is-playing`
+  возвращает слои к спрятанному состоянию тем же переходом, поэтому при скролле
+  вверх стопка складывается обратно сама, с той же плавностью.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  [data-token-art].is-js [data-token-layer] {
+    opacity: var(--to-opacity, 1);
+    transform: none;
+    transition: none;
   }
 }
 

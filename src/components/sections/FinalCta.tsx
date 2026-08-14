@@ -29,7 +29,7 @@ export function FinalCta() {
           </div>
 
           <Button
-            href="#lead"
+            href="/lead"
             variant="primary"
             size="lg"
             className="text-body-m!"
