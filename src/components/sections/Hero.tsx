@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import { Icon } from "@/components/ui/Icon";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";

@@ -11,7 +11,7 @@
  * Hooks for the animation layer: `data-tokens-section`, `data-token-card="<id>"`.
  */
 
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 
 export type TokenBenefitCard = {
   id: string;

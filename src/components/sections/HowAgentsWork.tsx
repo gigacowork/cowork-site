@@ -16,7 +16,7 @@
  *   • the `HOW_IT_WORKS_CARDS` data export
  */
 
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 
 export type HowItWorksCard = {
   id: string;

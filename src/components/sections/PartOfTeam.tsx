@@ -13,7 +13,7 @@
  * [data-app-preview] (+ data-depth="0|1|2", 2 — передний слой).
  */
 
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import { Icon } from "@/components/ui/Icon";
 import Button from "@/components/ui/Button";
 

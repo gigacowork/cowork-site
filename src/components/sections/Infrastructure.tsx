@@ -19,7 +19,7 @@
  * Hooks для анимации: [data-infrastructure], [data-infra-card] (+ data-card="sber|compliance|on-premise").
  */
 
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 
 /* ------------------------------------------------------------------ */
 /*  Заливки из Figma                                                    */
