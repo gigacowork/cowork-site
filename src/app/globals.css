@@ -1,0 +1,472 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Fonts
+   ============================================================ */
+
+@font-face {
+  font-family: "SB Sans Text";
+  src: url("/fonts/SBSansTextThin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Text";
+  src: url("/fonts/SBSansTextLight.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Text";
+  src: url("/fonts/SBSansTextRegular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Text";
+  src: url("/fonts/SBSansTextMedium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Text";
+  src: url("/fonts/SBSansTextSemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Text";
+  src: url("/fonts/SBSansTextBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Text";
+  src: url("/fonts/SBSansTextHeavy.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SB Sans Display";
+  src: url("/fonts/SBSansDisplayThin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Display";
+  src: url("/fonts/SBSansDisplayLight.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Display";
+  src: url("/fonts/SBSansDisplayRegular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Display";
+  src: url("/fonts/SBSansDisplaySemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Display";
+  src: url("/fonts/SBSansDisplayBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SB Sans Text Caps";
+  src: url("/fonts/SBSansTextCapsRegular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SB Sans Text Caps";
+  src: url("/fonts/SBSansTextCapsBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Druk Wide Cyr";
+  src: url("/fonts/drukwidecyrbold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Druk Wide Cyr";
+  src: url("/fonts/drukwidecyrbolditalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ============================================================
+   Design tokens (values taken from Figma get_variable_defs)
+   ============================================================ */
+
+@theme {
+  /* --- Primitives (Figma 457:2 → Colors / Primitives) --- */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f7f8fa;
+  --color-neutral-100: #f1f3f5;
+  --color-neutral-200: #e6e9ed;
+  --color-neutral-300: #d4d9e0;
+  --color-neutral-500: #8c949e;
+  --color-neutral-700: #3a4048;
+  --color-neutral-900: #1e2229;
+  --color-neutral-1000: #000000;
+  --color-neutral-0-a70: #ffffffb2;
+
+  --color-brand-primary: #171f2d;
+  --color-brand-primary-hover: #384251;
+  --color-brand-blue: #0dace0;
+  --color-brand-cyan: #07b2b7;
+  --color-brand-mint: #7fe7e7;
+  --color-brand-green: #00aa00;
+  --color-brand-magenta: #8c8fe4;
+
+  --color-decorative-hero-blue: #b3d2f0;
+  --color-decorative-hero-mint: #cff8ef;
+  --color-decorative-hero-lavender: #8c8fe4;
+
+  /* --- Semantic (Figma 457:2 → Colors / Semantic) --- */
+  --color-bg-page: #ffffff;
+  --color-bg-card: #ffffff;
+  --color-bg-input: #ffffff;
+  --color-bg-footer: #f7f8fa;
+  --color-bg-glass: #f1f3f5;
+  --color-bg-tag: #ffffffb2;
+
+  --color-text-primary: #171f2d;
+  --color-text-secondary: #3a4048;
+  --color-text-tertiary: #8c949e;
+  --color-text-strong: #000000;
+  --color-text-inverse: #ffffff;
+
+  --color-icon-primary: #171f2d;
+  --color-icon-secondary: #8c949e;
+  --color-icon-inverse: #ffffff;
+
+  --color-border-default: #d4d9e0;
+  --color-border-subtle: #e6e9ed;
+  --color-border-strong: #3a4048;
+
+  --color-action-primary-default: #171f2d;
+  --color-action-primary-hover: #384251;
+  --color-action-primary-disabled: #e6e9ed;
+  --color-action-secondary-default: #ffffff;
+  --color-action-secondary-hover: #f7f8fa;
+  /* Only surfaced by Carousel Control State=Pressed (802:3901 / 803:2721). */
+  --color-action-secondary-pressed: #e6e9ed;
+  --color-action-secondary-disabled: #f1f3f5;
+
+  --color-status-info: #0dace0;
+  --color-status-success: #00aa00;
+  --color-status-accent: #8c8fe4;
+
+  /* --- Spacing scale --- */
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+  --spacing-120: 120px;
+  --spacing-160: 160px;
+
+  /* --- Radii --- */
+  --radius-0: 0px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-24: 24px;
+  --radius-full: 9999px;
+
+  /* --- Typography --- */
+  --font-sans: "SB Sans Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "SB Sans Display", "SB Sans Text", system-ui, sans-serif;
+  --font-caps: "SB Sans Text Caps", "SB Sans Text", system-ui, sans-serif;
+  --font-druk: "Druk Wide Cyr", "SB Sans Display", system-ui, sans-serif;
+
+  /*
+    Figma text styles (457:2 → Typography). All of them are SB Sans Text.
+    Headings/body: lineHeight 1.2, letterSpacing -2%.
+
+    Display/XL and Display/L are documented in the file as
+    "SB Sans Text Regular · 160px" / "· 96px". The sample layers on that page
+    are still rendered with a substituted Inter face, and their line-height
+    variable reads back as an ambiguous "100" — so the line box here is taken
+    from the measured Metrics frame instead (1927:15594 is 376px tall:
+    64 + 193.6 + 16 + 38.4 + 64, i.e. 193.6 / 160 = 1.21).
+  */
+  --text-display-xl: 160px;
+  --text-display-xl--line-height: 1.21;
+  --text-display-xl--letter-spacing: 0;
+  --text-display-xl--font-weight: 400;
+
+  --text-display-l: 96px;
+  --text-display-l--line-height: 1.21;
+  --text-display-l--letter-spacing: 0;
+  --text-display-l--font-weight: 400;
+
+  --text-h1: 48px;
+  --text-h1--line-height: 1.2;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1--font-weight: 500;
+
+  --text-h2: 36px;
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h2--font-weight: 500;
+
+  --text-h3: 25px;
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.02em;
+  --text-h3--font-weight: 500;
+
+  --text-h4: 20px;
+  --text-h4--line-height: 1.2;
+  --text-h4--letter-spacing: -0.02em;
+  --text-h4--font-weight: 500;
+
+  --text-body-l: 16px;
+  --text-body-l--line-height: 1.2;
+  --text-body-l--letter-spacing: -0.02em;
+
+  --text-body-m: 14px;
+  --text-body-m--line-height: 1.2;
+  --text-body-m--letter-spacing: -0.02em;
+
+  --text-caption: 12px;
+  --text-caption--line-height: 1.2;
+  --text-caption--letter-spacing: -0.02em;
+
+  --text-label: 14px;
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: -0.02em;
+
+  --text-kicker: 16px;
+  --text-kicker--line-height: 1.2;
+  --text-kicker--letter-spacing: 0.05em;
+
+  /* --- Layout --- */
+  --container-page: 1200px;
+
+  /* --- Elevation (Figma 457:2 → Elevation) --- */
+  --shadow-drop-sm: 0 4px 16px -4px #60738f33;
+  --shadow-drop-md: 0 8px 28px -6px #60738f33;
+  --shadow-drop-lg: 0 12px 48px -8px #60738f33;
+  --shadow-raised-sm: -3px -3px 16px -2px #f8fbffb2, 3px 4px 16px -3px #60738f33;
+  --shadow-raised-md: -5px -5px 28px -4px #f8fbffb2, 5px 7px 28px -5px #60738f33;
+  --shadow-raised-lg: -8px -8px 48px -6px #f8fbffb2, 8px 12px 48px -8px #60738f33;
+
+  /* Alias kept for the sections written against the earlier token name. */
+  --shadow-elevation-lg: 0 12px 48px -8px #60738f33;
+  --shadow-elevation-xs: 0 1px 2px 0 #0000000d;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* Measured header height — the hero starts underneath it, so its own top
+       padding is offset by this value to keep the mock's vertical rhythm. */
+    --header-h: 62px;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --header-h: 81px;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-bg-page);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-text-primary);
+    color: var(--color-text-inverse);
+  }
+}
+
+@layer utilities {
+  /*
+    Page container — Figma 457:2 → Responsive:
+      Mobile  390px : container 358 · padding 16 · gutter 12
+      Tablet  768px : container 688 · padding 40 · gutter 20
+      Desktop 1440px: container 1200 · padding 120 · gutter 24
+    Content is capped at 1200 and the padding acts as the minimum gutter, so
+    390 → 358, 768 → 688 and 1440 → 1200 all come out exactly as specified.
+  */
+  .container-page {
+    width: 100%;
+    max-width: calc(1200px + 2 * 16px);
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .container-page {
+      max-width: calc(1200px + 2 * 40px);
+      padding-inline: 40px;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .container-page {
+      max-width: calc(1200px + 2 * 120px);
+      padding-inline: 120px;
+    }
+  }
+
+  /*
+    Interactive card — Figma "Card / Info" 1312:4755:
+      State=Default  513:1307   no shadow
+      State=Hover    1312:4749  Elevation/Drop/Lg  0 12px 48px -8px #60738f33
+      State=Pressed  1321:5216  Elevation/Drop/Sm  0 4px 16px -4px #60738f33
+    Applied to the card surface; the clickable control inside stretches over it.
+  */
+  .card-interactive {
+    cursor: pointer;
+    transition: box-shadow 200ms ease;
+  }
+
+  .card-interactive:hover {
+    box-shadow: var(--shadow-drop-lg);
+  }
+
+  .card-interactive:active {
+    box-shadow: var(--shadow-drop-sm);
+  }
+
+  /*
+    Keyboard focus only — `:focus-within` would also fire on mouse-down, drawing
+    a ring every time the card is pressed.
+  */
+  .card-interactive:has(:focus-visible) {
+    outline: 2px solid var(--color-text-primary);
+    outline-offset: 2px;
+  }
+
+  /*
+    Text Link — Figma 1003:4161. Меняется только цвет текста, фона нет:
+      State=Default 1003:4155  text-secondary #3a4048
+      State=Hover   1003:4157  text-primary   #171f2d
+      State=Pressed 1003:4159  status-accent  #8c8fe4
+  */
+  .text-link {
+    color: var(--color-text-secondary);
+    transition: color 200ms ease;
+  }
+
+  .text-link:hover {
+    color: var(--color-text-primary);
+  }
+
+  .text-link:active {
+    color: var(--color-status-accent);
+  }
+
+  /* Stretches a link/button hit area over its nearest positioned ancestor. */
+  .stretched-target::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ============================================================
+   Chat overlay animations
+   ============================================================ */
+
+@keyframes chat-bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes chat-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@layer utilities {
+  .chat-bubble-in {
+    animation: chat-bubble-in 260ms ease-out both;
+  }
+  .chat-dot {
+    animation: chat-dot 1s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
