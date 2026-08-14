@@ -5,201 +5,190 @@ import { useEffect, useRef, type ReactNode } from "react";
 /**
  * Stacking-scroll wrapper for "Как работают ИИ-агенты GigaCowork".
  *
- * Секция пиннится на весь экран, карточки выезжают снизу и складываются в
- * стопку: каждая садится на свой offset из Figma (2006:8925 — 214 / 254 / 294,
- * то есть 0 / 40 / 80 от верха стопки) и уменьшается до своего `--stack-scale`,
- * когда её накрывает следующая.
+ * Each card pins to the top of the viewport at a slightly lower offset than the
+ * previous one, so the cards visually pile up as the user scrolls. The settled
+ * offsets and scales come from Figma (2006:8925) and are carried on each card
+ * as the `--stack-offset` / `--stack-scale` custom properties.
  *
- * Enhancement only — разметку секции не трогает, работает по хукам
- * `[data-stack-card]` / `[data-stack-list]`. Ниже `md`, при reduced-motion и на
- * низких экранах (стопка не помещается) всё остаётся обычным потоком.
+ * Enhancement only — wraps the server-rendered <HowAgentsWork /> and drives the
+ * `[data-stack-card]` elements. Disabled below `md` and under reduced motion.
  *
- * ── Почему шаг, а не привязка к скроллу ─────────────────────────────────────
- * Раньше положение карточки считалось напрямую от прогресса скролла. Пока путь
- * был длинным (640px на карточку) это читалось как плавное движение, но стоило
- * его сократить — и карточка стала повторять рывки колеса: сколько дёрнул, на
- * столько и прыгнула. Плавность там недостижима в принципе, потому что источник
- * движения — сам скролл, а он дискретный.
+ * ── Why spacer elements instead of margins ──────────────────────────────────
+ * A sticky item stays pinned only while its *margin box* fits inside its
+ * containing block, which is the parent's *content* box. Two consequences:
  *
- * Поэтому скролл больше не двигает карточку, а только ПЕРЕКЛЮЧАЕТ шаг. Каждая
- * карточка едет собственным CSS-переходом фиксированной длительности, то есть
- * одинаково плавно при любой скорости прокрутки. Пока переход не доиграл, шаг
- * не меняется — следующая карточка не может начать, пока предыдущая не села.
+ *  1. Trailing room after the last card cannot be a margin on that card, nor
+ *     padding on the list — neither extends the content box. Without real
+ *     trailing content the list ends exactly at the last card's bottom edge,
+ *     the sticky constraint is violated the instant it would engage, and the
+ *     last card never settles into the stack — the page just scrolls on.
+ *  2. Using `margin-bottom` on the earlier cards to space them out makes their
+ *     margin boxes ~2× taller, so they unpin hundreds of pixels *before* the
+ *     last one and slide out from under the finished stack.
+ *
+ * So all the scroll distance is expressed as spacer <li>s, and no card carries
+ * a margin. Every card then unpins within ~40px of the others and the whole
+ * stack leaves the viewport together.
  */
 
-/** Скролл, на котором стопка переключается на следующую карточку. */
-const STEP = 220;
-/** Пауза, на которой собранная стопка стоит перед уходом страницы дальше. */
-const TAIL_HOLD = 260;
-/** Длительность выезда одной карточки. */
-const DURATION = 760;
-/** Плавный выход без «пружины»: быстрый старт, мягкая посадка. */
-const EASING = "cubic-bezier(0.33, 1, 0.68, 1)";
-/** Запас снизу, чтобы карточка стартовала за краем экрана, а не от его границы. */
-const ENTRY_GAP = 24;
+/** Scroll distance allotted to each card handover. */
+const SCROLL_PER_CARD = 420;
+/** Gap between the fixed header and the pinned section heading. */
+const HEADING_GAP = 24;
+/** Gap between the pinned heading and the first card. */
+const CARD_GAP = 24;
+/** Fallback pin offset when the section has no sticky heading. */
+const PIN_TOP = 96;
+/** Beat during which the completed stack stays pinned before the page moves on. */
+const TAIL_HOLD = 460;
 
 export function StackingCards({ children }: { children: ReactNode }) {
-  const outerRef = useRef<HTMLDivElement>(null);
-  const pinRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const outer = outerRef.current;
-    const pin = pinRef.current;
-    if (!outer || !pin) return;
+    const root = rootRef.current;
+    if (!root) return;
 
     const cards = Array.from(
-      outer.querySelectorAll<HTMLElement>("[data-stack-card]")
+      root.querySelectorAll<HTMLElement>("[data-stack-card]")
     );
     if (cards.length < 2) return;
 
     const list = cards[0].parentElement as HTMLElement | null;
     if (!list) return;
 
+    /*
+      The section heading stays pinned above the stack while the cards scroll,
+      so the reader always knows which block they are in. The cards then pin
+      below it — they never travel above their own pin offset, so they cannot
+      overlap the heading.
+    */
+    const heading = root.querySelector<HTMLElement>("[data-stack-heading]");
+
     const desktop = window.matchMedia("(min-width: 768px)");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    const settled = cards.map((card, i) => {
-      const cs = getComputedStyle(card);
-      return {
-        scale: parseFloat(cs.getPropertyValue("--stack-scale")) || 1,
-        offset: parseFloat(cs.getPropertyValue("--stack-offset")) || i * 40,
-      };
-    });
-
     let active = false;
     let frame = 0;
-    let distance = 0;
-    let entry: number[] = [];
+    let spacers: HTMLElement[] = [];
 
-    /** Сколько карточек уже выложено: 0 — на экране только первая. */
-    let step = 0;
-    /** Идёт переход — шаг заморожен. */
-    let busy = false;
-    let timer = 0;
+    const settled = cards.map((card, i) => {
+      const cs = getComputedStyle(card);
+      const scale = parseFloat(cs.getPropertyValue("--stack-scale")) || 1;
+      const offset =
+        parseFloat(cs.getPropertyValue("--stack-offset")) || i * 40;
+      return { scale, offset };
+    });
+
+    const makeSpacer = (height: number) => {
+      const spacer = document.createElement("li");
+      spacer.setAttribute("aria-hidden", "true");
+      spacer.dataset.stackSpacer = "";
+      spacer.style.cssText = `height:${height}px;flex:0 0 auto;list-style:none;pointer-events:none`;
+      spacers.push(spacer);
+      return spacer;
+    };
 
     const reset = () => {
-      window.clearTimeout(timer);
-      outer.style.height = "";
-      pin.style.position = "";
-      pin.style.top = "";
-      pin.style.height = "";
-      pin.style.overflow = "";
-      list.style.position = "";
-      list.style.height = "";
-      list.style.display = "";
+      spacers.forEach((spacer) => spacer.remove());
+      spacers = [];
+      list.style.gap = "";
+      if (heading) {
+        heading.style.position = "";
+        heading.style.top = "";
+        heading.style.zIndex = "";
+      }
       cards.forEach((card) => {
         card.style.position = "";
         card.style.top = "";
-        card.style.left = "";
-        card.style.width = "";
         card.style.zIndex = "";
+        card.style.marginBottom = "";
         card.style.transform = "";
         card.style.transformOrigin = "";
-        card.style.transition = "";
         card.style.willChange = "";
       });
       active = false;
-      busy = false;
-      step = 0;
     };
+
+    let headingTop = 0;
+    let pinTop = PIN_TOP;
 
     const measure = () => {
       reset();
       if (!desktop.matches || reduced.matches) return;
 
-      // Пиннить имеет смысл, только если собранная стопка целиком влезает в экран.
-      const stackHeight =
-        cards[0].offsetHeight + settled[cards.length - 1].offset;
-      const chrome = pin.offsetHeight - list.offsetHeight; // заголовок + отступы
-      if (stackHeight + chrome > window.innerHeight) return;
+      const headerH =
+        parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue("--header-h")
+        ) || 0;
+      headingTop = headerH + HEADING_GAP;
+      pinTop = heading
+        ? headingTop + heading.offsetHeight + CARD_GAP
+        : PIN_TOP;
+
+      // Pinning would hide part of a card on short viewports — leave it alone.
+      if (cards[0].offsetHeight + pinTop > window.innerHeight) return;
 
       active = true;
-      distance = (cards.length - 1) * STEP + TAIL_HOLD;
+      list.style.gap = "0px";
 
-      outer.style.height = `${window.innerHeight + distance}px`;
-      pin.style.position = "sticky";
-      pin.style.top = "0px";
-      pin.style.height = "100vh";
-      pin.style.overflow = "hidden";
-
-      // Список становится системой координат стопки.
-      list.style.position = "relative";
-      list.style.display = "block";
-      list.style.height = `${stackHeight}px`;
+      if (heading) {
+        heading.style.position = "sticky";
+        heading.style.top = `${headingTop}px`;
+        heading.style.zIndex = "20";
+      }
 
       cards.forEach((card, i) => {
-        card.style.position = "absolute";
-        card.style.left = "0";
-        card.style.width = "100%";
-        card.style.top = `${settled[i].offset}px`;
+        card.style.position = "sticky";
+        card.style.top = `${pinTop + settled[i].offset}px`;
         card.style.zIndex = String(i + 1);
         card.style.transformOrigin = "top center";
         card.style.willChange = "transform";
-        card.style.transition = `transform ${DURATION}ms ${EASING}`;
+        card.style.marginBottom = "0px";
+        if (i < cards.length - 1) card.after(makeSpacer(SCROLL_PER_CARD));
       });
+      list.appendChild(makeSpacer(TAIL_HOLD));
 
-      /*
-        Стартовая точка — за нижней кромкой пиннутого экрана. Позиция списка
-        нужна ОТНОСИТЕЛЬНО пиннутого блока, а не окна: в момент measure() секция
-        может быть где угодно на странице.
-      */
-      const listTop =
-        list.getBoundingClientRect().top - pin.getBoundingClientRect().top;
-      entry = settled.map(
-        (s) => window.innerHeight + ENTRY_GAP - (listTop + s.offset)
-      );
-
-      // Начальное состояние ставим без анимации, иначе стопка «собирается» сама.
-      step = wantedStep();
-      paint(false);
       update();
     };
 
-    const wantedStep = () => {
-      const scrolled = Math.min(
-        distance,
-        Math.max(0, -outer.getBoundingClientRect().top)
-      );
-      return Math.min(cards.length - 1, Math.floor(scrolled / STEP));
-    };
-
-    /** Раскладывает карточки по текущему шагу. */
-    const paint = (animated: boolean) => {
-      cards.forEach((card, i) => {
-        if (!animated) card.style.transition = "none";
-        const shown = i <= step;
-        const y = shown ? 0 : entry[i];
-        // Карточка сжимается, когда следующая уже выложена.
-        const scale = i < step ? settled[i].scale : 1;
-        card.style.transform = `translate3d(0,${y}px,0) scale(${scale})`;
-      });
-      if (!animated) {
-        // Форсируем пересчёт стилей до того, как вернём переходы.
-        void cards[0].offsetHeight;
-        cards.forEach((card) => {
-          card.style.transition = `transform ${DURATION}ms ${EASING}`;
-        });
-      }
-    };
-
-    /*
-      Один шаг за раз. Скролл может улететь сразу на три карточки вперёд — мы
-      всё равно двигаемся по одной и ждём конца перехода, поэтому анимация
-      всегда проигрывается целиком и ни одна карточка не «проскакивает».
-    */
     const update = () => {
-      if (!active || busy) return;
-      const want = wantedStep();
-      if (want === step) return;
+      if (!active) return;
 
-      step += want > step ? 1 : -1;
-      busy = true;
-      paint(true);
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => {
-        busy = false;
-        update();
-      }, DURATION);
+      /*
+        Release the heading together with the stack.
+
+        Sticky keeps an element pinned while its margin box fits its containing
+        block. The heading is ~86px tall and the cards are 500px, so left alone
+        the heading stays stuck ~600px LONGER than the cards — it hangs at the
+        top of an empty viewport after the stack has already scrolled away.
+
+        Instead of relying on the containing block, its `top` is walked upwards
+        one-for-one with the scroll once the last card unpins, so the heading
+        leaves at exactly the same moment and at the same speed.
+      */
+      if (heading) {
+        const last = cards[cards.length - 1];
+        const listBottom = list.getBoundingClientRect().bottom + window.scrollY;
+        const releaseY =
+          listBottom - (pinTop + settled[cards.length - 1].offset) - last.offsetHeight;
+        const over = Math.max(0, window.scrollY - releaseY);
+        heading.style.top = `${headingTop - over}px`;
+      }
+
+      for (let i = 0; i < cards.length - 1; i++) {
+        const next = cards[i + 1].getBoundingClientRect();
+        const pinnedTop = pinTop + settled[i].offset;
+        const height = cards[i].offsetHeight;
+        // 0 → the next card has not reached us; 1 → it fully covers us.
+        const progress = Math.min(
+          1,
+          Math.max(0, (pinnedTop + height - next.top) / height)
+        );
+        const scale = 1 - (1 - settled[i].scale) * progress;
+        cards[i].style.transform = `scale(${scale})`;
+      }
+      cards[cards.length - 1].style.transform = "";
     };
 
     const onScroll = () => {
@@ -214,9 +203,6 @@ export function StackingCards({ children }: { children: ReactNode }) {
     window.addEventListener("resize", measure);
     desktop.addEventListener("change", measure);
     reduced.addEventListener("change", measure);
-
-    // Картинки и шрифты меняют высоту карточек — перемерить, когда они дойдут.
-    document.fonts?.ready.then(measure).catch(() => {});
     measure();
 
     return () => {
@@ -229,13 +215,7 @@ export function StackingCards({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  return (
-    <div ref={outerRef} className="relative">
-      <div ref={pinRef} className="flex flex-col justify-center">
-        {children}
-      </div>
-    </div>
-  );
+  return <div ref={rootRef}>{children}</div>;
 }
 
 export default StackingCards;
