@@ -6,49 +6,49 @@
 
 @font-face {
   font-family: "SB Sans Text";
-  src: url("/fonts/SBSansTextThin.woff2") format("woff2");
+  src: url("./fonts/SBSansTextThin.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("/fonts/SBSansTextLight.woff2") format("woff2");
+  src: url("./fonts/SBSansTextLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("/fonts/SBSansTextRegular.woff2") format("woff2");
+  src: url("./fonts/SBSansTextRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("/fonts/SBSansTextMedium.woff2") format("woff2");
+  src: url("./fonts/SBSansTextMedium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("/fonts/SBSansTextSemiBold.woff2") format("woff2");
+  src: url("./fonts/SBSansTextSemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("/fonts/SBSansTextBold.woff2") format("woff2");
+  src: url("./fonts/SBSansTextBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text";
-  src: url("/fonts/SBSansTextHeavy.woff2") format("woff2");
+  src: url("./fonts/SBSansTextHeavy.woff2") format("woff2");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -56,35 +56,35 @@
 
 @font-face {
   font-family: "SB Sans Display";
-  src: url("/fonts/SBSansDisplayThin.woff2") format("woff2");
+  src: url("./fonts/SBSansDisplayThin.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Display";
-  src: url("/fonts/SBSansDisplayLight.woff2") format("woff2");
+  src: url("./fonts/SBSansDisplayLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Display";
-  src: url("/fonts/SBSansDisplayRegular.woff2") format("woff2");
+  src: url("./fonts/SBSansDisplayRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Display";
-  src: url("/fonts/SBSansDisplaySemiBold.woff2") format("woff2");
+  src: url("./fonts/SBSansDisplaySemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Display";
-  src: url("/fonts/SBSansDisplayBold.woff2") format("woff2");
+  src: url("./fonts/SBSansDisplayBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -92,14 +92,14 @@
 
 @font-face {
   font-family: "SB Sans Text Caps";
-  src: url("/fonts/SBSansTextCapsRegular.woff2") format("woff2");
+  src: url("./fonts/SBSansTextCapsRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "SB Sans Text Caps";
-  src: url("/fonts/SBSansTextCapsBold.woff2") format("woff2");
+  src: url("./fonts/SBSansTextCapsBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -107,14 +107,14 @@
 
 @font-face {
   font-family: "Druk Wide Cyr";
-  src: url("/fonts/drukwidecyrbold.woff2") format("woff2");
+  src: url("./fonts/drukwidecyrbold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Druk Wide Cyr";
-  src: url("/fonts/drukwidecyrbolditalic.woff2") format("woff2");
+  src: url("./fonts/drukwidecyrbolditalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;

@@ -1,19 +1,13 @@
 # Сборка статики Next.js и публикация на GitHub Pages.
+# Запускается на каждый push в main и вручную (вкладка Actions → Run workflow).
 #
-# ОТКЛЮЧЁН 2026-08-17. Автозапуск по push снят намеренно: в next.config.ts больше
-# нет `output: "export"`, сборка не создаёт папку out/, которую публикует шаг
-# upload-pages-artifact, — на каждый push workflow падал бы.
-#
-# Чтобы включить обратно, нужно И то, И другое:
-#   1) вернуть в next.config.ts `output: "export"`, `basePath`/`assetPrefix` из
-#      NEXT_PUBLIC_BASE_PATH, `images: { unoptimized: true }`, `trailingSlash: true`;
-#      при этом `redirects()` придётся убрать — в статическом экспорте он не работает;
-#   2) вернуть сюда блок `push: { branches: [main] }`.
-#
-# Пока запускается только вручную: вкладка Actions → Run workflow.
+# Требует `output: "export"` в next.config.ts — публикуется папка out/,
+# которую создаёт только экспорт.
 name: Deploy to GitHub Pages
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
