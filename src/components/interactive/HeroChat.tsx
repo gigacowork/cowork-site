@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
@@ -194,11 +195,18 @@ const REPLY_DELAYS = [700, 1500, 1500];
 /** Bubble width in 1200:1621 — user 1097:4488 is 460, agent bubbles render to the same edge. */
 const BUBBLE_MAX = 460;
 
-/** Message list at Step 4 (1200:2329) = 445. +24 is the gap down to the composer. */
+/**
+ * Высота окна чата (1200:2329 «Step 4» = 445, +24 — зазор до блока сценариев).
+ * Вмещает три с половиной сообщения: верхнее подрезано и уходит в размытие,
+ * так видно, что выше есть ещё.
+ *
+ * Окно раскрывается на эту высоту сразу по клику на чипс и дальше не меняется:
+ * пока сценарий отыгрывает, сообщения приходят внутрь неподвижной рамки, а не
+ * раздвигают её — иначе страница под hero дёргается на каждом ответе.
+ */
 const LIST_GAP = 24;
-const MAX_LIST_HEIGHT = 445 + LIST_GAP;
-/** Sub-pixel slack so real font metrics don't trip the cap one step early. */
-const CAP_TOLERANCE = 4;
+const LIST_HEIGHT = 445 + LIST_GAP;
+
 
 /** How much of the top dissolves once the list is capped and starts scrolling. */
 const MAX_TOP_FADE = 88;
@@ -225,14 +233,12 @@ function usePrefersReducedMotion() {
 export function HeroChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [typing, setTyping] = useState(false);
-  const [naturalHeight, setNaturalHeight] = useState(0);
   const [topFade, setTopFade] = useState(0);
   /** Chip State=Active 353:904 — выбранный сценарий */
   const [active, setActive] = useState<string | null>(null);
 
   const idRef = useRef(0);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const reduced = usePrefersReducedMotion();
@@ -286,30 +292,18 @@ export function HeroChat() {
     []
   );
 
-  /* Measure the real content height so the wrapper can transition to it. */
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
-    const measure = () => setNaturalHeight(el.scrollHeight);
-    const observer = new ResizeObserver(measure);
-    observer.observe(el);
-    measure();
-    return () => observer.disconnect();
-  }, []);
+  /*
+    Чат раскрыт с момента, когда выбран сценарий, и дальше высота не меняется.
+    Раньше окно росло вслед за содержимым и упиралось в предел только на
+    четвёртом ответе — из-за этого hero четыре раза подряд менял высоту, утягивая
+    за собой всю страницу.
+  */
+  const opened = active !== null;
+  const listHeight = opened ? LIST_HEIGHT : 0;
 
-  const hasConversation = messages.length > 0 || typing;
-  /* Grow freely up to the Step 4 height; only then cap, scroll and fade the top. */
-  const scrolls =
-    hasConversation && naturalHeight > MAX_LIST_HEIGHT + CAP_TOLERANCE;
-  const listHeight = hasConversation
-    ? scrolls
-      ? MAX_LIST_HEIGHT
-      : naturalHeight
-    : 0;
-
-  /* Keep the newest message in view once the list is capped. */
+  /* Последнее сообщение держим в виду, пока сценарий отыгрывает. */
   useEffect(() => {
-    if (!scrolls) return;
+    if (!opened) return;
     const el = viewportRef.current;
     if (!el) return;
     const frame = requestAnimationFrame(() =>
@@ -319,12 +313,12 @@ export function HeroChat() {
       })
     );
     return () => cancelAnimationFrame(frame);
-  }, [messages, typing, scrolls, listHeight]);
+  }, [messages, typing, opened]);
 
-  /* Older messages dissolve towards the top — only while the list scrolls. */
+  /* Верхние сообщения растворяются, когда список прокручен. */
   useEffect(() => {
     const el = viewportRef.current;
-    if (!el || !scrolls) {
+    if (!el || !opened) {
       setTopFade(0);
       return;
     }
@@ -343,7 +337,7 @@ export function HeroChat() {
       el.removeEventListener("scroll", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [scrolls]);
+  }, [opened]);
 
   /* Multi-stop ramp so the top edge dissolves instead of cutting off. */
   const fadeMask =
@@ -359,13 +353,16 @@ export function HeroChat() {
     /* PROTO / Hero Chat · Embedded — 900 wide, desktop only (1927:17359 has no chat) */
     <div className="hidden w-full max-w-[900px] flex-col items-center md:flex">
       {/* Chat / Message List 1200:1621 — grows 0 → 91 → 212 → 316 → 445 */}
+      {/*
+        overscroll-behavior намеренно оставлен по умолчанию: домотав список до
+        конца, читатель продолжает тем же движением листать страницу дальше.
+        С `overscroll-contain` прокрутка упиралась в чат и останавливалась.
+      */}
       <div
         ref={viewportRef}
         data-chat-viewport
-        aria-hidden={!hasConversation}
-        className={`w-full ${
-          scrolls ? "overflow-y-auto overscroll-contain" : "overflow-hidden"
-        }`}
+        aria-hidden={!opened}
+        className={`w-full ${opened ? "overflow-y-auto" : "overflow-hidden"}`}
         style={{
           height: listHeight,
           transition: reduced
@@ -375,7 +372,11 @@ export function HeroChat() {
           WebkitMaskImage: fadeMask,
         }}
       >
-        <div ref={contentRef} className="mx-auto w-full max-w-[700px] pb-24">
+        {/*
+          Пока сообщений меньше, чем вмещает окно, они прижаты к низу: диалог
+          растёт снизу вверх, как в настоящем чате, а не висит в пустой рамке.
+        */}
+        <div className="mx-auto flex min-h-full w-full max-w-[700px] flex-col justify-end pb-24">
           <ul aria-live="polite" className="flex flex-col gap-12">
             {messages.map((message) =>
               message.author === "user" ? (
@@ -409,16 +410,25 @@ export function HeroChat() {
                       </p>
                     </div>
 
+                    {/*
+                      Кнопки финального сообщения — витрина, а не рабочие
+                      действия: файла за ними нет. Ведём на страницу заявки,
+                      это ближайший осмысленный шаг для того, кто досмотрел
+                      сценарий. Подпись остаётся из макета, поэтому у ссылки
+                      явный aria-label — иначе скринридер объявит «Скачать
+                      .pptx», а откроется форма.
+                    */}
                     {message.actions ? (
                       <div className="flex flex-wrap content-center items-center gap-8">
                         {message.actions.map((action) => (
-                          <button
+                          <Link
                             key={action}
-                            type="button"
+                            href="/lead"
+                            aria-label={`${action} — оставить заявку`}
                             className="flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-action-secondary-default px-16 py-8 text-caption text-text-primary shadow-[inset_0_0_0_1px_var(--color-border-strong)] transition-colors duration-200 hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
                           >
                             {action}
-                          </button>
+                          </Link>
                         ))}
                       </div>
                     ) : null}

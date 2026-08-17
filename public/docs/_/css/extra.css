@@ -1,0 +1,58 @@
+/* Прячем стандартную надпись */
+.doc .admonitionblock .icon i {
+    font-size: 0;
+}
+/* Выводим свою надпись через псевдоэлемент */
+.doc .admonitionblock .icon i::before {
+    font-size: 1rem; /* Возвращаем нормальный размер */
+    content: "Совет"; /* Ваш текст или символ */
+}
+
+/* Можно делать разные надписи для разных типов блоков */
+.doc .admonitionblock.warning .icon i::before {
+    content: "⚠ Осторожно";
+}
+.doc .admonitionblock.note .icon i::before {
+    content: "ℹ Внимание ";
+}
+
+/* Асимметричная тень: меньше сверху и слева, больше справа и снизу */
+.doc .imageblock {
+    box-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.10),   /* Светлая тень сверху-слева */
+        3px 3px 4px rgba(0, 0, 0, 0.15); /* Сильная тень снизу-справа */
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 8px;
+    transition: box-shadow 0.2s ease;
+}
+
+/* Альтернатива: тень напрямую на самих картинках (более современный вид) */
+/* .doc .imageblock img {
+    box-shadow: 
+        1px 1px 3px rgba(0, 0, 0, 0.08),
+        6px 8px 12px rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+} */
+
+/* Эффект при наведении для интерактива */
+/* .doc .imageblock img:hover {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2);
+} */
+
+#search-input {
+    border-radius: 6px;
+}
+
+.search-result-dropdown-menu {
+    border-radius: 6px;
+}
+
+/* Отступ обычного текста в основном оглавлении */
+.nav-list li:has(> .nav-text) {
+  padding-top: 10px !important; /* или нужное значение */
+}
+
+.doc .dlist .dlist,.doc .dlist .olist,.doc .dlist .ulist,.doc .olist .dlist,.doc .olist .olist,.doc .olist .ulist,.doc .olist li+li,.doc .ulist .dlist,.doc .ulist .olist,.doc .ulist .ulist,.doc .ulist li+li {
+    margin-top: .1rem;
+}

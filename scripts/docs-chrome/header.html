@@ -1,0 +1,74 @@
+<!--
+  Шапка сайта для страниц документации.
+
+  Это статическая копия src/components/sections/Header.tsx: на страницах Antora
+  нет ни React, ни Tailwind, поэтому разметка и стили повторены вручную
+  (styles — chrome.css, поведение — chrome.js).
+
+  Ссылки абсолютные и якоря пишутся как «/#audience», а не «#audience»: на
+  странице документации голый якорь искал бы цель в самой документации.
+-->
+<header class="sc-header">
+  <div class="sc-container sc-header-row">
+    <a class="sc-logo" href="/" aria-label="GigaCowork">
+      <img src="/img/logo-gigacowork.svg" alt="GigaCowork" width="155" height="33">
+    </a>
+
+    <nav class="sc-nav" aria-label="Основная навигация">
+      <ul class="sc-nav-list">
+        <li class="sc-nav-item sc-has-menu">
+          <button type="button" class="sc-nav-btn" aria-expanded="false" aria-haspopup="true">
+            О платформе
+            <svg class="sc-chevron" width="9" height="5" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+              <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="sc-menu">
+            <ul>
+              <li><a href="/platform">Обзор платформы</a></li>
+              <li><a href="/whats-new">Что нового</a></li>
+              <li><a href="/docs/" aria-current="page">Документация</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/#audience">Для кого</a></li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/video">Обучающие видео</a></li>
+      </ul>
+
+      <div class="sc-actions">
+        <a class="sc-btn sc-btn-secondary" href="/#login">Войти</a>
+        <a class="sc-btn sc-btn-primary" href="/lead">Попробовать</a>
+      </div>
+    </nav>
+
+    <div class="sc-mobile-actions">
+      <a class="sc-btn sc-btn-primary sc-btn-sm" href="/lead">Попробовать</a>
+      <button type="button" class="sc-burger" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sc-drawer">
+    <nav class="sc-container sc-drawer-nav" aria-label="Меню">
+      <div class="sc-drawer-group">
+        <button type="button" class="sc-drawer-btn" aria-expanded="false">
+          О платформе
+          <svg class="sc-chevron" width="11" height="6" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+            <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="sc-drawer-sub">
+          <ul>
+            <li><a href="/platform">Обзор платформы</a></li>
+            <li><a href="/whats-new">Что нового</a></li>
+            <li><a href="/docs/">Документация</a></li>
+          </ul>
+        </div>
+      </div>
+      <a class="sc-drawer-link" href="/#audience">Для кого</a>
+      <a class="sc-drawer-link" href="/video">Обучающие видео</a>
+      <a class="sc-btn sc-btn-secondary sc-btn-lg sc-drawer-cta" href="/#login">Войти</a>
+    </nav>
+  </div>
+</header>

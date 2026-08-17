@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>История изменений :: Документация GigaCowork</title>
+    <link rel="prev" href="profile.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="stylesheet" href="../../_/css/extra.css">  <link rel="stylesheet" href="../../_/site-chrome/chrome.css">
+  </head>
+  <body class="article">
+<!-- site-chrome -->
+<!--
+  Шапка сайта для страниц документации.
+
+  Это статическая копия src/components/sections/Header.tsx: на страницах Antora
+  нет ни React, ни Tailwind, поэтому разметка и стили повторены вручную
+  (styles — chrome.css, поведение — chrome.js).
+
+  Ссылки абсолютные и якоря пишутся как «/#audience», а не «#audience»: на
+  странице документации голый якорь искал бы цель в самой документации.
+-->
+<header class="sc-header">
+  <div class="sc-container sc-header-row">
+    <a class="sc-logo" href="/" aria-label="GigaCowork">
+      <img src="/img/logo-gigacowork.svg" alt="GigaCowork" width="155" height="33">
+    </a>
+
+    <nav class="sc-nav" aria-label="Основная навигация">
+      <ul class="sc-nav-list">
+        <li class="sc-nav-item sc-has-menu">
+          <button type="button" class="sc-nav-btn" aria-expanded="false" aria-haspopup="true">
+            О платформе
+            <svg class="sc-chevron" width="9" height="5" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+              <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="sc-menu">
+            <ul>
+              <li><a href="/platform">Обзор платформы</a></li>
+              <li><a href="/whats-new">Что нового</a></li>
+              <li><a href="/docs/" aria-current="page">Документация</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/#audience">Для кого</a></li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/video">Обучающие видео</a></li>
+      </ul>
+
+      <div class="sc-actions">
+        <a class="sc-btn sc-btn-secondary" href="/#login">Войти</a>
+        <a class="sc-btn sc-btn-primary" href="/lead">Попробовать</a>
+      </div>
+    </nav>
+
+    <div class="sc-mobile-actions">
+      <a class="sc-btn sc-btn-primary sc-btn-sm" href="/lead">Попробовать</a>
+      <button type="button" class="sc-burger" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sc-drawer">
+    <nav class="sc-container sc-drawer-nav" aria-label="Меню">
+      <div class="sc-drawer-group">
+        <button type="button" class="sc-drawer-btn" aria-expanded="false">
+          О платформе
+          <svg class="sc-chevron" width="11" height="6" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+            <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="sc-drawer-sub">
+          <ul>
+            <li><a href="/platform">Обзор платформы</a></li>
+            <li><a href="/whats-new">Что нового</a></li>
+            <li><a href="/docs/">Документация</a></li>
+          </ul>
+        </div>
+      </div>
+      <a class="sc-drawer-link" href="/#audience">Для кого</a>
+      <a class="sc-drawer-link" href="/video">Обучающие видео</a>
+      <a class="sc-btn sc-btn-secondary sc-btn-lg sc-drawer-cta" href="/#login">Войти</a>
+    </nav>
+  </div>
+</header>
+
+
+<div class="sc-docs-shell">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Документация</a></li>
+    <li><a href="version_history.html">История изменений</a></li>
+  </ul>
+</nav>
+<div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Поиск">
+        </div>
+      </div>
+</div>
+<div class="body">
+<div class="nav-container" data-component="GigaCowork" data-version="26.7.2">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="0"
+    style="padding-left: 6px; padding-top: 1px;">
+<ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Начало работы</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="login.html">Вход</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="chat.html">Задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="routines.html">Регулярные задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="spaces.html">Пространства</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Возможности</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="agents.html">Агенты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="skills.html">Навыки</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="commands.html">Команды</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Администрирование</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_users.html">Пользователи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_recycle_bin.html">Удаленные объекты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_roles.html">Роли</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_events.html">Аудит событий</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Прочее</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="profile.html">Личное меню</a>
+  </li>
+  <li class="nav-item is-current-page" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px; background-color: rgb(230, 230, 230); border-radius: 6px;">
+    <a class="nav-link" href="version_history.html">История изменений</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+
+  <div class="content">
+<aside class="toc sidebar" data-title=" " data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">История изменений</h1>
+<div class="sect1">
+<h2 id="_версия_26_7_2"><a class="anchor" href="#_версия_26_7_2"></a>Версия 26.7.2</h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">Добавлено:</div>
+<ul>
+<li>
+<p>В GigaCowork появилась ролевая модель, позволяющая настраивать доступ к административным разделам системы. Управлять ролями можно в новом разделе <strong>Роли</strong>.<a href="admin_roles.html#admin_roles" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>Для администраторов добавился раздел «Аудит событий» с событиями действий пользователей. <a href="admin_events.html#admin_events" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>Новое в коннекторах:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Добавилась интеграция с 1С. Предустановленный коннектор подключается к одной базе, а для работы с несколькими базами можно настроить собственные MCP-коннекторы.  <a href="connectors_auth.html#1c_setup" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>По запросу к администратору стенда теперь можно подключить коннекторы партнеров: Pooling.me, YClients MCP, MCP-PROSTOR, Profitbase.</p>
+</li>
+<li>
+<p>В разделах «Коннекторы» (пользовательском и административном) появились подсказки по подключению коннекторов.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Структуру документов теперь можно менять прямо в пространстве. Для этого:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Появилась возможность создавать пустые папки.</p>
+</li>
+<li>
+<p>Документы и папки теперь можно выбирать и перетаскивать с помощью мышки между папками пространства.</p>
+</li>
+<li>
+<p>Над таблицей документов добавилась панель действий. Она появляется, если выбрать документ или папку, а ее кнопки применяются ко всем выбранным объектам.<br>
+<a href="spaces.html#spaces_docs" class="xref page">Подробнее</a>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_версия_26_7_1"><a class="anchor" href="#_версия_26_7_1"></a>Версия 26.7.1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">Добавлено:</div>
+<ul>
+<li>
+<p>Появилась возможность создавать регулярные задачи, которые выполняются автоматически по настроенному расписанию. <a href="routines.html#routines" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>Добавился раздел <strong>Главная</strong>, в нем находится дашборд по текущим задачам и пространствам пользователя.</p>
+</li>
+<li>
+<p>В панели просмотра появилась возможность редактировать отдельные блоки документов и диаграмм. <a href="chat.html#chat_view_panel" class="xref page">Подробнее</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_версия_26_6_4"><a class="anchor" href="#_версия_26_6_4"></a>Версия 26.6.4</h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">Добавлено:</div>
+<ul>
+<li>
+<p>Появилась возможность добавлять собственные MCP-коннекторы. <a href="admin_connectors.html#admin_connectors_mcp" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>Добавились новые возможности совместной работы в пространствах: все участники пространств теперь могут загружать в них документы и добавлять навыки. Также в пространствах теперь можно создавать общие команды и копировать их между пространствами. <a href="spaces.html#spaces" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>Для администраторов добавилась возможность массово приглашать пользователей, загрузив CSV-файл с адресами почт сотрудников. <a href="admin_users.html#admin_users_invite" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>GigaCowork научился строить mermaid-диаграммы.</p>
+</li>
+<li>
+<p>Расширились возможности редактирования и форматирования word-файлов.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_версия_26_6_3_2"><a class="anchor" href="#_версия_26_6_3_2"></a>Версия 26.6.3-2</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Теперь задачу можно ставить голосом: отправьте голосовое сообщение, GigaCowork сам преобразует его в текст перед отправкой. <a href="chat.html#chat_voice" class="xref page">Подробнее</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_версия_26_6_3_1"><a class="anchor" href="#_версия_26_6_3_1"></a>Версия 26.6.3-1</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>В GigaCowork появились агенты. Агенты — это ИИ-сотрудники, нацеленные на выполнение конкретных задач. В отличие от универсального чат-бота, каждого агента можно настроить под определенную роль: указать набор навыков, инструменты и коннекторы, а также четко прописать последовательность действий и желаемый результат.
+Агентов можно создавать как для личных задач, так и добавлять в пространство для совместной работы. <a href="agents.html#agents" class="xref page">Подробнее</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_версия_26_6_3"><a class="anchor" href="#_версия_26_6_3"></a>Версия 26.6.3</h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">Добавлено:</div>
+<ul>
+<li>
+<p>Добавилась поддержка коннекторов RetailCRM и Huntflow. <a href="admin_connectors.html#admin_enabled_connectors" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>Пространства теперь можно архивировать. <a href="spaces.html#spaces_archive" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>В личное меню пользователя добавлена корзина: туда перемещаются все удаленные пространства. При необходимости их можно восстановить. <a href="profile.html#profile_trash" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>Администраторы теперь могут отзывать приглашения пользователям, но только пока они не авторизовались в системе. <a href="admin_users.html#invite_revoke" class="xref page">Подробнее</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_версия_26_6_2"><a class="anchor" href="#_версия_26_6_2"></a>Версия 26.6.2</h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">Добавлено:</div>
+<ul>
+<li>
+<p>GigaCowork научился строить графики — просто попросите об этом в задаче. Можно строить графики на основе загруженных файлов или на основе информации в сети.</p>
+</li>
+<li>
+<p>Теперь навыки и команды можно создавать из чата. Достаточно написать Создай навык&#8230;&#8203; и описать, какой навык должен быть создан. Аналогично работает создание команды.</p>
+</li>
+<li>
+<p>Появилась возможность изменять отображаемое в системе имя и фамилию пользователя. <a href="profile.html#profile" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>В таблице раздела <strong>Пользователи</strong> теперь отображаются пользователи, которым выслано приглашение, но которые еще не зарегистрировались в системе. Статус таких пользователей — <em>Приглашен</em>.</p>
+</li>
+<li>
+<p>В окне коннектора появились фильтры по инструментам. Там же добавилась кнопка массовой смены состояния инструментов.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Изменено:</div>
+<ul>
+<li>
+<p>Вход в систему стал еще безопаснее: теперь для него требуется двухфакторная аутентификация (2FA). <a href="login.html#login" class="xref page">Подробнее</a>.<br>
+Для администраторов добавилась возможность сброса двухфакторной аутентификации пользователей в разделе <strong>Пользователи</strong>. <a href="admin_users.html#admin_users_2fa_reset" class="xref page">Подробнее</a>.</p>
+</li>
+<li>
+<p>Улучшен просмотр вложений. Теперь изображения, файлы и графики открываются не в отдельном окне, а на панели просмотра. При этом не блокируется чат задачи, что делает работу быстрее и удобнее.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="profile.html">Личное меню</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+
+</div>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+  <!--
+  Подвал сайта для страниц документации — статическая копия
+  src/components/sections/Footer.tsx. Заменяет собой служебный подвал Antora
+  («GigaCowork 2026»).
+
+  Класс намеренно НЕ «footer»: в site.css у него свои правила (серая заливка,
+  мелкий шрифт), которые перебили бы оформление сайта.
+-->
+<footer class="sc-footer">
+  <div class="sc-container sc-footer-inner">
+    <div class="sc-footer-top">
+      <div class="sc-footer-brand">
+        <a href="/" aria-label="GigaCowork" class="sc-footer-logo">
+          <img src="/img/footer/logo-gigacowork.svg" alt="GigaCowork" width="161" height="34">
+        </a>
+
+        <div class="sc-footer-contacts">
+          <a href="https://t.me/GenAIeffect" aria-label="Telegram-канал @GenAIeffect"
+             target="_blank" rel="noreferrer noopener" class="sc-footer-tg">
+            <img src="/img/footer/telegram.svg" alt="Telegram" width="27" height="27">
+          </a>
+          <p><a class="sc-link" href="mailto:info@gigab2b.ru">info@gigab2b.ru</a></p>
+          <p><a class="sc-link" href="mailto:press@gigab2b.ru">press@gigab2b.ru</a> — для СМИ</p>
+        </div>
+      </div>
+
+      <nav class="sc-footer-nav" aria-label="Разделы сайта">
+        <div class="sc-footer-col">
+          <h2>ПЛАТФОРМА</h2>
+          <ul>
+            <li><a class="sc-link" href="/#platform">Обзор платформы</a></li>
+            <li><a class="sc-link" href="/#whats-new">Что нового</a></li>
+            <li><a class="sc-link" href="/#spaces">Пространства</a></li>
+            <li><a class="sc-link" href="/#agents">ИИ-агенты</a></li>
+            <li><a class="sc-link" href="/#skills">Навыки</a></li>
+            <li><a class="sc-link" href="/#commands">Быстрые команды</a></li>
+            <li><a class="sc-link" href="/#connectors">Коннекторы</a></li>
+            <li><a class="sc-link" href="/#schedule">Запуск по расписанию</a></li>
+            <li><a class="sc-link" href="/#security">Безопасность</a></li>
+            <li><a class="sc-link" href="/#support">Помощь и поддержка</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>СЦЕНАРИИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#docs">Работа с документами</a></li>
+            <li><a class="sc-link" href="/#analytics">Аналитика и отчётность</a></li>
+            <li><a class="sc-link" href="/#knowledge">База знаний</a></li>
+            <li><a class="sc-link" href="/#service">Клиентский сервис</a></li>
+            <li><a class="sc-link" href="/#hr">HR и кадры</a></li>
+            <li><a class="sc-link" href="/#finance">Финансы и контроль</a></li>
+            <li><a class="sc-link" href="/#legal">Юридические задачи</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>ПОСТАВКИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#cloud">Облако</a></li>
+            <li><a class="sc-link" href="/#hybrid">Гибрид</a></li>
+            <li><a class="sc-link" href="/#pak">ПАК</a></li>
+            <li><a class="sc-link" href="/#compare">Сравнить варианты</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>КОМПАНИЯ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#about">О компании</a></li>
+            <li><a class="sc-link" href="/#cases">Кейсы</a></li>
+            <li><a class="sc-link" href="/#blog">Блог</a></li>
+            <li><a class="sc-link" href="/#partners">Партнёрам</a></li>
+            <li><a class="sc-link" href="/#career">Карьера</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="sc-footer-bottom">
+      <p class="sc-footer-legal">
+        © 2026 ГигаЧат Бизнес · ООО «Салют для Бизнеса»<br>
+        121170, г. Москва, Садовая-Самотёчная ул., 24/27 · ИНН 7804568396
+      </p>
+      <ul class="sc-footer-policy">
+        <li><a class="sc-link" href="/#privacy">Политика конфиденциальности</a></li>
+        <li><a class="sc-link" href="/#data-policy">Политика обработки данных</a></li>
+        <li><a class="sc-link" href="/#terms">Пользовательское соглашение</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="../../_/site-chrome/chrome.js" defer></script>
+  </body>
+</html>

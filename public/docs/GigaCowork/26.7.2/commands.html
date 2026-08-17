@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Команды :: Документация GigaCowork</title>
+    <link rel="prev" href="skills.html">
+    <link rel="next" href="admin_users.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="stylesheet" href="../../_/css/extra.css">  <link rel="stylesheet" href="../../_/site-chrome/chrome.css">
+  </head>
+  <body class="article">
+<!-- site-chrome -->
+<!--
+  Шапка сайта для страниц документации.
+
+  Это статическая копия src/components/sections/Header.tsx: на страницах Antora
+  нет ни React, ни Tailwind, поэтому разметка и стили повторены вручную
+  (styles — chrome.css, поведение — chrome.js).
+
+  Ссылки абсолютные и якоря пишутся как «/#audience», а не «#audience»: на
+  странице документации голый якорь искал бы цель в самой документации.
+-->
+<header class="sc-header">
+  <div class="sc-container sc-header-row">
+    <a class="sc-logo" href="/" aria-label="GigaCowork">
+      <img src="/img/logo-gigacowork.svg" alt="GigaCowork" width="155" height="33">
+    </a>
+
+    <nav class="sc-nav" aria-label="Основная навигация">
+      <ul class="sc-nav-list">
+        <li class="sc-nav-item sc-has-menu">
+          <button type="button" class="sc-nav-btn" aria-expanded="false" aria-haspopup="true">
+            О платформе
+            <svg class="sc-chevron" width="9" height="5" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+              <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="sc-menu">
+            <ul>
+              <li><a href="/platform">Обзор платформы</a></li>
+              <li><a href="/whats-new">Что нового</a></li>
+              <li><a href="/docs/" aria-current="page">Документация</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/#audience">Для кого</a></li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/video">Обучающие видео</a></li>
+      </ul>
+
+      <div class="sc-actions">
+        <a class="sc-btn sc-btn-secondary" href="/#login">Войти</a>
+        <a class="sc-btn sc-btn-primary" href="/lead">Попробовать</a>
+      </div>
+    </nav>
+
+    <div class="sc-mobile-actions">
+      <a class="sc-btn sc-btn-primary sc-btn-sm" href="/lead">Попробовать</a>
+      <button type="button" class="sc-burger" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sc-drawer">
+    <nav class="sc-container sc-drawer-nav" aria-label="Меню">
+      <div class="sc-drawer-group">
+        <button type="button" class="sc-drawer-btn" aria-expanded="false">
+          О платформе
+          <svg class="sc-chevron" width="11" height="6" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+            <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="sc-drawer-sub">
+          <ul>
+            <li><a href="/platform">Обзор платформы</a></li>
+            <li><a href="/whats-new">Что нового</a></li>
+            <li><a href="/docs/">Документация</a></li>
+          </ul>
+        </div>
+      </div>
+      <a class="sc-drawer-link" href="/#audience">Для кого</a>
+      <a class="sc-drawer-link" href="/video">Обучающие видео</a>
+      <a class="sc-btn sc-btn-secondary sc-btn-lg sc-drawer-cta" href="/#login">Войти</a>
+    </nav>
+  </div>
+</header>
+
+
+<div class="sc-docs-shell">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Документация</a></li>
+    <li><a href="commands.html">Команды</a></li>
+  </ul>
+</nav>
+<div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Поиск">
+        </div>
+      </div>
+</div>
+<div class="body">
+<div class="nav-container" data-component="GigaCowork" data-version="26.7.2">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="0"
+    style="padding-left: 6px; padding-top: 1px;">
+<ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Начало работы</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="login.html">Вход</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="chat.html">Задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="routines.html">Регулярные задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="spaces.html">Пространства</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Возможности</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="agents.html">Агенты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="skills.html">Навыки</a>
+  </li>
+  <li class="nav-item is-current-page" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px; background-color: rgb(230, 230, 230); border-radius: 6px;">
+    <a class="nav-link" href="commands.html">Команды</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Администрирование</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_users.html">Пользователи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_recycle_bin.html">Удаленные объекты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_roles.html">Роли</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_events.html">Аудит событий</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Прочее</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="profile.html">Личное меню</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="version_history.html">История изменений</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+
+  <div class="content">
+<aside class="toc sidebar" data-title=" " data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Команды</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Команда — это заранее сохраненный запрос к системе. Используйте команды для повторяющихся сценариев, чтобы сэкономить время.</p>
+</div>
+<div class="paragraph">
+<p>В команде, как и в обычном запросе, вы можете вызывать навыки и инструменты, подключать коннекторы и задавать шаблон/структуру и стиль ответа.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_выполнение_команд"><a class="anchor" href="#_выполнение_команд"></a>Выполнение команд</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="_images/chat_2.png" alt="chat 2">
+</div>
+</div>
+<div class="paragraph">
+<p>Для выполнения команды нажмите <span class="nowrap"><span class="image"><img src="_images/button_square-slash.png" alt="button square slash"></span> <strong>Выполнить команду</strong></span> или клавишу <kbd>/</kbd>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_возможности_команд"><a class="anchor" href="#_возможности_команд"></a>Возможности команд</h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">В командах вы можете:</div>
+<ul>
+<li>
+<p>Вызывать навыки и инструменты — просто укажите название.</p>
+</li>
+<li>
+<p>Использовать коннекторы — укажите название коннектора в сценарии получения или отправки данных.</p>
+</li>
+<li>
+<p>Выполнять Python-скрипты — добавьте текст скрипта в инструкции навыков. Поддерживаются не все возможности языка Python.</p>
+</li>
+</ul>
+</div>
+<h3 id="_переменные_в_командах" class="discrete">Переменные в командах</h3>
+<div class="paragraph">
+<p>В инструкциях команд можно указывать переменные, которые пользователю потребуется указать при их вызове. Формат переменной: <code>${переменная}</code>.<br>
+Например, если в инструкции указать <em>Переведи ${градусы_цельсия} в фаренгейты</em>, при вызове команды потребуется указать градусы цельсия: <span class="image"><img src="_images/commands_1.png" alt="commands 1"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_действия_с_командами"><a class="anchor" href="#_действия_с_командами"></a>Действия с командами</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="commands_create"><a class="anchor" href="#commands_create"></a>Создание команды</h3>
+<div class="paragraph">
+<p>Созданные вами команды будут видны только вам и в пространствах, куда вы их добавите.</p>
+</div>
+<div class="ulist">
+<div class="title">Команду можно создать в двух местах:</div>
+<ul>
+<li>
+<p>В разделе <span class="nowrap"><span class="image"><img src="_images/button_file-terminal.png" alt="button file terminal"></span> <strong>Команды</strong></span>.</p>
+</li>
+<li>
+<p>В чате любой задачи.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Для создания команды в разделе <strong>Команды</strong>:</div>
+<ol class="arabic">
+<li>
+<p>Нажмите <span class="nowrap"><span class="image"><img src="_images/button_plus.png" alt="button plus"></span> <strong>Создать команду</strong></span>.</p>
+</li>
+<li>
+<p>В окне <strong>Создание команды</strong> укажите:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Имя команды</strong>.</p>
+</li>
+<li>
+<p><strong>Описание</strong> — видно в карточке команды.</p>
+</li>
+<li>
+<p><strong>Инструкции</strong> — укажите, что должна делать команда. Для форматирования текста используйте разметку Markdown.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="ulist no-bullet">
+<div class="title">Для создания команды из чата задачи:</div>
+<ul class="no-bullet">
+<li>
+<p>Просто попросите в поле ввода создать команду и опишите, что она должен делать — система предложит создать команду и сама допишет недостающую информацию. Если вы создаете команду в чате пространства, она все равно будет создана как ваша личная. При необходимости добавьте ее в пространство вручную.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Пример команды:</div>
+<div class="content">
+<pre>Название: Подготовь отчет по продажам
+
+Описание: Генерация еженедельного отчета по продажам с данными из CRM
+
+Инструкция:
+
+1. Подключить коннектор к CRM-системе
+2. Получить данные по продажам за последнюю неделю
+3. Рассчитать ключевые метрики: выручка, количество сделок, конверсия
+4. Сформировать таблицу с разбивкой по менеджерам
+5. Добавить выводы и рекомендации</pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Чтобы результаты выполнения одной команды были похожи между собой, добавьте в инструкцию желаемый формат и структуру выходных данных. Например: «Результат выведи в таблицу со столбцами Термин и Определение, добавь резюме на 3-4 предложения».
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_просмотр_доступных_команд"><a class="anchor" href="#_просмотр_доступных_команд"></a>Просмотр доступных команд</h3>
+<div class="imageblock">
+<div class="content">
+<img src="_images/commands_0.png" alt="commands 0">
+</div>
+</div>
+<div class="paragraph">
+<p>Доступные вам команды находятся в разделе <span class="nowrap"><span class="image"><img src="_images/button_file-terminal.png" alt="button file terminal"></span> <strong>Команды</strong></span>, в основном меню.<br>
+В разделе можно найти команду по названию и отфильтровать по признаку <em>Все</em> и <em>Личные</em> (созданные вами).</p>
+</div>
+<div class="paragraph">
+<p>Помимо личных команд, в разделе находятся общие предустановленные команды.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_редактирование_команды"><a class="anchor" href="#_редактирование_команды"></a>Редактирование команды</h3>
+<div class="paragraph">
+<p>Для редактирования команды, в разделе <span class="nowrap"><span class="image"><img src="_images/button_file-terminal.png" alt="button file terminal"></span> <strong>Команды</strong></span>, в карточке команды, выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_edit.png" alt="button edit"></span> <strong>Редактировать</strong></span>. Или откройте карточку команды и нажмите <span class="nowrap"><span class="image"><img src="_images/button_edit.png" alt="button edit"></span> <strong>Редактировать</strong></span>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_копирование_команды"><a class="anchor" href="#_копирование_команды"></a>Копирование команды</h3>
+<div class="paragraph">
+<p>Команду можно скопировать в пространство, в котором вы состоите.</p>
+</div>
+<div class="paragraph">
+<p>Для копирования команды в пространство, в разделе <span class="nowrap"><span class="image"><img src="_images/button_file-terminal.png" alt="button file terminal"></span> <strong>Команды</strong></span>, в карточке команды, выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_copy.png" alt="button copy"></span> <strong>Копировать</strong></span> — копия команды добавится в пространства.<br>
+При этом копии не связаны между собой, изменения в одной команде не отобразятся в другой.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_удаление_команды"><a class="anchor" href="#_удаление_команды"></a>Удаление команды</h3>
+<div class="paragraph">
+<p>Для удаления команды, в разделе <span class="nowrap"><span class="image"><img src="_images/button_file-terminal.png" alt="button file terminal"></span> <strong>Команды</strong></span>, в карточке команды, выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_trash.png" alt="button trash"></span> <strong>Удалить</strong></span> — команда станет недоступной для текущих и новых задач.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="skills.html">Навыки</a></span>
+  <span class="next"><a href="admin_users.html">Пользователи</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+
+</div>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+  <!--
+  Подвал сайта для страниц документации — статическая копия
+  src/components/sections/Footer.tsx. Заменяет собой служебный подвал Antora
+  («GigaCowork 2026»).
+
+  Класс намеренно НЕ «footer»: в site.css у него свои правила (серая заливка,
+  мелкий шрифт), которые перебили бы оформление сайта.
+-->
+<footer class="sc-footer">
+  <div class="sc-container sc-footer-inner">
+    <div class="sc-footer-top">
+      <div class="sc-footer-brand">
+        <a href="/" aria-label="GigaCowork" class="sc-footer-logo">
+          <img src="/img/footer/logo-gigacowork.svg" alt="GigaCowork" width="161" height="34">
+        </a>
+
+        <div class="sc-footer-contacts">
+          <a href="https://t.me/GenAIeffect" aria-label="Telegram-канал @GenAIeffect"
+             target="_blank" rel="noreferrer noopener" class="sc-footer-tg">
+            <img src="/img/footer/telegram.svg" alt="Telegram" width="27" height="27">
+          </a>
+          <p><a class="sc-link" href="mailto:info@gigab2b.ru">info@gigab2b.ru</a></p>
+          <p><a class="sc-link" href="mailto:press@gigab2b.ru">press@gigab2b.ru</a> — для СМИ</p>
+        </div>
+      </div>
+
+      <nav class="sc-footer-nav" aria-label="Разделы сайта">
+        <div class="sc-footer-col">
+          <h2>ПЛАТФОРМА</h2>
+          <ul>
+            <li><a class="sc-link" href="/#platform">Обзор платформы</a></li>
+            <li><a class="sc-link" href="/#whats-new">Что нового</a></li>
+            <li><a class="sc-link" href="/#spaces">Пространства</a></li>
+            <li><a class="sc-link" href="/#agents">ИИ-агенты</a></li>
+            <li><a class="sc-link" href="/#skills">Навыки</a></li>
+            <li><a class="sc-link" href="/#commands">Быстрые команды</a></li>
+            <li><a class="sc-link" href="/#connectors">Коннекторы</a></li>
+            <li><a class="sc-link" href="/#schedule">Запуск по расписанию</a></li>
+            <li><a class="sc-link" href="/#security">Безопасность</a></li>
+            <li><a class="sc-link" href="/#support">Помощь и поддержка</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>СЦЕНАРИИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#docs">Работа с документами</a></li>
+            <li><a class="sc-link" href="/#analytics">Аналитика и отчётность</a></li>
+            <li><a class="sc-link" href="/#knowledge">База знаний</a></li>
+            <li><a class="sc-link" href="/#service">Клиентский сервис</a></li>
+            <li><a class="sc-link" href="/#hr">HR и кадры</a></li>
+            <li><a class="sc-link" href="/#finance">Финансы и контроль</a></li>
+            <li><a class="sc-link" href="/#legal">Юридические задачи</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>ПОСТАВКИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#cloud">Облако</a></li>
+            <li><a class="sc-link" href="/#hybrid">Гибрид</a></li>
+            <li><a class="sc-link" href="/#pak">ПАК</a></li>
+            <li><a class="sc-link" href="/#compare">Сравнить варианты</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>КОМПАНИЯ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#about">О компании</a></li>
+            <li><a class="sc-link" href="/#cases">Кейсы</a></li>
+            <li><a class="sc-link" href="/#blog">Блог</a></li>
+            <li><a class="sc-link" href="/#partners">Партнёрам</a></li>
+            <li><a class="sc-link" href="/#career">Карьера</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="sc-footer-bottom">
+      <p class="sc-footer-legal">
+        © 2026 ГигаЧат Бизнес · ООО «Салют для Бизнеса»<br>
+        121170, г. Москва, Садовая-Самотёчная ул., 24/27 · ИНН 7804568396
+      </p>
+      <ul class="sc-footer-policy">
+        <li><a class="sc-link" href="/#privacy">Политика конфиденциальности</a></li>
+        <li><a class="sc-link" href="/#data-policy">Политика обработки данных</a></li>
+        <li><a class="sc-link" href="/#terms">Пользовательское соглашение</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="../../_/site-chrome/chrome.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Пространства :: Документация GigaCowork</title>
+    <link rel="prev" href="routines.html">
+    <link rel="next" href="agents.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="stylesheet" href="../../_/css/extra.css">  <link rel="stylesheet" href="../../_/site-chrome/chrome.css">
+  </head>
+  <body class="article">
+<!-- site-chrome -->
+<!--
+  Шапка сайта для страниц документации.
+
+  Это статическая копия src/components/sections/Header.tsx: на страницах Antora
+  нет ни React, ни Tailwind, поэтому разметка и стили повторены вручную
+  (styles — chrome.css, поведение — chrome.js).
+
+  Ссылки абсолютные и якоря пишутся как «/#audience», а не «#audience»: на
+  странице документации голый якорь искал бы цель в самой документации.
+-->
+<header class="sc-header">
+  <div class="sc-container sc-header-row">
+    <a class="sc-logo" href="/" aria-label="GigaCowork">
+      <img src="/img/logo-gigacowork.svg" alt="GigaCowork" width="155" height="33">
+    </a>
+
+    <nav class="sc-nav" aria-label="Основная навигация">
+      <ul class="sc-nav-list">
+        <li class="sc-nav-item sc-has-menu">
+          <button type="button" class="sc-nav-btn" aria-expanded="false" aria-haspopup="true">
+            О платформе
+            <svg class="sc-chevron" width="9" height="5" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+              <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="sc-menu">
+            <ul>
+              <li><a href="/platform">Обзор платформы</a></li>
+              <li><a href="/whats-new">Что нового</a></li>
+              <li><a href="/docs/" aria-current="page">Документация</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/#audience">Для кого</a></li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/video">Обучающие видео</a></li>
+      </ul>
+
+      <div class="sc-actions">
+        <a class="sc-btn sc-btn-secondary" href="/#login">Войти</a>
+        <a class="sc-btn sc-btn-primary" href="/lead">Попробовать</a>
+      </div>
+    </nav>
+
+    <div class="sc-mobile-actions">
+      <a class="sc-btn sc-btn-primary sc-btn-sm" href="/lead">Попробовать</a>
+      <button type="button" class="sc-burger" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sc-drawer">
+    <nav class="sc-container sc-drawer-nav" aria-label="Меню">
+      <div class="sc-drawer-group">
+        <button type="button" class="sc-drawer-btn" aria-expanded="false">
+          О платформе
+          <svg class="sc-chevron" width="11" height="6" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+            <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="sc-drawer-sub">
+          <ul>
+            <li><a href="/platform">Обзор платформы</a></li>
+            <li><a href="/whats-new">Что нового</a></li>
+            <li><a href="/docs/">Документация</a></li>
+          </ul>
+        </div>
+      </div>
+      <a class="sc-drawer-link" href="/#audience">Для кого</a>
+      <a class="sc-drawer-link" href="/video">Обучающие видео</a>
+      <a class="sc-btn sc-btn-secondary sc-btn-lg sc-drawer-cta" href="/#login">Войти</a>
+    </nav>
+  </div>
+</header>
+
+
+<div class="sc-docs-shell">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Документация</a></li>
+    <li><a href="spaces.html">Пространства</a></li>
+  </ul>
+</nav>
+<div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Поиск">
+        </div>
+      </div>
+</div>
+<div class="body">
+<div class="nav-container" data-component="GigaCowork" data-version="26.7.3">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="0"
+    style="padding-left: 6px; padding-top: 1px;">
+<ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Начало работы</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="login.html">Вход</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="chat.html">Задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="routines.html">Регулярные задачи</a>
+  </li>
+  <li class="nav-item is-current-page" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px; background-color: rgb(230, 230, 230); border-radius: 6px;">
+    <a class="nav-link" href="spaces.html">Пространства</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Возможности</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="agents.html">Агенты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="skills.html">Навыки</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="commands.html">Команды</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Администрирование</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_users.html">Пользователи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_recycle_bin.html">Удаленные объекты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_roles.html">Роли</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_events.html">Аудит событий</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Прочее</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="profile.html">Личное меню</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="version_history.html">История изменений</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+
+  <div class="content">
+<aside class="toc sidebar" data-title=" " data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Пространства</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="_images/spaces_0.png" alt="spaces 0">
+</div>
+</div>
+<div class="paragraph">
+<p>Пространства созданы для совместной работы группы коллег. Особенность пространств — общий раздел с документами, которые доступны для всех задач пространства. На основе общих документов любой участник пространства может, например, искать информацию или формировать отчеты.<br>
+Вы также можете организовать пространство только для себя, для эффективной работы с большим объемом документов.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_особенности_пространств"><a class="anchor" href="#_особенности_пространств"></a>Особенности пространств</h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">Особенности пространств:</div>
+<ul>
+<li>
+<p>Каждый участник пространства видит только свои задачи пространства.</p>
+</li>
+<li>
+<p>Каждому участнику в пространстве доступны только его коннекторы.</p>
+</li>
+<li>
+<p>В задачах пространства применяются только навыки, <a href="#spaces_skills">добавленные в пространство</a>.</p>
+</li>
+<li>
+<p>В задачах пространства можно использовать только агентов, <a href="#spaces_agents_add">созданных в пространстве</a>.</p>
+</li>
+<li>
+<p>В задачах пространства можно применять как личные команды, так и <a href="#spaces_commands_add">добавленные в пространство</a>.</p>
+</li>
+<li>
+<p>Документы пространства, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file.png" alt="button file"></span> <strong>Документы</strong></span>, видны всем участникам и доступны из всех задач пространства.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_быстрый_старт_в_пространстве"><a class="anchor" href="#_быстрый_старт_в_пространстве"></a>Быстрый старт в пространстве</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<div class="title">Для начала работы в пространстве:</div>
+<ol class="arabic">
+<li>
+<p>Создайте пространство.</p>
+</li>
+<li>
+<p>Пригласите пользователей.</p>
+</li>
+<li>
+<p>Добавьте общие документы.</p>
+</li>
+<li>
+<p>Добавьте навыки.</p>
+</li>
+<li>
+<p>Добавьте команды.</p>
+</li>
+<li>
+<p>Создайте агентов пространства.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_1_создание_пространства"><a class="anchor" href="#_1_создание_пространства"></a>1. Создание пространства</h3>
+<div class="paragraph">
+<p>Для создания пространства, в главном меню нажмите <span class="nowrap"><strong>Создать новое пространство</strong> <span class="image"><img src="_images/button_plus.png" alt="button plus"></span></span> и укажите <strong>Название</strong> и <strong>Описание</strong> пространства.</p>
+</div>
+<div class="paragraph">
+<p>Также создать пространство можно в разделе <a href="#spaces_section"><strong>Пространства</strong></a> с помощью кнопки <span class="nowrap"><span class="image"><img src="_images/button_plus.png" alt="button plus"></span> <strong>Создать пространство</strong></span>.</p>
+</div>
+<div class="paragraph">
+<p>После создания пространства вы становитесь его владельцем: только вы и <a href="#spaces_invite">приглашенные пользователи</a> могут его видеть.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spaces_invite"><a class="anchor" href="#spaces_invite"></a>2. Приглашение пользователей</h3>
+<div class="paragraph">
+<p>Вы можете поделиться пространством, пригласив в него пользователей системы.</p>
+</div>
+<div class="paragraph">
+<p>Приглашать пользователей в пространство может только владелец пространства.</p>
+</div>
+<div class="paragraph">
+<p>Для приглашения пользователя, в пространстве нажмите <span class="nowrap"><span class="image"><img src="_images/button_user-plus.png" alt="button user plus"></span> <strong>Пригласить</strong></span> и в окне <strong>Приглашение пользователей</strong> укажите электронную почту пользователя системы.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Пространство видят только его участники.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Приглашенных пользователей затем можно <a href="#spaces_users_remove">удалить из пространства</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spaces_chat_to_space"><a class="anchor" href="#spaces_chat_to_space"></a>3. Добавление документов</h3>
+<div class="paragraph">
+<p>Добавьте документы для создания общей базы знаний.<br></p>
+</div>
+<div class="paragraph">
+<p>Добавлять документы могут все участники пространства.</p>
+</div>
+<div class="paragraph">
+<p>Документы в пространство можно добавить двумя способами: загрузить с устройства и добавить из задачи пространства.</p>
+</div>
+<div class="paragraph">
+<p>Для загрузки документа с вашего устройства, в пространстве, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file.png" alt="button file"></span> <strong>Документы</strong></span>, нажмите <span class="nowrap"><span class="image"><img src="_images/button_share.png" alt="button share"></span> <strong>Загрузить документы</strong></span> и выберите:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><span class="nowrap"><span class="image"><img src="_images/button_share.png" alt="button share"></span> <strong>Загрузить файлы</strong></span> — загрузятся только выбранные файлы. Папки не загрузятся.</p>
+</li>
+<li>
+<p><span class="nowrap"><span class="image"><img src="_images/button_folder.png" alt="button folder"></span> <strong>Загрузить папку</strong></span> — загрузится выбранная папка с дочерними папками, содержащими файлы. Пустая папка или дочерние пустые папки загружены не будут.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/spaces_2.png" alt="spaces 2" width="200">
+</div>
+</div>
+<div class="paragraph">
+<p>Для добавления документа из задачи в пространство, в задаче, в компоненте <strong>Документы</strong>, выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_folder-plus.png" alt="button folder plus"></span> <strong>Добавить в пространство</strong></span>, затем в окне <strong>Добавление документов</strong> выберите документы для добавления.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/spaces_1.png" alt="spaces 1">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Документ, добавленный в пространство из задачи, — это отдельная копия. Он не связан с исходным документом в задаче и с самой задачей.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spaces_skill_add"><a class="anchor" href="#spaces_skill_add"></a>4. Добавление навыков</h3>
+<div class="paragraph">
+<p>Добавлять навыки в пространство могут все участники пространства.</p>
+</div>
+<div class="paragraph">
+<p>Для добавления навыка в пространство, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_scroll-text.png" alt="button scroll text"></span> <strong>Навыки</strong></span> нажмите <span class="nowrap"><span class="image"><img src="_images/button_plus.png" alt="button plus"></span> <strong>Добавить навыки</strong></span> и в окне <strong>Навыки</strong> нажмите <strong>Добавить</strong> на нужном навыке.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spaces_commands_add"><a class="anchor" href="#spaces_commands_add"></a>5. Добавление команд</h3>
+<div class="paragraph">
+<p>Добавлять команды в пространство могут все участники пространства.</p>
+</div>
+<div class="paragraph">
+<p>В пространстве можно как создать новую команду, так и скопировать в него существующую команду.</p>
+</div>
+<div class="paragraph">
+<p>Для создания новой команды в пространстве, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file-terminal.png" alt="button file terminal"></span> <strong>Команды</strong></span> нажмите <strong>Управление командами</strong>, а затем <strong>Создать команду</strong>. Заполните необходимые поля. Подробнее в главе <a href="commands.html#commands_create" class="xref page"><strong>Команды</strong></a>.</p>
+</div>
+<div class="paragraph">
+<p>Для копирования существующей команды в пространство, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file-terminal.png" alt="button file terminal"></span> <strong>Команды</strong></span> нажмите <strong>Управление командами</strong> и в поле <strong>Расположение</strong> выберите, откуда скопировать команду (для выбора доступны ваши пространства и личные команды). Затем нажмите <strong>Копировать</strong> на карточке команды.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spaces_agents_add"><a class="anchor" href="#spaces_agents_add"></a>6. Создание агентов</h3>
+<div class="paragraph">
+<p>Создавать агентов в пространстве может только его владелец.</p>
+</div>
+<div class="paragraph">
+<p>Для создания агента в пространстве, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_bot.png" alt="button bot"></span> <strong>Агенты</strong></span> нажмите <span class="nowrap"><span class="image"><img src="_images/button_plus.png" alt="button plus"></span> <strong>Создать агента</strong></span> и заполните необходимые поля. Подробнее в главе <a href="agents.html#agents_agent_create" class="xref page"><strong>Агенты</strong></a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_действия_с_задачами"><a class="anchor" href="#_действия_с_задачами"></a>Действия с задачами</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Управление задачами пространства выполняется на вкладке пространства <span class="nowrap"><span class="image"><img src="_images/button_add-chat.png" alt="button add chat"></span> <strong>Задачи</strong></span>.</p>
+</div>
+<div class="paragraph">
+<p>Для создания задачи в пространстве нажмите <span class="nowrap"><span class="image"><img src="_images/button_add-chat.png" alt="button add chat"></span> <strong>Новая задача</strong></span>. Созданные задачи доступны в пространстве на вкладке <span class="nowrap"><span class="image"><img src="_images/button_history.png" alt="button history"></span> <strong>История</strong></span> и в разделе <span class="nowrap"><span class="image"><img src="_images/button_square-check.png" alt="button square check"></span> <strong>История</strong></span> основного меню.</p>
+</div>
+<div class="paragraph">
+<p>Редактирование и удаление задач происходит аналогично <a href="chat.html#chat_tasks_actions" class="xref page">задачам вне пространства</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spaces_docs"><a class="anchor" href="#spaces_docs"></a>Действия с документами и папками</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Управление документами пространства выполняется на вкладке пространства <span class="nowrap"><span class="image"><img src="_images/button_file.png" alt="button file"></span> <strong>Документы</strong></span>.</p>
+</div>
+<div class="paragraph">
+<p>Добавление документов в пространство описано в главе <a href="#spaces_chat_to_space">Быстрый старт</a>.</p>
+</div>
+<div class="paragraph">
+<p>Все действия с документами доступны всем участникам пространства.</p>
+</div>
+<h3 id="_выбор_документов_и_папок" class="discrete">Выбор документов и папок</h3>
+<div class="paragraph">
+<p>Вы можете выбирать сразу несколько документов или папок, для этого используйте клавиши <kbd>Control</kbd> и <kbd>Shift</kbd>.</p>
+</div>
+<div class="paragraph">
+<p>При выборе объектов появляется панель действий. Кнопки на ней применяются ко всем выбранным документам и папкам.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/spaces_5.png" alt="spaces 5">
+</div>
+</div>
+<h3 id="_скачивание_документов_в_пространстве" class="discrete">Скачивание документов в пространстве</h3>
+<div class="paragraph">
+<p>Для скачивания документа в пространстве, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file.png" alt="button file"></span> <strong>Документы</strong></span>, в строке с нужным документом выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_download.png" alt="button download"></span> <strong>Скачать</strong></span> или выберите документ и нажмите <span class="nowrap"><span class="image"><img src="_images/button_download.png" alt="button download"></span> <strong>Скачать</strong></span> на панели действий.</p>
+</div>
+<h3 id="_переименование_документов_в_пространстве" class="discrete">Переименование документов в пространстве</h3>
+<div class="paragraph">
+<p>Для переименования документа или папки, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file.png" alt="button file"></span> <strong>Документы</strong></span>, в строке с нужным документом, выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_edit.png" alt="button edit"></span> <strong>Переименовать</strong></span> или выберите документ и нажмите <span class="nowrap"><span class="image"><img src="_images/button_edit.png" alt="button edit"></span> <strong>Переименовать</strong></span> на панели действий.</p>
+</div>
+<h3 id="_перемещение_документов_в_пространстве" class="discrete">Перемещение документов в пространстве</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Папки перемещаются вместе со всеми вложениями.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Переместить документы и папки в пространстве можно двумя способами: с помощью кнопок, с помощью перетаскивания.</p>
+</div>
+<div class="paragraph">
+<p>Для перемещения с помощью меню, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file.png" alt="button file"></span> <strong>Документы</strong></span>, в строке с нужным документом, выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_folder-input.png" alt="button folder input"></span> <strong>Переместить</strong></span> или выберите документ и нажмите <span class="nowrap"><span class="image"><img src="_images/button_folder-input.png" alt="button folder input"></span> <strong>Переместить</strong></span> в панели действий. Затем в окне <strong>Перемещение</strong> укажите новую папку.</p>
+</div>
+<div class="paragraph">
+<p>Для перемещения с помощью перетаскивания, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file.png" alt="button file"></span> <strong>Документы</strong></span>, выберите документ и перетащите в нужную папку.</p>
+</div>
+<h3 id="_удаление_документов_в_пространстве" class="discrete">Удаление документов в пространстве</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Папки удалятся вместе со всеми вложениями.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Для удаления документа или папки, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file.png" alt="button file"></span> <strong>Документы</strong></span>, в строке с нужным документом, выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_trash.png" alt="button trash"></span> <strong>Удалить</strong></span>, или выберите документ и нажмите <span class="nowrap"><span class="image"><img src="_images/button_trash.png" alt="button trash"></span> <strong>Удалить</strong></span> в панели действий.</p>
+</div>
+<h3 id="spaces_docs_folder_add" class="discrete">Создание папки</h3>
+<div class="paragraph">
+<p>Для создания пустой папки, на вкладке <span class="nowrap"><span class="image"><img src="_images/button_file.png" alt="button file"></span> <strong>Документы</strong></span>, нажмите <strong>Создать папку</strong> и укажите ее название.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spaces_skills"><a class="anchor" href="#spaces_skills"></a>Действия с навыками</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Управление навыками пространства выполняется на вкладке пространства <span class="nowrap"><span class="image"><img src="_images/button_scroll-text.png" alt="button scroll text"></span> <strong>Навыки</strong></span>.</p>
+</div>
+<div class="paragraph">
+<p>Добавление навыков в пространство описано в главе <a href="#spaces_skill_add">Быстрый старт</a>.</p>
+</div>
+<div class="paragraph">
+<p>Редактирование и удаление навыков происходит аналогично <a href="skills.html#skills" class="xref page">навыкам вне пространства</a>. При этом удалять чужие навыки может только владелец пространства, а при редактировании чужого навыка он будет сохранен как копия исходного в пространстве и в ваших личных навыках.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+При редактировании вашего навыка в пространстве, он поменяется и в других пространствах, где был добавлен, а также в вашем разделе <strong>Навыки</strong>. При удалении навыка в пространстве, он удалится только из пространства.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spaces_commands"><a class="anchor" href="#spaces_commands"></a>Действия с командами</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Управление командами пространства выполняется на вкладке пространства <span class="nowrap"><span class="image"><img src="_images/button_file-terminal.png" alt="button file terminal"></span> <strong>Команды</strong></span>.</p>
+</div>
+<div class="paragraph">
+<p>Добавление команда в пространство описано в главе <a href="#spaces_commands_add">Быстрый старт</a>.</p>
+</div>
+<div class="paragraph">
+<p>Редактирование, копирование и удаление команд происходит аналогично <a href="commands.html#commands" class="xref page">командам вне пространства</a>.<br>
+При этом удалять чужие команды может только владелец пространства, а при редактировании чужих команд доступна только кнопка <strong>Сохранить как копию</strong>, которая создаст копию редактируемой команды.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spaces_agents"><a class="anchor" href="#spaces_agents"></a>Действия с агентами</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Управление агентами пространства выполняется на вкладке пространства <span class="nowrap"><span class="image"><img src="_images/button_bot.png" alt="button bot"></span> <strong>Агенты</strong></span>.</p>
+</div>
+<div class="paragraph">
+<p>Добавление агентов в пространство описано в главе <a href="#spaces_agents_add">Быстрый старт</a>.</p>
+</div>
+<div class="paragraph">
+<p>Редактирование и удаление агентов происходит аналогично <a href="agents.html#agents" class="xref page">агентам вне пространства</a> и доступно только владельцу пространства.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spaces_users_remove"><a class="anchor" href="#spaces_users_remove"></a>Просмотр и удаление участников</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Просматривать и удалять участников может только владелец пространства.</p>
+</div>
+<div class="paragraph">
+<p>Для просмотра участников пространства, в пространстве нажмите на выпадающий список участников <span class="nowrap"><span class="image"><img src="_images/spaces_3.png" alt="18"></span></span>. В списке доступен поиск по данным участников.</p>
+</div>
+<div class="paragraph">
+<p>Для удаления участников пространства, в пространстве нажмите <span class="nowrap"><span class="image"><img src="_images/button_user-plus.png" alt="button user plus"></span> <strong>Пригласить</strong></span> и в открывшемся окне <strong>Приглашение пользователей</strong>, напротив нужного пользователя, выберите <strong>Удалить пользователя из пространства</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/spaces_4.png" alt="spaces 4">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_действия_с_пространствами"><a class="anchor" href="#_действия_с_пространствами"></a>Действия с пространствами</h2>
+<div class="sectionbody">
+<h3 id="spaces_section" class="discrete">Просмотр доступных пространств</h3>
+<div class="ulist">
+<div class="title">Доступные вам пространства можно просмотреть в двух местах:</div>
+<ul>
+<li>
+<p>В разделе <span class="nowrap"><span class="image"><img src="_images/button_layers.png" alt="button layers"></span> <a href="#spaces_section_spaces"><strong>Пространства</strong></a></span> — все пространства.</p>
+</li>
+<li>
+<p>В разделе <span class="nowrap"><span class="image"><img src="_images/button_home.png" alt="button home"></span> <a href="#spaces_section_main"><strong>Главная</strong></a></span> — последние пространства, с которыми вы работали.</p>
+</li>
+</ul>
+</div>
+<h4 id="spaces_section_spaces" class="discrete">Раздел Пространства</h4>
+<div class="paragraph">
+<p>Для просмотра пространств, в основном меню нажмите <span class="nowrap"><span class="image"><img src="_images/button_layers.png" alt="button layers"></span> <strong>Показать все пространства</strong></span>, — откроется раздел <strong>Пространства</strong>.</p>
+</div>
+<div class="paragraph">
+<p>В разделе можно найти пространства по названию и отфильтровать по признаку архивного пространства. Также пространства можно добавлять в избранное с помощью кнопки <span class="nowrap"><span class="image"><img src="_images/button_star.png" alt="button star"></span></span> — такие пространства закрепляются сверху, в списке основного меню.</p>
+</div>
+<h4 id="spaces_section_main" class="discrete">Раздел Главная</h4>
+<div class="paragraph">
+<p>В разделе показаны последние пространства, с которыми вы работали.</p>
+</div>
+<h3 id="_переименование_пространства" class="discrete">Переименование пространства</h3>
+<div class="paragraph">
+<p>Переименовывать и изменить описание пространства может только владелец.</p>
+</div>
+<div class="paragraph">
+<p>Для переименования пространства, в разделе <strong>Пространства</strong>, на карточке пространства, выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_edit.png" alt="button edit"></span> <strong>Изменить</strong></span>.</p>
+</div>
+<h3 id="spaces_archive" class="discrete">Архивация пространства</h3>
+<div class="paragraph">
+<p>Архивировать пространство, как и возвращать из архива, может только его владелец.</p>
+</div>
+<div class="paragraph">
+<p>Пространства можно архивировать. Архивное пространство доступно только на просмотр: все участники могут видеть задачи и документы, но работа в нем недоступна.</p>
+</div>
+<div class="ulist">
+<div class="title">Пространство можно архивировать из раздела <strong>Пространства</strong> и из самого пространства, находясь в нем:</div>
+<ul>
+<li>
+<p>Для архивации пространства из раздела <strong>Пространства</strong>, в карточке нужного пространства выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_archive.png" alt="button archive"></span> <strong>Архивировать</strong></span>.</p>
+</li>
+<li>
+<p>Для архивации пространства из самого пространства, в верхнем правом углу выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_archive.png" alt="button archive"></span> <strong>Архивировать</strong></span>.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Вернуть из архива пространство можно из раздела <strong>Пространства</strong> и из самого пространства, находясь в нем:</div>
+<ul>
+<li>
+<p>Для возврата из архива пространства из раздела <strong>Пространства</strong>, в карточке нужного пространства выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_archive-restore.png" alt="button archive restore"></span> <strong>Вернуть из архива</strong></span>.</p>
+</li>
+<li>
+<p>Для архивации пространства из самого пространства, в верхнем правом углу выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_archive-restore.png" alt="button archive restore"></span> <strong>Вернуть из архива</strong></span>.</p>
+</li>
+</ul>
+</div>
+<h3 id="_удаление_пространства" class="discrete">Удаление пространства</h3>
+<div class="paragraph">
+<p>Удалять пространство может только его владелец.</p>
+</div>
+<div class="ulist">
+<div class="title">Пространство можно удалить из раздела <strong>Пространства</strong> и из самого пространства, находясь в нем:</div>
+<ul>
+<li>
+<p>Для удаления пространства из раздела <strong>Пространства</strong>, в карточке нужного пространства выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_trash.png" alt="button trash"></span> <strong>Удалить</strong></span>.</p>
+</li>
+<li>
+<p>Для удаления пространства из самого пространства, в верхнем правом углу выберите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_trash.png" alt="button trash"></span> <strong>Удалить</strong></span></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Удаленное пространство со всеми документами на 30 дней помещается <a href="profile.html#profile_trash" class="xref page">в корзину</a>, затем удаляется и оттуда.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="routines.html">Регулярные задачи</a></span>
+  <span class="next"><a href="agents.html">Агенты</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+
+</div>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+  <!--
+  Подвал сайта для страниц документации — статическая копия
+  src/components/sections/Footer.tsx. Заменяет собой служебный подвал Antora
+  («GigaCowork 2026»).
+
+  Класс намеренно НЕ «footer»: в site.css у него свои правила (серая заливка,
+  мелкий шрифт), которые перебили бы оформление сайта.
+-->
+<footer class="sc-footer">
+  <div class="sc-container sc-footer-inner">
+    <div class="sc-footer-top">
+      <div class="sc-footer-brand">
+        <a href="/" aria-label="GigaCowork" class="sc-footer-logo">
+          <img src="/img/footer/logo-gigacowork.svg" alt="GigaCowork" width="161" height="34">
+        </a>
+
+        <div class="sc-footer-contacts">
+          <a href="https://t.me/GenAIeffect" aria-label="Telegram-канал @GenAIeffect"
+             target="_blank" rel="noreferrer noopener" class="sc-footer-tg">
+            <img src="/img/footer/telegram.svg" alt="Telegram" width="27" height="27">
+          </a>
+          <p><a class="sc-link" href="mailto:info@gigab2b.ru">info@gigab2b.ru</a></p>
+          <p><a class="sc-link" href="mailto:press@gigab2b.ru">press@gigab2b.ru</a> — для СМИ</p>
+        </div>
+      </div>
+
+      <nav class="sc-footer-nav" aria-label="Разделы сайта">
+        <div class="sc-footer-col">
+          <h2>ПЛАТФОРМА</h2>
+          <ul>
+            <li><a class="sc-link" href="/#platform">Обзор платформы</a></li>
+            <li><a class="sc-link" href="/#whats-new">Что нового</a></li>
+            <li><a class="sc-link" href="/#spaces">Пространства</a></li>
+            <li><a class="sc-link" href="/#agents">ИИ-агенты</a></li>
+            <li><a class="sc-link" href="/#skills">Навыки</a></li>
+            <li><a class="sc-link" href="/#commands">Быстрые команды</a></li>
+            <li><a class="sc-link" href="/#connectors">Коннекторы</a></li>
+            <li><a class="sc-link" href="/#schedule">Запуск по расписанию</a></li>
+            <li><a class="sc-link" href="/#security">Безопасность</a></li>
+            <li><a class="sc-link" href="/#support">Помощь и поддержка</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>СЦЕНАРИИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#docs">Работа с документами</a></li>
+            <li><a class="sc-link" href="/#analytics">Аналитика и отчётность</a></li>
+            <li><a class="sc-link" href="/#knowledge">База знаний</a></li>
+            <li><a class="sc-link" href="/#service">Клиентский сервис</a></li>
+            <li><a class="sc-link" href="/#hr">HR и кадры</a></li>
+            <li><a class="sc-link" href="/#finance">Финансы и контроль</a></li>
+            <li><a class="sc-link" href="/#legal">Юридические задачи</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>ПОСТАВКИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#cloud">Облако</a></li>
+            <li><a class="sc-link" href="/#hybrid">Гибрид</a></li>
+            <li><a class="sc-link" href="/#pak">ПАК</a></li>
+            <li><a class="sc-link" href="/#compare">Сравнить варианты</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>КОМПАНИЯ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#about">О компании</a></li>
+            <li><a class="sc-link" href="/#cases">Кейсы</a></li>
+            <li><a class="sc-link" href="/#blog">Блог</a></li>
+            <li><a class="sc-link" href="/#partners">Партнёрам</a></li>
+            <li><a class="sc-link" href="/#career">Карьера</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="sc-footer-bottom">
+      <p class="sc-footer-legal">
+        © 2026 ГигаЧат Бизнес · ООО «Салют для Бизнеса»<br>
+        121170, г. Москва, Садовая-Самотёчная ул., 24/27 · ИНН 7804568396
+      </p>
+      <ul class="sc-footer-policy">
+        <li><a class="sc-link" href="/#privacy">Политика конфиденциальности</a></li>
+        <li><a class="sc-link" href="/#data-policy">Политика обработки данных</a></li>
+        <li><a class="sc-link" href="/#terms">Пользовательское соглашение</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="../../_/site-chrome/chrome.js" defer></script>
+  </body>
+</html>

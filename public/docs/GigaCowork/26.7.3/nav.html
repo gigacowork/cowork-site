@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Документация GigaCowork</title>
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="stylesheet" href="../../_/css/extra.css">  <link rel="stylesheet" href="../../_/site-chrome/chrome.css">
+  </head>
+  <body class="article">
+<!-- site-chrome -->
+<!--
+  Шапка сайта для страниц документации.
+
+  Это статическая копия src/components/sections/Header.tsx: на страницах Antora
+  нет ни React, ни Tailwind, поэтому разметка и стили повторены вручную
+  (styles — chrome.css, поведение — chrome.js).
+
+  Ссылки абсолютные и якоря пишутся как «/#audience», а не «#audience»: на
+  странице документации голый якорь искал бы цель в самой документации.
+-->
+<header class="sc-header">
+  <div class="sc-container sc-header-row">
+    <a class="sc-logo" href="/" aria-label="GigaCowork">
+      <img src="/img/logo-gigacowork.svg" alt="GigaCowork" width="155" height="33">
+    </a>
+
+    <nav class="sc-nav" aria-label="Основная навигация">
+      <ul class="sc-nav-list">
+        <li class="sc-nav-item sc-has-menu">
+          <button type="button" class="sc-nav-btn" aria-expanded="false" aria-haspopup="true">
+            О платформе
+            <svg class="sc-chevron" width="9" height="5" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+              <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="sc-menu">
+            <ul>
+              <li><a href="/platform">Обзор платформы</a></li>
+              <li><a href="/whats-new">Что нового</a></li>
+              <li><a href="/docs/" aria-current="page">Документация</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/#audience">Для кого</a></li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/video">Обучающие видео</a></li>
+      </ul>
+
+      <div class="sc-actions">
+        <a class="sc-btn sc-btn-secondary" href="/#login">Войти</a>
+        <a class="sc-btn sc-btn-primary" href="/lead">Попробовать</a>
+      </div>
+    </nav>
+
+    <div class="sc-mobile-actions">
+      <a class="sc-btn sc-btn-primary sc-btn-sm" href="/lead">Попробовать</a>
+      <button type="button" class="sc-burger" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sc-drawer">
+    <nav class="sc-container sc-drawer-nav" aria-label="Меню">
+      <div class="sc-drawer-group">
+        <button type="button" class="sc-drawer-btn" aria-expanded="false">
+          О платформе
+          <svg class="sc-chevron" width="11" height="6" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+            <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="sc-drawer-sub">
+          <ul>
+            <li><a href="/platform">Обзор платформы</a></li>
+            <li><a href="/whats-new">Что нового</a></li>
+            <li><a href="/docs/">Документация</a></li>
+          </ul>
+        </div>
+      </div>
+      <a class="sc-drawer-link" href="/#audience">Для кого</a>
+      <a class="sc-drawer-link" href="/video">Обучающие видео</a>
+      <a class="sc-btn sc-btn-secondary sc-btn-lg sc-drawer-cta" href="/#login">Войти</a>
+    </nav>
+  </div>
+</header>
+
+
+<div class="sc-docs-shell">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+</nav>
+<div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Поиск">
+        </div>
+      </div>
+</div>
+<div class="body">
+<div class="nav-container" data-component="GigaCowork" data-version="26.7.3">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="0"
+    style="padding-left: 6px; padding-top: 1px;">
+<ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Начало работы</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="login.html">Вход</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="chat.html">Задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="routines.html">Регулярные задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="spaces.html">Пространства</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Возможности</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="agents.html">Агенты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="skills.html">Навыки</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="commands.html">Команды</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Администрирование</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_users.html">Пользователи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_recycle_bin.html">Удаленные объекты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_roles.html">Роли</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_events.html">Аудит событий</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Прочее</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="profile.html">Личное меню</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="version_history.html">История изменений</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+
+  <div class="content">
+<aside class="toc sidebar" data-title=" " data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Начало работы</strong></p>
+</li>
+<li>
+<p><a href="login.html" class="xref page">Вход</a></p>
+</li>
+<li>
+<p><a href="chat.html" class="xref page">Задачи</a></p>
+</li>
+<li>
+<p><a href="routines.html" class="xref page">Регулярные задачи</a></p>
+</li>
+<li>
+<p><a href="spaces.html" class="xref page">Пространства</a></p>
+</li>
+<li>
+<p><strong>Возможности</strong></p>
+</li>
+<li>
+<p><a href="agents.html" class="xref page">Агенты</a></p>
+</li>
+<li>
+<p><a href="connectors.html" class="xref page">Коннекторы</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="connector_amocrm.html" class="xref page">amoCRM</a></p>
+</li>
+<li>
+<p><a href="connector_1s.html" class="xref page">1С</a></p>
+</li>
+<li>
+<p><a href="connector_bothelp.html" class="xref page">BotHelp</a></p>
+</li>
+<li>
+<p><a href="connector_email_pochta.html" class="xref page">Email / Почта</a></p>
+</li>
+<li>
+<p><a href="connector_gmail.html" class="xref page">Gmail</a></p>
+</li>
+<li>
+<p><a href="connector_google_calendar.html" class="xref page">Google Calendar</a></p>
+</li>
+<li>
+<p><a href="connector_google_drive.html" class="xref page">Google Drive</a></p>
+</li>
+<li>
+<p><a href="connector_google_meet.html" class="xref page">Google Meet</a></p>
+</li>
+<li>
+<p><a href="connector_huntflow.html" class="xref page">Huntflow</a></p>
+</li>
+<li>
+<p><a href="connector_kaiten.html" class="xref page">Kaiten</a></p>
+</li>
+<li>
+<p><a href="connector_mailru.html" class="xref page">Mail.ru</a></p>
+</li>
+<li>
+<p><a href="connector_microsoft_outlook.html" class="xref page">Microsoft Outlook</a></p>
+</li>
+<li>
+<p><a href="connector_mindbox.html" class="xref page">Mindbox</a></p>
+</li>
+<li>
+<p><a href="connector_mpstats.html" class="xref page">MPSTATS</a></p>
+</li>
+<li>
+<p><a href="connector_retailcrm.html" class="xref page">RetailCRM</a></p>
+</li>
+<li>
+<p><a href="connector_telegram.html" class="xref page">Telegram</a></p>
+</li>
+<li>
+<p><a href="connector_yclients.html" class="xref page">YClients</a></p>
+</li>
+<li>
+<p><a href="connector_zoom.html" class="xref page">Zoom</a></p>
+</li>
+<li>
+<p><a href="connector_bitriks24_bitrix24.html" class="xref page">Битрикс24 / Bitrix24</a></p>
+</li>
+<li>
+<p><a href="connector_vebpoisk.html" class="xref page">Веб-поиск</a></p>
+</li>
+<li>
+<p><a href="connector_moe_delo.html" class="xref page">Мое дело</a></p>
+</li>
+<li>
+<p><a href="connector_moysklad.html" class="xref page">МойСклад</a></p>
+</li>
+<li>
+<p><a href="connector_planfakt.html" class="xref page">Планфакт</a></p>
+</li>
+<li>
+<p><a href="connector_yuzdesk.html" class="xref page">Юздеск</a></p>
+</li>
+<li>
+<p><a href="connector_yandeks_disk.html" class="xref page">Яндекс Диск</a></p>
+</li>
+<li>
+<p><a href="connector_yandeks_pochta.html" class="xref page">Яндекс Почта</a></p>
+</li>
+<li>
+<p><a href="connector_partners.html" class="xref page">Коннекторы партнеров</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="skills.html" class="xref page">Навыки</a></p>
+</li>
+<li>
+<p><a href="commands.html" class="xref page">Команды</a></p>
+</li>
+<li>
+<p><strong>Администрирование</strong></p>
+</li>
+<li>
+<p><a href="admin_users.html" class="xref page">Пользователи</a></p>
+</li>
+<li>
+<p><a href="admin_recycle_bin.html" class="xref page">Удаленные объекты</a></p>
+</li>
+<li>
+<p><a href="admin_roles.html" class="xref page">Роли</a></p>
+</li>
+<li>
+<p><a href="admin_connectors.html" class="xref page">Коннекторы</a></p>
+</li>
+<li>
+<p><a href="admin_events.html" class="xref page">Аудит событий</a></p>
+</li>
+<li>
+<p><strong>Прочее</strong></p>
+</li>
+<li>
+<p><a href="profile.html" class="xref page">Личное меню</a></p>
+</li>
+<li>
+<p><a href="version_history.html" class="xref page">История изменений</a></p>
+</li>
+</ul>
+</div>
+</article>
+  </div>
+</main>
+</div>
+
+</div>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+  <!--
+  Подвал сайта для страниц документации — статическая копия
+  src/components/sections/Footer.tsx. Заменяет собой служебный подвал Antora
+  («GigaCowork 2026»).
+
+  Класс намеренно НЕ «footer»: в site.css у него свои правила (серая заливка,
+  мелкий шрифт), которые перебили бы оформление сайта.
+-->
+<footer class="sc-footer">
+  <div class="sc-container sc-footer-inner">
+    <div class="sc-footer-top">
+      <div class="sc-footer-brand">
+        <a href="/" aria-label="GigaCowork" class="sc-footer-logo">
+          <img src="/img/footer/logo-gigacowork.svg" alt="GigaCowork" width="161" height="34">
+        </a>
+
+        <div class="sc-footer-contacts">
+          <a href="https://t.me/GenAIeffect" aria-label="Telegram-канал @GenAIeffect"
+             target="_blank" rel="noreferrer noopener" class="sc-footer-tg">
+            <img src="/img/footer/telegram.svg" alt="Telegram" width="27" height="27">
+          </a>
+          <p><a class="sc-link" href="mailto:info@gigab2b.ru">info@gigab2b.ru</a></p>
+          <p><a class="sc-link" href="mailto:press@gigab2b.ru">press@gigab2b.ru</a> — для СМИ</p>
+        </div>
+      </div>
+
+      <nav class="sc-footer-nav" aria-label="Разделы сайта">
+        <div class="sc-footer-col">
+          <h2>ПЛАТФОРМА</h2>
+          <ul>
+            <li><a class="sc-link" href="/#platform">Обзор платформы</a></li>
+            <li><a class="sc-link" href="/#whats-new">Что нового</a></li>
+            <li><a class="sc-link" href="/#spaces">Пространства</a></li>
+            <li><a class="sc-link" href="/#agents">ИИ-агенты</a></li>
+            <li><a class="sc-link" href="/#skills">Навыки</a></li>
+            <li><a class="sc-link" href="/#commands">Быстрые команды</a></li>
+            <li><a class="sc-link" href="/#connectors">Коннекторы</a></li>
+            <li><a class="sc-link" href="/#schedule">Запуск по расписанию</a></li>
+            <li><a class="sc-link" href="/#security">Безопасность</a></li>
+            <li><a class="sc-link" href="/#support">Помощь и поддержка</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>СЦЕНАРИИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#docs">Работа с документами</a></li>
+            <li><a class="sc-link" href="/#analytics">Аналитика и отчётность</a></li>
+            <li><a class="sc-link" href="/#knowledge">База знаний</a></li>
+            <li><a class="sc-link" href="/#service">Клиентский сервис</a></li>
+            <li><a class="sc-link" href="/#hr">HR и кадры</a></li>
+            <li><a class="sc-link" href="/#finance">Финансы и контроль</a></li>
+            <li><a class="sc-link" href="/#legal">Юридические задачи</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>ПОСТАВКИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#cloud">Облако</a></li>
+            <li><a class="sc-link" href="/#hybrid">Гибрид</a></li>
+            <li><a class="sc-link" href="/#pak">ПАК</a></li>
+            <li><a class="sc-link" href="/#compare">Сравнить варианты</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>КОМПАНИЯ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#about">О компании</a></li>
+            <li><a class="sc-link" href="/#cases">Кейсы</a></li>
+            <li><a class="sc-link" href="/#blog">Блог</a></li>
+            <li><a class="sc-link" href="/#partners">Партнёрам</a></li>
+            <li><a class="sc-link" href="/#career">Карьера</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="sc-footer-bottom">
+      <p class="sc-footer-legal">
+        © 2026 ГигаЧат Бизнес · ООО «Салют для Бизнеса»<br>
+        121170, г. Москва, Садовая-Самотёчная ул., 24/27 · ИНН 7804568396
+      </p>
+      <ul class="sc-footer-policy">
+        <li><a class="sc-link" href="/#privacy">Политика конфиденциальности</a></li>
+        <li><a class="sc-link" href="/#data-policy">Политика обработки данных</a></li>
+        <li><a class="sc-link" href="/#terms">Пользовательское соглашение</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="../../_/site-chrome/chrome.js" defer></script>
+  </body>
+</html>

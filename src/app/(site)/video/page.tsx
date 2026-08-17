@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Button from "@/components/ui/Button";
 import VideoGuides from "@/components/interactive/VideoGuides";
-import { asset } from "@/lib/asset";
 
 /**
  * «Обучающие видео» — /video
@@ -106,9 +105,26 @@ const HERO_GRADIENT =
 export default function VideoGuidesPage() {
   return (
     <VideoGuides>
-      {/* Hero */}
+      {/*
+        Hero.
+
+        `id="hero"` — не украшение: по нему шапка понимает, что находится над
+        hero, и остаётся прозрачной, пропуская фон под навигацию. Пока его не
+        было, Header считал страницу «без hero» и с самого верха закрывал
+        градиент сплошной заливкой (см. src/components/sections/Header.tsx).
+
+        Верхний отступ включает высоту шапки: она фиксированная и лежит поверх
+        секции, поэтому место под неё резервирует сам hero.
+
+        Вертикальный ритм взят с hero главной (1927:15554 — 1440×685, pt-160 /
+        pb-80; мобильный 1927:17359 — pt-120 / pb-64). Там высоту набирает
+        встроенный чат, здесь текста заметно меньше, поэтому высота задана
+        напрямую, а содержимое центрируется по вертикали — иначе весь запас
+        собрался бы пустотой под текстом.
+      */}
       <section
-        className={`w-full pt-[calc(64px+var(--header-h))] pb-48 md:pt-[calc(80px+var(--header-h))] md:pb-64 ${HERO_GRADIENT}`}
+        id="hero"
+        className={`w-full pt-[calc(120px+var(--header-h))] pb-64 md:pt-[calc(160px+var(--header-h))] md:pb-80 ${HERO_GRADIENT}`}
       >
         <div className="container-page flex flex-col gap-16">
           <h1 className="text-h3 font-medium text-neutral-1000 md:text-h2">
@@ -171,7 +187,7 @@ export default function VideoGuidesPage() {
                   className="relative aspect-video w-full overflow-hidden rounded-[24px] border border-border-subtle bg-neutral-50 shadow-drop-sm transition-shadow duration-300 hover:shadow-drop-lg"
                 >
                   <video
-                    src={asset(guide.video)}
+                    src={guide.video}
                     muted
                     loop
                     playsInline

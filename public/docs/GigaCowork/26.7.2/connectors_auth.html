@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Особенности подключения коннекторов :: Документация GigaCowork</title>
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="stylesheet" href="../../_/css/extra.css">  <link rel="stylesheet" href="../../_/site-chrome/chrome.css">
+  </head>
+  <body class="article">
+<!-- site-chrome -->
+<!--
+  Шапка сайта для страниц документации.
+
+  Это статическая копия src/components/sections/Header.tsx: на страницах Antora
+  нет ни React, ни Tailwind, поэтому разметка и стили повторены вручную
+  (styles — chrome.css, поведение — chrome.js).
+
+  Ссылки абсолютные и якоря пишутся как «/#audience», а не «#audience»: на
+  странице документации голый якорь искал бы цель в самой документации.
+-->
+<header class="sc-header">
+  <div class="sc-container sc-header-row">
+    <a class="sc-logo" href="/" aria-label="GigaCowork">
+      <img src="/img/logo-gigacowork.svg" alt="GigaCowork" width="155" height="33">
+    </a>
+
+    <nav class="sc-nav" aria-label="Основная навигация">
+      <ul class="sc-nav-list">
+        <li class="sc-nav-item sc-has-menu">
+          <button type="button" class="sc-nav-btn" aria-expanded="false" aria-haspopup="true">
+            О платформе
+            <svg class="sc-chevron" width="9" height="5" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+              <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="sc-menu">
+            <ul>
+              <li><a href="/platform">Обзор платформы</a></li>
+              <li><a href="/whats-new">Что нового</a></li>
+              <li><a href="/docs/" aria-current="page">Документация</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/#audience">Для кого</a></li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/video">Обучающие видео</a></li>
+      </ul>
+
+      <div class="sc-actions">
+        <a class="sc-btn sc-btn-secondary" href="/#login">Войти</a>
+        <a class="sc-btn sc-btn-primary" href="/lead">Попробовать</a>
+      </div>
+    </nav>
+
+    <div class="sc-mobile-actions">
+      <a class="sc-btn sc-btn-primary sc-btn-sm" href="/lead">Попробовать</a>
+      <button type="button" class="sc-burger" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sc-drawer">
+    <nav class="sc-container sc-drawer-nav" aria-label="Меню">
+      <div class="sc-drawer-group">
+        <button type="button" class="sc-drawer-btn" aria-expanded="false">
+          О платформе
+          <svg class="sc-chevron" width="11" height="6" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+            <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="sc-drawer-sub">
+          <ul>
+            <li><a href="/platform">Обзор платформы</a></li>
+            <li><a href="/whats-new">Что нового</a></li>
+            <li><a href="/docs/">Документация</a></li>
+          </ul>
+        </div>
+      </div>
+      <a class="sc-drawer-link" href="/#audience">Для кого</a>
+      <a class="sc-drawer-link" href="/video">Обучающие видео</a>
+      <a class="sc-btn sc-btn-secondary sc-btn-lg sc-drawer-cta" href="/#login">Войти</a>
+    </nav>
+  </div>
+</header>
+
+
+<div class="sc-docs-shell">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Документация</a></li>
+    <li><a href="connectors_auth.html">Особенности подключения коннекторов</a></li>
+  </ul>
+</nav>
+<div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Поиск">
+        </div>
+      </div>
+</div>
+<div class="body">
+<div class="nav-container" data-component="GigaCowork" data-version="26.7.2">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="0"
+    style="padding-left: 6px; padding-top: 1px;">
+<ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Начало работы</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="login.html">Вход</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="chat.html">Задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="routines.html">Регулярные задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="spaces.html">Пространства</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Возможности</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="agents.html">Агенты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="skills.html">Навыки</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="commands.html">Команды</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Администрирование</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_users.html">Пользователи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_recycle_bin.html">Удаленные объекты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_roles.html">Роли</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_events.html">Аудит событий</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Прочее</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="profile.html">Личное меню</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="version_history.html">История изменений</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+
+  <div class="content">
+<aside class="toc sidebar" data-title=" " data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Особенности подключения коннекторов</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Некоторые коннекторы требуют дополнительных действий для подключения.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="1c_setup"><a class="anchor" href="#1c_setup"></a>1С</h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">Добавление коннектора 1C зависит от наличия MCP-сервера:</div>
+<ul>
+<li>
+<p>Если у вас нет собственного MCP-сервера — <a href="#1c_setup_sys">добавьте предустановленный коннектор</a>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+При этом подключение возможно только к одной базе 1C.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Если у вас есть собственный MCP-сервер — создайте собственные MCP-коннекторы. <a href="admin_connectors.html#admin_connectors_mcp" class="xref page">Подробнее</a>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+При этом необходимо на каждую базу 1C создать отдельный коннектор.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+<div class="exampleblock">
+<div class="title">Пример подключения и авторизации в MCP-коннекторе 1C</div>
+<div class="content">
+<a href="https://files.sberdisk.ru/s/cdk4MtiVnqovIv4" class="bare">https://files.sberdisk.ru/s/cdk4MtiVnqovIv4</a>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_типовые_проблемы_при_подключении_1с_через_mcp_сервер"><a class="anchor" href="#_типовые_проблемы_при_подключении_1с_через_mcp_сервер"></a>Типовые проблемы при подключении 1С через MCP-сервер</h3>
+<details>
+<summary class="title">Нажмите, чтобы раскрыть</summary>
+<div class="content">
+<div class="paragraph">
+<p>Ниже приведены типовые проблемы, с которыми можно столкнуться при подключении 1С через MCP-сервер, их причины и способы решения.</p>
+</div>
+<h5 id="_проблемы_с_режимом_работы_базы_1с" class="discrete">Проблемы с режимом работы базы 1С</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Проблема</th>
+<th class="tableblock halign-left valign-top">Причина</th>
+<th class="tableblock halign-left valign-top">Как диагностировать</th>
+<th class="tableblock halign-left valign-top">Решение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Невозможно опубликовать HTTP-сервис</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">База работает в файловом режиме (.1CD)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Предприятие → Администрирование → Параметры системы → Режим работы</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Конвертировать базу в клиент-серверный вариант (SQL Server, PostgreSQL, Oracle)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Публикация завершается ошибкой</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Отсутствует сервер 1С:Предприятия</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">При публикации требуется указание SQL-сервера</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Установить сервер 1С или перенести базу на существующий сервер</p></td>
+</tr>
+</tbody>
+</table>
+<h5 id="_проблемы_с_версией_платформы_1с" class="discrete">Проблемы с версией платформы 1С</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Проблема</th>
+<th class="tableblock halign-left valign-top">Причина</th>
+<th class="tableblock halign-left valign-top">Как диагностировать</th>
+<th class="tableblock halign-left valign-top">Решение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Нет пункта «Расширения конфигурации»</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Версия платформы ниже 8.3.10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Предприятие → Сервис → О программе</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Обновить платформу 1С до актуальной стабильной версии</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Нет вкладки «HTTP-сервисы» при публикации</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Версия платформы ниже 8.3.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Конфигуратор → Администрирование → Публикация на веб-сервере</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Обновить платформу 1С до версии 8.3.6 или выше</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Расширение не работает корректно</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Несовместимость версии расширения и платформы</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Логи 1С, ошибки при вызове HTTP-сервиса</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Обновить платформу и расширение до актуальных версий</p></td>
+</tr>
+</tbody>
+</table>
+<h5 id="_проблемы_с_веб_сервером" class="discrete">Проблемы с веб-сервером</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Проблема</th>
+<th class="tableblock halign-left valign-top">Причина</th>
+<th class="tableblock halign-left valign-top">Как диагностировать</th>
+<th class="tableblock halign-left valign-top">Решение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ошибка публикации на веб-сервере</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Веб-сервер (Apache/IIS) не установлен</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">В списке служб Windows нет Apache/IIS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Установить веб-сервер (см. инструкцию по установке Apache 2.4)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Веб-сервер не запускается</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Конфликт портов, ошибка в конфигурации</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Служба Apache/IIS не стартует, логи веб-сервера</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Проверить логи, освободить порт 80/443, исправить конфиг</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP-сервис недоступен после публикации</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Веб-сервер работает, но публикация не прошла</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Браузер возвращает 404 на <code>/hs/mcp/health</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Перепубликовать базу от имени администратора, проверить имя публикации</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Доступ только по HTTP, нет HTTPS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Не настроен SSL-сертификат</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL начинается с <code>http://</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Получить и установить SSL-сертификат, настроить HTTPS в веб-сервере</p></td>
+</tr>
+</tbody>
+</table>
+<h5 id="_проблемы_с_доступом_из_интернета" class="discrete">Проблемы с доступом из интернета</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Проблема</th>
+<th class="tableblock halign-left valign-top">Причина</th>
+<th class="tableblock halign-left valign-top">Как диагностировать</th>
+<th class="tableblock halign-left valign-top">Решение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL недоступен извне</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Сервер в локальной сети без проброса портов</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>curl http://[сервер]/[база]/hs/mcp/health</code> работает только внутри сети</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Настроить проброс портов на роутере или reverse proxy (nginx/Apache)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Нет статического IP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Динамический IP у сервера</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IP меняется после перезагрузки</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Заказать статический IP у провайдера или использовать DynDNS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Блокировка фаерволом</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Порт 80/443 закрыт</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>telnet [сервер] 80</code> не подключается</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Открыть порт в фаерволе Windows/iptables</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1С:Фреш (SaaS)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Платформа не позволяет публиковать свои HTTP-сервисы на внешнем веб-сервере</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">—</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Уточнить у провайдера 1С:Фреш наличие API для интеграции; рассмотреть переезд на self-hosted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1С:Линк</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Доступ только через прокси 1С</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">База размещена на 1С:Линк</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Использовать API 1С:Линк или запросить публикацию через поддержку</p></td>
+</tr>
+</tbody>
+</table>
+<h5 id="_проблемы_с_расширением_mcp_сервера" class="discrete">Проблемы с расширением MCP-сервера</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Проблема</th>
+<th class="tableblock halign-left valign-top">Причина</th>
+<th class="tableblock halign-left valign-top">Как диагностировать</th>
+<th class="tableblock halign-left valign-top">Решение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Расширение не подключается</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Файл .cfe повреждён или несовместим</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ошибка при подключении в Конфигураторе</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Скачать актуальную версию расширения, проверить совместимость</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP-сервис не появляется после подключения</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Расширение не активировано, нет прав</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">В списке HTTP-сервисов нет <code>mcp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Перезапустить 1С, проверить права пользователя на расширение</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ошибка авторизации в HTTP-сервисе</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Неверный логин/пароль, нет прав у пользователя</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Браузер запрашивает пароль, затем возвращает 401/403</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Создать отдельного пользователя 1С с правами на HTTP-сервис</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{"status": "error"}</code> вместо <code>{"status": "ok"}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ошибка внутри расширения</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Логи 1С, журнал регистрации</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Включить логирование в расширении, проверить логи</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+</div>
+<div class="sect2">
+<h3 id="_часто_задаваемые_вопросы_по_коннектору_1с"><a class="anchor" href="#_часто_задаваемые_вопросы_по_коннектору_1с"></a>Часто задаваемые вопросы по коннектору 1С</h3>
+<details>
+<summary class="title">Нажмите, чтобы раскрыть</summary>
+<div class="content">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 28.5714%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Вопрос</th>
+<th class="tableblock halign-left valign-top">Комментарий Продукта</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">С какими конкретно конфигурациями 1С работает коннектор?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Коннектор к 1С унифицированный, работает с различными конфигурациями. Рекомендуемые версии, с которыми работает коннектор — 8.3.6+ (в более ранних версиях нет вкладки «HTTP-сервисы» при публикации и нет пункта «Расширения конфигурации»).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Работает ли он с доработанными конфигурациями?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Коннектор к 1С унифицированный, работает с различными конфигурациями, включая доработки. Коннектор работает с базой 1С по запросу к ней через разработанные инструменты коннектора (файл расширения необходимо установить по предоставляемой нами инструкции).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Нужна ли публикация базы 1С наружу?</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>В виде поставки SaaS необходима публикация базы наружу — к базе должен быть выход в интернет, либо прописаны белые IP-адреса до Cowork.</p>
+</div>
+<div class="olist arabic">
+<div class="title"><strong>Настройка в 1С (подробнее в предоставляемой инструкции):</strong></div>
+<ol class="arabic">
+<li>
+<p>Подключите расширение <code>mcp_dev.cfe</code> и перезапустите 1С.</p>
+</li>
+<li>
+<p>Убедитесь, что установлен веб-сервер (при необходимости установите Apache 2.4).</p>
+</li>
+<li>
+<p>Запустите Конфигуратор 1С от имени администратора.</p>
+</li>
+<li>
+<p>Опубликуйте базу с опцией «Публиковать HTTP-сервисы расширений по умолчанию».</p>
+</li>
+<li>
+<p>Проверьте доступность по URL.</p>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title"><strong>Настройка в Cowork:</strong></div>
+<ol class="arabic">
+<li>
+<p>Введите полученный URL в поле «Публичный URL HTTP-сервиса 1С».</p>
+</li>
+</ol>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Через что идёт подключение: API, OData, расширение, обработка, веб-сервис?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Коннектор соответствует принципам стандарта MCP (спецификация): <a href="https://modelcontextprotocol.io/specification/2025-11-25" class="bare">https://modelcontextprotocol.io/specification/2025-11-25</a></p>
+<p class="tableblock">По такому же стандарту можно подключить любой другой коннектор, имея свой MCP-сервер (прорабатываем возможность предоставлять MCP-сервер в момент создания коннектора, чтобы расширить воронку пользователей, которые могут подключить необходимый open source коннектор).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Кто настраивает права доступа к данным 1С?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Авторизация пользователя в коннектор происходит по кредам из 1С. Права доступа в коннектор 1С используются те, которые соответствуют 1С.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Можно ли ограничить доступ только чтением?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Пользователь может настроить доступ к конкретному инструменту коннектора (требовать подтверждение / не использовать / использовать). Т.е. можно ограничить запись, поставив к инструменту настройку «отключен» или «требует подтверждения» (будет запрашивать у пользователя действие по инструменту).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Можно ли разрешить создание черновиков, но запретить проведение?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Как таковых черновиков в 1С, насколько я знаю, нет. Если такой функционал существует в какой-то конфигурации, то можно задействовать через агента (не могу точно сказать).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Как обрабатывается сопоставление номенклатуры?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Информация используется из базы данных — фактически каждый текстовый запрос пользователя преобразуется в запрос к базе 1С через инструменты, написанные кодом 1С. Аналогия — это SQL-запросы.</p>
+<p class="tableblock">Если необходимо сопоставить номенклатуру, то можно использовать дополнительно и внешнюю таблицу (не из 1С) для сравнения — таким образом будет использована информация из 1С и пользовательские данные.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Что происходит, если ИИ не уверен в совпадении позиции?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Как и человек, попробует сформировать гипотезу ответа и предоставить обоснования, если пользователь в явном виде не задал действия / границы размышления модели.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Можно ли подключить тестовую копию базы?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Да, можно — механизм описан в п. 1–5.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+</div>
+<div class="sect2">
+<h3 id="1c_setup_sys"><a class="anchor" href="#1c_setup_sys"></a>Подготовка к добавлению предустановленного коннектора 1C</h3>
+<h4 id="_1_подключите_расширение_в_базу" class="discrete">1. Подключите расширение в базу</h4>
+<div class="olist arabic">
+<div class="title">Для этого.</div>
+<ol class="arabic">
+<li>
+<p>Подключите расширение через «Управление расширениями конфигурации» в Предприятии или в Конфигураторе.</p>
+</li>
+<li>
+<p>Расширение — в файле mcp_dev.cfe (Чтобы скачать файл, откройте коннектор 1C в разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <a href="admin_connectors.html#admin_connectors" class="xref page"><strong>Администрирование</strong> → <strong>Коннекторы</strong></a></span>, нажмите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <strong>Настроить</strong></span>, а затем <strong>Скачать файл расширения и инструкцию</strong>).</p>
+</li>
+<li>
+<p>Перезапустите сеанс, чтобы расширение применилось.</p>
+</li>
+</ol>
+</div>
+<h4 id="_2_опубликуйте_http_сервис" class="discrete">2. Опубликуйте HTTP-сервис</h4>
+<div class="paragraph">
+<p>Требуется установленный веб-сервер.
+Если его ещё нет — смотри ниже главу <strong>установка веб-сервера Apache 2.4</strong>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Запускайте Конфигуратор от имени администратора.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Для этого:</div>
+<ol class="arabic">
+<li>
+<p>Зайдите в Администрирование → Публикация на веб-сервере.</p>
+</li>
+<li>
+<p>Задайте имя публикации (оно станет именем базы в URL) и каталог публикации.</p>
+</li>
+<li>
+<p>На вкладке HTTP-сервисы включите флаг «Публиковать HTTP-сервисы расширений по умолчанию» (выбрать конкретный сервис расширения нельзя).</p>
+</li>
+<li>
+<p>Опубликовать.</p>
+</li>
+</ol>
+</div>
+<h4 id="_3_проверьте_работоспособность" class="discrete">3. Проверьте работоспособность</h4>
+<div class="paragraph">
+<p>Откройте в браузере (подставьте сервер и имя базы):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-http hljs" data-lang="http">http://[сервер]/[база]/hs/mcp/health</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>После ввода логина/пароля 1С должен вернуться <code>{"status": "ok"}</code>.</p>
+</div>
+<h4 id="_дополнительно_установка_веб_сервера_apache_2_4" class="discrete">Дополнительно: установка веб-сервера Apache 2.4</h4>
+<div class="olist arabic">
+<div class="title">Для этого:</div>
+<ol class="arabic">
+<li>
+<p>Скачайте дистрибутив: <a href="https://www.apachelounge.com/download/" class="bare">https://www.apachelounge.com/download/</a></p>
+</li>
+<li>
+<p>Распакуйте (например, в C:\Apache24).</p>
+</li>
+<li>
+<p>Зарегистрируйте службу — в папке Apache24\bin от имени администратора:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cmd hljs" data-lang="cmd">httpd.exe -k install</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Запустите службу (в оснастке services.msc или <code>httpd.exe -k start</code>).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_добавление_предустановленного_коннектора_1c"><a class="anchor" href="#_добавление_предустановленного_коннектора_1c"></a>Добавление предустановленного коннектора 1C</h3>
+<div class="paragraph">
+<p>Если вы сделали <a href="#1c_setup_sys">все подготовительные действия</a>, можете приступать к подключению предустановленного коннектора 1C.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Для добавления коннектора:</div>
+<ol class="arabic">
+<li>
+<p>В разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <a href="admin_connectors.html#admin_connectors" class="xref page"><strong>Администрирование</strong> → <strong>Коннекторы</strong></a></span>, откройте коннектор <strong>1C</strong> и нажмите <span class="nowrap"><span class="image"><img src="_images/button_ellipsis-vertical.png" alt="button ellipsis vertical"></span> → <span class="image"><img src="_images/button_sliders-vertical.png" alt="button sliders vertical"></span> <strong>Настроить</strong></span>.</p>
+</li>
+<li>
+<p>Укажите:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Название</strong>.</p>
+</li>
+<li>
+<p><strong>Описание</strong> — коротко опишите возможности и инструменты коннектора, какие основные задачи он решает. По этим клюевым фразам ИИ-агент будет понимать, что необходимо подключить данный коннектор. Например, <em>Добавь событие в календарь</em> — для коннектора календаря. Описание отображается в карточке коннектора.</p>
+</li>
+<li>
+<p><strong>Публичный URL HTTP сервис 1C</strong> — вставьте <a href="#1c_setup_sys">URL опубликованной базы 1C</a>.</p>
+</li>
+<li>
+<p><strong>Тип аутентификации</strong> — выберите тип аутентификации, используемый в вашей 1C.</p>
+</li>
+<li>
+<p><strong>Инструкция авторизации</strong> — Укажите инструкцию-подсказку по авторизации в коннекторе. Инструкция будет видна пользователям при наведении на иконку информации <span class="image"><img src="_images/button_info.png" alt="button info"></span> рядом с кнопкой авторизации в коннекторе.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Нажмите <strong>Добавить</strong> или <strong>Добавить и войти в аккаунт</strong>, чтобы добавить и одновременно <a href="admin_connectors.html#admin_connectors_auth" class="xref page">авторизоваться в коннекторе</a>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_calendly"><a class="anchor" href="#_calendly"></a>Calendly</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы требуется оплаченная подписка сервиса.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_iiko"><a class="anchor" href="#_iiko"></a>iiko</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы требуется оплаченная подписка сервиса.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_insales"><a class="anchor" href="#_insales"></a>InSales</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы требуется оплаченная подписка сервиса.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mail_ru"><a class="anchor" href="#_mail_ru"></a>Mail.ru</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<div class="title">Для создания пароля коннектора:</div>
+<ol class="arabic">
+<li>
+<p>Войдите в свою почту Mail.ru через браузер на вашем устройстве.</p>
+</li>
+<li>
+<p>Откройте <span class="nowrap"><strong>Настройки</strong> → <strong>Все настройки</strong> → <strong>Безопасность</strong></span>.</p>
+</li>
+<li>
+<p>Найдите раздел <strong>Пароли для внешних приложений</strong> и нажмите <strong>Добавить</strong>.</p>
+</li>
+<li>
+<p>Придумайте название для пароля (например, <em>GigaCowork</em>), чтобы потом понять, для чего он.</p>
+</li>
+<li>
+<p>Подтвердите ваш основной пароль от аккаунта Mail.ru.</p>
+</li>
+<li>
+<p>Mail.ru сгенерирует пароль — сразу скопируйте его, он показывается только один раз.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mts_link"><a class="anchor" href="#_mts_link"></a>MTS Link</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы требуется оплаченная подписка сервиса.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mpstats"><a class="anchor" href="#_mpstats"></a>MPSTATS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы требуется оплаченная подписка сервиса.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mindbox"><a class="anchor" href="#_mindbox"></a>Mindbox</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы коннектора, в Mindbox необходимо создать операции по каждому инструменту.</p>
+</div>
+<h3 id="_шаг_1_перейдите_в_раздел_кампании" class="discrete">Шаг 1. Перейдите в раздел «Кампании»</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Откройте Mindbox</p>
+</li>
+<li>
+<p>Перейдите в раздел <strong>Кампании</strong></p>
+</li>
+</ul>
+</div>
+<h3 id="_шаг_2_создайте_операцию" class="discrete">Шаг 2. Создайте операцию</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Нажмите <strong>«Создать кампанию»</strong> → <strong>«Операция»</strong></p>
+</li>
+<li>
+<p>Выберите папку, где будет храниться операция</p>
+</li>
+<li>
+<p>Нажмите <strong>«Создать»</strong></p>
+</li>
+</ol>
+</div>
+<h3 id="_шаг_3_настройте_параметры_операции" class="discrete">Шаг 3. Настройте параметры операции</h3>
+<h4 id="_выберите_точку_интеграции" class="discrete">Выберите точку интеграции</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Сайт, лендинг, касса, мобильное приложение</p>
+</li>
+<li>
+<p>Можно выбрать несколько точек с одинаковыми настройками</p>
+</li>
+</ul>
+</div>
+<h4 id="_выберите_тип_операции" class="discrete">Выберите тип операции</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Тип</th>
+<th class="tableblock halign-left valign-top">Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Стандартная</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Обычная скорость обработки (для большинства задач)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Приоритетная</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Мгновенная обработка (для авторизации, регистрации, начисления баллов)</p></td>
+</tr>
+</tbody>
+</table>
+<h4 id="_дополнительные_флаги_по_необходимости" class="discrete">Дополнительные флаги (по необходимости)</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>«Запускает транзакционный сценарий»</p>
+</li>
+<li>
+<p>«Операция требует передачи deviceUUID»</p>
+</li>
+<li>
+<p>«Операция требует передачи секретного сервисного ключа»</p>
+</li>
+<li>
+<p>«Операция возвращает валидационные ошибки»</p>
+</li>
+</ul>
+</div>
+<h3 id="_шаг_4_настройте_шаги_операции" class="discrete">Шаг 4. Настройте шаги операции</h3>
+<div class="ulist">
+<div class="title">Шаги делятся на категории:</div>
+<ul>
+<li>
+<p>Шаги для работы с клиентами.</p>
+</li>
+<li>
+<p>Шаги-действия (зависимые шаги).</p>
+</li>
+</ul>
+</div>
+<h4 id="_шаги_для_работы_с_клиентами" class="discrete">Шаги для работы с клиентами</h4>
+<h5 id="_добавление_в_базу" class="discrete">Добавление в базу</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Шаг</th>
+<th class="tableblock halign-left valign-top">Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Зарегистрировать</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Регистрация в ЛК или программе лояльности</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Создать и подписать на рассылки</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Подписка через формы или web-push</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Импортировать</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Создать нового или обновить существующего</p></td>
+</tr>
+</tbody>
+</table>
+<h5 id="_работа_с_существующими_клиентами" class="discrete">Работа с существующими клиентами</h5>
+<h6 id="_для_авторизованных_клиентов_уверены_в_личности" class="discrete">Для авторизованных клиентов (уверены в личности)</h6>
+<div class="ulist">
+<ul>
+<li>
+<p>Получить существующего</p>
+</li>
+<li>
+<p>Редактировать</p>
+</li>
+<li>
+<p>Дополнить</p>
+</li>
+</ul>
+</div>
+<h6 id="_для_неавторизованных_клиентов_не_уверены_в_личности" class="discrete">Для неавторизованных клиентов (не уверены в личности)</h6>
+<div class="ulist">
+<ul>
+<li>
+<p>Получить существующего</p>
+</li>
+<li>
+<p>Редактировать (только зону/город)</p>
+</li>
+<li>
+<p>Зарегистрировать или дополнить</p>
+</li>
+</ul>
+</div>
+<h4 id="_шаги_действия_зависимые_шаги" class="discrete">Шаги-действия (зависимые шаги)</h4>
+<div class="paragraph">
+<p>После выбора типа клиента становятся доступны:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Оформление заказа</p>
+</li>
+<li>
+<p>Установка списка товаров (корзина, избранное)</p>
+</li>
+<li>
+<p>Отправка Email или SMS</p>
+</li>
+<li>
+<p>Выдача действий</p>
+</li>
+<li>
+<p>Изменение баланса</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Шаги связаны между собой. Например, шаг «Оформление заказа» доступен только после выбора клиента.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="_шаг_5_сохраните_и_получите_документацию" class="discrete">Шаг 5. Сохраните и получите документацию</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Нажмите <strong>«Добавить»</strong></p>
+</li>
+<li>
+<p>Нажмите <strong>«Посмотреть описание»</strong> — система автоматически сгенерирует:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Описание вызова</p>
+</li>
+<li>
+<p>Форматы передачи данных</p>
+</li>
+<li>
+<p>Тело запроса</p>
+</li>
+<li>
+<p>Примеры вызова и ответа</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<h3 id="_шаг_6_отладка_и_мониторинг" class="discrete">Шаг 6. Отладка и мониторинг</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Мониторинг интеграции</strong> — список операций с количеством ошибок</p>
+</li>
+<li>
+<p><strong>Лог вызовов операций</strong> — детализация ошибочных вызовов</p>
+</li>
+<li>
+<p>Включите флаги валидации для анализа ошибок в ответе</p>
+</li>
+</ul>
+</div>
+<h2 id="_применительно_к_коннектору_в_gigacowork" class="discrete">Применительно к коннектору в GigaCowork</h2>
+<div class="paragraph">
+<p>Коннектор Mindbox, доступный для подключения, поддерживает следующие операции, которые должны быть предварительно настроены в Mindbox:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Инструмент коннектора</th>
+<th class="tableblock halign-left valign-top">Требуемая операция в Mindbox</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Создать клиента (Sync/Async)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Операция с шагом «Зарегистрировать» или «Создать и подписать»</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Обновить клиента</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Операция с шагом «Редактировать клиента»</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Получить информацию о клиенте</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Операция с шагом «Получить существующего»</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Создать/обновить заказ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Операция с шагами «Клиент» + «Оформление заказа»</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Выдать действие</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Операция с шагом «Выдача действий»</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Отправить email-рассылку</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Операция с шагом «Отправка Email»</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Обновить статус линий заказа</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Операция с шагом обновления статуса заказа</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Получить ассортимент</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Операция экспорта товаров</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Перед подключением коннектора в GigaCowork убедитесь, что в Mindbox созданы соответствующие операции с нужными шагами для каждого инструмента, который планируете использовать.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_progressme"><a class="anchor" href="#_progressme"></a>ProgressMe</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы требуется оплаченная подписка сервиса.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_skillaz"><a class="anchor" href="#_skillaz"></a>Skillaz</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы требуется оплаченная подписка сервиса.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_uis"><a class="anchor" href="#_uis"></a>UIS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы требуется оплаченная подписка сервиса.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_битрикс24"><a class="anchor" href="#_битрикс24"></a>Битрикс24</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Пример авторизации</div>
+<div class="content">
+<a href="https://files.sberdisk.ru/s/zcysrKrqK0za1Rz" class="bare">https://files.sberdisk.ru/s/zcysrKrqK0za1Rz</a>
+</div>
+</div>
+<div class="paragraph">
+<p>Для работы требуется оплаченная подписка сервиса <em>BitrixGPT + Маркетплейс</em>. Также необходимо установить в маркетплейсе Битрикс24 приложение Albato.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_мессенджер_max"><a class="anchor" href="#_мессенджер_max"></a>Мессенджер MAX</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы коннектора необходим верифицированный профиль организации в MAX, а также токен прошедшего модерацию бота в MAX.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Для создания бота и получения токена:</div>
+<ol class="arabic">
+<li>
+<p>Перейдите в личный кабинет мессенджера по адресу <a href="http://business.max.ru/self" class="bare">http://business.max.ru/self</a> и выберите профиль вашей организации.</p>
+</li>
+<li>
+<p>Откройте раздел <strong>Чат-боты</strong> и нажмите <strong>Создать</strong>.</p>
+</li>
+<li>
+<p>Заполните данные бота:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Название.</p>
+</li>
+<li>
+<p>Аватар.</p>
+</li>
+<li>
+<p>Описание.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Нажмите <strong>Создать</strong> и дождитесь прохождения модерации. После одобрения бот станет доступен пользователям.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Для создания бота необходим верифицированный профиль организации. Каждая организация может создать до 5 ботов.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>После одобрения перейдите в <strong>Чат-боты</strong> → <strong>Интеграция</strong>, нажмите <strong>Получить токен</strong> и скопируйте его.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_почта_россии"><a class="anchor" href="#_почта_россии"></a>Почта России</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Коннектор работает только с корпоративными аккаунтами Почты России.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_telegram"><a class="anchor" href="#_telegram"></a>Telegram</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Обмен сообщений GigaCowork с Telegram осуществляется через специального бота. Для авторизации потребуется API-ключ существующего или нового бота.</p>
+</div>
+<h3 id="_создание_бота" class="discrete">Создание бота</h3>
+<div class="olist arabic">
+<div class="title">Чтобы создать бота:</div>
+<ol class="arabic">
+<li>
+<p>Отправьте боту <code>@BotFather</code> команду <code>/start</code>.</p>
+</li>
+<li>
+<p>Для создания нового бота отправьте команду <code>/newbot</code>.</p>
+</li>
+<li>
+<p>Укажите имя бота — оно будет отображаться для всех пользователей.</p>
+</li>
+<li>
+<p>Укажите имя пользователя (username). Оно должно:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Начинаться с символа <code>@</code>.</p>
+</li>
+<li>
+<p>Обязательно заканчиваться на <code>bot</code>. Пример: <code>youNamebot</code> или <code>youName_bot</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>После создания бот предоставит API-ключ — скопируйте его.</p>
+</li>
+</ol>
+</div>
+<h3 id="_выбор_существующего_бота" class="discrete">Выбор существующего бота</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Отправьте боту <code>@BotFather</code> команду <code>/mybots</code>.</p>
+</li>
+<li>
+<p>Выберите нужного бота из списка.</p>
+</li>
+<li>
+<p>Запросите API-ключ для подключения.</p>
+</li>
+</ol>
+</div>
+<h3 id="_важные_ограничения" class="discrete">Важные ограничения</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Ограничения</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Ограничение</th>
+<th class="tableblock halign-left valign-top">Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Бот должен быть в чате</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Чтобы отправить сообщение в группу/канал, бот должен быть <strong>добавлен в этот чат</strong> как участник</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Только цифровой ID</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Все отправки работают <strong>только по цифровому ID</strong> чата/пользователя. Username (@name) не поддерживается</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Права бота</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">В группах боту нужны права на отправку сообщений (проверьте настройки группы)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Пользователи пишут боту первыми</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Бот не может написать пользователю первым — пользователь должен сначала запустить бота (/start)</p></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_форматы_id" class="discrete">Форматы ID:</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Тип</th>
+<th class="tableblock halign-left valign-top">Формат ID</th>
+<th class="tableblock halign-left valign-top">Пример</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Личный чат</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Положительное число</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>123456789</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Группа</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Отрицательное число</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-1001234567890</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Супергруппа</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Отрицательное число с <code>-100</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-1001234567890</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Канал</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Отрицательное число с <code>-100</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-1001234567890</code></p></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_как_получить_id_чатагруппыпользователя" class="discrete">Как получить ID чата/группы/пользователя</h3>
+<h4 id="_способ_1_через_бота_userinfobot_для_личных_id" class="discrete">Способ 1: Через бота @userinfobot (для личных ID)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Откройте @userinfobot в Telegram</p>
+</li>
+<li>
+<p>Нажмите <code>/start</code></p>
+</li>
+<li>
+<p>Бот вернёт ваш цифровой ID</p>
+</li>
+</ol>
+</div>
+<h4 id="_способ_2_через_бота_getmyid_bot_для_групп_и_каналов" class="discrete">Способ 2: Через бота @getmyid_bot (для групп и каналов)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Добавьте @getmyid_bot в нужную группу/канал</p>
+</li>
+<li>
+<p>Бот автоматически отправит сообщение с ID чата</p>
+</li>
+<li>
+<p>Скопируйте ID из сообщения (будет в формате <code>-1001234567890</code>)</p>
+</li>
+<li>
+<p>Удалите бота из чата после получения ID (опционально)</p>
+</li>
+</ol>
+</div>
+<h4 id="_способ_3_через_веб_версию_telegram" class="discrete">Способ 3: Через веб-версию Telegram</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Откройте <a href="https://web.telegram.org" class="bare">https://web.telegram.org</a></p>
+</li>
+<li>
+<p>Перейдите в нужный чат/группу/канал</p>
+</li>
+<li>
+<p>Посмотрите на URL в адресной строке:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Для личных чатов: <code>&#8230;&#8203;/c/123456789/&#8230;&#8203;</code> → ID = <code>123456789</code></p>
+</li>
+<li>
+<p>Для групп/каналов: <code>&#8230;&#8203;/c/-1001234567890/&#8230;&#8203;</code> → ID = <code>-1001234567890</code></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<h4 id="_способ_4_через_api_для_разработчиков" class="discrete">Способ 4: Через API (для разработчиков)</h4>
+<div class="listingblock">
+<div class="content">
+<pre>Метод: getUpdates
+URL: https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Отправьте сообщение в чат с ботом, затем вызовите метод — в ответе будет <code>chat.id</code></p>
+</div>
+<h4 id="_способ_5_добавить_своего_бота_в_группу" class="discrete">Способ 5: Добавить своего бота в группу</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Добавьте вашего бота в целевую группу/канал</p>
+</li>
+<li>
+<p>Отправьте любое сообщение в группу (упомяните бота или нет)</p>
+</li>
+<li>
+<p>Используйте метод <code>getUpdates</code> или посмотрите логи бота — там будет ID чата</p>
+</li>
+<li>
+<p><strong>Важно:</strong> бот должен оставаться в группе для отправки сообщений</p>
+</li>
+</ol>
+</div>
+<h3 id="_доступные_действия" class="discrete">Доступные действия</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Действие</th>
+<th class="tableblock halign-left valign-top">Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Отправить сообщение</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Текстовое сообщение в чат/группу/канал</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Ответить на сообщение</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reply на конкретное сообщение</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Закрепить сообщение</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Закрепить сообщение в чате</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Удалить сообщение</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Удалить сообщение из чата</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Создать опрос</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Голосование с вариантами ответов</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Получить участника чата</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Информация об участнике</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Дать права администратора</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Назначить админа в чате</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Заблокировать участника</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Забанить пользователя</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Разблокировать участника</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Разбанить пользователя</p></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_примеры_использования" class="discrete">Примеры использования</h3>
+<div class="listingblock">
+<div class="title">Отправить сообщение в группу:</div>
+<div class="content">
+<pre>Требуемые данные:
+- chat_id: -1001234567890 (цифровой ID группы)
+- text: "Коллеги, напоминание о совещании в 15:00"
+
+Важно:
+- Бот должен быть добавлен в эту группу
+- ID должен быть в формате с минусом для групп</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Отправить сообщение пользователю:</div>
+<div class="content">
+<pre>Требуемые данные:
+- chat_id: 123456789 (цифровой ID пользователя)
+- text: "Здравствуйте! Ваша заявка обработана"
+
+Важно:
+- Пользователь должен сначала запустить бота (/start)
+- Бот не может написать первым неизвестному пользователю</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Создать опрос:</div>
+<div class="content">
+<pre>Требуемые данные:
+- chat_id: -1001234567890
+- question: "Выберите дату встречи"
+- options: ["Понедельник", "Среда", "Пятница"]
+- is_anonymous: false (опционально)</pre>
+</div>
+</div>
+<h3 id="_частые_ошибки" class="discrete">Частые ошибки</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Ошибка</th>
+<th class="tableblock halign-left valign-top">Причина</th>
+<th class="tableblock halign-left valign-top">Решение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Chat not found</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Неверный ID чата</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Проверьте формат ID (с минусом для групп)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Bot is not a member</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Бот не в чате</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Добавьте бота в группу/канал</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Bot can&#8217;t send messages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Нет прав у бота</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Проверьте права бота в настройках группы</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Blocked by user</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Пользователь заблокировал бота</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Свяжитесь другим способом</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Bot was kicked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Бот удалён из чата</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Добавьте бота повторно</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Message not modified</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Текст не изменился</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Измените содержимое сообщения</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Bad Request: chat_id is empty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Не указан ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Передайте цифровой ID в параметрах</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_яндекс_почта"><a class="anchor" href="#_яндекс_почта"></a>Яндекс Почта</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Пример авторизации:</div>
+<div class="content">
+<a href="https://files.sberdisk.ru/s/eiIAJUvHaQXxH2B" class="bare">https://files.sberdisk.ru/s/eiIAJUvHaQXxH2B</a>
+</div>
+</div>
+<div class="olist arabic">
+<div class="title">Для создания пароля коннектора:</div>
+<ol class="arabic">
+<li>
+<p>Войдите в аккаунт Яндекса на любом устройстве.</p>
+</li>
+<li>
+<p>Откройте <strong>Безопасность</strong>.</p>
+</li>
+<li>
+<p>Перейдите в <strong>Пароли приложений</strong>.</p>
+</li>
+<li>
+<p>Включите использование паролей приложений, если это еще не сделано.</p>
+</li>
+<li>
+<p>Нажмите <strong>Создать пароль приложения</strong>, выберите тип приложения и задайте название. Сразу скопируйте или запомните пароль: он показывается только один раз.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+
+</div>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+  <!--
+  Подвал сайта для страниц документации — статическая копия
+  src/components/sections/Footer.tsx. Заменяет собой служебный подвал Antora
+  («GigaCowork 2026»).
+
+  Класс намеренно НЕ «footer»: в site.css у него свои правила (серая заливка,
+  мелкий шрифт), которые перебили бы оформление сайта.
+-->
+<footer class="sc-footer">
+  <div class="sc-container sc-footer-inner">
+    <div class="sc-footer-top">
+      <div class="sc-footer-brand">
+        <a href="/" aria-label="GigaCowork" class="sc-footer-logo">
+          <img src="/img/footer/logo-gigacowork.svg" alt="GigaCowork" width="161" height="34">
+        </a>
+
+        <div class="sc-footer-contacts">
+          <a href="https://t.me/GenAIeffect" aria-label="Telegram-канал @GenAIeffect"
+             target="_blank" rel="noreferrer noopener" class="sc-footer-tg">
+            <img src="/img/footer/telegram.svg" alt="Telegram" width="27" height="27">
+          </a>
+          <p><a class="sc-link" href="mailto:info@gigab2b.ru">info@gigab2b.ru</a></p>
+          <p><a class="sc-link" href="mailto:press@gigab2b.ru">press@gigab2b.ru</a> — для СМИ</p>
+        </div>
+      </div>
+
+      <nav class="sc-footer-nav" aria-label="Разделы сайта">
+        <div class="sc-footer-col">
+          <h2>ПЛАТФОРМА</h2>
+          <ul>
+            <li><a class="sc-link" href="/#platform">Обзор платформы</a></li>
+            <li><a class="sc-link" href="/#whats-new">Что нового</a></li>
+            <li><a class="sc-link" href="/#spaces">Пространства</a></li>
+            <li><a class="sc-link" href="/#agents">ИИ-агенты</a></li>
+            <li><a class="sc-link" href="/#skills">Навыки</a></li>
+            <li><a class="sc-link" href="/#commands">Быстрые команды</a></li>
+            <li><a class="sc-link" href="/#connectors">Коннекторы</a></li>
+            <li><a class="sc-link" href="/#schedule">Запуск по расписанию</a></li>
+            <li><a class="sc-link" href="/#security">Безопасность</a></li>
+            <li><a class="sc-link" href="/#support">Помощь и поддержка</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>СЦЕНАРИИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#docs">Работа с документами</a></li>
+            <li><a class="sc-link" href="/#analytics">Аналитика и отчётность</a></li>
+            <li><a class="sc-link" href="/#knowledge">База знаний</a></li>
+            <li><a class="sc-link" href="/#service">Клиентский сервис</a></li>
+            <li><a class="sc-link" href="/#hr">HR и кадры</a></li>
+            <li><a class="sc-link" href="/#finance">Финансы и контроль</a></li>
+            <li><a class="sc-link" href="/#legal">Юридические задачи</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>ПОСТАВКИ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#cloud">Облако</a></li>
+            <li><a class="sc-link" href="/#hybrid">Гибрид</a></li>
+            <li><a class="sc-link" href="/#pak">ПАК</a></li>
+            <li><a class="sc-link" href="/#compare">Сравнить варианты</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>КОМПАНИЯ</h2>
+          <ul>
+            <li><a class="sc-link" href="/#about">О компании</a></li>
+            <li><a class="sc-link" href="/#cases">Кейсы</a></li>
+            <li><a class="sc-link" href="/#blog">Блог</a></li>
+            <li><a class="sc-link" href="/#partners">Партнёрам</a></li>
+            <li><a class="sc-link" href="/#career">Карьера</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="sc-footer-bottom">
+      <p class="sc-footer-legal">
+        © 2026 ГигаЧат Бизнес · ООО «Салют для Бизнеса»<br>
+        121170, г. Москва, Садовая-Самотёчная ул., 24/27 · ИНН 7804568396
+      </p>
+      <ul class="sc-footer-policy">
+        <li><a class="sc-link" href="/#privacy">Политика конфиденциальности</a></li>
+        <li><a class="sc-link" href="/#data-policy">Политика обработки данных</a></li>
+        <li><a class="sc-link" href="/#terms">Пользовательское соглашение</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="../../_/site-chrome/chrome.js" defer></script>
+  </body>
+</html>
