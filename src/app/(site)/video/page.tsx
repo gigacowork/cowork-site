@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import type { Metadata } from "next";
 import Button from "@/components/ui/Button";
 import VideoGuides from "@/components/interactive/VideoGuides";
@@ -187,7 +188,7 @@ export default function VideoGuidesPage() {
                   className="relative aspect-video w-full overflow-hidden rounded-[24px] border border-border-subtle bg-neutral-50 shadow-drop-sm transition-shadow duration-300 hover:shadow-drop-lg"
                 >
                   <video
-                    src={guide.video}
+                    src={asset(guide.video)}
                     muted
                     loop
                     playsInline
