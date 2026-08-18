@@ -131,8 +131,9 @@ export function UnlimitedTokens() {
     >
       <div className="container-page flex flex-col gap-24">
         {/* Benefits / Left Column (2061:9011 / 1927:17405) */}
-        <div className="flex flex-col items-center md:h-[104px]">
-          <h2 className="text-h3 text-center font-medium text-neutral-1000 md:text-h2">
+        {/* Ниже md — по левому краю, на десктопе по центру, как в макете. */}
+        <div className="flex flex-col items-start md:h-[104px] md:items-center">
+          <h2 className="text-h3 text-left font-medium text-neutral-1000 md:text-center md:text-h2">
             <span className="md:block">Безлимитное</span> количество токенов
           </h2>
         </div>

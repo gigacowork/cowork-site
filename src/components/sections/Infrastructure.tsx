@@ -51,7 +51,7 @@ export function Infrastructure() {
         {/* Заголовок — 1927:17427 (mobile, H3 25) / 1927:15625 (desktop, H2 36) */}
         <h2
           id="infrastructure-title"
-          className="mb-[62px] w-full text-center text-h3 font-medium text-text-primary md:mb-[43px] md:text-left md:text-h2"
+          className="mb-[62px] w-full text-left text-h3 font-medium text-text-primary md:mb-[43px] md:text-h2"
         >
           Безопасная российская
           <br />

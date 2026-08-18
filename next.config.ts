@@ -19,10 +19,10 @@ const nextConfig: NextConfig = {
   /*
     /page → /page/index.html, иначе Pages отдаёт 404 на вложенных маршрутах.
 
-    Заодно это закрывает вопрос с документацией: Antora выгружена в public/docs,
+    Заодно это закрывает вопрос с документацией: Antora выгружена в public/ai-platform/docs,
     и раньше на неё стоял redirects() из этого файла. В статическом экспорте
     redirects() не работает — он требует сервер. Но и не нужен: Pages сам
-    resolve'ит каталог, /docs/ отдаёт public/docs/index.html, а тот уже
+    resolve'ит каталог, /ai-platform/docs/ отдаёт public/ai-platform/docs/index.html, а тот уже
     переадресует на актуальную версию. Адрес без слэша Pages redirect'ит на
     вариант со слэшем самостоятельно.
   */

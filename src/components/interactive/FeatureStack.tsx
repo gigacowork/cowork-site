@@ -36,10 +36,18 @@ export type FeatureStackItem = {
   preview: string;
 };
 
-/** Отступ липкой стопки от верха окна — фиксированная шапка (81px) плюс воздух. */
-const STICKY_TOP = 120;
-/** Насколько выглядывает край предыдущей карточки. */
-const CARD_STEP = 44;
+/**
+ * Отступ липкой стопки от верха окна: шапка сайта (81) плюс липкий заголовок
+ * секции (≈150) плюс воздух. Заголовок остаётся на виду, пока едут карточки,
+ * поэтому стопка начинается под ним, а не под одной шапкой.
+ */
+const STICKY_TOP = 248;
+/**
+ * Насколько выглядывает край предыдущей карточки. 36, а не 44: со сдвинутым
+ * вниз началом стопки более крупный шаг уводил нижний край последней карточки
+ * за пределы экрана высотой 900.
+ */
+const CARD_STEP = 36;
 /**
  * Момент, когда карточка считается «взявшей верх» и текст слева сменяется:
  * её край опустился ниже липкой линии на эту долю собственной высоты, то есть
@@ -139,7 +147,7 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
         Плюс одна строка сверху нормы — под распорку в конце.
       */
       style={{ "--rows": String(items.length + 1) } as React.CSSProperties}
-      className="grid grid-cols-1 gap-24 lg:grid-cols-[minmax(0,1fr)_588px] lg:grid-rows-[repeat(var(--rows),auto)] lg:gap-x-40 lg:gap-y-[88px]"
+      className="grid grid-cols-1 gap-24 lg:grid-cols-[minmax(0,1fr)_680px] lg:grid-rows-[repeat(var(--rows),auto)] lg:gap-x-40 lg:gap-y-[88px]"
     >
       {items.map((item, i) => (
         <Fragment key={item.title}>
@@ -150,15 +158,15 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
           <div className="lg:col-start-1 lg:row-[1/-1]">
             <div
               data-text
-              className={`lg:sticky lg:top-[160px] lg:transition-opacity lg:duration-500 motion-reduce:lg:transition-none ${
+              className={`lg:sticky lg:top-[288px] lg:transition-opacity lg:duration-500 motion-reduce:lg:transition-none ${
                 i === 0 ? "" : "lg:opacity-0"
               }`}
             >
-              <div className="flex flex-col gap-16 lg:max-w-[460px]">
+              <div className="flex flex-col gap-12 lg:max-w-[380px]">
                 <h3 className="text-h4 font-medium text-text-primary md:text-h3">
                   {item.title}
                 </h3>
-                <p className="text-body-l text-text-secondary">{item.text}</p>
+                <p className="text-body-m text-text-secondary">{item.text}</p>
               </div>
             </div>
           </div>

@@ -88,7 +88,7 @@ const APP_PREVIEWS = [
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <li className="flex items-center justify-center gap-4 rounded-full bg-bg-tag p-8 text-caption text-text-primary">
+    <li className="flex items-center justify-center gap-4 rounded-full bg-bg-tag py-8 pl-12 pr-[14px] text-caption text-text-primary">
       {children}
     </li>
   );
@@ -174,6 +174,7 @@ export function PartOfTeam() {
                   ))}
                 </ul>
                 <Button
+                  href="/ai-platform"
                   variant="primary"
                   size="md"
                   className="w-[160px] py-12!"
@@ -234,7 +235,7 @@ export function PartOfTeam() {
                 {SUPPLY_TAGS.map(({ label, icon }) => (
                   <li
                     key={label}
-                    className="flex w-full items-center justify-center gap-4 rounded-full bg-bg-tag p-8 text-caption text-text-primary"
+                    className="flex w-full items-center justify-center gap-4 rounded-full bg-bg-tag py-8 pl-12 pr-[14px] text-caption text-text-primary"
                   >
                     {/* Icon frame 354:151 — cloud / component / model, 24×24 */}
                     <Icon src={icon} className="size-[24px] text-icon-primary" />

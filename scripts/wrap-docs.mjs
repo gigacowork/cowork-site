@@ -15,7 +15,7 @@
   Запускать ПОСЛЕ каждой пересборки документации — свежая выгрузка затирает
   предыдущие правки:
 
-      node scripts/wrap-docs.mjs                 # public/docs
+      node scripts/wrap-docs.mjs                 # public/ai-platform/docs
       node scripts/wrap-docs.mjs путь/к/выгрузке
 
   Скрипт идемпотентен: страницы, где метка уже стоит, пропускаются, так что
@@ -37,7 +37,21 @@ const MARK = "<!-- site-chrome -->";
 /** Куда внутри выгрузки лечь стилям и скрипту (рядом с ассетами Antora). */
 const ASSET_DIR = path.join("_", "site-chrome");
 
-const target = path.resolve(process.argv[2] || path.join(ROOT, "public", "docs"));
+const PUBLIC = path.join(ROOT, "public");
+/* Адрес документации — из карты сайта (ПРОЕКТ_COWORK_RU.md): /ai-platform/docs */
+const target = path.resolve(
+  process.argv[2] || path.join(PUBLIC, "ai-platform", "docs")
+);
+
+/*
+  Насколько глубоко выгрузка лежит внутри public — на столько же уровней от
+  страницы до корня сайта. Считаем, а не зашиваем: при переезде документации
+  на другой адрес пути перестроятся сами.
+*/
+const rel = path.relative(PUBLIC, target);
+const ROOT_DEPTH = rel.startsWith("..")
+  ? 1
+  : rel.split(path.sep).filter(Boolean).length;
 
 /** Рекурсивный обход: все .html внутри выгрузки. */
 async function htmlFiles(dir) {
@@ -72,6 +86,29 @@ function extractSearch(chunk) {
   const end = chunk.indexOf("</div>", chunk.indexOf("</div>", start) + 6);
   if (end < 0) return "";
   return chunk.slice(start, end + 6);
+}
+
+/**
+ * Переписывает абсолютные ссылки вставляемой шапки и подвала в относительные.
+ *
+ * Сайт собирается статикой (`output: "export"`) и на GitHub Pages лежит в
+ * подпапке — там «/platform» и «/img/…» уходят в корень домена и отдают 404.
+ * У страниц Next это решает basePath, но выгрузка Antora о нём не знает:
+ * это обычные .html, которые Next не трогает. Относительные пути работают
+ * одинаково и локально, и в подпапке, и без переменных окружения.
+ *
+ * `root` — путь от страницы до корня сайта: до корня выгрузки плюс сама папка
+ * docs. Внешние ссылки (https:, mailto:) и якоря не трогаем.
+ */
+function toRelative(html, root) {
+  return html.replace(/(href|src)="\/([^"]*)"/g, (_, attr, rest) => {
+    // «/#anchor» → якорь на главной, слэш убираем вместе с путём до корня
+    if (rest.startsWith("#")) return `${attr}="${root}${rest}"`;
+    // маршруты Next отдаются как каталоги (trailingSlash), файлы — как есть
+    const isFile = /\.[a-z0-9]+$/i.test(rest);
+    const tail = rest === "" || isFile || rest.endsWith("/") ? rest : `${rest}/`;
+    return `${attr}="${root}${tail}"`;
+  });
 }
 
 async function processFile(file, chrome) {
@@ -147,16 +184,21 @@ async function processFile(file, chrome) {
   // 7. Стили — последними в <head>, чтобы перебивать site.css при равной специфичности.
   const depth = path.relative(path.dirname(file), target).split(path.sep).filter(Boolean).length;
   const up = depth ? "../".repeat(depth) : "./";
+  /* Корень сайта: выйти из выгрузки и подняться над самой её папкой. */
+  const siteRoot = "../".repeat(depth + ROOT_DEPTH);
   html = html.replace(
     "</head>",
     `<link rel="stylesheet" href="${up}${ASSET_DIR.split(path.sep).join("/")}/chrome.css">\n  </head>`
   );
 
   // 8. Шапка сразу после <body>, подвал и скрипт — перед </body>.
-  html = html.replace(/(<body[^>]*>)/, `$1\n${MARK}\n${chrome.header}`);
+  html = html.replace(
+    /(<body[^>]*>)/,
+    `$1\n${MARK}\n${toRelative(chrome.header, siteRoot)}`
+  );
   html = html.replace(
     "</body>",
-    `${chrome.footer}\n<script src="${up}${ASSET_DIR.split(path.sep).join("/")}/chrome.js" defer></script>\n  </body>`
+    `${toRelative(chrome.footer, siteRoot)}\n<script src="${up}${ASSET_DIR.split(path.sep).join("/")}/chrome.js" defer></script>\n  </body>`
   );
 
   await writeFile(file, html, "utf8");
@@ -179,6 +221,16 @@ async function main() {
   await mkdir(assets, { recursive: true });
   for (const name of ["chrome.css", "chrome.js"]) {
     await copyFile(path.join(SRC, name), path.join(assets, name));
+  }
+
+  /*
+    Шрифты кладём рядом со стилями. На сайте они подключены через сборку
+    (src/app/fonts) и получают хешированные имена — выгрузка Antora о них знать
+    не может. Своя копия делает оформление документации самодостаточным.
+  */
+  const FONT_DIR = path.join(ROOT, "src", "app", "fonts");
+  for (const font of ["SBSansTextRegular.woff2", "SBSansTextMedium.woff2"]) {
+    await copyFile(path.join(FONT_DIR, font), path.join(assets, font));
   }
 
   const files = await htmlFiles(target);

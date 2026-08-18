@@ -425,7 +425,7 @@ export function HeroChat() {
                             key={action}
                             href="/lead"
                             aria-label={`${action} — оставить заявку`}
-                            className="flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-action-secondary-default px-16 py-8 text-caption text-text-primary shadow-[inset_0_0_0_1px_var(--color-border-strong)] transition-colors duration-200 hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
+                            className="flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-action-secondary-default py-8 pl-16 pr-[18px] text-caption text-text-primary shadow-[inset_0_0_0_1px_var(--color-border-strong)] transition-colors duration-200 hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
                           >
                             {action}
                           </Link>
@@ -496,13 +496,13 @@ export function HeroChat() {
                   aria-pressed={isActive}
                   disabled={isActive}
                   onClick={() => send(item)}
-                  className={`flex items-center justify-center gap-4 rounded-full p-8 opacity-70 transition-[box-shadow,background-image] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
+                  className={`flex items-center justify-center gap-4 rounded-full py-8 pl-12 pr-[14px] opacity-70 transition-[box-shadow,background-image] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
                     isActive
                       ? "cursor-default bg-bg-card shadow-[inset_0_0_0_1px_var(--color-icon-secondary)]"
                       : "cursor-pointer bg-bg-card shadow-[inset_0_0_0_1px_var(--color-border-subtle)] hover:bg-[image:var(--gradient-omni-neuton-2)] hover:shadow-[var(--shadow-drop-sm)] active:bg-[image:var(--gradient-omni-neuton-2)] active:shadow-[0_2px_8px_-2px_#60738f33]"
                   }`}
                 >
-                  <span className="flex items-center justify-center rounded-full bg-neutral-100 px-8 py-4 text-caption text-text-secondary">
+                  <span className="flex items-center justify-center rounded-full bg-neutral-100 py-4 pl-12 pr-[14px] text-caption text-text-secondary">
                     {item.role}
                   </span>
                   <span className="whitespace-nowrap text-caption text-text-primary">

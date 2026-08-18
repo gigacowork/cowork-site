@@ -9,7 +9,9 @@
  * `data-cards-prev`, `data-cards-next` and the `NO_HOURS_CARDS` data export.
  */
 
+import Link from "next/link";
 import { CarouselNavigation } from "@/components/ui/CarouselControl";
+import { useCaseHrefByCardId } from "@/lib/use-cases";
 
 export type NoHoursCard = {
   /** stable key, also usable as a scroll target id by the animation layer */
@@ -150,11 +152,17 @@ const CARD_TEXT = "text-[13px] leading-[1.2] tracking-[-0.02em]";
 export function NoHours() {
   return (
     <section
+      id="audience"
       data-cards-section
       className="bg-bg-page flex w-full flex-col items-center gap-40 py-64 md:gap-48 md:pt-96 md:pb-64"
     >
       {/* Header — Role Carousel / in (1927:15564 / 1927:17371) */}
-      <div className="container-page flex flex-col items-center gap-16 text-center text-neutral-1000">
+      {/*
+        Ниже md заголовок и подзаголовок прижаты влево — как и весь текст вне
+        карточек в мобильной раскладке. На десктопе выключка по центру, как в
+        макете (1927:15564).
+      */}
+      <div className="container-page flex flex-col items-start gap-16 text-left text-neutral-1000 md:items-center md:text-center">
         <h2 className="text-h3 font-medium md:text-h2">
           Не тратьте часы на задачи,
           <br />
@@ -209,14 +217,19 @@ export function NoHours() {
             {/*
               Text Link (695:4830). Зона клика растянута на всю карточку —
               кликабельна карточка целиком (Card / Info 1312:4755).
+
+              Адрес берётся из общего списка ролей по id карточки, а не пишется
+              здесь: те же данные питают выпадающее меню «Для кого» и сами
+              страницы. Последняя карточка своей роли не имеет и ведёт на форму
+              заявки.
             */}
-            <a
-              href="#more"
+            <Link
+              href={useCaseHrefByCardId(card.id) ?? "/lead"}
               aria-label={`${card.linkLabel} — ${card.title}`}
               className={`text-link stretched-target flex cursor-pointer items-center justify-start self-start py-4 text-left focus-visible:outline-none ${CARD_TEXT}`}
             >
               {card.linkLabel}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

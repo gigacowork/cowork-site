@@ -89,7 +89,7 @@ const CASES: CaseStudy[] = [
 
 function Tag({ tag }: { tag: CaseTag }) {
   return (
-    <li className="flex shrink-0 items-center justify-center gap-4 rounded-full bg-bg-tag p-8">
+    <li className="flex shrink-0 items-center justify-center gap-4 rounded-full bg-bg-tag py-8 pl-12 pr-[14px]">
       {/* Icon frame 354:151 — exported per tag, 24×24 */}
       <Icon
         src={`/img/icons/${tag.icon.toLowerCase()}.svg`}
@@ -181,7 +181,7 @@ export function Cases() {
     <section id="cases" className="bg-bg-page py-64 md:py-80">
       <div className="container-page flex flex-col items-center gap-32 md:gap-48">
         {/* Clients / Header Row — 1927:15615 / 1927:17418 */}
-        <div className="flex w-full flex-col items-center md:flex-row md:items-start md:justify-between">
+        <div className="flex w-full flex-col items-start md:flex-row md:justify-between">
           <h2 className="text-h3 font-medium text-text-primary md:text-h2">Опыт клиентов</h2>
           <div className="flex pt-8 md:pt-0">
             <a

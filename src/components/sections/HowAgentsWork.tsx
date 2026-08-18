@@ -108,9 +108,10 @@ export function HowAgentsWork() {
     >
       <div className="container-page flex flex-col items-center gap-40 md:gap-48">
         {/* 1927:17395 / 2006:8933 */}
+        {/* Ниже md — по левому краю, на десктопе по центру, как в макете. */}
         <h2
           data-stack-heading
-          className="max-w-[358px] text-center text-h3 font-medium text-neutral-1000 md:max-w-none md:text-h2"
+          className="w-full max-w-[358px] text-left text-h3 font-medium text-neutral-1000 md:max-w-none md:text-center md:text-h2"
         >
           Как работают ИИ-агенты
           <br />

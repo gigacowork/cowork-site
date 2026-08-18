@@ -60,8 +60,8 @@ export default function Home() {
       {/* 9 — Безопасная российская ИИ-инфраструктура */}
       <Infrastructure />
 
-      {/* 10 — Финальный CTA */}
-      <FinalCta />
+      {/* 10 — Финальный CTA (влево, как и остальные заголовки главной) */}
+      <FinalCta align="left" />
     </>
   );
 }

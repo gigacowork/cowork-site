@@ -57,7 +57,7 @@ export type Release = {
 
 export const RELEASES: Release[] = [
   {
-    slug: "26-6-1",
+    slug: "update-2026-06-1",
     version: "26.6.1",
     title: "Что нового в GigaCowork",
     date: "2026-06-04",

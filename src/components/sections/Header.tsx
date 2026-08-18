@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { USE_CASES } from "@/lib/use-cases";
 
 /**
  * Header
@@ -29,13 +30,25 @@ const NAV_ITEMS: NavItem[] = [
   {
     label: "О платформе",
     children: [
-      { label: "Обзор платформы", href: "/platform" },
-      { label: "Что нового", href: "/whats-new" },
-      { label: "Документация", href: "/docs" },
+      { label: "Обзор платформы", href: "/ai-platform" },
+      { label: "Что нового", href: "/ai-platform/new-features" },
+      { label: "Документация", href: "/ai-platform/docs/" },
     ],
   },
-  { label: "Для кого", href: "/#audience" },
-  { label: "Обучающие видео", href: "/video" },
+  {
+    label: "Для кого",
+    /*
+      Пункты собираются из того же списка, что и сами страницы (src/lib/
+      use-cases.ts) и что кнопки «Подробнее» в блоке «Не тратьте часы…».
+      Руками их не дублируем: иначе меню и маршруты разъедутся при первой же
+      правке адреса.
+    */
+    children: USE_CASES.map((item) => ({
+      label: item.navLabel,
+      href: `/use_cases/${item.slug}`,
+    })),
+  },
+  { label: "Обучающие видео", href: "/guides" },
 ];
 
 /** Подсветка активного пункта: точное совпадение или вложенный маршрут. */
@@ -142,10 +155,14 @@ export function Header() {
         ней размывается — иначе сообщения чата, проезжающие снизу, перебивают
         пункты меню. Маска гасит размытие к низу, чтобы не было видно линии
         среза; после hero шапка получает заливку и размывает всю свою высоту.
+
+        Радиус размытия — 6: этого хватает, чтобы пункты меню читались поверх
+        проезжающего контента, но фон hero под шапкой остаётся узнаваемым. На 14
+        картинка под навигацией превращалась в ровное пятно.
       */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-0 -z-10 backdrop-blur-[14px] transition-[mask-image] duration-300 ${
+        className={`pointer-events-none absolute inset-0 -z-10 backdrop-blur-[6px] transition-[mask-image] duration-300 ${
           solid
             ? ""
             : "[mask-image:linear-gradient(to_bottom,black_0%,black_62%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_62%,transparent_100%)]"
@@ -332,8 +349,13 @@ export function Header() {
                   />
                 </button>
                 <div
+                  /*
+                    Потолок раскрывашки считается от самого длинного списка —
+                    «Для кого» с восемью ролями (8 × 33 + 7 × 4 + 8 снизу).
+                    С прежними 240 половина пунктов оказывалась срезанной.
+                  */
                   className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
-                    open ? "max-h-[240px] opacity-100" : "max-h-0 opacity-0"
+                    open ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"
                   }`}
                 >
                   <ul className="flex flex-col gap-4 pb-8 pl-12">

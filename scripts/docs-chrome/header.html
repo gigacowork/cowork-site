@@ -5,8 +5,11 @@
   нет ни React, ни Tailwind, поэтому разметка и стили повторены вручную
   (styles — chrome.css, поведение — chrome.js).
 
-  Ссылки абсолютные и якоря пишутся как «/#audience», а не «#audience»: на
-  странице документации голый якорь искал бы цель в самой документации.
+  Ссылки пишутся от корня сайта, а якоря — как «/#audience», а не «#audience»:
+  на странице документации голый якорь искал бы цель в самой документации.
+  Адреса разделов берутся из карты сайта (ПРОЕКТ_COWORK_RU.md). При вставке
+  wrap-docs.mjs переписывает их в относительные — на GitHub Pages сайт лежит
+  в подпапке.
 -->
 <header class="sc-header">
   <div class="sc-container sc-header-row">
@@ -25,14 +28,14 @@
           </button>
           <div class="sc-menu">
             <ul>
-              <li><a href="/platform">Обзор платформы</a></li>
-              <li><a href="/whats-new">Что нового</a></li>
-              <li><a href="/docs/" aria-current="page">Документация</a></li>
+              <li><a href="/ai-platform">Обзор платформы</a></li>
+              <li><a href="/ai-platform/new-features">Что нового</a></li>
+              <li><a href="/ai-platform/docs/" aria-current="page">Документация</a></li>
             </ul>
           </div>
         </li>
         <li class="sc-nav-item"><a class="sc-nav-link" href="/#audience">Для кого</a></li>
-        <li class="sc-nav-item"><a class="sc-nav-link" href="/video">Обучающие видео</a></li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="/guides">Обучающие видео</a></li>
       </ul>
 
       <div class="sc-actions">
@@ -60,14 +63,14 @@
         </button>
         <div class="sc-drawer-sub">
           <ul>
-            <li><a href="/platform">Обзор платформы</a></li>
-            <li><a href="/whats-new">Что нового</a></li>
-            <li><a href="/docs/">Документация</a></li>
+            <li><a href="/ai-platform">Обзор платформы</a></li>
+            <li><a href="/ai-platform/new-features">Что нового</a></li>
+            <li><a href="/ai-platform/docs/">Документация</a></li>
           </ul>
         </div>
       </div>
       <a class="sc-drawer-link" href="/#audience">Для кого</a>
-      <a class="sc-drawer-link" href="/video">Обучающие видео</a>
+      <a class="sc-drawer-link" href="/guides">Обучающие видео</a>
       <a class="sc-btn sc-btn-secondary sc-btn-lg sc-drawer-cta" href="/#login">Войти</a>
     </nav>
   </div>

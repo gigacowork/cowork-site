@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Коннекторы :: Документация GigaCowork</title>
+    <link rel="prev" href="admin_roles.html">
+    <link rel="next" href="admin_events.html">
+    <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="stylesheet" href="../../_/css/extra.css">  <link rel="stylesheet" href="../../_/site-chrome/chrome.css">
+  </head>
+  <body class="article">
+<!-- site-chrome -->
+<!--
+  Шапка сайта для страниц документации.
+
+  Это статическая копия src/components/sections/Header.tsx: на страницах Antora
+  нет ни React, ни Tailwind, поэтому разметка и стили повторены вручную
+  (styles — chrome.css, поведение — chrome.js).
+
+  Ссылки пишутся от корня сайта, а якоря — как «/#audience», а не «#audience»:
+  на странице документации голый якорь искал бы цель в самой документации.
+  Адреса разделов берутся из карты сайта (ПРОЕКТ_COWORK_RU.md). При вставке
+  wrap-docs.mjs переписывает их в относительные — на GitHub Pages сайт лежит
+  в подпапке.
+-->
+<header class="sc-header">
+  <div class="sc-container sc-header-row">
+    <a class="sc-logo" href="../../../../" aria-label="GigaCowork">
+      <img src="../../../../img/logo-gigacowork.svg" alt="GigaCowork" width="155" height="33">
+    </a>
+
+    <nav class="sc-nav" aria-label="Основная навигация">
+      <ul class="sc-nav-list">
+        <li class="sc-nav-item sc-has-menu">
+          <button type="button" class="sc-nav-btn" aria-expanded="false" aria-haspopup="true">
+            О платформе
+            <svg class="sc-chevron" width="9" height="5" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+              <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="sc-menu">
+            <ul>
+              <li><a href="../../../../ai-platform/">Обзор платформы</a></li>
+              <li><a href="../../../../ai-platform/new-features/">Что нового</a></li>
+              <li><a href="../../../../ai-platform/docs/" aria-current="page">Документация</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="../../../../#audience">Для кого</a></li>
+        <li class="sc-nav-item"><a class="sc-nav-link" href="../../../../guides/">Обучающие видео</a></li>
+      </ul>
+
+      <div class="sc-actions">
+        <a class="sc-btn sc-btn-secondary" href="../../../../#login">Войти</a>
+        <a class="sc-btn sc-btn-primary" href="../../../../lead/">Попробовать</a>
+      </div>
+    </nav>
+
+    <div class="sc-mobile-actions">
+      <a class="sc-btn sc-btn-primary sc-btn-sm" href="../../../../lead/">Попробовать</a>
+      <button type="button" class="sc-burger" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sc-drawer">
+    <nav class="sc-container sc-drawer-nav" aria-label="Меню">
+      <div class="sc-drawer-group">
+        <button type="button" class="sc-drawer-btn" aria-expanded="false">
+          О платформе
+          <svg class="sc-chevron" width="11" height="6" viewBox="0 0 9 5" aria-hidden="true" focusable="false">
+            <path d="M1 1L4.5 4L8 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="sc-drawer-sub">
+          <ul>
+            <li><a href="../../../../ai-platform/">Обзор платформы</a></li>
+            <li><a href="../../../../ai-platform/new-features/">Что нового</a></li>
+            <li><a href="../../../../ai-platform/docs/">Документация</a></li>
+          </ul>
+        </div>
+      </div>
+      <a class="sc-drawer-link" href="../../../../#audience">Для кого</a>
+      <a class="sc-drawer-link" href="../../../../guides/">Обучающие видео</a>
+      <a class="sc-btn sc-btn-secondary sc-btn-lg sc-drawer-cta" href="../../../../#login">Войти</a>
+    </nav>
+  </div>
+</header>
+
+
+<div class="sc-docs-shell">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Документация</a></li>
+    <li><a href="admin_connectors.html">Коннекторы</a></li>
+  </ul>
+</nav>
+<div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Поиск">
+        </div>
+      </div>
+</div>
+<div class="body">
+<div class="nav-container" data-component="GigaCowork" data-version="26.7.3">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="0"
+    style="padding-left: 6px; padding-top: 1px;">
+<ul class="nav-list">
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Начало работы</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="login.html">Вход</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="chat.html">Задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="routines.html">Регулярные задачи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="spaces.html">Пространства</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Возможности</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="agents.html">Агенты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="skills.html">Навыки</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="commands.html">Команды</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Администрирование</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_users.html">Пользователи</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_recycle_bin.html">Удаленные объекты</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_roles.html">Роли</a>
+  </li>
+  <li class="nav-item is-current-page" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px; background-color: rgb(230, 230, 230); border-radius: 6px;">
+    <a class="nav-link" href="admin_connectors.html">Коннекторы</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="admin_events.html">Аудит событий</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <span class="nav-text"><strong>Прочее</strong></span>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="profile.html">Личное меню</a>
+  </li>
+  <li class="nav-item" 
+    data-depth="1"
+    style="padding-left: 6px; padding-top: 1px;">
+    <a class="nav-link" href="version_history.html">История изменений</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+
+  <div class="content">
+<aside class="toc sidebar" data-title=" " data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Коннекторы</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>В разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <strong>Администрирование</strong> → <span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <strong>Коннекторы</strong></span> можно определять, какие коннекторы будут доступны пользователям для подключения в разделе <span class="nowrap"><span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <a href="connectors.html#connectors" class="xref page"><strong>Коннекторы</strong></a></span>. А так же настраивать инструменты коннекторов.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_быстрый_старт_по_добавлению_коннекторов"><a class="anchor" href="#_быстрый_старт_по_добавлению_коннекторов"></a>Быстрый старт по добавлению коннекторов</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для работы пользователям можно добавить предустановленные коннекторы или создать подключение к сторонним MCP-коннекторам.</p>
+</div>
+<h3 id="_добавление_предустановленных_коннекторов" class="discrete">Добавление предустановленных коннекторов</h3>
+<div class="olist arabic">
+<div class="title">Для добавления предустановленных коннекторов:</div>
+<ol class="arabic">
+<li>
+<p><a href="#admin_connectors_add">Добавьте коннектор</a>.</p>
+</li>
+<li>
+<p><a href="#admin_connectors_instruments">Настройте инструменты коннектора</a>.</p>
+</li>
+<li>
+<p>При необходимости <a href="#admin_connectors_auth">Авторизуйтесь в коннекторе</a>.</p>
+</li>
+</ol>
+</div>
+<h3 id="_добавление_mcp_коннектора" class="discrete">Добавление MCP-коннектора</h3>
+<div class="olist arabic">
+<div class="title">Для добавления стороннего MCP-коннектора:</div>
+<ol class="arabic">
+<li>
+<p><a href="#admin_connectors_mcp">Создайте подключение к коннектору</a>.</p>
+</li>
+<li>
+<p><a href="#admin_connectors_add">Добавьте коннектор</a>.</p>
+</li>
+<li>
+<p>При необходимости <a href="#admin_connectors_auth">Авторизуйтесь в коннекторе</a>.</p>
+</li>
+<li>
+<p><a href="#admin_connectors_instruments">Настройте инструменты коннектора</a>. Настройка возможна только для авторизованных MCP-коннекторов.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_просмотр_коннекторов"><a class="anchor" href="#_просмотр_коннекторов"></a>Просмотр коннекторов</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="_images/admin_connectors_0.png" alt="admin connectors 0">
+</div>
+</div>
+<div class="paragraph">
+<p>Коннекторы в разделе отображаются в виде карточек.<br>
+Их можно найти по названию и отфильтровать по типу и статусу.</p>
+</div>
+<div class="ulist">
+<div class="title">Типы коннекторов:</div>
+<ul>
+<li>
+<p><em>Собственные</em> — подключенные <a href="#admin_connectors_mcp">собственные MCP-коннекторы</a>.</p>
+</li>
+<li>
+<p><em>Системные</em> — предустановленные коннекторы.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Статусы коннекторов:</div>
+<ul>
+<li>
+<p><em>Доступные</em> — невидимые для пользователей коннекторы, которые можно добавить в систему.</p>
+</li>
+<li>
+<p><em>Добавленные</em> — видимые для пользователей коннекторы, в которых они могут авторизоваться и использовать в чате.</p>
+</li>
+<li>
+<p><em>Авторизованные</em> — видимые и авторизованные администратором коннекторы. Уже готовые к использованию в чате.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="admin_enabled_connectors"><a class="anchor" href="#admin_enabled_connectors"></a>Доступные коннекторы и их возможности</h3>
+<div class="paragraph">
+<p>Список коннекторов, которые администратор может добавить пользователям, и их возможности читайте в главе <a href="connectors_auth.html#connectors_auth" class="xref page">Возможности и особенности подключения коннекторов</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Коннектор наследует разрешения аккаунта внешней системы, с помощью которого в нем авторизовались. Например, если пользователь CRM может только читать карточки клиентов, то и через коннектор будет доступно только чтение — без возможности редактирования или создания.<br>
+Дополнительно ограничить права коннектора можно с помощью <a href="#admin_connectors_instruments">инструментов коннектора</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="admin_connectors_mcp"><a class="anchor" href="#admin_connectors_mcp"></a>Создание подключения к MCP-коннектору</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Вы можете подключить собственный MCP-коннектор и сделать его доступным для работы пользователям.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Подключаемые MCP-коннекторы и их сервера должны следовать обязательным требованиям (MUST) и рекомендациям (SHOULD) официальной спецификации MCP: <a href="https://modelcontextprotocol.io/specification" class="bare">https://modelcontextprotocol.io/specification</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Для создания подключения к MCP-коннектору:</div>
+<ol class="arabic">
+<li>
+<p>В разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <strong>Администрирование</strong> → <span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <strong>Коннекторы</strong></span> нажмите <strong>Создать коннектор</strong>.</p>
+</li>
+<li>
+<p>Укажите:</p>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Название</strong>.</p>
+</li>
+<li>
+<p><strong>Описание</strong> — коротко опишите возможности и инструменты коннектора, какие основные задачи он решает. По этим клюевым фразам ИИ-агент будет понимать, что необходимо подключить данный коннектор. Например, <em>Добавь событие в календарь</em> — для коннектора календаря. Описание отображается в карточке коннектора.</p>
+</li>
+<li>
+<p><strong>Адрес MCP-сервера</strong> — в формате <code><a href="https://mcp.example.ru/mcp" class="bare">https://mcp.example.ru/mcp</a></code>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Для коннектора 1C укажите в поле URL базы 1C.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>Тип подключения</strong> — выберите протокол соединения, который поддерживает ваш MCP-сервер.</p>
+</li>
+<li>
+<p><strong>Тип аутентификации</strong> — выберите тип аутентификации вашего MCP-сервера.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Никакой</em> — пользователь авторизуется в коннектор без ввода данных.</p>
+</li>
+<li>
+<p><em>Логин и пароль</em>— пользователь указывает логин и пароль.</p>
+</li>
+<li>
+<p><em>Токен доступа</em> — пользователь указывают токен доступа.</p>
+</li>
+<li>
+<p><em>Пользовательские заголовки</em> — позволяет добавить произвольные поля на форму авторизации. Для добавления нового поля нажмите <span class="nowrap"><span class="image"><img src="_images/button_plus.png" alt="button plus"></span> <strong>Добавить заголовок</strong></span>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Инструкция авторизации</strong> — Укажите инструкцию-подсказку по авторизации в коннекторе. Инструкция будет видна пользователям при наведении на иконку информации <span class="image"><img src="_images/button_info.png" alt="button info"></span> рядом с кнопкой авторизации в коннекторе.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Чтобы созданный MCP-коннектор был доступен пользователям, его необходимо <a href="#admin_connectors_add">добавить</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="admin_connectors_add"><a class="anchor" href="#admin_connectors_add"></a>Добавление коннектора</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Добавление предустановленного коннектора 1C отличается от других. <a href="connectors_auth.html#1c_setup" class="xref page">Подробнее</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Пользователи видят только добавленные администратором коннекторы. Они могут в них авторизовываться и использовать в чате.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Для добавления коннектора, в разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <strong>Администрирование</strong> → <span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <strong>Коннекторы</strong></span>:</div>
+<ol class="arabic">
+<li>
+<p>Выберите фильтр <em>Доступные</em> — отобразятся доступные для добавления коннекторы.</p>
+</li>
+<li>
+<p>Нажмите на карточку коннектора.</p>
+</li>
+<li>
+<p>В окне коннектора при необходимости включите или выключите нужные инструменты.</p>
+</li>
+<li>
+<p>Нажмите <strong>Добавить</strong> или <strong>Добавить и войти в аккаунт</strong>, чтобы добавить и одновременно <a href="#admin_connectors_auth">авторизоваться в коннекторе</a>.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Если коннектор добавлен, но администратор не авторизовался в нем, то для использования пользователям самим необходимо будет авторизоваться в нем.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="admin_connectors_auth"><a class="anchor" href="#admin_connectors_auth"></a>Авторизация в коннекторе</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Коннекторы можно использовать как с единой учетной записью для всех пользователей, так и дать пользователям возможность авторизовываться самостоятельно.</p>
+</div>
+<div class="paragraph">
+<p>Для использования коннектора с единой учетной записью, в нем необходимо авторизоваться администратору в разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <strong>Администрирование</strong> → <span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <strong>Коннекторы</strong></span>. Такой коннектор будет сразу доступен всем пользователям — им не придется авторизовываться в нем самостоятельно.</p>
+</div>
+<div class="paragraph">
+<p>Для самостоятельной авторизации пользователями, достаточно просто добавить коннектор. Далее каждый пользователь самостоятельно авторизуется в разделе <a href="connectors.html#connectors" class="xref page"><strong>Коннекторы</strong></a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Некоторые коннекторы для авторизации требуют дополнительных действий. Подробнее в главе <a href="connectors_auth.html#connectors_auth" class="xref page">Особенности подключения коннекторов</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Для авторизации в коннекторе, в разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <strong>Администрирование</strong> → <span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <strong>Коннекторы</strong></span>:</div>
+<ol class="arabic">
+<li>
+<p>Выберите фильтр <em>Добавленные</em> и нажмите на карточку нужного коннектора.</p>
+</li>
+<li>
+<p>Нажмите <strong>Войти в аккаунт</strong> — откроется форма авторизации. У каждого коннектора своя форма авторизации.</p>
+</li>
+<li>
+<p>Укажите данные для авторизации и нажмите <strong>Продолжить</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Во время авторизации могут появляться всплывающие окна. Убедитесь, что ваш браузер не блокирует их.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+После авторизации администратором, все пользователи переходят на использование коннектора под его единой учетной записью — даже те, кто до этого авторизовывался индивидуально. Снова авторизоваться индивидуально в таком коннекторе не получится.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_выход_из_аккаунта_коннектора"><a class="anchor" href="#_выход_из_аккаунта_коннектора"></a>Выход из аккаунта коннектора</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для выхода из аккаунта коннектора, в разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <strong>Администрирование</strong> → <span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <strong>Коннекторы</strong></span> откройте карточку коннектора и нажмите <strong>Выйти из аккаунта</strong> — коннектор станет недоступен для новых и текущих задач.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_удаление_коннектора_из_добавленных"><a class="anchor" href="#_удаление_коннектора_из_добавленных"></a>Удаление коннектора из добавленных</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Для того чтобы убрать коннектор из добавленных для пользователей, в разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <strong>Администрирование</strong> → <span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <strong>Коннекторы</strong></span> откройте добавленный коннектор и нажмите <strong>Убрать</strong> — коннектор станет недоступен для новых и текущих задач.</p>
+</div>
+<div class="paragraph">
+<p>Удаленный коннектор затем снова можно добавить.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="admin_connectors_instruments"><a class="anchor" href="#admin_connectors_instruments"></a>Настройка инструментов коннектора</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="_images/admin_connectors_1.png" alt="admin connectors 1">
+</div>
+</div>
+<div class="paragraph">
+<p>Инструменты коннектора — это список его возможностей. У каждого коннектора свои инструменты, и по умолчанию все они включены. Возможности коннектора можно ограничить, выключив его инструменты.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Инструменты предустановленных коннекторов отображаются после их добавления, инструменты созданных MCP-коннекторов отображаются после авторизации.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Настройка инструментов коннектора выполняется на двух уровнях:</div>
+<ul>
+<li>
+<p>Администратор (в разделе <span class="nowrap"><span class="image"><img src="_images/button_settings.png" alt="button settings"></span> <strong>Администрирование</strong> → <span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <strong>Коннекторы</strong></span>) задает общий набор инструментов, доступных пользователям, и может отключать любые из них.</p>
+</li>
+<li>
+<p>Пользователь (в разделе <span class="nowrap"><span class="image"><img src="_images/button_blocks.png" alt="button blocks"></span> <strong>Коннекторы</strong></span>) настраивает только те инструменты, которые администратор включил. Если инструмент выключен администратором, пользователь не может его активировать.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Для настройки инструментов коннектора администратором, откройте добавленный коннектор и включите или выключите необходимые инструменты.<br>
+WARNING: При этом инструменты коннектора поменяются и у пользователей, независимо от того, авторизованы они в коннекторе или нет.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="admin_roles.html">Роли</a></span>
+  <span class="next"><a href="admin_events.html">Аудит событий</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+
+</div>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+  <!--
+  Подвал сайта для страниц документации — статическая копия
+  src/components/sections/Footer.tsx. Заменяет собой служебный подвал Antora
+  («GigaCowork 2026»).
+
+  Класс намеренно НЕ «footer»: в site.css у него свои правила (серая заливка,
+  мелкий шрифт), которые перебили бы оформление сайта.
+-->
+<footer class="sc-footer">
+  <div class="sc-container sc-footer-inner">
+    <div class="sc-footer-top">
+      <div class="sc-footer-brand">
+        <a href="../../../../" aria-label="GigaCowork" class="sc-footer-logo">
+          <img src="../../../../img/footer/logo-gigacowork.svg" alt="GigaCowork" width="161" height="34">
+        </a>
+
+        <div class="sc-footer-contacts">
+          <a href="https://t.me/GenAIeffect" aria-label="Telegram-канал @GenAIeffect"
+             target="_blank" rel="noreferrer noopener" class="sc-footer-tg">
+            <img src="../../../../img/footer/telegram.svg" alt="Telegram" width="27" height="27">
+          </a>
+          <p><a class="sc-link" href="mailto:info@gigab2b.ru">info@gigab2b.ru</a></p>
+          <p><a class="sc-link" href="mailto:press@gigab2b.ru">press@gigab2b.ru</a> — для СМИ</p>
+        </div>
+      </div>
+
+      <nav class="sc-footer-nav" aria-label="Разделы сайта">
+        <div class="sc-footer-col">
+          <h2>ПЛАТФОРМА</h2>
+          <ul>
+            <li><a class="sc-link" href="../../../../#platform">Обзор платформы</a></li>
+            <li><a class="sc-link" href="../../../../#whats-new">Что нового</a></li>
+            <li><a class="sc-link" href="../../../../#spaces">Пространства</a></li>
+            <li><a class="sc-link" href="../../../../#agents">ИИ-агенты</a></li>
+            <li><a class="sc-link" href="../../../../#skills">Навыки</a></li>
+            <li><a class="sc-link" href="../../../../#commands">Быстрые команды</a></li>
+            <li><a class="sc-link" href="../../../../#connectors">Коннекторы</a></li>
+            <li><a class="sc-link" href="../../../../#schedule">Запуск по расписанию</a></li>
+            <li><a class="sc-link" href="../../../../#security">Безопасность</a></li>
+            <li><a class="sc-link" href="../../../../#support">Помощь и поддержка</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>СЦЕНАРИИ</h2>
+          <ul>
+            <li><a class="sc-link" href="../../../../#docs">Работа с документами</a></li>
+            <li><a class="sc-link" href="../../../../#analytics">Аналитика и отчётность</a></li>
+            <li><a class="sc-link" href="../../../../#knowledge">База знаний</a></li>
+            <li><a class="sc-link" href="../../../../#service">Клиентский сервис</a></li>
+            <li><a class="sc-link" href="../../../../#hr">HR и кадры</a></li>
+            <li><a class="sc-link" href="../../../../#finance">Финансы и контроль</a></li>
+            <li><a class="sc-link" href="../../../../#legal">Юридические задачи</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>ПОСТАВКИ</h2>
+          <ul>
+            <li><a class="sc-link" href="../../../../#cloud">Облако</a></li>
+            <li><a class="sc-link" href="../../../../#hybrid">Гибрид</a></li>
+            <li><a class="sc-link" href="../../../../#pak">ПАК</a></li>
+            <li><a class="sc-link" href="../../../../#compare">Сравнить варианты</a></li>
+          </ul>
+        </div>
+        <div class="sc-footer-col">
+          <h2>КОМПАНИЯ</h2>
+          <ul>
+            <li><a class="sc-link" href="../../../../#about">О компании</a></li>
+            <li><a class="sc-link" href="../../../../#cases">Кейсы</a></li>
+            <li><a class="sc-link" href="../../../../#blog">Блог</a></li>
+            <li><a class="sc-link" href="../../../../#partners">Партнёрам</a></li>
+            <li><a class="sc-link" href="../../../../#career">Карьера</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="sc-footer-bottom">
+      <p class="sc-footer-legal">
+        © 2026 ГигаЧат Бизнес · ООО «Салют для Бизнеса»<br>
+        121170, г. Москва, Садовая-Самотёчная ул., 24/27 · ИНН 7804568396
+      </p>
+      <ul class="sc-footer-policy">
+        <li><a class="sc-link" href="../../../../#privacy">Политика конфиденциальности</a></li>
+        <li><a class="sc-link" href="../../../../#data-policy">Политика обработки данных</a></li>
+        <li><a class="sc-link" href="../../../../#terms">Пользовательское соглашение</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="../../_/site-chrome/chrome.js" defer></script>
+  </body>
+</html>

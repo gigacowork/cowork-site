@@ -38,7 +38,7 @@ export default function LeadPage() {
   return (
     <div className={`flex min-h-screen w-full flex-col ${PAGE_GRADIENT}`}>
       {/* Header 2397:43445 / 2397:43448 — только логотип и «Войти» */}
-      <header className="flex h-[62px] w-full shrink-0 items-center justify-between px-16 py-16 md:h-[81px] md:px-[120px]">
+      <header className="container-page flex h-[62px] shrink-0 items-center justify-between py-16 md:h-[81px]">
         <Link href="/" aria-label="GigaCowork, на главную" className="shrink-0">
           <Image
             src="/img/logo-gigacowork.svg"
@@ -70,11 +70,12 @@ export default function LeadPage() {
 
       {/* CTA 2397:43435 / Content 2397:43449 */}
       {/*
-        px-[20px], а не px-20: шкала отступов проекта именована в пикселях
-        (--spacing-16: 16px), значения 20 в ней нет, и `px-20` уехал бы в
-        дефолтную шкалу Tailwind — 20 × 4px = 80px.
+        Сетка общая с остальным сайтом: `container-page` — контент до 1200 по
+        центру, поля 16 / 40 / 120 по брейкпоинтам. В макете страницы заявки
+        стояли свои фиксированные поля (20 и 120), из-за чего на широких экранах
+        контент растягивался шире, чем на всех прочих страницах.
       */}
-      <main className="flex w-full flex-1 flex-col items-center gap-40 px-[20px] py-40 md:flex-row md:items-start md:gap-24 md:px-[120px] md:pt-[70px] md:pb-80">
+      <main className="container-page flex flex-1 flex-col items-center gap-40 py-40 md:flex-row md:items-start md:gap-24 md:pt-[70px] md:pb-80">
         {/* CTA / Left Column 2397:43436 — Hero / Intro 2397:43450 на мобильном */}
         <div className="flex w-full flex-col items-center gap-24 text-text-primary md:min-w-0 md:flex-1 md:items-start md:gap-64">
           <div className="flex w-full flex-col items-center gap-24 md:items-start md:gap-32">
@@ -102,7 +103,7 @@ export default function LeadPage() {
       </main>
 
       {/* Footer 2397:43446 / 2397:43461 — только копирайт */}
-      <footer className="w-full shrink-0 px-[20px] pt-24 pb-32 md:px-[120px] md:pt-48 md:pb-40">
+      <footer className="container-page shrink-0 pt-24 pb-32 md:pt-48 md:pb-40">
         <p className="text-center text-caption text-text-primary md:text-left">
           © 2026 ГигаЧат Бизнес · ООО «Салют для Бизнеса»
           <br className="hidden md:inline" /> 121170, г. Москва,
