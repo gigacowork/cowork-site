@@ -1,4 +1,4 @@
-import Image from "@/components/ui/Image";
+import { HeroImage } from "@/components/ui/HeroImage";
 import { Icon } from "@/components/ui/Icon";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
@@ -31,11 +31,9 @@ import { Button } from "@/components/ui/Button";
 /**
  * Полоса подложки.
  *
- * Мобильный: слой равен секции, работает обычный cover. Прежняя pic была
- * широкой (2880×1520), и на узком экране от неё оставалась полоска — тогда слой
- * приходилось расширять до 1200 и сдвигать влево. У pic_home.webp пропорция
- * почти квадратная (2048×2000), кадр в секцию попадает целиком, и костыль
- * только уводил рисунок за край.
+ * Мобильный: слой равен секции, работает обычный cover. Отдельный кадр
+ * pic_home_mob.webp (1170×1680) уже обрезан под вертикальный экран, поэтому
+ * сдвигать и растягивать слой, как раньше, не нужно.
  * Десктоп: слой во всю ширину и высотой под hero с раскрытым чатом (≈1183px).
  */
 const BKG_BAND = "inset-0 md:top-0 md:bottom-auto md:h-[1200px] md:w-full";
@@ -84,13 +82,10 @@ export function Hero({ chat }: HeroProps) {
         style={{ backgroundImage: BKG_EDGE }}
       >
         <div className={`absolute ${BKG_BAND}`}>
-          <Image
-            src="/img/pic_home.webp"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover [object-position:left_top] md:[object-position:center_top]"
+          <HeroImage
+            desktop="/img/pic_home.webp"
+            mobile="/img/pic_home_mob.webp"
+            className="absolute inset-0 size-full object-cover [object-position:center_top]"
           />
         </div>
       </div>

@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
 import Image from "@/components/ui/Image";
+import { HeroImage } from "@/components/ui/HeroImage";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -326,15 +327,14 @@ export default function PlatformPage() {
           hero-illustration (2888:17749). В макете это заливка плюс растр на
           40% прозрачности; в экспорте прозрачность уже сведена, поэтому
           здесь картинка кладётся как есть.
+
+          Два кадра: десктопный 2880×1520 и мобильный 1170×2151 — это своя
+          обрезка под вертикальный экран, а не тот же файл в другом размере.
         */}
-        <Image
-          src="/img/platform/hero-bg.png"
-          alt=""
-          aria-hidden
-          fill
-          priority
-          sizes="100vw"
-          className="pointer-events-none absolute inset-0 -z-10 object-cover"
+        <HeroImage
+          desktop="/img/platform/hero-bg.webp"
+          mobile="/img/platform/hero-bg-mob.webp"
+          className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
         />
 
         <div className="container-page flex flex-col gap-24 lg:grid lg:grid-cols-[minmax(0,530px)_minmax(0,590px)] lg:items-center lg:justify-between lg:gap-80">

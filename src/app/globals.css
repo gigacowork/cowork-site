@@ -574,12 +574,52 @@ input[type="checkbox"].checkbox-tick:checked {
   }
 }
 
+/*
+  Бегущая строка логотипов клиентов (ниже md).
+
+  Дорожка состоит из двух одинаковых групп, и шаг МЕЖДУ группами равен шагу
+  внутри группы. Тогда ширина дорожки = 2×группа + шаг, а сдвиг на
+  «половина дорожки + половина шага» ставит вторую группу ровно туда, где
+  стояла первая, — стык не виден. Проценты и переменная, а не конкретные
+  пиксели: логотипы разной ширины, и жёсткое смещение пришлось бы
+  пересчитывать при каждой правке списка.
+*/
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - var(--marquee-gap) / 2));
+  }
+}
+
 @layer utilities {
   .chat-bubble-in {
     animation: chat-bubble-in 260ms ease-out both;
   }
   .chat-dot {
     animation: chat-dot 1s ease-in-out infinite;
+  }
+
+  .marquee {
+    --marquee-gap: 40px;
+    gap: var(--marquee-gap);
+    animation: marquee-scroll 26s linear infinite;
+  }
+
+  .marquee-group {
+    gap: var(--marquee-gap);
+  }
+
+  /*
+    С «уменьшить движение» строка замирает. Логотипы при этом не пропадают:
+    первая группа остаётся на своём месте, вторая уходит за край и скрыта
+    обрезкой — читатель видит ровный ряд, как на десктопе.
+  */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      animation: none;
+    }
   }
 
   /*

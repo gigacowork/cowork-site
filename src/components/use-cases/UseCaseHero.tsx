@@ -1,4 +1,4 @@
-import Image from "@/components/ui/Image";
+import { HeroImage } from "@/components/ui/HeroImage";
 import { Button } from "@/components/ui/Button";
 import { Lines, Paragraphs } from "@/components/use-cases/Lines";
 
@@ -25,10 +25,13 @@ export function UseCaseHero({
   title,
   intro,
   image,
+  imageMobile,
 }: {
   title: string;
   intro: string[];
   image?: string;
+  /** Свой кадр ниже md: у мобильной версии другая пропорция (1170×1680). */
+  imageMobile?: string;
 }) {
   return (
     <section
@@ -44,14 +47,10 @@ export function UseCaseHero({
       }`}
     >
       {image ? (
-        <Image
-          src={image}
-          alt=""
-          aria-hidden
-          fill
-          priority
-          sizes="100vw"
-          className="pointer-events-none absolute inset-0 -z-10 object-cover"
+        <HeroImage
+          desktop={image}
+          mobile={imageMobile}
+          className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
         />
       ) : null}
 

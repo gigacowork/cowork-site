@@ -132,10 +132,32 @@ function BlockView({ block }: { block: Block }) {
         </div>
       );
 
-    case "note":
+    case "note": {
+      const warning = block.tone === "warning";
+
       return (
-        <div className="flex flex-col gap-8 rounded-[16px] border border-border-subtle bg-neutral-50 p-24">
-          <p className="text-body-m text-text-secondary">
+        <div
+          className={`flex gap-12 rounded-[16px] border p-24 ${
+            warning
+              ? "border-status-info/40 bg-status-info/8"
+              : "border-border-subtle bg-neutral-50"
+          }`}
+        >
+          {warning ? (
+            <span
+              aria-hidden
+              className="text-body-l leading-[1.4] text-status-info"
+            >
+              ⚠
+            </span>
+          ) : null}
+
+          <div className="flex flex-1 flex-col gap-8">
+          <p
+            className={`text-body-m ${
+              warning ? "text-text-primary" : "text-text-secondary"
+            }`}
+          >
             {block.text}
             {block.email ? (
               <>
@@ -149,8 +171,26 @@ function BlockView({ block }: { block: Block }) {
               </>
             ) : null}
           </p>
+          {block.items?.length ? (
+            <ul className="flex flex-col gap-8">
+              {block.items.map((item) => (
+                <li
+                  key={item}
+                  className="relative pl-[20px] text-body-m text-text-secondary"
+                >
+                  <span
+                    aria-hidden
+                    className="absolute top-[8px] left-0 size-[6px] rounded-full bg-text-tertiary"
+                  />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          </div>
         </div>
       );
+    }
   }
 }
 
@@ -219,7 +259,7 @@ export default async function ReleasePage({
                     href={`#${section.id}`}
                     className="block rounded-[10px] px-12 py-8 text-body-m text-text-secondary transition-colors hover:bg-neutral-100 hover:text-text-primary"
                   >
-                    {section.title}
+                    {section.navTitle ?? section.title}
                   </a>
                 </li>
               ))}

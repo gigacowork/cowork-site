@@ -97,10 +97,16 @@ export type UseCase = {
   /** абзацы под заголовком */
   intro: string[];
   /**
-   * Фон hero из папки «Исходники use_cases». Для ролей, у которых исходника
-   * нет, поле пустое — тогда шаблон рисует градиент из макета (2616:11205).
+   * Фон hero, десктопный кадр (2880×1520) из папки «Исходники Изображения
+   * в HERO». Для ролей, у которых исходника нет, поле пустое — тогда шаблон
+   * рисует градиент из макета (2616:11205).
    */
   heroImage?: string;
+  /**
+   * Мобильный кадр (1170×1680). Это не тот же файл в другом размере, а своя
+   * обрезка под вертикальный экран, поэтому путь задаётся отдельно.
+   */
+  heroImageMobile?: string;
   /**
    * Блок метрик. Пустой массив или отсутствие поля — секция не выводится:
    * у некоторых ролей согласованных цифр пока нет.
@@ -287,7 +293,8 @@ export const USE_CASES: UseCase[] = [
     intro: [
       "Делегируйте ИИ-агентам рутинные задачи финансового подразделения: подготовку отчетов и сводной аналитики, мониторинг изменений налогового законодательства и поиск расхождений в документах",
     ],
-    heroImage: "/img/use-cases/finance-hero.png",
+    heroImage: "/img/use-cases/finance-hero.webp",
+    heroImageMobile: "/img/use-cases/finance-hero-mob.webp",
     metrics: [
       { value: 80, suffix: "%", caption: "быстрее обработка\nдокументов" },
       { value: 50, suffix: "%", caption: "быстрее подготовка отчетов\nи аналитических материалов" },
@@ -369,7 +376,8 @@ export const USE_CASES: UseCase[] = [
     intro: [
       "Ускоряйте работу коммерческого блока: ИИ запомнит информацию о клиентах, создаст карточки в CRM, подготовит саммари встречи и аналитику по сделкам",
     ],
-    heroImage: "/img/use-cases/salesforce-hero.png",
+    heroImage: "/img/use-cases/salesforce-hero.webp",
+    heroImageMobile: "/img/use-cases/salesforce-hero-mob.webp",
     /*
       В макете все три метрики стоят заглушками «00» без знака — согласованных
       цифр нет, поэтому блок не выводится.
@@ -481,7 +489,8 @@ export const USE_CASES: UseCase[] = [
     intro: [
       "Цифровые помощники за минуты готовят анализ рынка, находят полную информацию о контрагентах, создают проекты договоров и отчеты по заданным шаблонам и стандартам компании",
     ],
-    heroImage: "/img/use-cases/procurement-hero.png",
+    heroImage: "/img/use-cases/procurement-hero.webp",
+    heroImageMobile: "/img/use-cases/procurement-hero-mob.webp",
     /* Блок преимуществ в макете стоит сразу под метриками, до «Применения». */
     order: ["metrics", "benefits", "scenarios", "steps", "process"],
     /* Заполнена только первая метрика, две другие в макете — «00». */
@@ -583,7 +592,8 @@ export const USE_CASES: UseCase[] = [
     intro: [
       "Мультифункциональные помощники для любых задач: проверка договора на риски, мониторинг НПА, подготовка претензий и исков, анализ судебной практики",
     ],
-    heroImage: "/img/use-cases/legal-team-hero.png",
+    heroImage: "/img/use-cases/legal-team-hero.webp",
+    heroImageMobile: "/img/use-cases/legal-team-hero-mob.webp",
     /*
       Третья метрика в макете — заглушка «00 минут проверка договора»,
       поэтому выводятся только две заполненные.
@@ -698,7 +708,8 @@ export const USE_CASES: UseCase[] = [
       "Автоматизируйте найм и HR-коммуникации с помощью ИИ.",
       "Агенты подготовят вакансии, проведут предварительный отбор кандидатов и онбординг сотрудников.",
     ],
-    heroImage: "/img/use-cases/hr-team-hero.png",
+    heroImage: "/img/use-cases/hr-team-hero.webp",
+    heroImageMobile: "/img/use-cases/hr-team-hero-mob.webp",
     metrics: [
       { value: 40, suffix: "%", caption: "больше скорость\nзакрытия вакансий" },
       { value: 75, suffix: "%", caption: "больше скорость\nоценки кандидата" },
@@ -786,7 +797,8 @@ export const USE_CASES: UseCase[] = [
       "Передайте ИИ рутинные задачи: обработку первичных документов, сверку, подготовку отчетов и поиск расхождений.",
       "Быстро находите ответы в нормативных документах и снижайте риск ошибок.",
     ],
-    heroImage: "/img/use-cases/accounting-hero.png",
+    heroImage: "/img/use-cases/accounting-hero.webp",
+    heroImageMobile: "/img/use-cases/accounting-hero-mob.webp",
     /* Вторая и третья метрики в макете — заглушки «00». */
     metrics: [
       { value: 70, suffix: "%", caption: "меньше времени\nна первичку" },
