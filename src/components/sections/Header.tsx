@@ -267,9 +267,6 @@ export function Header() {
             })}
           </ul>
           <div className="flex items-center gap-16">
-            <Button href="#login" variant="secondary" size="md">
-              Войти
-            </Button>
             <Button href="/lead" variant="primary" size="md">
               Попробовать
             </Button>
@@ -376,9 +373,6 @@ export function Header() {
               </div>
             );
           })}
-          <Button href="#login" variant="secondary" size="lg" className="mt-8">
-            Войти
-          </Button>
         </nav>
       </div>
     </header>

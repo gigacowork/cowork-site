@@ -349,17 +349,31 @@
     Content is capped at 1200 and the padding acts as the minimum gutter, so
     390 → 358, 768 → 688 and 1440 → 1200 all come out exactly as specified.
   */
+  /*
+    `scroll-padding-inline` продублирован из `padding-inline` намеренно.
+
+    Когда контейнер сам является лентой с горизонтальной прокруткой и
+    scroll-snap (карусель «Не тратьте часы…»), привязка выравнивает карточку по
+    краю ОБЛАСТИ ПРОКРУТКИ, а не по краю паддинга. Первая карточка вставала
+    вплотную к краю экрана, съедая поле 16: браузер доскроллил ленту ровно на
+    величину паддинга. scroll-padding возвращает привязке ту же линию, по
+    которой выровнен весь остальной контент страницы.
+
+    На обычных блоках свойство ни на что не влияет — они не прокручиваются.
+  */
   .container-page {
     width: 100%;
     max-width: calc(1200px + 2 * 16px);
     margin-inline: auto;
     padding-inline: 16px;
+    scroll-padding-inline: 16px;
   }
 
   @media (min-width: 768px) {
     .container-page {
       max-width: calc(1200px + 2 * 40px);
       padding-inline: 40px;
+      scroll-padding-inline: 40px;
     }
   }
 
@@ -367,6 +381,7 @@
     .container-page {
       max-width: calc(1200px + 2 * 120px);
       padding-inline: 120px;
+      scroll-padding-inline: 120px;
     }
   }
 
@@ -418,6 +433,19 @@
     color: var(--color-status-accent);
   }
 
+  /*
+    Состояния Default / Hover / Pressed выше — ровно из макета (1003:4161).
+    Клавиатурного состояния в компоненте нет, но без него ссылки подвала были
+    единственными на сайте, по которым нельзя было понять, где фокус. Обводка
+    та же, что у кнопок и карточек. Там, где рамку рисует родитель (карточки
+    «Не тратьте часы…»), она гасится своим focus-visible:outline-none.
+  */
+  .text-link:focus-visible {
+    outline: 2px solid var(--color-text-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
   /* Stretches a link/button hit area over its nearest positioned ancestor. */
   .stretched-target::after {
     content: "";
@@ -432,6 +460,90 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* ============================================================
+   Страница заявки — подгонка под высоту экрана
+   ============================================================ */
+
+/*
+  На десктопе вся страница /lead должна помещаться в видимую область без
+  прокрутки. Высота содержимого почти вся «жёсткая» — пять полей по 56, чекбокс,
+  кнопка и две подписи, — поэтому ужимается то единственное, что можно: поля и
+  шаги между блоками.
+
+  Пороги, а не `clamp()` на vh: у клампа один наклон на весь диапазон, и подобрать
+  его так, чтобы и на 1440×768 всё влезло, и на большом экране сохранились
+  величины макета, не выходит — на краях он всегда мимо. Ступени дают ровно то
+  поведение, которое нужно: выше 1060 — ритм из Figma без изменений, ниже —
+  три заранее просчитанные ступени.
+
+  Все правила под `min-width: 768px`: на мобильном страница и так прокручивается,
+  и сжимать там нечего.
+*/
+.lead-fit {
+  --lead-main-pt: 70px;
+  --lead-main-pb: 80px;
+  --lead-form-py: 48px;
+  --lead-form-gap: 24px;
+  --lead-footer-pt: 48px;
+  --lead-footer-pb: 40px;
+}
+
+@media (min-width: 768px) and (max-height: 1060px) {
+  .lead-fit {
+    --lead-main-pt: 48px;
+    --lead-main-pb: 48px;
+    --lead-form-py: 36px;
+    --lead-form-gap: 20px;
+    --lead-footer-pt: 32px;
+    --lead-footer-pb: 28px;
+  }
+}
+
+@media (min-width: 768px) and (max-height: 880px) {
+  .lead-fit {
+    --lead-main-pt: 32px;
+    --lead-main-pb: 32px;
+    --lead-form-py: 28px;
+    --lead-form-gap: 16px;
+    --lead-footer-pt: 24px;
+    --lead-footer-pb: 20px;
+  }
+}
+
+@media (min-width: 768px) and (max-height: 780px) {
+  .lead-fit {
+    --lead-main-pt: 20px;
+    --lead-main-pb: 20px;
+    --lead-form-py: 20px;
+    --lead-form-gap: 12px;
+    --lead-footer-pt: 16px;
+    --lead-footer-pb: 12px;
+  }
+}
+
+/* ============================================================
+   Чекбокс (843:4074)
+   ============================================================ */
+
+/*
+  Галочка отмеченного состояния.
+
+  Контрол нарисован с `appearance-none` — своя рамка, радиус и заливка из
+  токенов, — но вместе с системным видом пропадает и системная галочка, так что
+  отмеченный чекбокс оставался просто тёмным квадратом. Рисуем её сами фоновой
+  картинкой: заливку задаёт `checked:bg-action-primary-default` (это
+  background-color), картинка ложится поверх и с ней не спорит.
+
+  SVG инлайном в data-URI, а не файлом в /public: путь в `url()` не получает
+  basePath (см. src/lib/asset.ts), и на GitHub Pages галочка молча пропала бы.
+*/
+input[type="checkbox"].checkbox-tick:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 6.2 4.9 8.6 9.5 3.6' stroke='%23ffffff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
 }
 
 /* ============================================================
@@ -468,6 +580,41 @@
   }
   .chat-dot {
     animation: chat-dot 1s ease-in-out infinite;
+  }
+
+  /*
+    Матовое стекло сообщений чата в hero.
+
+    Приём и величины те же, что у остальных «стеклянных» поверхностей сайта:
+    белая заливка 70% (--color-bg-tag), светлая полупрозрачная кромка изнутри
+    (как у выделенной карточки в «Не тратьте часы…», #ffffff99) и мягкая тень
+    ступени Elevation/Drop/Sm. Размытие 12 — на два шага мягче шапки: сообщения
+    небольшие, и на сильном радиусе фон под ними превращался в ровное пятно.
+
+    Кромка и тень собраны в один box-shadow, а не в border: рамка внутри
+    добавила бы к ширине пузыря лишний пиксель с каждой стороны и сдвинула бы
+    текст относительно макета.
+
+    Само размытие висит на элементах утилитой `backdrop-blur-[12px]`, а не
+    здесь: написанный руками `backdrop-filter` минификатор оставляет только в
+    -webkit-форме, и в этом виде свойство не применяется. Утилита Tailwind
+    собирает его через свои переменные и доезжает до браузера целой.
+  */
+  .chat-glass {
+    background-color: var(--color-bg-tag);
+    box-shadow:
+      inset 0 0 0 1px #ffffff99,
+      var(--shadow-drop-sm);
+  }
+
+  /*
+    Пузырь с кнопками. В макете у него своя обводка (border-default) — она
+    остаётся, к ней добавляются размытие и тень стекла.
+  */
+  .chat-glass-outlined {
+    box-shadow:
+      inset 0 0 0 1px var(--color-border-default),
+      var(--shadow-drop-sm);
   }
 }
 

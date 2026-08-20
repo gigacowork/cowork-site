@@ -40,12 +40,18 @@ const INFO_CARD_DESKTOP =
   "md:bg-[radial-gradient(80.6%_89.3%_at_103.2%_94.6%,rgba(140,143,228,0.3)_0%,rgba(140,143,228,0.3)_34%,rgba(140,143,228,0)_100%),radial-gradient(108.7%_125%_at_17.4%_100%,rgba(207,248,239,0.3)_0%,rgba(207,248,239,0.3)_34%,rgba(207,248,239,0)_100%),radial-gradient(108.7%_125%_at_87%_-42.5%,rgba(179,210,240,0.3)_0%,rgba(179,210,240,0.3)_34%,rgba(179,210,240,0)_100%),linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7))]";
 
 /*
-  Card / Info 1312:4755 — эти две карточки кликабельны целиком
-  (Default без тени → Hover Drop/Lg → Pressed Drop/Sm).
-  Карточка «GigaCowork — единая среда» слева интерактивной НЕ является.
+  Card / Info 1312:4755 — по макету обе карточки кликабельны целиком
+  (Default без тени → Hover Drop/Lg → Pressed Drop/Sm) и несут ссылку
+  «Подробнее».
+
+  ВРЕМЕННО ОТКЛЮЧЕНО: страниц «Три варианта поставки» и «Обучение и
+  сопровождение» ещё нет в плане релизов, а ссылка в никуда и наведение,
+  обещающее переход, вводят в заблуждение. Чтобы вернуть: раскомментировать
+  <MoreLink> в обеих карточках и добавить `card-interactive` обратно в начало
+  строки ниже — больше ничего менять не нужно.
 */
 const INFO_CARD_BASE =
-  "card-interactive relative flex min-h-[254px] flex-col justify-between gap-40 overflow-hidden rounded-[24px] " +
+  "relative flex min-h-[254px] flex-col justify-between gap-40 overflow-hidden rounded-[24px] " +
   "border border-[rgba(255,255,255,0.5)] p-40 " +
   INFO_CARD_DESKTOP;
 
@@ -233,9 +239,15 @@ export function PartOfTeam() {
               {/* Illustration / Suppies — I1927:15612;1246:4299, отсутствует в мобильном макете */}
               <ul className="absolute top-[39px] right-[42px] hidden w-[99px] flex-col items-end gap-12 md:flex">
                 {SUPPLY_TAGS.map(({ label, icon }) => (
+                  /*
+                    Ширина у всех трёх чипов общая (99 из макета), а подписи
+                    разной длины. При `justify-center` содержимое каждого чипа
+                    вставало по своему центру, и иконки шли лесенкой. Прижимаем
+                    к левому краю — иконки выстраиваются в одну вертикаль.
+                  */
                   <li
                     key={label}
-                    className="flex w-full items-center justify-center gap-4 rounded-full bg-bg-tag py-8 pl-12 pr-[14px] text-caption text-text-primary"
+                    className="flex w-full items-center justify-start gap-4 rounded-full bg-bg-tag py-8 pl-12 pr-[14px] text-caption text-text-primary"
                   >
                     {/* Icon frame 354:151 — cloud / component / model, 24×24 */}
                     <Icon src={icon} className="size-[24px] text-icon-primary" />
@@ -244,7 +256,7 @@ export function PartOfTeam() {
                 ))}
               </ul>
 
-              <MoreLink label="Подробнее о трёх вариантах поставки" />
+              {/* <MoreLink label="Подробнее о трёх вариантах поставки" /> */}
             </article>
 
             {/* Card / Info · Обучение и сопровождение — 1927:15613 / 1927:17416 */}
@@ -269,7 +281,7 @@ export function PartOfTeam() {
                 </p>
               </div>
 
-              <MoreLink label="Подробнее об обучении и сопровождении" />
+              {/* <MoreLink label="Подробнее об обучении и сопровождении" /> */}
             </article>
           </div>
         </div>

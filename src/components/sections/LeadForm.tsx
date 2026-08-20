@@ -2,6 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
+import { LegalLink } from "@/components/ui/LegalLink";
+import { LEGAL_PDF } from "@/lib/legal";
 
 /**
  * Form / Lead CTA — I2397:43444 (desktop) / I2397:43460 (mobile)
@@ -30,27 +32,6 @@ const FIELD_CLASS =
   "hover:border-border-strong focus:border-border-strong " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary";
 
-/** Ссылка в согласии — Text Link на status-accent. */
-function LegalLink({ href, children }: { href: string; children: string }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer noopener"
-      className="cursor-pointer text-status-accent underline-offset-2 hover:underline"
-    >
-      {children}
-    </a>
-  );
-}
-
-const CONSENT_PDF =
-  "https://gigacowork.github.io/gigaenterprise.ai/assets/files/soglasie_na_poluchenie_oznakomitelnykh_materialov_o_produktakh_servisakh.pdf";
-const PRIVACY_PDF =
-  "https://gigacowork.github.io/gigaenterprise.ai/assets/files/politika_konfidentsialnosti.pdf";
-const PERSONAL_PDF =
-  "https://gigacowork.github.io/gigaenterprise.ai/assets/files/soglasie_na_obrabotku_personalnykh_dannykh.pdf";
-
 const FIELDS = [
   { name: "name", label: "Имя", type: "text", autoComplete: "name" },
   { name: "email", label: "Рабочая почта", type: "email", autoComplete: "email" },
@@ -76,7 +57,13 @@ export function LeadForm() {
     <form
       onSubmit={handleSubmit}
       aria-label="Заявка на пробный доступ"
-      className={`flex w-full max-w-[840px] flex-col items-center gap-24 rounded-[16px] border border-[#e6e6e6] py-24 md:w-[588px] md:px-12 md:py-48 ${FORM_GRADIENT}`}
+      /*
+        Внутренние поля и шаг на десктопе берутся из переменных страницы
+        (`lead-fit` в globals.css): на невысоких экранах они ужимаются, чтобы
+        форма помещалась целиком. Значения по умолчанию — из макета, поэтому
+        вне страницы заявки компонент выглядит как прежде.
+      */
+      className={`flex w-full max-w-[840px] flex-col items-center gap-24 rounded-[16px] border border-[#e6e6e6] py-24 md:w-[588px] md:gap-[var(--lead-form-gap,24px)] md:px-12 md:py-[var(--lead-form-py,48px)] ${FORM_GRADIENT}`}
     >
       {sent ? (
         <div className="flex flex-col items-center gap-12 px-16 py-40 text-center md:px-48">
@@ -113,16 +100,22 @@ export function LeadForm() {
                 id="lead-consent"
                 name="consent"
                 type="checkbox"
-                className="size-[20px] cursor-pointer appearance-none rounded-[4px] border border-icon-secondary bg-action-secondary-default transition-colors duration-200 checked:border-action-primary-default checked:bg-action-primary-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
+                /*
+                  `checkbox-tick` рисует саму галочку: вместе с appearance-none
+                  пропадает и системная, и отмеченный чекбокс без неё выглядел
+                  просто тёмным квадратом. Стили — в globals.css.
+                */
+                className="checkbox-tick size-[20px] cursor-pointer appearance-none rounded-[4px] border border-icon-secondary bg-action-secondary-default transition-colors duration-200 checked:border-action-primary-default checked:bg-action-primary-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
               />
             </span>
             <label
               htmlFor="lead-consent"
-              className="flex-1 cursor-pointer text-center text-caption text-text-secondary"
+              className="flex-1 cursor-pointer text-left text-caption text-text-secondary"
             >
-              Даю <LegalLink href={CONSENT_PDF}>согласие</LegalLink> на получение
-              рекламных сообщений и маркетинговых предложений в соответствии{" "}
-              <LegalLink href={PRIVACY_PDF}>
+              Даю <LegalLink href={LEGAL_PDF.materials}>согласие</LegalLink> на получение
+              материалов о сервисе, приглашений на мероприятия и рекламных
+              сообщений в соответствии{" "}
+              <LegalLink href={LEGAL_PDF.privacy}>
                 с Политикой конфиденциальности
               </LegalLink>
               .
@@ -133,12 +126,16 @@ export function LeadForm() {
             Попробовать бесплатно
           </Button>
 
-          <p className="w-full px-16 text-center text-caption text-text-secondary md:px-48">
+          {/*
+            Жёсткого переноса больше нет: он был рассчитан на выключку по
+            центру, где делил строку пополам. При выключке влево тот же перенос
+            обрывал первую строку на середине ширины и оставлял справа дыру.
+          */}
+          <p className="w-full px-16 text-left text-caption text-text-secondary md:px-48">
             Нажимая на кнопку,{" "}
-            <LegalLink href={PERSONAL_PDF}>я соглашаюсь</LegalLink> на обработку
-            моих персональных данных
-            <br className="hidden md:inline" /> в соответствии с{" "}
-            <LegalLink href={PRIVACY_PDF}>
+            <LegalLink href={LEGAL_PDF.personal}>я соглашаюсь</LegalLink> на обработку
+            моих персональных данных в соответствии с{" "}
+            <LegalLink href={LEGAL_PDF.privacy}>
               Политикой конфиденциальности
             </LegalLink>
             .

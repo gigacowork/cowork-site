@@ -284,6 +284,22 @@ export function HeroChat() {
     });
   }, []);
 
+  /* Повторный клик по активному чипу — сворачиваем чат обратно в Idle. */
+  const close = useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    setTyping(false);
+    setActive(null);
+    /*
+      Сообщения стираем не сразу: пока рамка съезжает в ноль, содержимое должно
+      оставаться на месте. Если очистить список сразу, чат сначала мигает
+      пустотой и только потом закрывается.
+    */
+    timers.current.push(
+      setTimeout(() => setMessages([]), reducedRef.current ? 0 : HEIGHT_DURATION)
+    );
+  }, []);
+
   useEffect(
     () => () => {
       timers.current.forEach(clearTimeout);
@@ -382,7 +398,7 @@ export function HeroChat() {
               message.author === "user" ? (
                 /* Chat / User Message 1913:14339 — wrapper p-8, right aligned */
                 <li key={message.id} className="flex justify-end p-8">
-                  <div className="chat-bubble-in flex w-full max-w-[460px] flex-col gap-12 overflow-hidden rounded-[16px] bg-bg-page px-16 py-12">
+                  <div className="chat-bubble-in chat-glass flex w-full max-w-[460px] flex-col gap-12 overflow-hidden rounded-[16px] px-16 py-12 backdrop-blur-[12px]">
                     <p className="whitespace-pre-wrap break-words text-body-m text-text-primary">
                       {message.text}
                     </p>
@@ -394,10 +410,8 @@ export function HeroChat() {
                   {/* Icon=bot 826:6909, 24×24 */}
                   <Icon src="/img/icons/bot.svg" className="mt-4 size-[24px] text-icon-primary" />
                   <div
-                    className={`chat-bubble-in flex min-w-0 flex-1 flex-col gap-12 rounded-[16px] bg-bg-card px-16 py-12 ${
-                      message.actions
-                        ? "shadow-[inset_0_0_0_1px_var(--color-border-default)]"
-                        : ""
+                    className={`chat-bubble-in chat-glass flex min-w-0 flex-1 flex-col gap-12 rounded-[16px] px-16 py-12 backdrop-blur-[12px] ${
+                      message.actions ? "chat-glass-outlined" : ""
                     }`}
                     style={{ maxWidth: BUBBLE_MAX }}
                   >
@@ -441,7 +455,7 @@ export function HeroChat() {
               <li className="flex items-start gap-8 p-8">
                 {/* Icon=bot 826:6909, 24×24 */}
                 <Icon src="/img/icons/bot.svg" className="mt-4 size-[24px] text-icon-primary" />
-                <span className="chat-bubble-in flex items-center gap-4 rounded-[16px] bg-bg-card px-16 py-12">
+                <span className="chat-bubble-in chat-glass flex items-center gap-4 rounded-[16px] px-16 py-12 backdrop-blur-[12px]">
                   {[0, 1, 2].map((dot) => (
                     <span
                       key={dot}
@@ -474,8 +488,11 @@ export function HeroChat() {
           Chip 353:903 — три состояния, у всех opacity 70%:
             Default 353:902   bg-card       + border-subtle
             Hover   1171:4399 secondary-hover + border-default
-            Active  353:904   bg-card       + icon-secondary, не кликается
+            Active  353:904   bg-card       + icon-secondary
               («Active показывает выбранный сценарий» — описание компонента)
+          В макете активный чип не кликается. Здесь он остаётся кликабельным:
+          повторное нажатие сворачивает чат — иначе выйти из сценария нечем,
+          и hero навсегда остаётся раскрытым на 469px.
           Граница задана внутренней тенью, потому что штрихи в Figma
           выровнены внутрь и не увеличивают габарит чипа.
 
@@ -494,12 +511,11 @@ export function HeroChat() {
                 <button
                   type="button"
                   aria-pressed={isActive}
-                  disabled={isActive}
-                  onClick={() => send(item)}
-                  className={`flex items-center justify-center gap-4 rounded-full py-8 pl-12 pr-[14px] opacity-70 transition-[box-shadow,background-image] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
+                  onClick={() => (isActive ? close() : send(item))}
+                  className={`flex cursor-pointer items-center justify-center gap-4 rounded-full py-8 pl-12 pr-[14px] opacity-70 transition-[box-shadow,background-image] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
                     isActive
-                      ? "cursor-default bg-bg-card shadow-[inset_0_0_0_1px_var(--color-icon-secondary)]"
-                      : "cursor-pointer bg-bg-card shadow-[inset_0_0_0_1px_var(--color-border-subtle)] hover:bg-[image:var(--gradient-omni-neuton-2)] hover:shadow-[var(--shadow-drop-sm)] active:bg-[image:var(--gradient-omni-neuton-2)] active:shadow-[0_2px_8px_-2px_#60738f33]"
+                      ? "bg-bg-card shadow-[inset_0_0_0_1px_var(--color-icon-secondary)]"
+                      : "bg-bg-card shadow-[inset_0_0_0_1px_var(--color-border-subtle)] hover:bg-[image:var(--gradient-omni-neuton-2)] hover:shadow-[var(--shadow-drop-sm)] active:bg-[image:var(--gradient-omni-neuton-2)] active:shadow-[0_2px_8px_-2px_#60738f33]"
                   }`}
                 >
                   <span className="flex items-center justify-center rounded-full bg-neutral-100 py-4 pl-12 pr-[14px] text-caption text-text-secondary">

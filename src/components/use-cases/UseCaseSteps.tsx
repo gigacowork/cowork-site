@@ -20,7 +20,7 @@ const SECTION_GRADIENT =
   "bg-[linear-gradient(64.64deg,#c5f8e5_0.95%,#caf5ff_50.8%,#cfedff_101.64%)]";
 
 /** Video Placeholder (2801:16380) — белая карточка с кнопкой воспроизведения. */
-function VideoPlaceholder({ label }: { label: string }) {
+function VideoPlaceholder({ label }: { label?: string }) {
   return (
     <div className="flex aspect-[588/400] w-full flex-col items-center justify-center gap-16 overflow-hidden rounded-[20px] bg-bg-page p-32 shadow-drop-lg">
       <div className="flex w-full flex-col items-center justify-center gap-[20px]">
@@ -32,9 +32,12 @@ function VideoPlaceholder({ label }: { label: string }) {
         <span className="flex size-[64px] items-center justify-center rounded-[32px] border border-[#ffffff80] bg-neutral-0 shadow-drop-sm backdrop-blur-[6px]">
           <Icon src="/img/icons/play.svg" className="size-[48px] text-icon-primary" />
         </span>
-        <span className="text-center text-body-m font-medium text-text-secondary">
-          {label}
-        </span>
+        {/* Подписи под кнопкой в макете есть не у всех ролей. */}
+        {label ? (
+          <span className="text-center text-body-m font-medium text-text-secondary">
+            {label}
+          </span>
+        ) : null}
       </div>
     </div>
   );
@@ -42,9 +45,13 @@ function VideoPlaceholder({ label }: { label: string }) {
 
 export function UseCaseSteps({
   title,
+  lead,
   items,
 }: {
-  title: string;
+  /** Заголовок секции. В макете Финансов его нет — остаётся один кикер. */
+  title?: string;
+  /** Короткая строка-связка под заголовком («Агенты:» и т.п.). */
+  lead?: string;
   items: UseCaseStep[];
 }) {
   return (
@@ -52,9 +59,12 @@ export function UseCaseSteps({
       <div className="container-page flex flex-col gap-40 md:gap-48">
         <div className="flex flex-col items-center gap-24 text-center md:items-start md:text-left">
           <Kicker>Решения</Kicker>
-          <h2 className="text-h3 font-medium text-text-primary md:max-w-[800px] md:text-h2">
-            <Lines text={title} />
-          </h2>
+          {title ? (
+            <h2 className="text-h3 font-medium text-text-primary md:max-w-[800px] md:text-h2">
+              <Lines text={title} />
+            </h2>
+          ) : null}
+          {lead ? <p className="text-body-l text-text-secondary">{lead}</p> : null}
         </div>
 
         <div className="flex flex-col gap-64 md:gap-96">
@@ -89,6 +99,23 @@ export function UseCaseSteps({
                         <Lines text={paragraph} />
                       </p>
                     ))}
+
+                    {/* Перечень под абзацами — есть только у части рядов. */}
+                    {step.bullets?.length ? (
+                      <ul className="flex flex-col gap-12 text-left">
+                        {step.bullets.map((bullet) => (
+                          <li key={bullet} className="flex items-start gap-8">
+                            <span
+                              aria-hidden
+                              className="flex size-[24px] shrink-0 items-center justify-center"
+                            >
+                              <span className="size-[8px] rounded-full bg-icon-primary" />
+                            </span>
+                            <span className="flex-1 text-body-m">{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
                   </div>
                 </div>
 

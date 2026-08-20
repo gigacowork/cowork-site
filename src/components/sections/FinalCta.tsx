@@ -6,10 +6,8 @@ import { Button } from "@/components/ui/Button";
  *   gradient 227.36deg #f0f8ff 20.714% → #f7f7f8 94.867%, column 588, gap 40)
  * Figma mobile:  2569:43383 (px 24 / py 64, gradient 245.7deg, H3 25px)
  *
- * `surface` — подложка секции. На главной это градиент (2572:11130), на
- * страницах «Для кого» тот же компонент вставлен на белую страницу
- * (2616:11300): там CTA идёт следом за цветным блоком преимуществ, и второй
- * градиент подряд читался бы как продолжение предыдущей секции.
+ * Подложка одна на все страницы — градиент 227.36° (2572:11130 на главной,
+ * 2745:15473 на страницах «Для кого»).
  *
  * `align` — выключка. По макету блок центрированный, и на страницах «Для кого»
  * он таким и остаётся. На главной вся типографика секций выровнена по левому
@@ -17,12 +15,9 @@ import { Button } from "@/components/ui/Button";
  * 588 внутри 1200 начинался бы с отступом 426 и выпадал бы из общей линии.
  */
 
-const SURFACES = {
-  gradient:
-    "bg-[linear-gradient(245.7deg,#f0f8ff_20.714%,#f7f7f8_94.867%)] " +
-    "md:bg-[linear-gradient(227.36deg,#f0f8ff_20.714%,#f7f7f8_94.867%)]",
-  page: "bg-bg-page",
-} as const;
+const SURFACE =
+  "bg-[linear-gradient(245.7deg,#f0f8ff_20.714%,#f7f7f8_94.867%)] " +
+  "md:bg-[linear-gradient(227.36deg,#f0f8ff_20.714%,#f7f7f8_94.867%)]";
 
 const ALIGN = {
   center: {
@@ -45,18 +40,19 @@ const ALIGN = {
 } as const;
 
 export function FinalCta({
-  surface = "gradient",
   align = "center",
+  title,
 }: {
-  surface?: keyof typeof SURFACES;
   align?: keyof typeof ALIGN;
+  /** Заголовок. У части страниц он свой — например «Быстрый старт с GigaCowork». */
+  title?: string;
 }) {
   const a = ALIGN[align];
 
   return (
     <section
       id="final-cta"
-      className={`w-full py-64 md:py-[160px] ${SURFACES[surface]}`}
+      className={`w-full py-64 md:py-[160px] ${SURFACE}`}
     >
       <div className={`container-page flex gap-24 ${a.row}`}>
         {/* CTA / Left Column — 2546:41683 */}
@@ -67,9 +63,13 @@ export function FinalCta({
               id="final-cta-title"
               className={`w-full text-h3 font-medium text-text-primary md:text-h2 ${a.title}`}
             >
-              Готовы делегировать
-              <br />
-              работу ИИ-агентам?
+              {title ?? (
+                <>
+                  Готовы делегировать
+                  <br />
+                  работу ИИ-агентам?
+                </>
+              )}
             </h2>
           </div>
 

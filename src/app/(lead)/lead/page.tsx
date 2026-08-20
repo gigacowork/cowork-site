@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "@/components/ui/Image";
 import Link from "next/link";
-import Button from "@/components/ui/Button";
 import LeadForm from "@/components/sections/LeadForm";
+import { LEGAL_LINES } from "@/lib/legal";
 
 /**
  * «Оставить заявку» — /lead
@@ -12,8 +12,8 @@ import LeadForm from "@/components/sections/LeadForm";
  *   контент px-20 / py-40 / gap-40, footer pt-24 / pb-32)
  *
  * Страница лежит в группе маршрутов (lead) — без общей шапки и подвала сайта:
- * по макету здесь только логотип и «Войти» сверху и копирайт снизу. Логотип
- * ведёт на главную.
+ * сверху только логотип, снизу копирайт. Логотип ведёт на главную.
+ * В макете рядом с логотипом стоит «Войти» — кнопку убрали по всему сайту.
  */
 
 export const metadata: Metadata = {
@@ -36,8 +36,13 @@ const BENEFITS = [
 
 export default function LeadPage() {
   return (
-    <div className={`flex min-h-screen w-full flex-col ${PAGE_GRADIENT}`}>
-      {/* Header 2397:43445 / 2397:43448 — только логотип и «Войти» */}
+    /*
+      `lead-fit` — вертикальный ритм страницы, который ужимается на невысоких
+      экранах, чтобы форма целиком помещалась в видимую область без прокрутки.
+      Величины и пороги — в globals.css.
+    */
+    <div className={`lead-fit flex min-h-screen w-full flex-col ${PAGE_GRADIENT}`}>
+      {/* Header 2397:43445 / 2397:43448 — только логотип */}
       <header className="container-page flex h-[62px] shrink-0 items-center justify-between py-16 md:h-[81px]">
         <Link href="/" aria-label="GigaCowork, на главную" className="shrink-0">
           <Image
@@ -49,23 +54,6 @@ export default function LeadPage() {
             className="h-[25px] w-[117px] md:h-[33px] md:w-[155px]"
           />
         </Link>
-
-        {/*
-          Размер кнопки разный: Small 12px на мобильном (I2397:43448;792:6318)
-          и Medium 14px на десктопе (I2397:43445;324:998). Переключение висит на
-          обёртках, а не на самой кнопке: у Button в базовых классах есть
-          `inline-flex`, и он перебивает `hidden`, добавленный через className.
-        */}
-        <span className="md:hidden">
-          <Button href="#login" variant="secondary" size="sm">
-            Войти
-          </Button>
-        </span>
-        <span className="hidden md:block">
-          <Button href="#login" variant="secondary" size="md">
-            Войти
-          </Button>
-        </span>
       </header>
 
       {/* CTA 2397:43435 / Content 2397:43449 */}
@@ -75,7 +63,7 @@ export default function LeadPage() {
         стояли свои фиксированные поля (20 и 120), из-за чего на широких экранах
         контент растягивался шире, чем на всех прочих страницах.
       */}
-      <main className="container-page flex flex-1 flex-col items-center gap-40 py-40 md:flex-row md:items-start md:gap-24 md:pt-[70px] md:pb-80">
+      <main className="container-page flex flex-1 flex-col items-center gap-40 py-40 md:flex-row md:items-start md:gap-24 md:pt-[var(--lead-main-pt,70px)] md:pb-[var(--lead-main-pb,80px)]">
         {/* CTA / Left Column 2397:43436 — Hero / Intro 2397:43450 на мобильном */}
         <div className="flex w-full flex-col items-center gap-24 text-text-primary md:min-w-0 md:flex-1 md:items-start md:gap-64">
           <div className="flex w-full flex-col items-center gap-24 md:items-start md:gap-32">
@@ -102,12 +90,15 @@ export default function LeadPage() {
         <LeadForm />
       </main>
 
-      {/* Footer 2397:43446 / 2397:43461 — только копирайт */}
-      <footer className="container-page shrink-0 pt-24 pb-32 md:pt-48 md:pb-40">
+      {/*
+        Footer 2397:43446 / 2397:43461 — только копирайт.
+        Текст берётся из общего справочника, что и подвал сайта: раньше он был
+        написан здесь руками и отстал от обновлённых реквизитов.
+      */}
+      <footer className="container-page shrink-0 pt-24 pb-32 md:pt-[var(--lead-footer-pt,48px)] md:pb-[var(--lead-footer-pb,40px)]">
         <p className="text-center text-caption text-text-primary md:text-left">
-          © 2026 ГигаЧат Бизнес · ООО «Салют для Бизнеса»
-          <br className="hidden md:inline" /> 121170, г. Москва,
-          Садовая-Самотёчная ул., 24/27 · ИНН 7804568396
+          {LEGAL_LINES[0]}
+          <br className="hidden md:inline" /> {LEGAL_LINES[1]}
         </p>
       </footer>
     </div>

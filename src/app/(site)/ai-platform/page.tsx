@@ -539,16 +539,21 @@ export default function PlatformPage() {
                 Защита данных, контроль доступа и соответствие требованиям
                 корпоративной безопасности
               </p>
-              <Link
-                href="/lead"
-                className="flex shrink-0 items-center gap-8 text-body-m text-text-primary transition-opacity hover:opacity-70"
-              >
-                Подробнее о безопасности
-                <Icon
-                  src="/img/icons/arrow-up-right.svg"
-                  className="size-[9px] text-icon-primary"
-                />
-              </Link>
+              {/*
+                ВРЕМЕННО СКРЫТО: страницы про безопасность ещё нет, ссылка вела
+                на форму заявки. Вернуть — раскомментировать блок ниже.
+
+                <Link
+                  href="/lead"
+                  className="flex shrink-0 items-center gap-8 text-body-m text-text-primary transition-opacity hover:opacity-70"
+                >
+                  Подробнее о безопасности
+                  <Icon
+                    src="/img/icons/arrow-up-right.svg"
+                    className="size-[9px] text-icon-primary"
+                  />
+                </Link>
+              */}
             </div>
           </header>
 

@@ -11,6 +11,7 @@
 
 import Link from "next/link";
 import { CarouselNavigation } from "@/components/ui/CarouselControl";
+import { TaskDialog } from "@/components/interactive/TaskDialog";
 import { useCaseHrefByCardId } from "@/lib/use-cases";
 
 export type NoHoursCard = {
@@ -220,16 +221,21 @@ export function NoHours() {
 
               Адрес берётся из общего списка ролей по id карточки, а не пишется
               здесь: те же данные питают выпадающее меню «Для кого» и сами
-              страницы. Последняя карточка своей роли не имеет и ведёт на форму
-              заявки.
+              страницы. Последняя карточка своей роли не имеет: она открывает
+              попап с формой, а не уводит на отдельную страницу — задачу
+              описывают, не отрываясь от каталога.
             */}
-            <Link
-              href={useCaseHrefByCardId(card.id) ?? "/lead"}
-              aria-label={`${card.linkLabel} — ${card.title}`}
-              className={`text-link stretched-target flex cursor-pointer items-center justify-start self-start py-4 text-left focus-visible:outline-none ${CARD_TEXT}`}
-            >
-              {card.linkLabel}
-            </Link>
+            {card.id === "custom" ? (
+              <TaskDialog label={card.linkLabel} cardTitle={card.title} />
+            ) : (
+              <Link
+                href={useCaseHrefByCardId(card.id) ?? "/lead"}
+                aria-label={`${card.linkLabel} — ${card.title}`}
+                className={`text-link stretched-target flex cursor-pointer items-center justify-start self-start py-4 text-left focus-visible:outline-none ${CARD_TEXT}`}
+              >
+                {card.linkLabel}
+              </Link>
+            )}
           </li>
         ))}
       </ul>

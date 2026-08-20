@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import { Kicker } from "@/components/ui/Kicker";
 import { FinalCta } from "@/components/sections/FinalCta";
@@ -7,15 +8,25 @@ import { ScenarioStack } from "@/components/use-cases/ScenarioStack";
 import { UseCaseBenefits } from "@/components/use-cases/UseCaseBenefits";
 import { UseCaseHero } from "@/components/use-cases/UseCaseHero";
 import { UseCaseMetrics } from "@/components/use-cases/UseCaseMetrics";
+import { UseCaseProcess } from "@/components/use-cases/UseCaseProcess";
 import { UseCaseSteps } from "@/components/use-cases/UseCaseSteps";
-import { getUseCase, USE_CASES } from "@/lib/use-cases";
+import {
+  DEFAULT_ORDER,
+  getUseCase,
+  USE_CASES,
+  type UseCaseSection,
+} from "@/lib/use-cases";
 
 /**
  * Страницы «Для кого» — /use_cases/[slug].
  *
- * Один шаблон на все восемь ролей: в макете собрана HR-версия (2616:11204 и
- * далее, мобайл 2656:11527), остальные роли отличаются только текстом. Поэтому
- * здесь вёрстка, а весь контент — в src/lib/use-cases.ts.
+ * Один шаблон на все восемь ролей: здесь вёрстка, а весь контент — в
+ * src/lib/use-cases.ts.
+ *
+ * Порядок секций у ролей разный: у финансов «Применение» идёт перед метриками,
+ * у закупок блок преимуществ поднят сразу под метрики. Поэтому порядок — тоже
+ * часть данных роли (`order`), а не зашит в разметку. Секция без данных
+ * молча пропускается, так что лишние ключи в списке безопасны.
  *
  * Адреса берутся из ПРОЕКТ_COWORK_RU.md, раздел «Релиз 1»: /use_cases/ceo,
  * /finance, /salesforce, /procurement, /legal-team, /hr-team, /accounting,
@@ -59,17 +70,13 @@ export default async function UseCasePage({
   const useCase = getUseCase(slug);
   if (!useCase) notFound();
 
-  return (
-    <>
-      <UseCaseHero
-        title={useCase.title}
-        intro={useCase.intro}
-        image={useCase.heroImage}
-      />
-
+  const sections: Record<UseCaseSection, React.ReactNode> = {
+    metrics: useCase.metrics?.length ? (
       <UseCaseMetrics items={useCase.metrics} />
+    ) : null,
 
-      {/* ── Какие задачи решают агенты (2616:11235 / 2787:16163) ── */}
+    /* Применение (2616:11235 / 2787:16163) */
+    scenarios: useCase.scenarios.length ? (
       <section className="w-full bg-bg-page py-64 md:py-120">
         <div className="container-page flex flex-col gap-48 md:gap-96">
           <div className="flex flex-col items-center gap-24 text-center md:items-start md:text-left">
@@ -82,12 +89,49 @@ export default async function UseCasePage({
           <ScenarioStack items={useCase.scenarios} />
         </div>
       </section>
+    ) : null,
 
-      <UseCaseSteps title={useCase.stepsTitle} items={useCase.steps} />
+    steps: useCase.steps.length ? (
+      <UseCaseSteps
+        title={useCase.stepsTitle}
+        lead={useCase.stepsLead}
+        items={useCase.steps}
+      />
+    ) : null,
 
-      <UseCaseBenefits items={useCase.benefits} />
+    process: useCase.process ? <UseCaseProcess {...useCase.process} /> : null,
 
-      <FinalCta surface="page" />
+    benefits: useCase.benefits.length ? (
+      <UseCaseBenefits
+        title={useCase.benefitsTitle}
+        lead={useCase.benefitsLead}
+        kicker={
+          useCase.benefitsKicker === undefined
+            ? "Преимущества"
+            : useCase.benefitsKicker
+        }
+        items={useCase.benefits}
+      />
+    ) : null,
+  };
+
+  return (
+    <>
+      <UseCaseHero
+        title={useCase.title}
+        intro={useCase.intro}
+        image={useCase.heroImage}
+      />
+
+      {(useCase.order ?? DEFAULT_ORDER).map((key) => (
+        <Fragment key={key}>{sections[key]}</Fragment>
+      ))}
+
+      {/*
+        Подложка та же, что на главной: в макете CTA страниц «Для кого»
+        (2745:15473) стоит тот же градиент 227.36°, а не белый фон.
+      */}
+      <FinalCta title={useCase.ctaTitle} />
     </>
   );
 }

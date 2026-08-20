@@ -181,18 +181,32 @@ export function Cases() {
     <section id="cases" className="bg-bg-page py-64 md:py-80">
       <div className="container-page flex flex-col items-center gap-32 md:gap-48">
         {/* Clients / Header Row — 1927:15615 / 1927:17418 */}
-        <div className="flex w-full flex-col items-start md:flex-row md:justify-between">
-          <h2 className="text-h3 font-medium text-text-primary md:text-h2">Опыт клиентов</h2>
-          <div className="flex pt-8 md:pt-0">
-            <a
-              href="#cases-all"
-              className="flex items-center justify-center gap-8 rounded-full py-12 text-body-m text-text-primary transition-colors hover:bg-neutral-100 md:px-24"
-            >
-              <span className="whitespace-nowrap">Все кейсы</span>
-              {/* Icon / arrow up-right 418:4735, 9×9 */}
-              <Icon src="/img/icons/arrow-up-right.svg" className="size-[9px] text-icon-primary" />
-            </a>
-          </div>
+        {/*
+          На десктопе заголовок стоит по центру всей ширины секции, поэтому
+          ссылка «Все кейсы» вынута из потока и прижата к правому краю: останься
+          она обычной колонкой ряда, её ширина сместила бы заголовок влево от
+          настоящего центра. Ниже md порядок обычный — заголовок, под ним ссылка.
+          Сейчас ссылка скрыта (см. ниже), но обвязка оставлена под возврат.
+        */}
+        <div className="flex w-full flex-col items-start md:relative">
+          <h2 className="text-h3 font-medium text-text-primary md:w-full md:text-center md:text-h2">
+            Опыт клиентов
+          </h2>
+          {/*
+            ВРЕМЕННО СКРЫТО: страницы со списком кейсов ещё нет, ссылка вела в
+            несуществующий якорь #cases-all. Вернуть — раскомментировать блок
+            ниже (иконка — Icon / arrow up-right 418:4735, 9×9).
+
+            <div className="flex pt-8 md:absolute md:top-0 md:right-0 md:pt-0">
+              <a
+                href="#cases-all"
+                className="flex items-center justify-center gap-8 rounded-full py-12 text-body-m text-text-primary transition-colors hover:bg-neutral-100 md:px-24"
+              >
+                <span className="whitespace-nowrap">Все кейсы</span>
+                <Icon src="/img/icons/arrow-up-right.svg" className="size-[9px] text-icon-primary" />
+              </a>
+            </div>
+          */}
         </div>
 
         {/* Clients / Case Study Row — 1927:15618 / 1927:17422 */}

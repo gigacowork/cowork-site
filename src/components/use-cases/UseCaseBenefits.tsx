@@ -17,12 +17,36 @@ import type { UseCaseBenefit } from "@/lib/use-cases";
 const CARD_GRADIENT =
   "bg-[linear-gradient(56.4deg,#c5f8e5_0.95%,#dcf9ff_50.8%,#e4f5ff_101.64%)]";
 
-export function UseCaseBenefits({ items }: { items: UseCaseBenefit[] }) {
+export function UseCaseBenefits({
+  title,
+  lead,
+  kicker = "Преимущества",
+  items,
+}: {
+  title?: string;
+  lead?: string;
+  /** `null` — кикера нет: в макете закупок блок идёт обычным заголовком. */
+  kicker?: string | null;
+  items: UseCaseBenefit[];
+}) {
+  const hasTags = items.some((item) => item.tags?.length);
+
   return (
     <section className="w-full bg-bg-page py-48 md:py-[100px]">
       <div className="container-page flex flex-col gap-[56px]">
-        <div className="flex flex-col items-center md:items-start">
-          <Kicker>Преимущества</Kicker>
+        {/*
+          В макете у секции только кикер. Заголовок и строка-связка появляются
+          там, где они есть в тексте роли, — размеры те же, что у заголовков
+          остальных секций шаблона.
+        */}
+        <div className="flex flex-col items-center gap-24 text-center md:items-start md:text-left">
+          {kicker ? <Kicker>{kicker}</Kicker> : null}
+          {title ? (
+            <h2 className="text-h3 font-medium text-text-primary md:max-w-[800px] md:text-h2">
+              <Lines text={title} />
+            </h2>
+          ) : null}
+          {lead ? <p className="text-body-l text-text-secondary">{lead}</p> : null}
         </div>
 
         {/*
@@ -35,7 +59,14 @@ export function UseCaseBenefits({ items }: { items: UseCaseBenefit[] }) {
           {items.map((benefit) => (
             <article
               key={benefit.title}
-              className={`flex flex-1 flex-col gap-16 overflow-hidden rounded-[24px] px-40 pt-40 pb-24 md:h-[345px] ${CARD_GRADIENT}`}
+              className={`flex flex-1 flex-col gap-16 overflow-hidden rounded-[24px] px-40 pt-40 pb-24 ${
+                /*
+                  345 из макета — под карточку с тегами внизу. Без тегов такая
+                  высота оставляла половину карточки пустой, поэтому ряд
+                  выравнивается по содержимому.
+                */
+                hasTags ? "md:h-[345px]" : "md:min-h-[220px]"
+              } ${CARD_GRADIENT}`}
             >
               <div className="flex flex-col gap-16 md:flex-1">
                 <h3 className="text-h4 font-medium text-text-primary md:text-h3">
@@ -46,9 +77,9 @@ export function UseCaseBenefits({ items }: { items: UseCaseBenefit[] }) {
                 </p>
               </div>
 
-              {/* Tags (1388:5966) */}
-              <ul className="flex flex-wrap gap-8">
-                {benefit.tags.map((tag) => (
+              {/* Tags (1388:5966) — только если они заданы в тексте роли */}
+              <ul className="flex flex-wrap gap-8 empty:hidden">
+                {(benefit.tags ?? []).map((tag) => (
                   <li
                     key={tag.label}
                     className="flex items-center justify-center gap-4 rounded-full bg-bg-tag py-8 pl-8 pr-[10px] text-caption text-text-primary"
