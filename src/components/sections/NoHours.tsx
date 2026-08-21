@@ -11,6 +11,7 @@
 
 import Link from "next/link";
 import { CarouselNavigation } from "@/components/ui/CarouselControl";
+import { Icon } from "@/components/ui/Icon";
 import { TaskDialog } from "@/components/interactive/TaskDialog";
 import { useCaseHrefByCardId } from "@/lib/use-cases";
 
@@ -225,19 +226,78 @@ export function NoHours() {
                 </h3>
               </div>
 
-              {card.items ? (
-                <ul
-                  className={`w-full list-disc space-y-8 pl-[18px] text-text-secondary ${CARD_TEXT}`}
+              {/*
+                Задачи и «забрал агент» лежат в одной коробке: список остаётся
+                в потоке и задаёт высоту, знак стоит поверх него. Иначе при
+                подмене одного другим карточка меняла бы высоту прямо во время
+                прокрутки.
+
+                Что именно происходит по мере прокрутки, описано в globals.css
+                (блок «Не тратьте часы…»): карточка получает --done от 0 до 1,
+                и от него считаются оба состояния.
+              */}
+              <div className="relative w-full">
+                {card.items ? (
+                  <ul
+                    className={`w-full list-disc space-y-8 pl-[18px] text-text-secondary ${CARD_TEXT}`}
+                  >
+                    {card.items.map((item, i) => (
+                      <li
+                        key={item}
+                        data-task
+                        style={{ "--i": i } as React.CSSProperties}
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p
+                    data-task
+                    style={{ "--i": 0 } as React.CSSProperties}
+                    className={`w-full text-text-secondary ${CARD_TEXT}`}
+                  >
+                    {card.text}
+                  </p>
+                )}
+
+                {/*
+                  Одна отметка на карточку: агент и галочка собраны в один
+                  знак, а не разложены по пунктам — иначе на четыре строки
+                  пришлось бы четыре пары иконок, и это был бы шум.
+                */}
+                {/*
+                  Знак прижат к верху колонки задач, а не выровнен по её центру:
+                  списки разной длины, и по центру знак вставал бы у каждой
+                  карточки на своей высоте — при прокрутке иконки скакали бы.
+                  Верх колонки у всех карточек общий (заголовок ровно 48), так
+                  что от него отсчёт и идёт.
+                */}
+                <div
+                  data-card-done
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 flex flex-col items-center gap-12 pt-16"
                 >
-                  {card.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className={`w-full text-text-secondary ${CARD_TEXT}`}>
-                  {card.text}
-                </p>
-              )}
+                  <span className="relative flex size-[56px] items-center justify-center rounded-full bg-neutral-0/70 shadow-drop-sm">
+                    <Icon
+                      src="/img/icons/bot.svg"
+                      className="size-[28px] text-icon-primary"
+                    />
+                    <span
+                      data-card-check
+                      className="absolute -right-4 -bottom-4 flex size-[24px] items-center justify-center rounded-full bg-neutral-0 shadow-drop-sm"
+                    >
+                      <Icon
+                        src="/img/icons/check.svg"
+                        className="size-[16px] text-status-success"
+                      />
+                    </span>
+                  </span>
+                  <p className={`text-text-secondary ${CARD_TEXT}`}>
+                    Выполнил ИИ-агент
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/*

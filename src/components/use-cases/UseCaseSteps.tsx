@@ -15,9 +15,14 @@ import type { UseCaseStep } from "@/lib/use-cases";
  * текст идёт первым во всех рядах и порядок чтения совпадает с визуальным.
  */
 
-/** Фон секции (2616:11259) — Gradient/Omni/Neuton_Light. */
+/*
+  Фон секции (2672:11905) — Gradient/Omni/Neuton 2 под углом 233.478°.
+  Раньше здесь был Neuton_Light (2616:11259), более светлый и в другую
+  сторону: голубой уходил вправо вверх, а теперь — сине-сиреневый сверху
+  справа к мятному снизу слева.
+*/
 const SECTION_GRADIENT =
-  "bg-[linear-gradient(64.64deg,#c5f8e5_0.95%,#caf5ff_50.8%,#cfedff_101.64%)]";
+  "bg-[linear-gradient(233.478deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)]";
 
 /** Video Placeholder (2801:16380) — белая карточка с кнопкой воспроизведения. */
 function VideoPlaceholder({ label }: { label?: string }) {
@@ -57,8 +62,9 @@ export function UseCaseSteps({
   return (
     <section className={`w-full py-64 md:py-120 ${SECTION_GRADIENT}`}>
       <div className="container-page flex flex-col gap-40 md:gap-48">
-        <div className="flex flex-col items-center gap-24 text-center md:items-start md:text-left">
-          <Kicker>Решения</Kicker>
+        {/* Ниже md текст по левому краю, пилюля — по центру. */}
+        <div className="flex flex-col items-start gap-24 text-left">
+          <Kicker className="self-center md:self-start">Решения</Kicker>
           {title ? (
             <h2 className="text-h3 font-medium text-text-primary md:max-w-[800px] md:text-h2">
               <Lines text={title} />
@@ -77,11 +83,12 @@ export function UseCaseSteps({
                 className="flex flex-col gap-24 md:flex-row md:items-start md:justify-between md:gap-80"
               >
                 {/*
-                  Ниже md текст по центру (2656:11587), на десктопе — по левому
-                  краю своей колонки.
+                  В макете ниже md этот текст стоял по центру (2656:11587) — по
+                  просьбе выключка левая на всех ширинах, как у остального
+                  текста вне карточек на страницах «Для кого».
                 */}
                 <div
-                  className={`flex flex-col items-center gap-16 text-center md:w-[480px] md:items-start md:gap-[20px] md:text-left ${
+                  className={`flex flex-col items-start gap-16 text-left md:w-[480px] md:gap-[20px] ${
                     mirrored ? "md:order-2" : ""
                   }`}
                 >

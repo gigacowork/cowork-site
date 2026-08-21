@@ -1,7 +1,9 @@
 "use client";
 
 import { Fragment, useEffect, useRef } from "react";
+import Image from "@/components/ui/Image";
 import { Lines, Paragraphs } from "@/components/use-cases/Lines";
+import { getScenarioPreview } from "@/lib/scenario-previews";
 import type { UseCaseScenario } from "@/lib/use-cases";
 
 /**
@@ -49,8 +51,20 @@ const PREVIEW_GRADIENT =
  * серую кайму. Так же сделано в FeatureStack на «О платформе».
  */
 const SHADOW = "0 12px 48px -8px #60738f33";
+/*
+  Та же тень в записи для filter: у drop-shadow нет spread, а радиус вдвое
+  меньше, чем у box-shadow.
+*/
+const IMAGE_SHADOW = "drop-shadow(0 12px 24px #60738f33)";
 
-export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
+export function ScenarioStack({
+  items,
+  slug,
+}: {
+  items: UseCaseScenario[];
+  /** Роль — по ней берутся готовые кадры из `scenario-previews`. */
+  slug: string;
+}) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -82,7 +96,17 @@ export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
         от них видна только верхняя полоска, и тень там лишняя.
       */
       surfaces.forEach((surface, i) => {
-        if (surface) surface.style.boxShadow = i >= next ? SHADOW : "none";
+        if (!surface) return;
+        /*
+          У заглушки скругление задано стилем — годится box-shadow. У готового
+          кадра оно запечено в альфу картинки, и тень должна идти по контуру,
+          поэтому там фильтр.
+        */
+        if (surface.tagName === "IMG") {
+          surface.style.filter = i >= next ? IMAGE_SHADOW : "none";
+        } else {
+          surface.style.boxShadow = i >= next ? SHADOW : "none";
+        }
       });
     };
 
@@ -95,7 +119,9 @@ export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
       });
       /* Ниже lg стопки нет, карточки не перекрываются — тень у всех. */
       surfaces.forEach((surface) => {
-        if (surface) surface.style.boxShadow = "";
+        if (!surface) return;
+        surface.style.boxShadow = "";
+        surface.style.filter = "";
       });
     };
 
@@ -167,10 +193,11 @@ export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
             <div
               data-text
               /*
-                Ниже lg текст выровнен по центру (2656:11565), на десктопе —
-                по левому краю колонки.
+                В макете ниже lg текст стоял по центру (2656:11565) — по
+                просьбе выключка левая на всех ширинах, как у остального текста
+                вне карточек на страницах «Для кого».
               */
-              className={`flex flex-col items-center gap-24 text-center lg:items-start lg:text-left lg:sticky lg:top-[var(--text-top)] lg:transition-opacity lg:duration-500 motion-reduce:lg:transition-none ${
+              className={`flex flex-col items-start gap-24 text-left lg:sticky lg:top-[var(--text-top)] lg:transition-opacity lg:duration-500 motion-reduce:lg:transition-none ${
                 i === 0 ? "" : "lg:opacity-0"
               }`}
               style={{ "--text-top": `${TEXT_TOP}px` } as React.CSSProperties}
@@ -186,7 +213,7 @@ export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
                 {item.effects.map((effect) => (
                   <li
                     key={effect}
-                    className="flex items-center justify-center gap-8 lg:justify-start"
+                    className="flex items-center justify-start gap-8"
                   >
                     {/*
                       Маркер из макета — точка 8px в боксе 24px (390:1185), а не
@@ -222,11 +249,33 @@ export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
               i < items.length - 1 ? "mb-48" : ""
             }`}
           >
-            <div
-              aria-hidden
-              data-surface
-              className={`aspect-[588/400] w-full rounded-[20px] border border-border-subtle shadow-drop-lg ${PREVIEW_GRADIENT}`}
-            />
+            {(() => {
+              const preview = getScenarioPreview(slug, i);
+              /*
+                Готовый кадр — цельная карточка: градиент, обводка и скругления
+                запечены в файл, углы вырезаны прозрачностью. Поэтому подложка
+                заглушки к нему не применяется, а тень висит фильтром: он идёт
+                по контуру альфа-канала и повторяет скругление на любой ширине.
+                Так же сделано в FeatureStack на «О платформе».
+              */
+              return preview?.asset ? (
+                <Image
+                  data-surface
+                  src={preview.asset}
+                  alt={preview.alt}
+                  width={588}
+                  height={400}
+                  priority={i === 0}
+                  className="h-auto w-full drop-shadow-[0_12px_24px_#60738f33]"
+                />
+              ) : (
+                <div
+                  aria-hidden
+                  data-surface
+                  className={`aspect-[588/400] w-full rounded-[20px] border border-border-subtle shadow-drop-lg ${PREVIEW_GRADIENT}`}
+                />
+              );
+            })()}
           </div>
         </Fragment>
       ))}

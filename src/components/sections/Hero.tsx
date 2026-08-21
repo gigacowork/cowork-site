@@ -1,5 +1,5 @@
 import { HeroImage } from "@/components/ui/HeroImage";
-import { Icon } from "@/components/ui/Icon";
+/* Icon вернётся вместе с кнопкой «Войти» — см. закомментированный блок ниже. */
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 
@@ -151,15 +151,15 @@ export function Hero({ chat }: HeroProps) {
           >
             Попробовать платформу
           </Button>
-          <Button
-            href="#login"
-            variant="ghost"
-            size="lg"
-          >
-            Войти
-            {/* Icon / arrow up-right 418:4735, 9×9 */}
-            <Icon src="/img/icons/arrow-up-right.svg" className="size-[9px] text-icon-primary" />
-          </Button>
+          {/*
+            «Войти» временно убрана — как и в шапке, и на странице лид-формы:
+            входить пока некуда. Вернуть — раскомментировать.
+
+            <Button href="#login" variant="ghost" size="lg">
+              Войти
+              <Icon src="/img/icons/arrow-up-right.svg" className="size-[9px] text-icon-primary" />
+            </Button>
+          */}
         </div>
 
         {/* PROTO / Hero Chat · Embedded 1933:85345 — только десктопный макет */}

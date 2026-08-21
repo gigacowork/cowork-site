@@ -59,15 +59,15 @@ export function Metrics() {
       className="bg-bg-page w-full py-64"
     >
       {/*
-        Ниже md метрики прижаты влево — как и весь текст вне карточек на
-        главной. На десктопе это по-прежнему ряд из трёх равных колонок, где
-        число и подпись стоят по центру своей колонки (1927:15594).
+        Число и подпись стоят по центру своей колонки на всех ширинах
+        (1927:15594 / 1927:17400). Ниже md колонки были прижаты влево — под
+        общую левую выключку мобильных секций; по просьбе выровнены по центру.
       */}
-      <ul className="container-page flex flex-col items-start gap-40 md:flex-row md:items-start md:justify-center">
+      <ul className="container-page flex flex-col items-center gap-40 md:flex-row md:items-start md:justify-center">
         {METRICS.map((metric) => (
           <li
             key={metric.id}
-            className="flex w-[307px] max-w-full shrink-0 flex-col items-start gap-16 md:items-center"
+            className="flex w-[307px] max-w-full shrink-0 flex-col items-center gap-16"
           >
             {/* Value (1642:6684) — baseline-aligned Display/XL + Heading/H1 suffix */}
             {/*
@@ -88,7 +88,7 @@ export function Metrics() {
             </p>
 
             {/* Description (1477:6173) — Body/L, hard line break from Figma */}
-            <p className="text-body-l w-full whitespace-pre-line text-left text-text-primary md:text-center">
+            <p className="text-body-l w-full whitespace-pre-line text-center text-text-primary">
               {metric.label}
             </p>
           </li>

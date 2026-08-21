@@ -61,7 +61,7 @@ export default function Home() {
       <Infrastructure />
 
       {/* 10 — Финальный CTA (влево, как и остальные заголовки главной) */}
-      <FinalCta align="left" />
+      <FinalCta />
     </>
   );
 }

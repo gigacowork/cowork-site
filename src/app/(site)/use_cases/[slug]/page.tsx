@@ -79,14 +79,15 @@ export default async function UseCasePage({
     scenarios: useCase.scenarios.length ? (
       <section className="w-full bg-bg-page py-64 md:py-120">
         <div className="container-page flex flex-col gap-48 md:gap-96">
-          <div className="flex flex-col items-center gap-24 text-center md:items-start md:text-left">
-            <Kicker>Применение</Kicker>
+          {/* Ниже md текст по левому краю, пилюля — по центру. */}
+          <div className="flex flex-col items-start gap-24 text-left">
+            <Kicker className="self-center md:self-start">Применение</Kicker>
             <h2 className="text-h3 font-medium text-text-primary md:max-w-[800px] md:text-h2">
               <Lines text={useCase.scenariosTitle} />
             </h2>
           </div>
 
-          <ScenarioStack items={useCase.scenarios} />
+          <ScenarioStack items={useCase.scenarios} slug={useCase.slug} />
         </div>
       </section>
     ) : null,

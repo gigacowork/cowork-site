@@ -39,8 +39,14 @@ export function UseCaseBenefits({
           там, где они есть в тексте роли, — размеры те же, что у заголовков
           остальных секций шаблона.
         */}
-        <div className="flex flex-col items-center gap-24 text-center md:items-start md:text-left">
-          {kicker ? <Kicker>{kicker}</Kicker> : null}
+        {/*
+          Ниже md заголовок и строка-связка стоят по левому краю, а пилюля
+          остаётся по центру — так на всех страницах «Для кого».
+        */}
+        <div className="flex flex-col items-start gap-24 text-left">
+          {kicker ? (
+            <Kicker className="self-center md:self-start">{kicker}</Kicker>
+          ) : null}
           {title ? (
             <h2 className="text-h3 font-medium text-text-primary md:max-w-[800px] md:text-h2">
               <Lines text={title} />

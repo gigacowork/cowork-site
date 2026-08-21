@@ -519,20 +519,32 @@ export function HeroChat() {
                     Нажатие — тот же ховер, только чип становится прозрачнее:
                     отдельного состояния Pressed в компоненте нет, а разница в
                     плотности читается как отклик на клик.
+
+                    В покое прозрачности нет. Раньше на чипе висела opacity 70%
+                    (из вариантов компонента), и сквозь него просвечивал фон
+                    hero: белая подложка роли выглядела серой, а текст — блёклым.
                   */
-                  className={`flex cursor-pointer items-center justify-center gap-4 rounded-full py-8 pl-12 pr-[14px] opacity-70 transition-[box-shadow,background-color,background-image,opacity] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
+                  className={`group flex cursor-pointer items-center justify-center gap-4 rounded-full p-8 transition-[box-shadow,background-color,background-image,opacity] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
                     isActive
                       ? "bg-bg-card shadow-[inset_0_0_0_1px_var(--color-icon-secondary)]"
-                      : "bg-bg-card shadow-[inset_0_0_0_1px_var(--color-border-subtle)] hover:bg-[image:var(--gradient-hero-aurora)] hover:shadow-[inset_0_0_0_1px_var(--color-border-default)] active:bg-[image:var(--gradient-hero-aurora)] active:opacity-40 active:shadow-[inset_0_0_0_1px_var(--color-border-default)]"
+                      : "bg-bg-card shadow-[inset_0_0_0_1px_var(--color-border-subtle)] hover:bg-[image:var(--gradient-hero-aurora)] hover:shadow-[inset_0_0_0_1px_var(--color-border-default)] active:bg-[image:var(--gradient-hero-aurora)] active:opacity-70 active:shadow-[inset_0_0_0_1px_var(--color-border-default)]"
                   }`}
                 >
                   {/*
-                    Текст чипа — Body/M 14px, как подзаголовок hero, только на
-                    ступень мельче. В макете здесь Caption 12px, но рядом с
-                    подзаголовком 16px чипы читались как подпись, а не как
-                    перечень сценариев.
+                    Отступы и заливки — по Chip / State=Default (1927:15561):
+                    у чипа 8 со всех сторон и шаг 4, у подложки роли 8 по
+                    горизонтали и 4 по вертикали, заливка neutral-100.
+
+                    Кегль оставлен Body/M 14 — в макете здесь Caption 12, но
+                    рядом с подзаголовком hero 16 чипы читались как подпись, а
+                    не как перечень сценариев. Это единственное отступление.
+
+                    В ховере подложка роли становится белой: под ней в этот
+                    момент градиент Aurora, и серая пилюля на нём выглядела
+                    грязным пятном. Правило висит на самом чипе (group-hover),
+                    потому что курсор наводят на него, а не на пилюлю.
                   */}
-                  <span className="flex items-center justify-center rounded-full bg-neutral-100 py-4 pl-12 pr-[14px] text-body-m text-text-secondary">
+                  <span className="flex items-center justify-center rounded-full bg-neutral-100 px-8 py-4 text-body-m text-text-secondary transition-colors duration-200 ease-out group-hover:bg-bg-card">
                     {item.role}
                   </span>
                   <span className="whitespace-nowrap text-body-m text-text-primary">

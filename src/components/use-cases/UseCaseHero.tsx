@@ -54,7 +54,12 @@ export function UseCaseHero({
         />
       ) : null}
 
-      <div className="container-page flex flex-col items-center gap-32 text-center md:items-start md:gap-40 md:text-left">
+      {/*
+        В макете ниже md hero стоял по центру — по просьбе выключка левая на
+        всех ширинах, как и у остального текста вне карточек на страницах
+        «Для кого». Кнопка едет вместе с текстом.
+      */}
+      <div className="container-page flex flex-col items-start gap-32 text-left md:gap-40">
         <div className="flex flex-col gap-48 md:gap-24">
           <h1 className="text-h2 font-medium text-text-primary md:max-w-[720px] md:text-h1">
             <Lines text={title} />

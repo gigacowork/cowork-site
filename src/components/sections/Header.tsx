@@ -219,8 +219,15 @@ export function Header() {
                     aria-expanded={open}
                     aria-haspopup="true"
                     onClick={() => setOpenMenu(open ? null : item.label)}
-                    className={`flex cursor-pointer items-center justify-center gap-8 rounded-full px-12 py-8 text-body-m text-text-primary transition-colors hover:bg-neutral-100 ${
-                      open || groupActive ? "bg-neutral-100" : ""
+                    /*
+                      Navigation Item, State=Hover (3435:15130): подложка
+                      Action/Secondary/Hover, текст Text/Strong. Раньше здесь
+                      была neutral-100 — на ступень темнее.
+                    */
+                    className={`flex cursor-pointer items-center justify-center gap-8 rounded-full px-12 py-8 text-body-m transition-colors hover:bg-action-secondary-hover hover:text-text-strong ${
+                      open || groupActive
+                        ? "bg-action-secondary-hover text-text-strong"
+                        : "text-text-primary"
                     }`}
                   >
                     {item.label}
@@ -244,9 +251,19 @@ export function Header() {
                         : "pointer-events-none -translate-y-4 opacity-0"
                     }`}
                   >
-                    <ul className="flex min-w-[220px] flex-col gap-4 rounded-[16px] border border-border-subtle bg-bg-page p-8 shadow-drop-lg">
+                    {/*
+                      Dropdown Panel (3435:15092): ширина 304, скругление 24,
+                      внутренний отступ 12, шаг между пунктами 4, обводка
+                      Border/Subtle и тень Elevation/Drop/Sm.
+                    */}
+                    <ul className="flex w-[304px] flex-col gap-4 overflow-hidden rounded-[24px] border border-border-subtle bg-bg-page p-12 shadow-drop-sm">
                       {item.children.map((leaf) => (
                         <li key={leaf.href}>
+                          {/*
+                            Dropdown Item (3432:15088): высота 41, отступы по 12,
+                            скругление полное, Body/M. В ховере — подложка
+                            Action/Secondary/Hover и текст Text/Strong.
+                          */}
                           <Link
                             href={leaf.href}
                             tabIndex={open ? undefined : -1}
@@ -254,7 +271,7 @@ export function Header() {
                               isActive(pathname, leaf.href) ? "page" : undefined
                             }
                             onClick={() => setOpenMenu(null)}
-                            className="block rounded-[10px] px-12 py-8 text-body-m whitespace-nowrap text-text-primary transition-colors hover:bg-neutral-100 aria-[current=page]:bg-neutral-100"
+                            className="flex h-[41px] items-center rounded-full px-12 text-body-m whitespace-nowrap text-text-primary transition-colors hover:bg-action-secondary-hover hover:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
                           >
                             {leaf.label}
                           </Link>
@@ -335,7 +352,12 @@ export function Header() {
                   type="button"
                   aria-expanded={open}
                   onClick={() => setOpenMobile(open ? null : item.label)}
-                  className="flex cursor-pointer items-center justify-between rounded-full px-12 py-12 text-body-l text-text-primary"
+                  /* Раскрытый пункт подсвечивается как Navigation Item в ховере. */
+                  className={`flex cursor-pointer items-center justify-between rounded-full px-12 py-12 text-body-l transition-colors ${
+                    open
+                      ? "bg-action-secondary-hover text-text-strong"
+                      : "text-text-primary"
+                  }`}
                 >
                   {item.label}
                   <Icon
@@ -348,7 +370,7 @@ export function Header() {
                 <div
                   /*
                     Потолок раскрывашки считается от самого длинного списка —
-                    «Для кого» с восемью ролями (8 × 33 + 7 × 4 + 8 снизу).
+                    «Для кого» с восемью ролями (8 × 41 + 7 × 4 + 8 снизу).
                     С прежними 240 половина пунктов оказывалась срезанной.
                   */
                   className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
@@ -358,11 +380,15 @@ export function Header() {
                   <ul className="flex flex-col gap-4 pb-8 pl-12">
                     {item.children.map((leaf) => (
                       <li key={leaf.href}>
+                        {/* Тот же Dropdown Item (3432:15088), что и на десктопе. */}
                         <Link
                           href={leaf.href}
                           tabIndex={open ? undefined : -1}
+                          aria-current={
+                            isActive(pathname, leaf.href) ? "page" : undefined
+                          }
                           onClick={() => setMenuOpen(false)}
-                          className="block rounded-full px-12 py-8 text-body-m text-text-secondary"
+                          className="flex h-[41px] items-center rounded-full px-12 text-body-m text-text-primary transition-colors active:bg-action-secondary-hover active:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
                         >
                           {leaf.label}
                         </Link>

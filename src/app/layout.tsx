@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { YandexMetrika } from "@/components/analytics/YandexMetrika";
 
 /**
  * Корневой каркас — только <html> и <body>.
@@ -28,7 +29,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Счётчик стоит в корневом каркасе — он общий для всех страниц. */}
+        <YandexMetrika />
+      </body>
     </html>
   );
 }
