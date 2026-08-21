@@ -458,15 +458,19 @@
   }
 
   .text-link:hover {
-    color: var(--color-text-primary);
-  }
-
-  .text-link:active {
     color: var(--color-status-accent);
   }
 
+  .text-link:active {
+    color: var(--color-text-tertiary);
+  }
+
   /*
-    Состояния Default / Hover / Pressed выше — ровно из макета (1003:4161).
+    Состояния Default / Hover / Pressed выше — ровно из макета (1003:4161):
+    Text/Secondary → Status/Accent → Text/Tertiary. Раньше здесь стояли
+    Text/Primary в ховере и Status/Accent в нажатии — то есть ссылка на
+    наведении темнела вместо того, чтобы подсвечиваться, а сиреневый горел
+    не в том состоянии.
     Клавиатурного состояния в компоненте нет, но без него ссылки подвала были
     единственными на сайте, по которым нельзя было понять, где фокус. Обводка
     та же, что у кнопок и карточек. Там, где рамку рисует родитель (карточки
