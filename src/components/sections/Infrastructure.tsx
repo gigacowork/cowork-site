@@ -71,9 +71,9 @@ export function Infrastructure() {
 
             {/* I1927:15627;515:1150 — Body/L, text-primary */}
             <p className="text-body-l text-text-primary">
-              Экспертиза и инфраструктура бигтеха{" "}
+              Экспертиза и&nbsp;инфраструктура бигтеха{" "}
               <br className="hidden md:inline" />
-              для внедрения ИИ в компании любого масштаба
+              для&nbsp;внедрения ИИ в&nbsp;компании любого масштаба
             </p>
 
             {/* Logo / Bottom — I1927:15627;938:2906 (134×37, bottom-40 left-40) */}
@@ -99,12 +99,12 @@ export function Infrastructure() {
                 <p className="text-h4 font-medium text-black md:max-w-[317px] md:text-text-primary">
                   Соответствие требованиям РФ{" "}
                   <br className="hidden md:inline" />
-                  по безопасности данных
+                  по&nbsp;безопасности данных
                 </p>
                 {/* I1927:15629;513:1305 — Body/L */}
                 <p className="text-body-l text-text-primary md:max-w-[422px] md:text-text-secondary">
-                  Защита данных на всех уровнях: шифрование каналов связи по TLS, ролевая
-                  модель доступа c SSO и Active Directory, защита от DDoS-атак
+                  Защита данных на&nbsp;всех уровнях: шифрование каналов связи по&nbsp;TLS, ролевая
+                  модель доступа c SSO и&nbsp;Active Directory, защита от&nbsp;DDoS-атак
                 </p>
               </div>
             </div>
@@ -118,13 +118,13 @@ export function Infrastructure() {
               <div className="flex flex-col gap-24">
                 {/* I1927:15630;513:1306 — H4 */}
                 <p className="text-h4 font-medium text-black md:max-w-[317px] md:text-text-primary">
-                  Локальное развертывание —
+                  Локальное развертывание&nbsp;—
                   <br />
                   On-premise
                 </p>
                 {/* I1927:15630;513:1305 — Body/L */}
                 <p className="text-body-l text-text-primary md:max-w-[422px] md:text-text-secondary">
-                  Возможность внедрения платформы в контур компании – все данные остаются
+                  Возможность внедрения платформы в&nbsp;контур компании&nbsp;– все данные остаются
                   внутри корпоративной инфраструктуры
                 </p>
               </div>

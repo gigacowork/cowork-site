@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { RELEASES } from "@/content/releases";
 
 /**
@@ -15,9 +16,9 @@ import { RELEASES } from "@/content/releases";
  */
 
 export const metadata: Metadata = {
-  title: "Что нового — GigaCowork",
+  title: "Что\u00A0нового\u00A0— GigaCowork",
   description:
-    "Релизы и обновления платформы GigaCowork: новые возможности агентов, навыки, команды, пространства и коннекторы.",
+    "Релизы и\u00A0обновления платформы GigaCowork: новые возможности агентов, навыки, команды, пространства и\u00A0коннекторы.",
 };
 
 /** Тот же фон, что у финального CTA главной (2572:11130). */
@@ -36,11 +37,11 @@ export default function WhatsNewPage() {
       >
         <div className="container-page flex flex-col gap-16">
           <h1 className="text-h3 font-medium text-neutral-1000 md:text-h2">
-            Что нового
+            Что&nbsp;нового
           </h1>
           <p className="max-w-[560px] text-body-l text-text-secondary">
-            Рассказываем, что изменилось в платформе: новые возможности агентов,
-            навыки и команды, пространства и коннекторы к внешним системам.
+            Рассказываем, что&nbsp;изменилось в&nbsp;платформе: новые возможности агентов,
+            навыки и&nbsp;команды, пространства и&nbsp;коннекторы к&nbsp;внешним системам.
           </p>
         </div>
       </section>
@@ -131,14 +132,15 @@ export default function WhatsNewPage() {
           ) : (
             <p className="text-body-m text-text-tertiary">
               Это первый релиз платформы. Следующие обновления будут появляться
-              здесь — от версии к версии.
+              здесь&nbsp;— от&nbsp;версии к&nbsp;версии.
             </p>
           )}
 
           {/* Нижний CTA */}
           <div
-            className={`flex flex-col items-center gap-24 rounded-[24px] px-24 py-40 text-center md:px-48 md:py-48 ${HERO_GRADIENT}`}
+            className={`relative isolate flex flex-col items-center gap-24 overflow-hidden rounded-[24px] px-24 py-40 text-center md:px-48 md:py-48 ${CTA_FALLBACK}`}
           >
+            <CtaBackground />
             <p className="text-h4 font-medium text-text-primary md:text-h3">
               Попробуйте новые возможности
             </p>

@@ -33,7 +33,7 @@ const NAV_GROUPS: NavGroup[] = [
     width: "xl:w-[178px]",
     links: [
       { label: "Обзор платформы", href: "#platform" },
-      { label: "Что нового", href: "#whats-new" },
+      { label: "Что\u00A0нового", href: "#whats-new" },
       /*
         Адрес со слэшем на конце — как в шапке: документация лежит статикой в
         public, и без слэша сервер отдаёт редирект вместо самой страницы.
@@ -44,9 +44,9 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Навыки", href: "#skills", hidden: true },
       { label: "Быстрые команды", href: "#commands", hidden: true },
       { label: "Коннекторы", href: "#connectors", hidden: true },
-      { label: "Запуск по расписанию", href: "#schedule", hidden: true },
+      { label: "Запуск по\u00A0расписанию", href: "#schedule", hidden: true },
       { label: "Безопасность", href: "#security", hidden: true },
-      { label: "Помощь и поддержка", href: "#support", hidden: true },
+      { label: "Помощь и\u00A0поддержка", href: "#support", hidden: true },
     ],
   },
   {
@@ -76,7 +76,7 @@ const NAV_GROUPS: NavGroup[] = [
     title: "КОМПАНИЯ",
     width: "xl:w-[101px]",
     links: [
-      { label: "О компании", href: "#about", hidden: true },
+      { label: "О\u00A0компании", href: "#about", hidden: true },
       { label: "Кейсы", href: "#cases", hidden: true },
       { label: "Блог", href: "#blog", hidden: true },
       { label: "Партнёрам", href: "#partners", hidden: true },
@@ -94,7 +94,7 @@ const VISIBLE_GROUPS = NAV_GROUPS.map((group) => ({
 const CONTACTS = [
   { title: "Поддержка", email: "support_cowork@gigab2b.ru" },
   { title: "Остались вопросы", email: "info@gigab2b.ru" },
-  { title: "Контакты для СМИ", email: "press@gigab2b.ru" },
+  { title: "Контакты для\u00A0СМИ", email: "press@gigab2b.ru" },
 ];
 
 /**
@@ -131,7 +131,7 @@ export function Footer() {
 
           {/* Footer / Navigation Offset — 720:2038 */}
           <nav
-            aria-label="Разделы сайта и контакты"
+            aria-label="Разделы сайта и\u00A0контакты"
             className="flex flex-col gap-40 md:grid md:flex-1 md:grid-cols-2 md:gap-x-64 md:gap-y-40 xl:flex xl:flex-row xl:gap-32 xl:gap-y-0 min-[1440px]:gap-64"
           >
             {VISIBLE_GROUPS.map((group) => (

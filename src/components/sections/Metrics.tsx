@@ -40,14 +40,14 @@ export const METRICS: Metric[] = [
     prefix: "-",
     value: 20,
     suffix: "%",
-    label: "потребности\nв расширении штата",
+    label: "потребности\nв\u00A0расширении штата",
   },
   {
     id: "time-to-value",
     prefix: "",
     value: 3,
     suffix: "мес",
-    label: "до первых\nрезультатов",
+    label: "до\u00A0первых\nрезультатов",
   },
 ];
 

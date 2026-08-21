@@ -100,10 +100,10 @@ export const TOKEN_BENEFIT_CARDS: TokenBenefitCard[] = [
   {
     id: "per-user",
     art: inlineTokenArt("per-user.svg", PER_USER_LAYERS),
-    titleLines: ["Тарификация", "по пользователям"],
+    titleLines: ["Тарификация", "по\u00A0пользователям"],
     bodyLines: [
       "Стоимость определяется числом людей,",
-      "а не интенсивностью их работы с агентами",
+      "а\u00A0не\u00A0интенсивностью их работы с\u00A0агентами",
     ],
     gradient:
       "bg-[linear-gradient(61.831deg,rgb(218,253,228)_0.952%,rgb(228,250,255)_50.802%,rgb(244,251,255)_101.64%)] " +
@@ -112,10 +112,10 @@ export const TOKEN_BENEFIT_CARDS: TokenBenefitCard[] = [
   {
     id: "no-limits",
     art: inlineTokenArt("no-limits.svg", NO_LIMITS_LAYERS),
-    titleLines: ["Без ограничений", "по количеству задач"],
+    titleLines: ["Без\u00A0ограничений", "по\u00A0количеству задач"],
     bodyLines: [
       "Агенты выполняют столько задач, сколько требует бизнес.",
-      "Цена не меняется.",
+      "Цена не\u00A0меняется.",
     ],
     gradient:
       "bg-[linear-gradient(59.38deg,rgb(218,253,228)_0.952%,rgb(228,250,255)_50.802%,rgb(244,251,255)_101.64%)] " +

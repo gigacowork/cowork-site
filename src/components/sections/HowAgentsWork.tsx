@@ -45,8 +45,8 @@ export type HowItWorksCard = {
 export const HOW_IT_WORKS_CARDS: HowItWorksCard[] = [
   {
     id: "receive",
-    titleLines: ["Получают задачу", "от сотрудников"],
-    description: "Принимают запрос на естественном языке и уточняют детали",
+    titleLines: ["Получают задачу", "от\u00A0сотрудников"],
+    description: "Принимают запрос на\u00A0естественном языке и\u00A0уточняют детали",
     image: {
       src: "/img/agents/receive.png",
       // исходник перевыгружен в 1.5× — рендер-ширина прежняя, растр чётче
@@ -61,9 +61,9 @@ export const HOW_IT_WORKS_CARDS: HowItWorksCard[] = [
   },
   {
     id: "analyze",
-    titleLines: ["Анализируют", "и структурируют данные"],
+    titleLines: ["Анализируют", "и\u00A0структурируют данные"],
     description:
-      "Интегрируются с корпоративными системами, находят информацию в базах знаний, деловых переписках",
+      "Интегрируются с\u00A0корпоративными системами, находят информацию в\u00A0базах знаний, деловых переписках",
     image: {
       src: "/img/agents/analyze.png",
       width: 906,
@@ -80,7 +80,7 @@ export const HOW_IT_WORKS_CARDS: HowItWorksCard[] = [
     titleLines: ["Выдают", "результат"],
     /* Перенос после двоеточия: перечень форматов уходит на свою строку. */
     description:
-      "Документ, таблицу, отчет в удобном формате:\nMD, pdf, excel, word",
+      "Документ, таблицу, отчет в\u00A0удобном формате:\nMD, pdf, excel, word",
     image: {
       src: "/img/agents/result.png",
       width: 1259,
@@ -116,7 +116,7 @@ export function HowAgentsWork() {
           data-stack-heading
           className="w-full max-w-[358px] text-left text-h3 font-medium text-neutral-1000 md:max-w-none md:text-center md:text-h2"
         >
-          Как работают ИИ-агенты
+          Как&nbsp;работают ИИ-агенты
           <br />
           GigaCowork
         </h2>

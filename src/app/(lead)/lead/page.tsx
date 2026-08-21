@@ -17,9 +17,9 @@ import { LEGAL_LINES } from "@/lib/legal";
  */
 
 export const metadata: Metadata = {
-  title: "Оставить заявку — GigaCowork",
+  title: "Оставить заявку\u00A0— GigaCowork",
   description:
-    "Оставьте заявку, чтобы получить пробный доступ к GigaCowork: 3 месяца от демо до первого ROI, безлимитные токены, готовое решение без изменения ИТ-систем.",
+    "Оставьте заявку, чтобы получить пробный доступ к\u00A0GigaCowork: 3\u00A0месяца от\u00A0демо до\u00A0первого ROI, безлимитные токены, готовое решение без\u00A0изменения ИТ-систем.",
 };
 
 /** Фон страницы: угол на мобильном другой (67.445° против 27.277°). */
@@ -29,9 +29,9 @@ const PAGE_GRADIENT =
 
 /** CTA / Copy — I2397:43441…43443 / 2397:43455…43459 */
 const BENEFITS = [
-  "3 месяца от демо до первого ROI",
+  "3\u00A0месяца от\u00A0демо до\u00A0первого ROI",
   "Безлимитное количество токенов",
-  "Готовое решение без изменения ИТ-систем",
+  "Готовое решение без\u00A0изменения ИТ-систем",
 ];
 
 export default function LeadPage() {
@@ -44,7 +44,7 @@ export default function LeadPage() {
     <div className={`lead-fit flex min-h-screen w-full flex-col ${PAGE_GRADIENT}`}>
       {/* Header 2397:43445 / 2397:43448 — только логотип */}
       <header className="container-page flex h-[62px] shrink-0 items-center justify-between py-16 md:h-[81px]">
-        <Link href="/" aria-label="GigaCowork, на главную" className="shrink-0">
+        <Link href="/" aria-label="GigaCowork, на\u00A0главную" className="shrink-0">
           <Image
             src="/img/logo-gigacowork.svg"
             alt="GigaCowork"
@@ -73,7 +73,7 @@ export default function LeadPage() {
             <p className="w-full text-center text-body-l md:w-[304px] md:text-left">
               Оставьте заявку, чтобы получить{" "}
               <br className="md:hidden" />
-              пробный доступ к GigaCowork
+              пробный доступ к&nbsp;GigaCowork
             </p>
           </div>
 

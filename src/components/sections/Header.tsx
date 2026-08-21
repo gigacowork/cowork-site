@@ -28,15 +28,15 @@ type NavItem = { label: string; href?: string; children?: NavLeaf[] };
 */
 const NAV_ITEMS: NavItem[] = [
   {
-    label: "О платформе",
+    label: "О\u00A0платформе",
     children: [
       { label: "Обзор платформы", href: "/ai-platform" },
-      { label: "Что нового", href: "/ai-platform/new-features" },
+      { label: "Что\u00A0нового", href: "/ai-platform/new-features" },
       { label: "Документация", href: "/ai-platform/docs/" },
     ],
   },
   {
-    label: "Для кого",
+    label: "Для\u00A0кого",
     /*
       Пункты собираются из того же списка, что и сами страницы (src/lib/
       use-cases.ts) и что кнопки «Подробнее» в блоке «Не тратьте часы…».

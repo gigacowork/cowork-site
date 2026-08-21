@@ -13,9 +13,9 @@ import { YandexMetrika } from "@/components/analytics/YandexMetrika";
  */
 
 export const metadata: Metadata = {
-  title: "GigaCowork — ИИ-агенты для вашей команды",
+  title: "GigaCowork\u00A0— ИИ-агенты для\u00A0вашей команды",
   description:
-    "GigaCowork — платформа ИИ-агентов, которые берут на себя рутинные задачи команды. Безопасная российская ИИ-инфраструктура.",
+    "GigaCowork\u00A0— платформа ИИ-агентов, которые берут на\u00A0себя рутинные задачи команды. Безопасная российская ИИ-инфраструктура.",
 };
 
 export const viewport: Viewport = {

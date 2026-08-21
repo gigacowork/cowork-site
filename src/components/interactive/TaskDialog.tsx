@@ -140,7 +140,7 @@ export function TaskDialog({
                 Задача отправлена
               </p>
               <p className="text-body-m text-text-secondary">
-                Мы изучим описание и вернёмся к вам по указанной почте.
+                Мы изучим описание и&nbsp;вернёмся к&nbsp;вам по&nbsp;указанной почте.
               </p>
               <Button type="button" variant="secondary" size="lg" onClick={close}>
                 Закрыть
@@ -156,7 +156,7 @@ export function TaskDialog({
                   Опишите задачу
                 </h2>
                 <p className="text-body-m text-text-secondary">
-                  Расскажите, что отнимает время, — мы соберём агента под вас.
+                  Расскажите, что&nbsp;отнимает время,&nbsp;— мы соберём агента под&nbsp;вас.
                 </p>
               </div>
 
@@ -218,9 +218,9 @@ export function TaskDialog({
                   </Button>
 
                   <p className="w-full text-left text-caption text-text-secondary">
-                    Нажимая на кнопку,{" "}
+                    Нажимая на&nbsp;кнопку,{" "}
                     <LegalLink href={LEGAL_PDF.personal}>я соглашаюсь</LegalLink>{" "}
-                    на обработку моих персональных данных в соответствии с{" "}
+                    на&nbsp;обработку моих персональных данных в&nbsp;соответствии с{" "}
                     <LegalLink href={LEGAL_PDF.privacy}>
                       Политикой конфиденциальности
                     </LegalLink>

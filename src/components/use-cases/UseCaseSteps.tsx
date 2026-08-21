@@ -1,6 +1,7 @@
 import { Icon } from "@/components/ui/Icon";
 import { Kicker } from "@/components/ui/Kicker";
 import { Lines } from "@/components/use-cases/Lines";
+import { asset } from "@/lib/asset";
 import type { UseCaseStep } from "@/lib/use-cases";
 
 /**
@@ -23,6 +24,37 @@ import type { UseCaseStep } from "@/lib/use-cases";
 */
 const SECTION_GRADIENT =
   "bg-[linear-gradient(233.478deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)]";
+
+/**
+ * Готовая запись экрана вместо заглушки.
+ *
+ * Исходник приехал гифкой на 23 МБ — в таком виде на страницу её ставить
+ * нельзя. Перекодировано в mp4 (h264, 1176 по ширине — двойная ширина карточки,
+ * 15 кадров/с, без звука): 0,45 МБ, в пятьдесят раз легче при том же виде.
+ *
+ * Играет само, по кругу и без звука — это замена гифки, а не ролик, который
+ * включают. Отсюда и отсутствие органов управления: пауза и перемотка в
+ * двадцатисекундной петле без звука ни к чему. `playsInline` обязателен, иначе
+ * iOS открывает видео на весь экран.
+ *
+ * Кадр шире карточки (1176×654 против 588×400), поэтому вписываем целиком, а не
+ * обрезаем: это скриншот интерфейса, у него нельзя срезать края.
+ */
+function StepVideo({ src, poster, label }: { src: string; poster?: string; label?: string }) {
+  return (
+    <video
+      src={asset(src)}
+      poster={poster ? asset(poster) : undefined}
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="metadata"
+      aria-label={label}
+      className="aspect-[588/400] w-full rounded-[20px] bg-bg-page object-contain shadow-drop-lg"
+    />
+  );
+}
 
 /** Video Placeholder (2801:16380) — белая карточка с кнопкой воспроизведения. */
 function VideoPlaceholder({ label }: { label?: string }) {
@@ -127,7 +159,15 @@ export function UseCaseSteps({
                 </div>
 
                 <div className={`md:w-[588px] ${mirrored ? "md:order-1" : ""}`}>
-                  <VideoPlaceholder label={step.videoLabel} />
+                  {step.video ? (
+                    <StepVideo
+                      src={step.video}
+                      poster={step.videoPoster}
+                      label={step.videoLabel}
+                    />
+                  ) : (
+                    <VideoPlaceholder label={step.videoLabel} />
+                  )}
                 </div>
               </div>
             );

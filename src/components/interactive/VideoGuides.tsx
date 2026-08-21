@@ -149,7 +149,7 @@ export function VideoGuides({ children }: { children: ReactNode }) {
       const fsBtn = document.createElement("button");
       fsBtn.type = "button";
       fsBtn.className = BTN_CLASS;
-      fsBtn.setAttribute("aria-label", "На весь экран");
+      fsBtn.setAttribute("aria-label", "На\u00A0весь экран");
       fsBtn.innerHTML = ICON_FULLSCREEN;
       fsBtn.addEventListener("click", (e) => {
         e.stopPropagation();

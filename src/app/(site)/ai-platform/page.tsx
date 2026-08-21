@@ -1,10 +1,10 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
-import Image from "@/components/ui/Image";
 import { HeroImage } from "@/components/ui/HeroImage";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { Icon } from "@/components/ui/Icon";
 import CountUp from "@/components/interactive/CountUp";
 import FeatureStack from "@/components/interactive/FeatureStack";
@@ -26,9 +26,9 @@ import { useCaseHref } from "@/lib/use-cases";
  */
 
 export const metadata: Metadata = {
-  title: "О платформе — GigaCowork",
+  title: "О\u00A0платформе\u00A0— GigaCowork",
   description:
-    "GigaCowork — платформа ИИ-агентов для всей компании: общие и личные пространства, навыки и команды, коннекторы к корпоративным системам и безопасность корпоративного уровня.",
+    "GigaCowork\u00A0— платформа ИИ-агентов для\u00A0всей компании: общие и\u00A0личные пространства, навыки и\u00A0команды, коннекторы к\u00A0корпоративным системам и\u00A0безопасность корпоративного уровня.",
 };
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
@@ -44,19 +44,14 @@ const BENEFIT_GRADIENT =
 /** Фон секции безопасности (2888:17815) */
 const SECURITY_GRADIENT =
   "bg-[linear-gradient(205.74deg,#d4e2ff_10.99%,#b3ebf6_79.92%,#b3f6e1_101.64%)]";
-/** Фон CTA (2888:17852) — тот же, что у финального CTA главной */
-const CTA_GRADIENT =
-  "bg-[linear-gradient(245.7deg,#f0f8ff_20.714%,#f7f7f8_94.867%)] " +
-  "md:bg-[linear-gradient(227.36deg,#f0f8ff_20.714%,#f7f7f8_94.867%)]";
-
 /* ──────────────────────────────── данные ───────────────────────────────── */
 
 type TagItem = { label: string; icon: string };
 
 const METRICS = [
-  { value: 80, caption: "быстрее подготовка отчетов и аналитики" },
-  { value: 70, caption: "быстрее подготовка отчетов и аналитики" },
-  { value: 93, caption: "быстрее подготовка отчетов и аналитики" },
+  { value: 80, caption: "быстрее подготовка отчетов и\u00A0аналитики" },
+  { value: 70, caption: "быстрее подготовка отчетов и\u00A0аналитики" },
+  { value: 93, caption: "быстрее подготовка отчетов и\u00A0аналитики" },
 ];
 
 /**
@@ -123,7 +118,7 @@ const WORKSPACE_CARDS: {
 }[] = [
   {
     title: "Работа команды",
-    text: "Сотрудники используют общие документы, знания и настроенных агентов в одном рабочем пространстве",
+    text: "Сотрудники используют общие документы, знания и\u00A0настроенных агентов в\u00A0одном рабочем пространстве",
     tags: [
       { label: "Общие агенты", icon: "/img/icons/shared-agents.svg" },
       { label: "Общие документы", icon: "/img/icons/document.svg" },
@@ -133,7 +128,7 @@ const WORKSPACE_CARDS: {
   },
   {
     title: "Личное пространство",
-    text: "Персональные агенты, документы и сессии для индивидуальных задач и экспериментов",
+    text: "Персональные агенты, документы и\u00A0сессии для\u00A0индивидуальных задач и\u00A0экспериментов",
     tags: [
       { label: "Персональные агенты", icon: "/img/icons/bot.svg" },
       { label: "Приватные сессии", icon: "/img/icons/message-circle-lock.svg" },
@@ -152,27 +147,27 @@ const WORKSPACE_CARDS: {
 const AGENT_BLOCKS = [
   {
     title: "ИИ-агенты",
-    text: "Передайте агентам трудоемкие задачи. Для типовых процессов настройте агента один раз и используйте всей командой.",
+    text: "Передайте агентам трудоемкие задачи. Для\u00A0типовых процессов настройте агента один раз и\u00A0используйте всей командой.",
     preview: "/img/platform/agent-result.webp",
   },
   {
     title: "Навыки",
-    text: "Превратите лучшие практики компании в единый стандарт работы для всех сотрудников",
+    text: "Превратите лучшие практики компании в\u00A0единый стандарт работы для\u00A0всех сотрудников",
     preview: "/img/platform/agent-skills.webp",
   },
   {
     title: "Быстрые команды",
-    text: "Сохраните повторяющиеся действия один раз и запускайте их одним нажатием",
+    text: "Сохраните повторяющиеся действия один раз и\u00A0запускайте их одним нажатием",
     preview: "/img/platform/agent-tasks.webp",
   },
   {
     title: "Коннекторы",
-    text: "Подключите корпоративные системы, чтобы агенты работали с актуальными данными и по корпоративным правилам",
+    text: "Подключите корпоративные системы, чтобы агенты работали с\u00A0актуальными данными и\u00A0по\u00A0корпоративным правилам",
     preview: "/img/platform/agent-connectors.webp",
   },
   {
-    title: "Запуск по расписанию или событию",
-    text: "Настройте расписание или триггер один раз. Повторяющиеся процессы будут выполняться автоматически.",
+    title: "Запуск по\u00A0расписанию или\u00A0событию",
+    text: "Настройте расписание или\u00A0триггер один раз. Повторяющиеся процессы будут выполняться автоматически.",
     preview: "/img/platform/agent-schedule.webp",
   },
 ];
@@ -180,33 +175,33 @@ const AGENT_BLOCKS = [
 const BENEFITS = [
   {
     title: "Прозрачность",
-    text: "Каждый участник видит, что сделал агент, и берет результат на проверку",
+    text: "Каждый участник видит, что\u00A0сделал агент, и\u00A0берет результат на\u00A0проверку",
   },
   {
     title: "Скорость",
-    text: "Ручные операции выполняются по расписанию. Команда проверяет и подтверждает готовый результат.",
+    text: "Ручные операции выполняются по\u00A0расписанию. Команда проверяет и\u00A0подтверждает готовый результат.",
   },
   {
     title: "Масштабируемость",
-    text: "Тот же состав команды обрабатывает больше задач. Агенты забирают рутину, сотрудники контролируют качество.",
+    text: "Тот\u00A0же состав команды обрабатывает больше задач. Агенты забирают рутину, сотрудники контролируют качество.",
   },
 ];
 
 const SECURITY_CARDS = [
   {
     tag: { label: "Юрисдикция РФ", icon: "/img/icons/double-headed-eagle.svg" },
-    title: "Работает в РФ",
-    text: "Российское правовое поле. Без санкционных рисков и вопросов к юрисдикции данных.",
+    title: "Работает в\u00A0РФ",
+    text: "Российское правовое поле. Без\u00A0санкционных рисков и\u00A0вопросов к\u00A0юрисдикции данных.",
   },
   {
     tag: { label: "Приватность", icon: "/img/icons/shield.svg" },
-    title: "Данные под контролем",
-    text: "Ваши данные никогда не используются для дообучения моделей",
+    title: "Данные под\u00A0контролем",
+    text: "Ваши данные никогда не\u00A0используются для\u00A0дообучения моделей",
   },
   {
     tag: { label: "On-premise", icon: "/img/icons/pentagon.svg" },
     title: "On-premise",
-    text: "Под строгие требования ИБ есть внедрение внутри контура компании",
+    text: "Под\u00A0строгие требования ИБ есть внедрение внутри контура компании",
   },
 ];
 
@@ -217,11 +212,11 @@ const SECURITY_RULES = [
   },
   {
     title: "Логирование",
-    text: "Мониторинг, логирование и шифрование всех данных и операций агентов",
+    text: "Мониторинг, логирование и\u00A0шифрование всех данных и\u00A0операций агентов",
   },
   {
     title: "Политики хранения",
-    text: "Гибкие политики хранения и удаления данных под требования вашей компании",
+    text: "Гибкие политики хранения и\u00A0удаления данных под\u00A0требования вашей компании",
   },
 ];
 
@@ -244,7 +239,7 @@ const SOLUTIONS: {
 }[] = [
   {
     title: "Управленческие решения",
-    text: "Отчеты, статусы и аналитика без переключения между системами.",
+    text: "Отчеты, статусы и\u00A0аналитика без\u00A0переключения между системами.",
     useCase: "ceo",
     tags: [
       { label: "Отчеты", icon: "/img/icons/reports.svg" },
@@ -253,7 +248,7 @@ const SOLUTIONS: {
   },
   {
     title: "Продажи",
-    text: "CRM, follow-up, подготовка ко встречам и коммерческие предложения за считанные минуты.",
+    text: "CRM, follow-up, подготовка ко\u00A0встречам и\u00A0коммерческие предложения за\u00A0считанные минуты.",
     useCase: "salesforce",
     tags: [
       { label: "CRM", icon: "/img/icons/crm.svg" },
@@ -262,7 +257,7 @@ const SOLUTIONS: {
   },
   {
     title: "Закупки",
-    text: "Сравнение и проверка предложений поставщиков, подготовка техзаданий и рекомендаций.",
+    text: "Сравнение и\u00A0проверка предложений поставщиков, подготовка техзаданий и\u00A0рекомендаций.",
     useCase: "procurement",
     tags: [
       { label: "Поставщики", icon: "/img/icons/supplier.svg" },
@@ -271,7 +266,7 @@ const SOLUTIONS: {
   },
   {
     title: "Финансовый контроль",
-    text: "План-факт, бюджет, сводки и контроль расходов без ручного сбора данных.",
+    text: "План-факт, бюджет, сводки и\u00A0контроль расходов без\u00A0ручного сбора данных.",
     useCase: "finance",
     tags: [
       { label: "Бюджет", icon: "/img/icons/budget.svg" },
@@ -328,7 +323,7 @@ export default function PlatformPage() {
           40% прозрачности; в экспорте прозрачность уже сведена, поэтому
           здесь картинка кладётся как есть.
 
-          Два кадра: десктопный 2880×1520 и мобильный 1170×2151 — это своя
+          Два кадра: десктопный 2880×1520 и мобильный 780×1492 — это своя
           обрезка под вертикальный экран, а не тот же файл в другом размере.
         */}
         <HeroImage
@@ -337,8 +332,17 @@ export default function PlatformPage() {
           className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
         />
 
-        <div className="container-page flex flex-col gap-24 lg:grid lg:grid-cols-[minmax(0,530px)_minmax(0,590px)] lg:items-center lg:justify-between lg:gap-80">
-          <div className="flex flex-col gap-32">
+        {/*
+          Раньше справа стояла карточка со скриншотом и кнопкой воспроизведения
+          (Hero Right, 2888:17757) — заглушка видео, которого пока нет. Кнопка
+          запечена в сам растр, отдельным слоем её не снять, поэтому карточка
+          убрана целиком, а сетка свёрнута в одну колонку.
+
+          Ширина текста ограничена: на всю ширину контейнера строки заголовка и
+          абзацев расползались бы на две трети экрана и читались бы тяжело.
+        */}
+        <div className="container-page flex flex-col gap-24">
+          <div className="flex max-w-[720px] flex-col gap-32">
             <div className="flex flex-col gap-24">
               <h1 className="text-h2 font-medium text-text-primary md:text-h1">
                 ИИ-агенты для
@@ -347,11 +351,11 @@ export default function PlatformPage() {
               </h1>
               <div className="flex flex-col gap-16 text-body-l text-text-secondary">
                 <p>
-                  Создавайте без разработки агентов под любую роль, описывая
+                  Создавайте без&nbsp;разработки агентов под&nbsp;любую роль, описывая
                   задачи обычным языком.
                 </p>
                 <p>
-                  Подключайте корпоративные системы и базы знаний для ускорения
+                  Подключайте корпоративные системы и&nbsp;базы знаний для&nbsp;ускорения
                   рабочих процессов.
                 </p>
               </div>
@@ -368,35 +372,6 @@ export default function PlatformPage() {
             </div>
           </div>
 
-          {/*
-            Hero Right (2888:17757) — заглушка видео.
-
-            Из экспорта срезана белая подложка с тенью: в макете это оправа
-            вокруг скриншота, но на странице карточка и так получает своё
-            скругление и тень, и две рамки читались одна в другой.
-
-            Кнопка воспроизведения не рисуется поверх: она уже есть в самом
-            скриншоте. Раньше их было две — запечённая и своя, они накладывались
-            и смазывали центр. Наведение вынесено на всю карточку.
-
-            Пропорция взята от самой картинки (803×423), а не от слота макета
-            590×326: при object-cover разница в пропорциях срезала боковой
-            край скриншота вместе с логотипом.
-          */}
-          <Link
-            href="/guides"
-            aria-label="Смотреть обучающие видео"
-            className="group relative block aspect-[803/423] w-full overflow-hidden rounded-[24px] bg-neutral-50 shadow-drop-md transition-shadow duration-300 hover:shadow-drop-lg"
-          >
-            <Image
-              src="/img/platform/hero-preview.png"
-              alt="Интерфейс GigaCowork"
-              fill
-              priority
-              sizes="(min-width: 1024px) 590px, 100vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-            />
-          </Link>
         </div>
       </section>
 
@@ -441,11 +416,11 @@ export default function PlatformPage() {
             <Kicker>Совместная работа</Kicker>
             <h2 className="text-h3 font-medium text-text-primary md:text-h2">
               Каждая команда работает
-              <br className="hidden md:block" /> вместе с агентами в своей среде
+              <br className="hidden md:block" /> вместе с&nbsp;агентами в&nbsp;своей среде
             </h2>
             <p className="text-body-l text-text-secondary">
-              Сотрудники работают в своих рабочих пространствах с агентами,
-              документами и политиками доступа
+              Сотрудники работают в&nbsp;своих рабочих пространствах с&nbsp;агентами,
+              документами и&nbsp;политиками доступа
             </p>
           </header>
 
@@ -552,12 +527,12 @@ export default function PlatformPage() {
           <header className="flex flex-col gap-16">
             <Kicker>Корпоративная безопасность</Kicker>
             <h2 className="text-h3 font-medium text-text-primary md:text-h2">
-              Безопасность и контроль
+              Безопасность и&nbsp;контроль
               <br className="hidden md:block" /> корпоративного уровня
             </h2>
             <div className="flex flex-col gap-16 md:flex-row md:items-start md:justify-between">
               <p className="text-body-l text-text-primary">
-                Защита данных, контроль доступа и соответствие требованиям
+                Защита данных, контроль доступа и&nbsp;соответствие требованиям
                 корпоративной безопасности
               </p>
               {/*
@@ -620,13 +595,13 @@ export default function PlatformPage() {
       <section className="w-full bg-bg-page py-32 md:py-[100px]">
         <div className="container-page flex flex-col gap-24 md:gap-[56px]">
           <header className="flex flex-col gap-16">
-            <Kicker>Решения для отделов</Kicker>
+            <Kicker>Решения для&nbsp;отделов</Kicker>
             <h2 className="text-h3 font-medium text-text-primary md:text-h2">
-              ИИ-решение для всех подразделений
+              ИИ-решение для&nbsp;всех подразделений
             </h2>
             <p className="text-body-l text-text-secondary">
               GigaCowork помогает облегчить работу руководителей, коммерческих
-              команд и бэк-офиса
+              команд и&nbsp;бэк-офиса
             </p>
           </header>
 
@@ -670,7 +645,10 @@ export default function PlatformPage() {
       </section>
 
       {/* ── CTA (2888:17852) ── */}
-      <section className={`w-full py-64 md:py-160 ${CTA_GRADIENT}`}>
+      <section
+        className={`relative isolate w-full overflow-hidden py-64 md:py-160 ${CTA_FALLBACK}`}
+      >
+        <CtaBackground />
         <div className="container-page flex flex-col items-center gap-40">
           <h2 className="max-w-[522px] text-center text-h3 font-medium text-text-primary md:text-h2">
             Готовы делегировать

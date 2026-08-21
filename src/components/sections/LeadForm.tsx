@@ -56,7 +56,7 @@ export function LeadForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      aria-label="Заявка на пробный доступ"
+      aria-label="Заявка на\u00A0пробный доступ"
       /*
         Внутренние поля и шаг на десктопе берутся из переменных страницы
         (`lead-fit` в globals.css): на невысоких экранах они ужимаются, чтобы
@@ -71,7 +71,7 @@ export function LeadForm() {
             Заявка отправлена
           </p>
           <p className="text-body-m text-text-secondary">
-            Мы свяжемся с вами по указанной почте и откроем пробный доступ.
+            Мы свяжемся с&nbsp;вами по&nbsp;указанной почте и&nbsp;откроем пробный доступ.
           </p>
         </div>
       ) : (
@@ -112,11 +112,11 @@ export function LeadForm() {
               htmlFor="lead-consent"
               className="flex-1 cursor-pointer text-left text-caption text-text-secondary"
             >
-              Даю <LegalLink href={LEGAL_PDF.materials}>согласие</LegalLink> на получение
-              материалов о сервисе, приглашений на мероприятия и рекламных
-              сообщений в соответствии{" "}
+              Даю <LegalLink href={LEGAL_PDF.materials}>согласие</LegalLink> на&nbsp;получение
+              материалов о&nbsp;сервисе, приглашений на&nbsp;мероприятия и&nbsp;рекламных
+              сообщений в&nbsp;соответствии{" "}
               <LegalLink href={LEGAL_PDF.privacy}>
-                с Политикой конфиденциальности
+                с&nbsp;Политикой конфиденциальности
               </LegalLink>
               .
             </label>
@@ -132,9 +132,9 @@ export function LeadForm() {
             обрывал первую строку на середине ширины и оставлял справа дыру.
           */}
           <p className="w-full px-16 text-left text-caption text-text-secondary md:px-48">
-            Нажимая на кнопку,{" "}
-            <LegalLink href={LEGAL_PDF.personal}>я соглашаюсь</LegalLink> на обработку
-            моих персональных данных в соответствии с{" "}
+            Нажимая на&nbsp;кнопку,{" "}
+            <LegalLink href={LEGAL_PDF.personal}>я соглашаюсь</LegalLink> на&nbsp;обработку
+            моих персональных данных в&nbsp;соответствии с{" "}
             <LegalLink href={LEGAL_PDF.privacy}>
               Политикой конфиденциальности
             </LegalLink>

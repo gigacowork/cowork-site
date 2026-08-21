@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Button from "@/components/ui/Button";
+import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { RELEASES, getRelease, type Block } from "@/content/releases";
 
 /**
@@ -24,7 +25,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const release = getRelease(slug);
-  if (!release) return { title: "Релиз не найден — GigaCowork" };
+  if (!release) return { title: "Релиз не\u00A0найден\u00A0— GigaCowork" };
 
   return {
     title: `${release.title} ${release.version} — GigaCowork`,
@@ -214,7 +215,7 @@ export default async function ReleasePage({
             href="/ai-platform/new-features"
             className="text-body-m text-text-secondary transition-colors hover:text-text-primary"
           >
-            ← Что нового
+            ← Что&nbsp;нового
           </Link>
 
           <div className="flex flex-wrap items-center gap-8">
@@ -285,14 +286,15 @@ export default async function ReleasePage({
 
             {/* Нижний CTA */}
             <div
-              className={`flex flex-col items-center gap-24 rounded-[24px] px-24 py-40 text-center md:px-48 md:py-48 ${HERO_GRADIENT}`}
+              className={`relative isolate flex flex-col items-center gap-24 overflow-hidden rounded-[24px] px-24 py-40 text-center md:px-48 md:py-48 ${CTA_FALLBACK}`}
             >
+              <CtaBackground />
               <p className="text-h4 font-medium text-text-primary md:text-h3">
                 Начните использовать GigaCowork уже сегодня
               </p>
               <p className="max-w-[560px] text-body-m text-text-secondary">
-                Мы хотим, чтобы технологии снижали нагрузку на сотрудников и
-                упрощали работу всей компании, поэтому описываем и обучаем разным
+                Мы хотим, чтобы технологии снижали нагрузку на&nbsp;сотрудников и
+                упрощали работу всей компании, поэтому описываем и&nbsp;обучаем разным
                 сценариям использования ИИ-агентов.
               </p>
               <div className="flex flex-wrap justify-center gap-16">
