@@ -43,9 +43,6 @@ type Scenario = {
   result: { title: string; text: string; actions: [string, string, string] };
 };
 
-/** Подпись над списком сценариев */
-const SCENARIOS_CAPTION = "Какие задачи уже решают ИИ-агенты";
-
 /** Chat / Scenario List — I1933:78661;361:626, тексты сценариев от заказчика */
 const SCENARIOS: Scenario[] = [
   {
@@ -478,12 +475,14 @@ export function HeroChat() {
         agent's answer.
       */}
 
-      {/* Chat / Scenario List 1933:78661 — 900, p 24, chips grid gap 12 */}
-      <div className="flex w-full flex-col items-center gap-24 p-24">
-        <p className="text-center text-caption text-text-secondary">
-          {SCENARIOS_CAPTION}
-        </p>
+      {/*
+        Chat / Scenario List 1933:78661 — 900, p 24, chips grid gap 12.
 
+        Подписи «Какие задачи уже решают ИИ-агенты» над чипами больше нет: чипы
+        идут сразу под подзаголовком hero. Раз подписи не осталось, внутренний
+        gap 24 тоже не нужен — в колонке один элемент.
+      */}
+      <div className="flex w-full flex-col items-center p-24">
         {/*
           Chip 353:903 — три состояния, у всех opacity 70%:
             Default 353:902   bg-card       + border-subtle
@@ -512,16 +511,31 @@ export function HeroChat() {
                   type="button"
                   aria-pressed={isActive}
                   onClick={() => (isActive ? close() : send(item))}
-                  className={`flex cursor-pointer items-center justify-center gap-4 rounded-full py-8 pl-12 pr-[14px] opacity-70 transition-[box-shadow,background-image] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
+                  /*
+                    Ховер: заливка Gradient/Hero/Aurora (1078:3394) и обводка
+                    Border/Default из State=Hover (1171:4399). Тени в макете
+                    нет.
+
+                    Нажатие — тот же ховер, только чип становится прозрачнее:
+                    отдельного состояния Pressed в компоненте нет, а разница в
+                    плотности читается как отклик на клик.
+                  */
+                  className={`flex cursor-pointer items-center justify-center gap-4 rounded-full py-8 pl-12 pr-[14px] opacity-70 transition-[box-shadow,background-color,background-image,opacity] duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary ${
                     isActive
                       ? "bg-bg-card shadow-[inset_0_0_0_1px_var(--color-icon-secondary)]"
-                      : "bg-bg-card shadow-[inset_0_0_0_1px_var(--color-border-subtle)] hover:bg-[image:var(--gradient-omni-neuton-2)] hover:shadow-[var(--shadow-drop-sm)] active:bg-[image:var(--gradient-omni-neuton-2)] active:shadow-[0_2px_8px_-2px_#60738f33]"
+                      : "bg-bg-card shadow-[inset_0_0_0_1px_var(--color-border-subtle)] hover:bg-[image:var(--gradient-hero-aurora)] hover:shadow-[inset_0_0_0_1px_var(--color-border-default)] active:bg-[image:var(--gradient-hero-aurora)] active:opacity-40 active:shadow-[inset_0_0_0_1px_var(--color-border-default)]"
                   }`}
                 >
-                  <span className="flex items-center justify-center rounded-full bg-neutral-100 py-4 pl-12 pr-[14px] text-caption text-text-secondary">
+                  {/*
+                    Текст чипа — Body/M 14px, как подзаголовок hero, только на
+                    ступень мельче. В макете здесь Caption 12px, но рядом с
+                    подзаголовком 16px чипы читались как подпись, а не как
+                    перечень сценариев.
+                  */}
+                  <span className="flex items-center justify-center rounded-full bg-neutral-100 py-4 pl-12 pr-[14px] text-body-m text-text-secondary">
                     {item.role}
                   </span>
-                  <span className="whitespace-nowrap text-caption text-text-primary">
+                  <span className="whitespace-nowrap text-body-m text-text-primary">
                     {item.scenario}
                   </span>
                 </button>

@@ -87,9 +87,16 @@ const CASES: CaseStudy[] = [
   },
 ];
 
+/*
+  Tag кейса — I1927:15622;816:3940: иконка 24 в боксе с полями по 8, подпись
+  через 4. Раньше здесь стояли поля 12 и 14, как у тега блока «Сделайте
+  ИИ-агентов частью команды» (1388:5966), — а это другой компонент. Лишние 10px
+  на чип давали 20px на пару, и в узкой карточке 332 второй чип упирался в край:
+  «Аналитика звонков» и «Клиентский сервис» обрезались подложкой карточки.
+*/
 function Tag({ tag }: { tag: CaseTag }) {
   return (
-    <li className="flex shrink-0 items-center justify-center gap-4 rounded-full bg-bg-tag py-8 pl-12 pr-[14px]">
+    <li className="flex shrink-0 items-center justify-center gap-4 rounded-full bg-bg-tag px-8 py-8">
       {/* Icon frame 354:151 — exported per tag, 24×24 */}
       <Icon
         src={`/img/icons/${tag.icon.toLowerCase()}.svg`}
@@ -117,7 +124,12 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
           "card-interactive relative flex h-full flex-col items-start overflow-hidden rounded-[24px] p-40",
           "bg-[image:linear-gradient(67deg,#DAFDE4_0.95%,#E4FAFF_50.8%,#F4FBFF_101.64%)]",
           study.gradientClassName,
-          "md:h-[504px]",
+          /*
+            min-h, а не h: внутренние высоты по-прежнему фиксированы, поэтому
+            логотипы и описания стоят на одной линии во всех карточках, но
+            перенос чипов на вторую строку не обрезается подложкой.
+          */
+          "md:min-h-[504px]",
         ].join(" ")}
       >
         {/*
@@ -150,8 +162,14 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
           />
         </div>
 
-        {/* Description — I1927:15620;515:1150, starts at y 277 in every card */}
-        <p className="mt-16 w-full shrink-0 text-body-l text-text-primary md:mt-[30px] md:h-[102px] md:text-body-m">
+        {/*
+          Description — I1927:15620;515:1150, начинается на y 277 во всех
+          карточках. Высота min, а не фиксированная: на макетных 332 текст
+          укладывается в 102, но между 768 и 1280 карточка ужимается, строк
+          становится больше, и жёсткая высота отправляла хвост описания прямо
+          на чипы.
+        */}
+        <p className="mt-16 w-full shrink-0 text-body-l text-text-primary md:mt-[30px] md:min-h-[102px] md:text-body-m">
           {study.description}
         </p>
 
@@ -165,8 +183,19 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
           className="absolute inset-0 z-10 focus-visible:outline-none"
         />
 
-        {/* Tags — I1927:15620;515:1152, pinned to the bottom padding edge */}
-        <ul className="mt-auto flex shrink-0 flex-wrap items-center gap-8 pt-16 md:flex-nowrap">
+        {/*
+          Tags — I1927:15620;515:1152, прижаты к нижнему полю карточки.
+
+          Ряд шире текстовой колонки на 20px: в макете рамка тегов — 272 при
+          колонке 252 и карточке 332, то есть чипы заходят в правое поле, но до
+          края не достают. Без этого запаса пара чипов не помещалась в 252 и
+          переносилась на вторую строку уже на макетной ширине.
+
+          Перенос при этом разрешён: ниже 1280 карточка ужимается до 259, и там
+          второй чип честно уходит на вторую строку, а карточка на неё подрастает
+          (min-h вместо h) — вместо того чтобы обрезаться подложкой.
+        */}
+        <ul className="mt-auto flex shrink-0 flex-wrap items-center gap-8 pt-16 md:-mr-[20px]">
           {study.tags.map((tag) => (
             <Tag key={tag.label} tag={tag} />
           ))}
@@ -209,8 +238,15 @@ export function Cases() {
           */}
         </div>
 
-        {/* Clients / Case Study Row — 1927:15618 / 1927:17422 */}
-        <ul className="flex w-full flex-col gap-16 md:flex-row md:items-start md:gap-24">
+        {/*
+          Clients / Case Study Row — 1927:15618 / 1927:17422.
+
+          `items-stretch` (по умолчанию), а не `items-start`: высота карточки
+          теперь минимальная, а не фиксированная, и без растягивания карточки
+          разъезжались бы по высоте, как только одно описание окажется длиннее
+          других. С фиксированными 504 это было незаметно.
+        */}
+        <ul className="flex w-full flex-col gap-16 md:flex-row md:gap-24">
           {CASES.map((study, index) => (
             <CaseCard key={study.company} study={study} lead={index === 0} />
           ))}

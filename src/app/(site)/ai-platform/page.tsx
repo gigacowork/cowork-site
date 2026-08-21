@@ -153,27 +153,27 @@ const AGENT_BLOCKS = [
   {
     title: "ИИ-агенты",
     text: "Передайте агентам трудоемкие задачи. Для типовых процессов настройте агента один раз и используйте всей командой.",
-    preview: "/img/platform/agent-result.svg",
+    preview: "/img/platform/agent-result.webp",
   },
   {
     title: "Навыки",
     text: "Превратите лучшие практики компании в единый стандарт работы для всех сотрудников",
-    preview: "/img/platform/agent-skills.svg",
+    preview: "/img/platform/agent-skills.webp",
   },
   {
     title: "Быстрые команды",
     text: "Сохраните повторяющиеся действия один раз и запускайте их одним нажатием",
-    preview: "/img/platform/agent-tasks.svg",
+    preview: "/img/platform/agent-tasks.webp",
   },
   {
     title: "Коннекторы",
     text: "Подключите корпоративные системы, чтобы агенты работали с актуальными данными и по корпоративным правилам",
-    preview: "/img/platform/agent-connectors.svg",
+    preview: "/img/platform/agent-connectors.webp",
   },
   {
     title: "Запуск по расписанию или событию",
     text: "Настройте расписание или триггер один раз. Повторяющиеся процессы будут выполняться автоматически.",
-    preview: "/img/platform/agent-schedule.svg",
+    preview: "/img/platform/agent-schedule.webp",
   },
 ];
 
@@ -509,19 +509,40 @@ export default function PlatformPage() {
         <div className="container-page flex flex-col gap-48 md:gap-80">
           {/*
             Заголовок липкий: карточки в стопке едут долго, и без этого читатель
-            быстро теряет, о каком разделе речь. Заливка обязательна — карточки
-            проходят под ним. Отступы стопки отсчитываются от его низа, см.
-            STICKY_TOP в FeatureStack.
+            быстро теряет, о каком разделе речь. Отступы стопки отсчитываются от
+            его низа, см. STICKY_TOP в FeatureStack.
+
+            Заливка нужна только на ширину левой колонки. В конце блока стопка
+            открепляется и уезжает вверх — подпись карточки прошла бы прямо
+            сквозь заголовок, поэтому под ним стоит фон. Но на всю ширину он
+            срезал бы верхний край карточки белой полосой, а карточка идёт во
+            второй колонке (680 + gap 40), поэтому фон обрывается по границе
+            колонок.
           */}
-          <header className="z-20 flex flex-col gap-16 bg-bg-page lg:sticky lg:top-[var(--header-h)] lg:py-16">
-            <Kicker>Возможности платформы</Kicker>
-            <h2 className="text-h3 font-medium text-text-primary md:text-h2">
-              Инструменты автоматизации
-              <br className="hidden md:block" /> бизнес-процессов
-            </h2>
+          <header
+            data-stack-header
+            /*
+              --stack-tail считает FeatureStack: это невидимый «хвост» снизу,
+              которым липкий диапазон заголовка укорачивается до диапазона
+              верхней карточки. Отрицательный margin гасит его в потоке, так что
+              на раскладку хвост не влияет; pointer-events снимаются, чтобы
+              пустая область не перехватывала курсор у стопки.
+            */
+            className="pointer-events-none relative z-20 flex flex-col gap-16 lg:sticky lg:top-[var(--header-h)] lg:pb-[var(--stack-tail,0px)]"
+          >
+            <div className="pointer-events-auto flex flex-col gap-16 lg:py-16">
+              <Kicker>Возможности платформы</Kicker>
+              <h2 className="text-h3 font-medium text-text-primary md:text-h2">
+                Инструменты автоматизации
+                <br className="hidden md:block" /> бизнес-процессов
+              </h2>
+            </div>
           </header>
 
-          <FeatureStack items={AGENT_BLOCKS} />
+          {/* Обёртка гасит хвост заголовка, чтобы он не растянул раскладку. */}
+          <div className="lg:mt-[calc(var(--stack-tail,0px)*-1)]">
+            <FeatureStack items={AGENT_BLOCKS} />
+          </div>
         </div>
       </section>
 
@@ -587,7 +608,7 @@ export default function PlatformPage() {
                 >
                   <span aria-hidden className="h-px w-full bg-text-primary" />
                   <h3 className="text-body-l text-text-primary">{rule.title}</h3>
-                  <p className="text-caption text-text-secondary">{rule.text}</p>
+                  <p className="text-body-m text-text-secondary">{rule.text}</p>
                 </article>
               ))}
             </div>

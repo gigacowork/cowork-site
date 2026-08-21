@@ -40,6 +40,16 @@ const TAKEOVER = 0.45;
 const PREVIEW_GRADIENT =
   "bg-[linear-gradient(48.74deg,#c5f8e5_0.95%,#caf5ff_50.8%,#cfedff_101.64%)]";
 
+/**
+ * Тень карточки — Elevation/Drop/Lg, та же, что в разметке.
+ *
+ * Носят её только передняя карточка и те, что ещё идут снизу. У карточек,
+ * ушедших под стопку, тень снимается: пять теней падали друг на друга и на
+ * выступающие сверху полоски, складывались и давали вокруг стопки грязную
+ * серую кайму. Так же сделано в FeatureStack на «О платформе».
+ */
+const SHADOW = "0 12px 48px -8px #60738f33";
+
 export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -49,6 +59,9 @@ export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
 
     const cards = Array.from(root.querySelectorAll<HTMLElement>("[data-card]"));
     const texts = Array.from(root.querySelectorAll<HTMLElement>("[data-text]"));
+    const surfaces = cards.map((card) =>
+      card.querySelector<HTMLElement>("[data-surface]"),
+    );
     if (cards.length < 2 || texts.length !== cards.length) return;
 
     const desktop = window.matchMedia("(min-width: 1024px)");
@@ -63,6 +76,14 @@ export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
         text.style.pointerEvents = on ? "" : "none";
         text.setAttribute("aria-hidden", on ? "false" : "true");
       });
+      /*
+        Тень остаётся у передней карточки и у тех, что ещё идут снизу: они
+        видны на фоне и должны отделяться от него. У закрытых карточек её нет —
+        от них видна только верхняя полоска, и тень там лишняя.
+      */
+      surfaces.forEach((surface, i) => {
+        if (surface) surface.style.boxShadow = i >= next ? SHADOW : "none";
+      });
     };
 
     const reset = () => {
@@ -71,6 +92,10 @@ export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
         text.style.opacity = "";
         text.style.pointerEvents = "";
         text.removeAttribute("aria-hidden");
+      });
+      /* Ниже lg стопки нет, карточки не перекрываются — тень у всех. */
+      surfaces.forEach((surface) => {
+        if (surface) surface.style.boxShadow = "";
       });
     };
 
@@ -199,6 +224,7 @@ export function ScenarioStack({ items }: { items: UseCaseScenario[] }) {
           >
             <div
               aria-hidden
+              data-surface
               className={`aspect-[588/400] w-full rounded-[20px] border border-border-subtle shadow-drop-lg ${PREVIEW_GRADIENT}`}
             />
           </div>

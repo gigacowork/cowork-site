@@ -25,6 +25,11 @@ export type NoHoursCard = {
   linkLabel: string;
   /** last card in the mock — lighter gradient + border + blur + shadow */
   highlighted?: boolean;
+  /**
+   * Карточка временно не показывается. Оставлена в данных, а не удалена:
+   * вернуть её нужно будет вместе с формой, которая за ней стоит.
+   */
+  hidden?: boolean;
 };
 
 export const NO_HOURS_CARDS: NoHoursCard[] = [
@@ -122,20 +127,40 @@ export const NO_HOURS_CARDS: NoHoursCard[] = [
     text: "Опишите ее, мы соберем агента под вас",
     linkLabel: "Описать задачу",
     highlighted: true,
+    /*
+      ВРЕМЕННО СКРЫТА: в первый релиз не идёт. Вернуть — снять `hidden`.
+      Форма, которая открывалась по этой карточке, лежит на месте
+      (TaskDialog), трогать её не нужно.
+    */
+    hidden: true,
   },
 ];
 
-/*
-  Заливка карточек — Gradient/Omni/turquoise, та же, что у карточек блока
-  «Безопасная российская ИИ-инфраструктура» (1927:15629 «Соответствие
-  требованиям РФ по безопасности данных»). Градиент задан только с md: в
-  макете он десктопный, ниже — ровная заливка #f2f3fa, как и в том блоке.
+/** Карточки, которые реально выводятся. */
+const VISIBLE_CARDS = NO_HOURS_CARDS.filter((card) => !card.hidden);
 
-  До этого здесь была Gradient/Omni/Neuton_Light — мятный уход в голубой.
+/*
+  Заливка карточек — Gradient/Omni/Neuton_Light_5 (1603:21768, Preview /
+  Gradient / Hero / Aurora): бледно-зелёный в левом нижнем углу переходит в
+  светло-голубой к правому верхнему.
+
+  Задана на всех ширинах, а не только с md. Раньше ниже md стояла ровная
+  #f2f3fa — она повторяла мобильную версию блока «Безопасная российская
+  ИИ-инфраструктура», и карточки на телефоне выглядели иначе, чем на десктопе.
+
+  Белая подложка из макета не нужна: все три опоры непрозрачные, а за пределами
+  4.3–92.9% CSS продлевает крайние цвета — белого не видно.
 */
 const CARD_GRADIENT =
-  "bg-[#f2f3fa] " +
-  "md:bg-[linear-gradient(232.657deg,rgb(240,248,255)_20.714%,rgb(247,247,248)_94.867%)]";
+  "bg-[linear-gradient(54.15deg,rgb(218,253,228)_4.332%,rgb(228,250,255)_22.937%,rgb(230,246,255)_92.893%)] " +
+  /*
+    Зелёное начало градиента уведено за левый нижний угол. Сам градиент не
+    тронут: он рисуется на холсте, который на 40 шире и выше карточки и сдвинут
+    влево-вниз, поэтому точка 0% оказывается снаружи, а в углу карточки видна
+    уже более светлая часть перехода. Фон рисуется только внутри border-box,
+    так что за пределами карточки ничего не появляется.
+  */
+  "[background-position:-40px_0] [background-size:calc(100%+40px)_calc(100%+40px)]";
 
 /* Highlighted card: mobile fill (1927:17384) + desktop fill (1927:15577) */
 const CARD_GRADIENT_HIGHLIGHT =
@@ -144,11 +169,11 @@ const CARD_GRADIENT_HIGHLIGHT =
   "border border-[#ffffff99] backdrop-blur-[8px] drop-shadow-[0_4px_8px_rgba(96,115,143,0.2)]";
 
 /*
-  Тело карточки. В макете это Caption 12px; по просьбе поднято до 13px —
-  межстрочный и трекинг взяты из той же ступени шкалы (1.2 / −0.02em),
-  чтобы 13px не выпадал из типографики остальных блоков.
+  Тело карточки. В макете это Caption 12px; по просьбе поднято до 16px — это
+  Body/L, обычная ступень шкалы. Тем же размером набран текст в карточках
+  блоков «Как работают ИИ-агенты» и «Сделайте ИИ-агентов частью команды».
 */
-const CARD_TEXT = "text-[13px] leading-[1.2] tracking-[-0.02em]";
+const CARD_TEXT = "text-body-l";
 
 export function NoHours() {
   return (
@@ -182,7 +207,7 @@ export function NoHours() {
         data-cards-track
         className="container-page no-scrollbar flex snap-x snap-mandatory gap-24 overflow-x-auto scroll-smooth"
       >
-        {NO_HOURS_CARDS.map((card) => (
+        {VISIBLE_CARDS.map((card) => (
           <li
             key={card.id}
             data-card-id={card.id}
@@ -231,7 +256,13 @@ export function NoHours() {
               <Link
                 href={useCaseHrefByCardId(card.id) ?? "/lead"}
                 aria-label={`${card.linkLabel} — ${card.title}`}
-                className={`text-link stretched-target flex cursor-pointer items-center justify-start self-start py-4 text-left focus-visible:outline-none ${CARD_TEXT}`}
+                /*
+                  mt-16 — гарантированный зазор до списка. Карточка выстроена
+                  через justify-between, и в самой длинной («Руководителю») на
+                  16px текст вырос настолько, что подпись вплотную прилипала к
+                  последнему пункту.
+                */
+                className={`text-link stretched-target mt-16 flex cursor-pointer items-center justify-start self-start py-4 text-left focus-visible:outline-none ${CARD_TEXT}`}
               >
                 {card.linkLabel}
               </Link>

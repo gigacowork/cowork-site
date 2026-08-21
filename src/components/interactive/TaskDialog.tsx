@@ -96,7 +96,7 @@ export function TaskDialog({
         onClick={open}
         aria-haspopup="dialog"
         aria-label={`${label} — ${cardTitle}`}
-        className="text-link stretched-target flex cursor-pointer items-center justify-start self-start py-4 text-left text-[13px] leading-[1.2] tracking-[-0.02em] focus-visible:outline-none"
+        className="text-link stretched-target mt-16 flex cursor-pointer items-center justify-start self-start py-4 text-left text-body-l focus-visible:outline-none"
       >
         {label}
       </button>

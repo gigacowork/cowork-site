@@ -117,8 +117,41 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
     const onPrev = nudge(-1);
     const onNext = nudge(1);
 
+    /*
+      Горизонтальный жест на трекпаде.
+
+      Пока секция закреплена, у дорожки `overflow-x: visible` и двигает её не
+      собственная прокрутка, а transform от прокрутки страницы. Нативный
+      горизонтальный скролл в этот момент двигать нечего, и двупальцевый смах
+      вбок не делал ничего. Переводим его в вертикальную прокрутку окна — ту
+      самую, что и так крутит карточки.
+
+      `deltaX > deltaY` — чтобы не перехватывать обычную вертикальную прокрутку
+      и диагональные жесты. На краях (в начале и в конце ленты) жест не
+      перехватываем: смах отдаётся странице, иначе из блока было бы не выйти —
+      и заодно на macOS остаётся жест «назад» в браузере.
+    */
+    const onWheel = (event: WheelEvent) => {
+      if (!active || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+
+      const progress = Math.min(
+        1,
+        Math.max(0, -outer.getBoundingClientRect().top / distance)
+      );
+      if (
+        (event.deltaX < 0 && progress <= 0) ||
+        (event.deltaX > 0 && progress >= 1)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      window.scrollBy({ top: event.deltaX, behavior: "auto" });
+    };
+
     prevBtn?.addEventListener("click", onPrev);
     nextBtn?.addEventListener("click", onNext);
+    pin.addEventListener("wheel", onWheel, { passive: false });
     track.addEventListener("scroll", syncFromTrack, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", measure);
@@ -136,6 +169,7 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
       if (frame) cancelAnimationFrame(frame);
       prevBtn?.removeEventListener("click", onPrev);
       nextBtn?.removeEventListener("click", onNext);
+      pin.removeEventListener("wheel", onWheel);
       track.removeEventListener("scroll", syncFromTrack);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", measure);

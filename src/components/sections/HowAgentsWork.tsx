@@ -17,6 +17,7 @@
  */
 
 import Image from "@/components/ui/Image";
+import { Lines } from "@/components/use-cases/Lines";
 
 export type HowItWorksCard = {
   id: string;
@@ -77,7 +78,9 @@ export const HOW_IT_WORKS_CARDS: HowItWorksCard[] = [
   {
     id: "result",
     titleLines: ["Выдают", "результат"],
-    description: "Документ, таблицу, отчет в удобном формате: MD, pdf, excel, word",
+    /* Перенос после двоеточия: перечень форматов уходит на свою строку. */
+    description:
+      "Документ, таблицу, отчет в удобном формате:\nMD, pdf, excel, word",
     image: {
       src: "/img/agents/result.png",
       width: 1259,
@@ -144,8 +147,13 @@ export function HowAgentsWork() {
                   <br />
                   {card.titleLines[1]}
                 </h3>
+                {/*
+                  Через Lines: в данных жёсткий перенос помечен «\n» и работает
+                  с md. Ниже md он снимается — на 390 колонка узкая, и разбивка,
+                  рассчитанная на широкую карточку, рвала бы строку не там.
+                */}
                 <p className="text-body-m text-text-secondary md:text-body-l">
-                  {card.description}
+                  <Lines text={card.description} />
                 </p>
               </div>
 

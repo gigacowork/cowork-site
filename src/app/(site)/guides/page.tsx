@@ -150,7 +150,7 @@ export default function VideoGuidesPage() {
                   <a
                     href={`#${guide.id}`}
                     data-guide-tab={guide.id}
-                    className="flex cursor-pointer items-center justify-center rounded-full bg-bg-card py-8 pl-16 pr-[18px] text-caption whitespace-nowrap text-text-secondary shadow-[inset_0_0_0_1px_var(--color-border-subtle)] transition-[box-shadow,background-color,color] duration-200 hover:bg-action-secondary-hover hover:text-text-primary hover:shadow-[inset_0_0_0_1px_var(--color-border-default)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary aria-[current=true]:bg-action-primary-default aria-[current=true]:text-text-inverse aria-[current=true]:shadow-none"
+                    className="flex cursor-pointer items-center justify-center rounded-full bg-bg-card py-8 pl-16 pr-[18px] text-body-m whitespace-nowrap text-text-secondary shadow-[inset_0_0_0_1px_var(--color-border-subtle)] transition-[box-shadow,background-color,color] duration-200 hover:bg-action-secondary-hover hover:text-text-primary hover:shadow-[inset_0_0_0_1px_var(--color-border-default)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary aria-[current=true]:bg-action-primary-default aria-[current=true]:text-text-inverse aria-[current=true]:shadow-none"
                   >
                     {guide.tab}
                   </a>

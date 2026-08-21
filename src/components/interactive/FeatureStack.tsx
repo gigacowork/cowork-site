@@ -56,6 +56,16 @@ const CARD_STEP = 36;
  */
 const TAKEOVER = 0.45;
 
+/**
+ * Тень карточки — Elevation/Drop/Lg (2888:17921) в записи для filter.
+ *
+ * Её носит только передняя карточка и те, что ещё въезжают снизу. У карточек,
+ * которые уже ушли под стопку, тень снимается: их тени падали друг на друга и
+ * на выступающие сверху полоски, пять слоёв складывались, и вокруг стопки
+ * набиралась грязная серая кайма.
+ */
+const SHADOW = "drop-shadow(0 12px 24px #60738f33)";
+
 export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -65,9 +75,44 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
 
     const cards = Array.from(root.querySelectorAll<HTMLElement>("[data-card]"));
     const texts = Array.from(root.querySelectorAll<HTMLElement>("[data-text]"));
+    const shots = cards.map((card) => card.querySelector("img"));
     if (cards.length < 2 || texts.length !== cards.length) return;
 
     const desktop = window.matchMedia("(min-width: 1024px)");
+
+    /*
+      Липкий заголовок секции живёт снаружи стопки, но открепиться должен вместе
+      с ней: иначе стопка уезжает вверх, а заголовок ещё стоит.
+
+      Момент открепления у липкого элемента — когда до низа общего контейнера
+      остаётся ровно его высота плюс смещение сверху. У карточки это
+      STICKY_TOP + её высота, у заголовка — top + его высота, и второе меньше,
+      поэтому он и держится дольше. Разницу дописываем ему прозрачным хвостом
+      снизу: липкий диапазон удлиняется на неё, и оба отрываются одновременно.
+
+      Хвост гасится отрицательным отступом не у самого заголовка, а у обёртки
+      стопки: собственный отрицательный margin вошёл бы в ту же границу, по
+      которой считается открепление, и погасил бы прибавку.
+    */
+    const header =
+      root.closest("section")?.querySelector<HTMLElement>("[data-stack-header]") ??
+      null;
+    /* Переменную держим на общем родителе — её читают и заголовок, и обёртка. */
+    const scope = header?.parentElement ?? null;
+
+    const syncTail = () => {
+      if (!header || !scope) return;
+      if (!desktop.matches) {
+        scope.style.removeProperty("--stack-tail");
+        return;
+      }
+      // Сначала снимаем прошлый хвост, иначе он попадёт в замер высоты.
+      scope.style.setProperty("--stack-tail", "0px");
+      const top = parseFloat(getComputedStyle(header).top) || 0;
+      const tail = STICKY_TOP + cards[0].offsetHeight - top - header.offsetHeight;
+      scope.style.setProperty("--stack-tail", `${Math.max(0, Math.round(tail))}px`);
+    };
+
     let shown = -1;
 
     const paint = (next: number) => {
@@ -79,6 +124,14 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
         text.style.pointerEvents = on ? "" : "none";
         text.setAttribute("aria-hidden", on ? "false" : "true");
       });
+      /*
+        Тень остаётся у передней карточки и у тех, что ещё идут снизу: они
+        видны на фоне и отделяются от стопки. У закрытых карточек её нет —
+        показывается только верхняя полоска, и тень там не нужна.
+      */
+      shots.forEach((shot, i) => {
+        if (shot) shot.style.filter = i >= next ? SHADOW : "none";
+      });
     };
 
     const reset = () => {
@@ -87,6 +140,10 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
         text.style.opacity = "";
         text.style.pointerEvents = "";
         text.removeAttribute("aria-hidden");
+      });
+      /* Ниже lg стопки нет, карточки не перекрываются — тень у всех. */
+      shots.forEach((shot) => {
+        if (shot) shot.style.filter = "";
       });
     };
 
@@ -124,16 +181,24 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
       }
     };
 
+    /* Хвост зависит от размеров, а не от прокрутки — пересчитываем по resize. */
+    const onResize = () => {
+      syncTail();
+      onScroll();
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    desktop.addEventListener("change", onScroll);
+    window.addEventListener("resize", onResize);
+    desktop.addEventListener("change", onResize);
+    syncTail();
     update();
 
     return () => {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      desktop.removeEventListener("change", onScroll);
+      window.removeEventListener("resize", onResize);
+      desktop.removeEventListener("change", onResize);
+      scope?.style.removeProperty("--stack-tail");
       reset();
     };
   }, []);
@@ -172,8 +237,19 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
           </div>
 
           {/*
-            Card / Product Preview (2281:36520) — в экспорте уже есть подложка,
-            скругление и тень, поэтому обёртка не нужна.
+            Card / Product Preview (2281:36520). В экспорте есть подложка и
+            скругление (углы вырезаны прозрачностью), а тени нет — она из
+            макета, Elevation/Drop/Lg (2888:17921).
+
+            Тень висит фильтром на самой картинке, а не box-shadow на обёртке:
+            фильтр повторяет вырезанный контур, поэтому скругление совпадает на
+            любой ширине. Обёртке пришлось бы задавать радиус числом, а он у
+            картинки меняется вместе с масштабом — 24px на 680 и вдвое меньше
+            на мобильной.
+
+            0 12px 24px — это тот же Elevation/Drop/Lg в записи для filter:
+            у drop-shadow нет spread, и радиус вдвое меньше, чем у box-shadow
+            (0 12px 48px −8px).
           */}
           <div
             data-card
@@ -192,7 +268,7 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
               width={668}
               height={480}
               priority={i === 0}
-              className="h-auto w-full"
+              className="h-auto w-full drop-shadow-[0_12px_24px_#60738f33]"
             />
           </div>
         </Fragment>
