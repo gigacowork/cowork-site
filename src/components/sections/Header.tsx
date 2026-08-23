@@ -116,8 +116,8 @@ export function Header() {
       const headerH =
         parseFloat(
           getComputedStyle(document.documentElement).getPropertyValue(
-            "--header-h"
-          )
+            "--header-h",
+          ),
         ) || 0;
       /*
         Прозрачной шапка бывает только над hero главной. На страницах без hero
@@ -169,7 +169,13 @@ export function Header() {
         }`}
       />
 
-      <div className="container-page flex items-center justify-between py-16">
+      {/*
+        Высота полосы прибита к --header-h (62 на телефоне, 81 на десктопе): в
+        открытом меню кнопка «Попробовать» из полосы уходит вниз, в блок
+        действий, и без фиксированной высоты полоса схлопывалась бы под
+        крестик, а логотип прыгал вверх.
+      */}
+      <div className="container-page flex min-h-[var(--header-h)] items-center justify-between py-16">
         {/* Logo — desktop 155×33, mobile 117×25 */}
         <Link href="/" aria-label="GigaCowork" className="shrink-0">
           <Image
@@ -204,7 +210,7 @@ export function Header() {
 
               const open = openMenu === item.label;
               const groupActive = item.children.some((leaf) =>
-                isActive(pathname, leaf.href)
+                isActive(pathname, leaf.href),
               );
 
               return (
@@ -292,9 +298,16 @@ export function Header() {
 
         {/* Mobile actions */}
         <div className="flex items-center gap-8 md:hidden">
-          <Button href="/lead" variant="primary" size="sm">
-            Попробовать
-          </Button>
+          {/*
+            Header/Mobile/Open (2567:9427): в открытом меню в полосе остаются
+            только логотип и крестик — кнопка действия уезжает в блок под
+            навигацией, чтобы не дублироваться.
+          */}
+          {!menuOpen && (
+            <Button href="/lead" variant="primary" size="sm">
+              Попробовать
+            </Button>
+          )}
           <button
             type="button"
             aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
@@ -302,104 +315,146 @@ export function Header() {
             onClick={() => setMenuOpen((v) => !v)}
             className="relative size-[24px] cursor-pointer"
           >
+            {/*
+              Открытое состояние — Icon/Close (2563:9429): крестик вписан в
+              квадрат 14×14 внутри иконки 24×24. Поэтому в этом состоянии
+              полоски удлиняются с 18 до 20: повёрнутая на 45° полоска даёт
+              габарит 20 / √2 ≈ 14.
+            */}
             <span
-              className={`absolute left-[3px] h-[2px] w-[18px] rounded-[1px] bg-icon-primary transition-all duration-300 ${
-                menuOpen ? "top-[11px] rotate-45" : "top-[5px]"
+              className={`absolute h-[2px] rounded-[1px] bg-icon-primary transition-all duration-300 ${
+                menuOpen
+                  ? "top-[11px] left-[2px] w-[20px] rotate-45"
+                  : "top-[5px] left-[3px] w-[18px]"
               }`}
             />
             <span
-              className={`absolute left-[3px] top-[11px] h-[2px] w-[18px] rounded-[1px] bg-icon-primary transition-opacity duration-200 ${
+              className={`absolute top-[11px] left-[3px] h-[2px] w-[18px] rounded-[1px] bg-icon-primary transition-opacity duration-200 ${
                 menuOpen ? "opacity-0" : "opacity-100"
               }`}
             />
             <span
-              className={`absolute left-[3px] h-[2px] w-[18px] rounded-[1px] bg-icon-primary transition-all duration-300 ${
-                menuOpen ? "top-[11px] -rotate-45" : "top-[17px]"
+              className={`absolute h-[2px] rounded-[1px] bg-icon-primary transition-all duration-300 ${
+                menuOpen
+                  ? "top-[11px] left-[2px] w-[20px] -rotate-45"
+                  : "top-[17px] left-[3px] w-[18px]"
               }`}
             />
           </button>
         </div>
       </div>
 
-      {/* Mobile drawer */}
+      {/*
+        Mobile drawer — Menu/Content (2567:9445): белая подложка, отступы 40
+        сверху и 64 снизу, шаг 24 между навигацией и блоком действий.
+      */}
       <div
-        className={`overflow-hidden border-border-subtle bg-bg-page transition-[max-height,opacity] duration-300 md:hidden ${
+        className={`overflow-hidden bg-bg-page transition-[max-height,opacity] duration-300 md:hidden ${
           menuOpen
-            ? "max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t opacity-100"
+            ? "max-h-[calc(100dvh-var(--header-h))] overflow-y-auto opacity-100"
             : "max-h-0 opacity-0"
         }`}
       >
-        <nav className="container-page flex flex-col gap-4 py-16">
-          {NAV_ITEMS.map((item) => {
-            if (!item.children) {
+        <div className="container-page flex flex-col gap-24 pt-40 pb-64">
+          <nav className="flex flex-col gap-8">
+            {NAV_ITEMS.map((item) => {
+              if (!item.children) {
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href!}
+                    onClick={() => setMenuOpen(false)}
+                    /*
+                    Navigation Item (320:31) как есть: отступы 12/8, Body/L,
+                    содержимое по центру строки — так пункты стоят в макете.
+                  */
+                    className="flex items-center justify-center rounded-full px-12 py-8 text-body-l text-text-primary"
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
+
+              const open = openMobile === item.label;
+
               return (
-                <Link
-                  key={item.label}
-                  href={item.href!}
-                  onClick={() => setMenuOpen(false)}
-                  className="rounded-full px-12 py-12 text-body-l text-text-primary"
-                >
-                  {item.label}
-                </Link>
-              );
-            }
-
-            const open = openMobile === item.label;
-
-            return (
-              <div key={item.label} className="flex flex-col">
-                <button
-                  type="button"
-                  aria-expanded={open}
-                  onClick={() => setOpenMobile(open ? null : item.label)}
-                  /* Раскрытый пункт подсвечивается как Navigation Item в ховере. */
-                  className={`flex cursor-pointer items-center justify-between rounded-full px-12 py-12 text-body-l transition-colors ${
-                    open
-                      ? "bg-action-secondary-hover text-text-strong"
-                      : "text-text-primary"
-                  }`}
-                >
-                  {item.label}
-                  <Icon
-                    src="/img/icons/chevron-down.svg"
-                    className={`h-[6px] w-[11px] text-icon-primary transition-transform duration-200 ${
-                      open ? "rotate-180" : ""
+                <div key={item.label} className="flex flex-col gap-8">
+                  <button
+                    type="button"
+                    aria-expanded={open}
+                    onClick={() => setOpenMobile(open ? null : item.label)}
+                    /*
+                    Шеврон в макете этого экрана не нарисован, но оставлен
+                    намеренно: за «О платформе» и «Для кого» стоят вложенные
+                    страницы, и с телефона они открываются только отсюда — без
+                    шеврона пункт выглядит обычной ссылкой. Это штатное
+                    состояние Navigation Item (Show Chevron), а не отсебятина.
+                    Раскрытый пункт подсвечивается как в ховере.
+                  */
+                    className={`flex cursor-pointer items-center justify-center gap-8 rounded-full px-12 py-8 text-body-l transition-colors ${
+                      open
+                        ? "bg-action-secondary-hover text-text-strong"
+                        : "text-text-primary"
                     }`}
-                  />
-                </button>
-                <div
-                  /*
+                  >
+                    {item.label}
+                    <Icon
+                      src="/img/icons/chevron-down.svg"
+                      className={`h-[6px] w-[11px] text-icon-primary transition-transform duration-200 ${
+                        open ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  <div
+                    /*
                     Потолок раскрывашки считается от самого длинного списка —
                     «Для кого» с восемью ролями (8 × 41 + 7 × 4 + 8 снизу).
                     С прежними 240 половина пунктов оказывалась срезанной.
                   */
-                  className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
-                    open ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"
-                  }`}
-                >
-                  <ul className="flex flex-col gap-4 pb-8 pl-12">
-                    {item.children.map((leaf) => (
-                      <li key={leaf.href}>
-                        {/* Тот же Dropdown Item (3432:15088), что и на десктопе. */}
-                        <Link
-                          href={leaf.href}
-                          tabIndex={open ? undefined : -1}
-                          aria-current={
-                            isActive(pathname, leaf.href) ? "page" : undefined
-                          }
-                          onClick={() => setMenuOpen(false)}
-                          className="flex h-[41px] items-center rounded-full px-12 text-body-m text-text-primary transition-colors active:bg-action-secondary-hover active:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
-                        >
-                          {leaf.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
+                      open ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <ul className="flex flex-col gap-4 pb-8">
+                      {item.children.map((leaf) => (
+                        <li key={leaf.href}>
+                          {/* Тот же Dropdown Item (3432:15088), что и на десктопе. */}
+                          <Link
+                            href={leaf.href}
+                            tabIndex={open ? undefined : -1}
+                            aria-current={
+                              isActive(pathname, leaf.href) ? "page" : undefined
+                            }
+                            onClick={() => setMenuOpen(false)}
+                            className="flex h-[41px] items-center justify-center rounded-full px-12 text-body-m text-text-primary transition-colors active:bg-action-secondary-hover active:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
+                          >
+                            {leaf.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </nav>
+              );
+            })}
+          </nav>
+
+          {/*
+          Menu/Actions (2567:41846): кнопки шириной 212 по центру, шаг 12.
+          «Войти» из макета не переносим — на сайте её нет.
+        */}
+          <div className="flex flex-col items-center gap-12">
+            <Button
+              href="/lead"
+              variant="primary"
+              size="lg"
+              className="w-[212px]"
+              onClick={() => setMenuOpen(false)}
+            >
+              Попробовать
+            </Button>
+          </div>
+        </div>
       </div>
     </header>
   );

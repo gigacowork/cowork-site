@@ -87,14 +87,14 @@ const PERSONAL_LAYERS: ArtLayer[] = [
 function inlineWorkspaceArt(file: string, layers: ArtLayer[]) {
   const raw = readFileSync(
     path.join(process.cwd(), "public", "img", "platform", file),
-    "utf8"
+    "utf8",
   );
 
   let index = -1;
   return raw
     .replace(
       "<svg ",
-      '<svg class="pointer-events-none absolute top-px right-0 select-none" '
+      '<svg class="pointer-events-none absolute top-px right-0 select-none" ',
     )
     .replace(/<g\b([^>]*)>/g, (match, attrs: string) => {
       index += 1;
@@ -296,7 +296,6 @@ function Tag({ label, icon }: TagItem) {
   );
 }
 
-
 /* ──────────────────────────────── страница ─────────────────────────────── */
 
 export default function PlatformPage() {
@@ -349,14 +348,23 @@ export default function PlatformPage() {
                 <br />
                 всей компании
               </h1>
-              <div className="flex flex-col gap-16 text-body-l text-text-secondary">
-                <p>
-                  Создавайте без&nbsp;разработки агентов под&nbsp;любую роль, описывая
-                  задачи обычным языком.
+              {/*
+                От md и выше это один абзац в три строки с жёсткими переносами
+                («…роль,» / «…корпоративные»), ниже md — два абзаца с шагом 16, как
+                было. Текст не продублирован: на десктопе контейнер становится
+                обычным блоком, а абзацы — строчными, и обе фразы сливаются в
+                одну колонку текста.
+              */}
+              <div className="flex flex-col gap-16 text-body-l text-text-secondary md:block">
+                <p className="md:inline">
+                  Создавайте без&nbsp;разработки агентов под&nbsp;любую роль,{" "}
+                  <br className="hidden md:inline" />
+                  описывая задачи обычным языком.{" "}
                 </p>
-                <p>
-                  Подключайте корпоративные системы и&nbsp;базы знаний для&nbsp;ускорения
-                  рабочих процессов.
+                <p className="md:inline">
+                  Подключайте корпоративные <br className="hidden md:inline" />
+                  системы и&nbsp;базы знаний для&nbsp;ускорения рабочих
+                  процессов.
                 </p>
               </div>
             </div>
@@ -371,7 +379,6 @@ export default function PlatformPage() {
               </Button>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -416,34 +423,37 @@ export default function PlatformPage() {
             <Kicker>Совместная работа</Kicker>
             <h2 className="text-h3 font-medium text-text-primary md:text-h2">
               Каждая команда работает
-              <br className="hidden md:block" /> вместе с&nbsp;агентами в&nbsp;своей среде
+              <br className="hidden md:block" /> вместе с&nbsp;агентами
+              в&nbsp;своей среде
             </h2>
             <p className="text-body-l text-text-secondary">
-              Сотрудники работают в&nbsp;своих рабочих пространствах с&nbsp;агентами,
-              документами и&nbsp;политиками доступа
+              Сотрудники работают в&nbsp;своих рабочих пространствах
+              с&nbsp;агентами, документами и&nbsp;политиками доступа
             </p>
           </header>
 
           <TokenIllustrations>
             <div className="grid gap-24 lg:grid-cols-2">
-            {WORKSPACE_CARDS.map((card) => (
-              <article
-                key={card.title}
-                data-token-card={card.title}
-                className={`relative flex min-h-[291px] flex-col justify-between gap-24 overflow-hidden rounded-[24px] px-24 pt-32 pb-24 md:px-40 md:pt-40 ${CARD_GRADIENT_39}`}
-              >
-                <div className="flex flex-col gap-16 lg:max-w-[320px]">
-                  <h3 className="text-h4 font-medium text-text-primary md:text-h3">
-                    {card.title}
-                  </h3>
-                  <p className="text-body-m text-text-secondary">{card.text}</p>
-                </div>
-                <div className="flex flex-wrap gap-8 lg:max-w-[320px]">
-                  {card.tags.map((tag) => (
-                    <Tag key={tag.label} {...tag} />
-                  ))}
-                </div>
-                {/*
+              {WORKSPACE_CARDS.map((card) => (
+                <article
+                  key={card.title}
+                  data-token-card={card.title}
+                  className={`relative flex min-h-[291px] flex-col justify-between gap-24 overflow-hidden rounded-[24px] px-24 pt-32 pb-24 md:px-40 md:pt-40 ${CARD_GRADIENT_39}`}
+                >
+                  <div className="flex flex-col gap-16 lg:max-w-[320px]">
+                    <h3 className="text-h4 font-medium text-text-primary md:text-h3">
+                      {card.title}
+                    </h3>
+                    <p className="text-body-m text-text-secondary">
+                      {card.text}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-8 lg:max-w-[320px]">
+                    {card.tags.map((tag) => (
+                      <Tag key={tag.label} {...tag} />
+                    ))}
+                  </div>
+                  {/*
                   Illustration (2888:17773 → x 360, y 19, 300×168) — панель
                   свисает за правый край и обрезается карточкой; в экспорте
                   обрезка уже учтена, поэтому ставим встык к правому краю.
@@ -452,14 +462,14 @@ export default function PlatformPage() {
                   Вставлена инлайном ради микроанимации: слои внутри SVG
                   выезжают по очереди (см. inlineWorkspaceArt выше).
                 */}
-                <div
-                  aria-hidden
-                  data-token-art
-                  className="hidden lg:block"
-                  dangerouslySetInnerHTML={{ __html: card.art }}
-                />
-              </article>
-            ))}
+                  <div
+                    aria-hidden
+                    data-token-art
+                    className="hidden lg:block"
+                    dangerouslySetInnerHTML={{ __html: card.art }}
+                  />
+                </article>
+              ))}
             </div>
           </TokenIllustrations>
 
@@ -472,7 +482,9 @@ export default function PlatformPage() {
                 <h3 className="text-h4 font-medium text-text-primary">
                   {benefit.title}
                 </h3>
-                <p className="text-body-m text-text-secondary">{benefit.text}</p>
+                <p className="text-body-m text-text-secondary">
+                  {benefit.text}
+                </p>
               </article>
             ))}
           </div>
@@ -582,7 +594,9 @@ export default function PlatformPage() {
                   className="flex flex-col gap-[10px] pt-[20px] pr-24"
                 >
                   <span aria-hidden className="h-px w-full bg-text-primary" />
-                  <h3 className="text-body-l text-text-primary">{rule.title}</h3>
+                  <h3 className="text-body-l text-text-primary">
+                    {rule.title}
+                  </h3>
                   <p className="text-body-m text-text-secondary">{rule.text}</p>
                 </article>
               ))}

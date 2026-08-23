@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
+import Image from "@/components/ui/Image";
 import { Button } from "@/components/ui/Button";
-import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 
 /**
  * 404 — страница не найдена.
- *
- * Тексты перенесены из прежней версии сайта («404 — Страница не найдена»,
- * «Возможно, страница переехала или в адресе допущена ошибка», кнопка «На
- * главную»), оформление — на токенах и компонентах этого сайта.
+ * Figma desktop: 3512:27223 (1440×760 + подвал, контент по центру, gap 48)
+ * Figma mobile:  3512:27279 (390×560 + подвал, gap 40)
  *
  * Файл лежит в корне `app`, а не в группе `(site)`: Next отдаёт эту страницу на
  * любой неизвестный адрес, в том числе вне групп маршрутов, и макеты групп к
@@ -27,49 +25,64 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/** Заливка экрана из макета (3512:27224). */
+const HERO_GRADIENT =
+  "bg-[linear-gradient(239.46deg,#f0f8ff_20.71%,#f7f7f8_94.87%)]";
+
 export default function NotFound() {
   return (
     <>
       <Header />
 
       {/*
-        Экран держится во всю высоту окна за вычетом подвала: короткая страница
-        не должна оставлять подвал висеть посреди экрана. Отступ сверху — под
-        шапку, она лежит поверх секции.
+        Высота фиксирована по макету — 560 на 390 и 760 на 1440, — а контент
+        стоит по центру этой высоты. Отступа под шапку нет намеренно: в макете
+        она лежит поверх экрана, а до картинки остаётся 123 пункта.
 
         `id="hero"` — рабочий, а не декоративный: по нему шапка понимает, что
-        стоит над первым экраном, и остаётся прозрачной, пропуская фон секции
-        сквозь навигацию. Без него шапка считает, что hero на странице нет, и
-        включает сплошную заливку с самого верха.
+        стоит над первым экраном, и остаётся прозрачной (см. Header).
       */}
       <main
         id="hero"
-        className={`relative isolate flex min-h-[calc(100svh-var(--header-h))] w-full flex-col items-center justify-center overflow-hidden py-64 pt-[calc(64px+var(--header-h))] md:py-96 md:pt-[calc(96px+var(--header-h))] ${CTA_FALLBACK}`}
+        className={`relative isolate flex min-h-[560px] w-full flex-col items-center justify-center overflow-hidden py-24 md:min-h-[760px] md:py-40 ${HERO_GRADIENT}`}
       >
-        <CtaBackground />
+        <div className="container-page flex flex-col items-center gap-40 md:gap-48">
+          {/*
+            Картинка 320×180 и 553×311 — ровно из макета. Файл один на обе
+            ширины: пропорция совпадает (16:9), а исходник вдвое крупнее
+            десктопного кадра, так что на плотных экранах не мылится.
+          */}
+          <Image
+            src="/img/404.webp"
+            alt="404"
+            width={1106}
+            height={622}
+            priority
+            className="h-[180px] w-[320px] md:h-[311px] md:w-[553px]"
+          />
 
-        <div className="container-page flex flex-col items-center gap-32 text-center">
-          <div className="flex flex-col items-center gap-16">
-            {/*
-              Число набрано Display/L — самой крупной ступенью шкалы после
-              Display/XL, который на мобильном не помещается. Цвет — Status/
-              Accent, как у нажатой текстовой ссылки: другого акцентного цвета
-              в системе нет.
-            */}
-            <p className="text-display-l font-normal text-status-accent">404</p>
+          <div className="flex flex-col items-center gap-24 md:gap-32">
+            <div className="flex flex-col items-center gap-8 text-center md:gap-12">
+              {/*
+                Переносы ниже md — из мобильного макета: «Страница / не найдена»
+                и «Возможно, страница переехала / или в адресе допущена ошибка».
+                На десктопе обе строки идут в одну.
+              */}
+              <h1 className="text-h2 font-medium text-text-primary md:text-h1">
+                Страница <br className="md:hidden" />
+                не&nbsp;найдена
+              </h1>
 
-            <h1 className="text-h3 font-medium text-text-primary md:text-h2">
-              Страница не найдена
-            </h1>
+              <p className="text-body-l text-text-secondary">
+                Возможно, страница переехала <br className="md:hidden" />
+                или&nbsp;в&nbsp;адресе допущена ошибка
+              </p>
+            </div>
 
-            <p className="max-w-[520px] text-body-l text-text-secondary">
-              Возможно, страница переехала или в адресе допущена ошибка
-            </p>
+            <Button href="/" variant="primary" size="md">
+              На главную
+            </Button>
           </div>
-
-          <Button href="/" variant="primary" size="lg" className="text-body-m!">
-            На главную
-          </Button>
         </div>
       </main>
 
