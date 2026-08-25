@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Image from "@/components/ui/Image";
 import Link from "next/link";
 import LeadForm from "@/components/sections/LeadForm";
@@ -16,11 +17,12 @@ import { LEGAL_LINES } from "@/lib/legal";
  * В макете рядом с логотипом стоит «Войти» — кнопку убрали по всему сайту.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Оставить заявку\u00A0— GigaCowork",
   description:
     "Оставьте заявку, чтобы получить пробный доступ к\u00A0GigaCowork: 3\u00A0месяца от\u00A0демо до\u00A0первого ROI, безлимитные токены, готовое решение без\u00A0изменения ИТ-систем.",
-};
+  path: "/lead/",
+});
 
 /** Фон страницы: угол на мобильном другой (67.445° против 27.277°). */
 const PAGE_GRADIENT =
@@ -41,10 +43,16 @@ export default function LeadPage() {
       экранах, чтобы форма целиком помещалась в видимую область без прокрутки.
       Величины и пороги — в globals.css.
     */
-    <div className={`lead-fit flex min-h-screen w-full flex-col ${PAGE_GRADIENT}`}>
+    <div
+      className={`lead-fit flex min-h-screen w-full flex-col ${PAGE_GRADIENT}`}
+    >
       {/* Header 2397:43445 / 2397:43448 — только логотип */}
       <header className="container-page flex h-[62px] shrink-0 items-center justify-between py-16 md:h-[81px]">
-        <Link href="/" aria-label="GigaCowork, на\u00A0главную" className="shrink-0">
+        <Link
+          href="/"
+          aria-label="GigaCowork, на\u00A0главную"
+          className="shrink-0"
+        >
           <Image
             src="/img/logo-gigacowork.svg"
             alt="GigaCowork"
@@ -71,8 +79,7 @@ export default function LeadPage() {
               Готовы делегировать работу ИИ-агентам?
             </h1>
             <p className="w-full text-center text-body-l md:w-[304px] md:text-left">
-              Оставьте заявку, чтобы получить{" "}
-              <br className="md:hidden" />
+              Оставьте заявку, чтобы получить <br className="md:hidden" />
               пробный доступ к&nbsp;GigaCowork
             </p>
           </div>

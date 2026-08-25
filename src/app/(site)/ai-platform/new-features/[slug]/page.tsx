@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Button from "@/components/ui/Button";
@@ -27,10 +28,11 @@ export async function generateMetadata({
   const release = getRelease(slug);
   if (!release) return { title: "Релиз не\u00A0найден\u00A0— GigaCowork" };
 
-  return {
+  return pageMetadata({
     title: `${release.title} ${release.version} — GigaCowork`,
     description: release.summary,
-  };
+    path: `/ai-platform/new-features/${slug}/`,
+  });
 }
 
 /** Тот же фон, что у финального CTA главной (2572:11130). */
@@ -83,7 +85,9 @@ function BlockView({ block }: { block: Block }) {
               <span className="text-body-l font-medium text-text-primary">
                 {item.title}
               </span>
-              <span className="text-body-m text-text-secondary">{item.text}</span>
+              <span className="text-body-m text-text-secondary">
+                {item.text}
+              </span>
             </li>
           ))}
         </ul>
@@ -154,40 +158,40 @@ function BlockView({ block }: { block: Block }) {
           ) : null}
 
           <div className="flex flex-1 flex-col gap-8">
-          <p
-            className={`text-body-m ${
-              warning ? "text-text-primary" : "text-text-secondary"
-            }`}
-          >
-            {block.text}
-            {block.email ? (
-              <>
-                {" "}
-                <a
-                  href={`mailto:${block.email}`}
-                  className="text-text-primary underline underline-offset-2"
-                >
-                  {block.email}
-                </a>
-              </>
+            <p
+              className={`text-body-m ${
+                warning ? "text-text-primary" : "text-text-secondary"
+              }`}
+            >
+              {block.text}
+              {block.email ? (
+                <>
+                  {" "}
+                  <a
+                    href={`mailto:${block.email}`}
+                    className="text-text-primary underline underline-offset-2"
+                  >
+                    {block.email}
+                  </a>
+                </>
+              ) : null}
+            </p>
+            {block.items?.length ? (
+              <ul className="flex flex-col gap-8">
+                {block.items.map((item) => (
+                  <li
+                    key={item}
+                    className="relative pl-[20px] text-body-m text-text-secondary"
+                  >
+                    <span
+                      aria-hidden
+                      className="absolute top-[8px] left-0 size-[6px] rounded-full bg-text-tertiary"
+                    />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             ) : null}
-          </p>
-          {block.items?.length ? (
-            <ul className="flex flex-col gap-8">
-              {block.items.map((item) => (
-                <li
-                  key={item}
-                  className="relative pl-[20px] text-body-m text-text-secondary"
-                >
-                  <span
-                    aria-hidden
-                    className="absolute top-[8px] left-0 size-[6px] rounded-full bg-text-tertiary"
-                  />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          ) : null}
           </div>
         </div>
       );
@@ -293,9 +297,9 @@ export default async function ReleasePage({
                 Начните использовать GigaCowork уже сегодня
               </p>
               <p className="max-w-[560px] text-body-m text-text-secondary">
-                Мы хотим, чтобы технологии снижали нагрузку на&nbsp;сотрудников и
-                упрощали работу всей компании, поэтому описываем и&nbsp;обучаем разным
-                сценариям использования ИИ-агентов.
+                Мы хотим, чтобы технологии снижали нагрузку на&nbsp;сотрудников
+                и упрощали работу всей компании, поэтому описываем
+                и&nbsp;обучаем разным сценариям использования ИИ-агентов.
               </p>
               <div className="flex flex-wrap justify-center gap-16">
                 <Button

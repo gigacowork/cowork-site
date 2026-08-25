@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PAGE_SEO } from "@/content/seo";
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
 import Image from "@/components/ui/Image";
@@ -19,10 +20,19 @@ import { Button } from "@/components/ui/Button";
  */
 
 export const metadata: Metadata = {
-  title: "Страница не найдена — GigaCowork",
-  description: "Возможно, страница переехала или в адресе допущена ошибка.",
+  /* Тексты — из SEO-документа страницы (src/content/seo.ts). */
+  title: PAGE_SEO.notFound.title,
+  description: PAGE_SEO.notFound.description,
   /* Битые адреса в поиске не нужны. */
   robots: { index: false, follow: false },
+  /* И canonical на главную, унаследованный от корневого макета, тоже. */
+  alternates: { canonical: null },
+  /*
+    Карточка для соцсетей здесь тоже лишняя: унаследованная от корневого
+    макета, она выдавала 404 за главную страницу.
+  */
+  openGraph: null,
+  twitter: null,
 };
 
 /** Заливка экрана из макета (3512:27224). */

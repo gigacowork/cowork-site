@@ -1,4 +1,7 @@
 import { readFileSync } from "node:fs";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 import path from "node:path";
 import type { Metadata } from "next";
 import { HeroImage } from "@/components/ui/HeroImage";
@@ -25,11 +28,7 @@ import { useCaseHref } from "@/lib/use-cases";
  * страницах. Иконки тегов выгружены из Figma в public/img/icons.
  */
 
-export const metadata: Metadata = {
-  title: "О\u00A0платформе\u00A0— GigaCowork",
-  description:
-    "GigaCowork\u00A0— платформа ИИ-агентов для\u00A0всей компании: общие и\u00A0личные пространства, навыки и\u00A0команды, коннекторы к\u00A0корпоративным системам и\u00A0безопасность корпоративного уровня.",
-};
+export const metadata: Metadata = seoMetadata(PAGE_SEO.aiPlatform);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -301,6 +300,8 @@ function Tag({ label, icon }: TagItem) {
 export default function PlatformPage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.aiPlatform.jsonLd!} />
+
       {/*
         ── Hero (2888:17748) ──
 
@@ -315,7 +316,13 @@ export default function PlatformPage() {
       */}
       <section
         id="hero"
-        className="relative isolate flex w-full flex-col justify-center overflow-hidden bg-bg-page pt-120 pb-48 md:min-h-[760px] md:pb-[100px]"
+        /*
+          Высота ниже md — те же 720, что и у hero страниц «Для кого»
+          (UseCaseHero): фон здесь полноэкранный растр, и при коротком тексте
+          секция схлопывалась до 463 и срезала картинку почти вдвое. Контент
+          при этом стоит по центру, как и там.
+        */
+        className="relative isolate flex min-h-[720px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-120 pb-48 md:min-h-[760px] md:pb-[100px]"
       >
         {/*
           hero-illustration (2888:17749). В макете это заливка плюс растр на
@@ -349,22 +356,24 @@ export default function PlatformPage() {
                 всей компании
               </h1>
               {/*
-                От md и выше это один абзац в три строки с жёсткими переносами
-                («…роль,» / «…корпоративные»), ниже md — два абзаца с шагом 16, как
-                было. Текст не продублирован: на десктопе контейнер становится
-                обычным блоком, а абзацы — строчными, и обе фразы сливаются в
-                одну колонку текста.
+                От md и выше это два абзаца, разделённые пустой строкой, с
+                жёсткими переносами внутри («…роль,» / «…знаний»). Отбивка
+                задана в em, а не пикселями: пустая строка должна быть ровно
+                высотой строки текста (16 × 1.2), а не отдельным отступом.
+
+                Ниже md переносы сняты, а абзацы разведены шагом 16: на 390
+                жёсткая разбивка рвала бы строки в неожиданных местах.
               */}
               <div className="flex flex-col gap-16 text-body-l text-text-secondary md:block">
-                <p className="md:inline">
+                <p>
                   Создавайте без&nbsp;разработки агентов под&nbsp;любую роль,{" "}
                   <br className="hidden md:inline" />
-                  описывая задачи обычным языком.{" "}
+                  описывая задачи обычным языком.
                 </p>
-                <p className="md:inline">
-                  Подключайте корпоративные <br className="hidden md:inline" />
-                  системы и&nbsp;базы знаний для&nbsp;ускорения рабочих
-                  процессов.
+                <p className="md:mt-[1.2em]">
+                  Подключайте корпоративные системы и&nbsp;базы знаний{" "}
+                  <br className="hidden md:inline" />
+                  для&nbsp;ускорения рабочих процессов.
                 </p>
               </div>
             </div>

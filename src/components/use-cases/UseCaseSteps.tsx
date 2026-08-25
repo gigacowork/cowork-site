@@ -1,7 +1,7 @@
 import { Icon } from "@/components/ui/Icon";
 import { Kicker } from "@/components/ui/Kicker";
 import { Lines } from "@/components/use-cases/Lines";
-import { asset } from "@/lib/asset";
+import { StepVideoCard } from "@/components/use-cases/StepVideoCard";
 import type { UseCaseStep } from "@/lib/use-cases";
 
 /**
@@ -26,40 +26,15 @@ const SECTION_GRADIENT =
   "bg-[linear-gradient(233.478deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)]";
 
 /**
- * Готовая запись экрана вместо заглушки.
+ * Video Placeholder (2801:16380) — белая карточка с кнопкой воспроизведения.
  *
- * Исходник приехал гифкой на 23 МБ — в таком виде на страницу её ставить
- * нельзя. Перекодировано в mp4 (h264, 1176 по ширине — двойная ширина карточки,
- * 15 кадров/с, без звука): 0,45 МБ, в пятьдесят раз легче при том же виде.
- *
- * Играет само, по кругу и без звука — это замена гифки, а не ролик, который
- * включают. Отсюда и отсутствие органов управления: пауза и перемотка в
- * двадцатисекундной петле без звука ни к чему. `playsInline` обязателен, иначе
- * iOS открывает видео на весь экран.
- *
- * Кадр шире карточки (1176×654 против 588×400), поэтому вписываем целиком, а не
- * обрезаем: это скриншот интерфейса, у него нельзя срезать края.
+ * Скругление 24, а не 20 из макета: во всём остальном на сайте карточки
+ * скруглены на 24 (--radius-24), и в одной секции рядом с записями экрана
+ * разнобой был бы заметен.
  */
-function StepVideo({ src, poster, label }: { src: string; poster?: string; label?: string }) {
-  return (
-    <video
-      src={asset(src)}
-      poster={poster ? asset(poster) : undefined}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="metadata"
-      aria-label={label}
-      className="aspect-[588/400] w-full rounded-[20px] bg-bg-page object-contain shadow-drop-lg"
-    />
-  );
-}
-
-/** Video Placeholder (2801:16380) — белая карточка с кнопкой воспроизведения. */
 function VideoPlaceholder({ label }: { label?: string }) {
   return (
-    <div className="flex aspect-[588/400] w-full flex-col items-center justify-center gap-16 overflow-hidden rounded-[20px] bg-bg-page p-32 shadow-drop-lg">
+    <div className="flex aspect-[588/400] w-full flex-col items-center justify-center gap-16 overflow-hidden rounded-[24px] bg-bg-page p-32 shadow-drop-lg">
       <div className="flex w-full flex-col items-center justify-center gap-[20px]">
         {/*
           Кнопка белая на белой карточке — держится только на тени. В макете
@@ -67,7 +42,10 @@ function VideoPlaceholder({ label }: { label?: string }) {
           ступень Elevation из токенов проекта.
         */}
         <span className="flex size-[64px] items-center justify-center rounded-[32px] border border-[#ffffff80] bg-neutral-0 shadow-drop-sm backdrop-blur-[6px]">
-          <Icon src="/img/icons/play.svg" className="size-[48px] text-icon-primary" />
+          <Icon
+            src="/img/icons/play.svg"
+            className="size-[48px] text-icon-primary"
+          />
         </span>
         {/* Подписи под кнопкой в макете есть не у всех ролей. */}
         {label ? (
@@ -102,7 +80,9 @@ export function UseCaseSteps({
               <Lines text={title} />
             </h2>
           ) : null}
-          {lead ? <p className="text-body-l text-text-secondary">{lead}</p> : null}
+          {lead ? (
+            <p className="text-body-l text-text-secondary">{lead}</p>
+          ) : null}
         </div>
 
         <div className="flex flex-col gap-64 md:gap-96">
@@ -160,10 +140,11 @@ export function UseCaseSteps({
 
                 <div className={`md:w-[588px] ${mirrored ? "md:order-1" : ""}`}>
                   {step.video ? (
-                    <StepVideo
+                    <StepVideoCard
                       src={step.video}
                       poster={step.videoPoster}
                       label={step.videoLabel}
+                      ratio={step.videoRatio}
                     />
                   ) : (
                     <VideoPlaceholder label={step.videoLabel} />

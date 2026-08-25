@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { pageMetadata, seoMetadata } from "@/lib/site";
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import { Kicker } from "@/components/ui/Kicker";
@@ -38,6 +41,21 @@ import {
  * остальное 404-й вместо попытки отрендерить на лету.
  */
 
+/**
+ * SEO-описания ролей: по одному документу на страницу, разложены в
+ * src/content/seo.ts. Ключ там — имя роли, а не slug, поэтому нужна карта.
+ */
+const SEO_BY_SLUG: Record<string, (typeof PAGE_SEO)[string] | undefined> = {
+  ceo: PAGE_SEO.ceo,
+  finance: PAGE_SEO.finance,
+  salesforce: PAGE_SEO.salesforce,
+  procurement: PAGE_SEO.procurement,
+  "legal-team": PAGE_SEO.legalTeam,
+  "hr-team": PAGE_SEO.hrTeam,
+  accounting: PAGE_SEO.accounting,
+  "it-support": PAGE_SEO.itSupport,
+};
+
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -55,10 +73,14 @@ export async function generateMetadata({
 
   const title = useCase.title.replace(/\n/g, " ");
 
-  return {
-    title: `${title} — GigaCowork`,
-    description: useCase.intro.join(" "),
-  };
+  const seo = SEO_BY_SLUG[slug];
+  return seo
+    ? seoMetadata(seo)
+    : pageMetadata({
+        title: `${title} — GigaCowork`,
+        description: useCase.intro.join(" "),
+        path: `/use_cases/${slug}/`,
+      });
 }
 
 export default async function UseCasePage({
@@ -116,8 +138,12 @@ export default async function UseCasePage({
     ) : null,
   };
 
+  const seo = SEO_BY_SLUG[slug];
+
   return (
     <>
+      {seo?.jsonLd ? <JsonLd data={seo.jsonLd} /> : null}
+
       <UseCaseHero
         title={useCase.title}
         intro={useCase.intro}

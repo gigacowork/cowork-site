@@ -1,0 +1,324 @@
+/*
+  Стили технической страницы /landing-events.
+  Перенесены из киоск-приложения («Исходниеи landing-events», CSS-модули
+  Stage / ScreenFrame / PillButton / IconButton / CategoryCard / VideoPlayer)
+  и сведены в один модуль: файлов немного, а держать их рядом проще.
+
+  Все размеры — в пикселях макета 1920×1080. Сцена целиком масштабируется
+  под окно (см. Stage.tsx), поэтому адаптива здесь нет и быть не должно.
+*/
+
+/* ── Сцена ──────────────────────────────────────────────────────────────── */
+
+/*
+  `fixed`, а не `100vw/100vh` из исходника: страница живёт внутри общего
+  каркаса сайта, где у body свои отступы и прокрутка. Фиксированный слой
+  перекрывает окно целиком и не даёт странице скроллиться.
+*/
+.viewport {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      -68.71deg,
+      rgba(22, 179, 170, 0.34) 0%,
+      rgba(79, 183, 234, 0.34) 57.976%,
+      rgba(160, 181, 243, 0.34) 99.662%
+    ),
+    linear-gradient(90deg, #fff 0%, #fff 100%);
+}
+
+.stage {
+  width: 1920px;
+  height: 1080px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/*
+  Появление экрана. В исходнике переходы между экранами делала framer-motion
+  (fade + scale на входе и выходе). Здесь тот же вход сделан обычной
+  анимацией CSS: template.tsx пересоздаёт обёртку на каждом переходе, так что
+  анимация проигрывается заново. Ради выходной фазы тянуть в проект целую
+  библиотеку не стали — на глаз разница неразличима.
+*/
+.screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: screen-in 0.45s ease-in-out both;
+}
+
+@keyframes screen-in {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen {
+    animation: none;
+  }
+}
+
+/* ── Каркас экрана ──────────────────────────────────────────────────────── */
+
+.frame {
+  width: 1920px;
+  height: 1080px;
+  padding: 0 16px;
+  display: flex;
+}
+
+.card {
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+  border-radius: 32px;
+  padding: 48px 64px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-top: 48px;
+  flex-shrink: 0;
+}
+
+/* ── Кнопки ─────────────────────────────────────────────────────────────── */
+
+.pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 96px;
+  padding: 0 40px;
+  border: none;
+  border-radius: 1000px;
+  font-family: "SB Sans Display", sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  white-space: pre-line;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.pill:active {
+  transform: scale(0.96);
+}
+
+.pillDark {
+  background: #000;
+  color: #fff;
+}
+
+.pillLight {
+  background: rgba(8, 8, 8, 0.06);
+  color: #000;
+}
+
+.pillIcon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border: none;
+  border-radius: 48px;
+  background: rgba(8, 8, 8, 0.06);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.iconButton:active {
+  transform: scale(0.92);
+}
+
+.iconButtonIcon {
+  width: 36px;
+  height: 36px;
+}
+
+/* ── Карточка категории ─────────────────────────────────────────────────── */
+
+.categoryCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 48px;
+  background: rgba(255, 255, 255, 0.56);
+  backdrop-filter: blur(12px);
+  border: 1px solid #fff;
+  padding: 33px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.categoryCard:active {
+  transform: scale(0.98);
+}
+
+.categoryTitle {
+  font-family: "SB Sans Display", sans-serif;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 52px;
+  color: rgba(8, 8, 8, 0.96);
+  margin: 0;
+  max-width: 528px;
+}
+
+.categoryDescription {
+  font-family: "SB Sans Text", sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 35px;
+  letter-spacing: -0.532px;
+  color: rgba(8, 8, 8, 0.96);
+  margin: 0;
+  max-width: 528px;
+}
+
+.decorBox {
+  position: absolute;
+  pointer-events: none;
+}
+
+.decorImage {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+
+/* ── Видео ──────────────────────────────────────────────────────────────── */
+
+.video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 32px;
+  background: #000;
+}
+
+/* ── Экраны ─────────────────────────────────────────────────────────────── */
+
+.homeFooterRow {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.homeVideoWrap {
+  flex: 1;
+  min-height: 0;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.categoriesHeader {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.categoriesTitle {
+  font-family: "SB Sans Display", sans-serif;
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 76px;
+  color: #000;
+  text-align: center;
+  margin: 0;
+}
+
+.grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.spanRow1 {
+  grid-column: span 6;
+  grid-row: 1;
+}
+
+.spanRow2 {
+  grid-column: span 4;
+  grid-row: 2;
+}
+
+.footerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.footerLeft {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.categoryVideoWrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.categoryVideoInner {
+  width: 1320px;
+  height: 100%;
+  max-height: 771px;
+  border-radius: 32px;
+  overflow: hidden;
+}

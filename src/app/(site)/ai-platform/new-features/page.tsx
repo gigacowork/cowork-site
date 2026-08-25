@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
@@ -15,11 +16,12 @@ import { RELEASES } from "@/content/releases";
  * карточкой, остальные — компактным списком ниже.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Что\u00A0нового\u00A0— GigaCowork",
   description:
     "Релизы и\u00A0обновления платформы GigaCowork: новые возможности агентов, навыки, команды, пространства и\u00A0коннекторы.",
-};
+  path: "/ai-platform/new-features/",
+});
 
 /** Тот же фон, что у финального CTA главной (2572:11130). */
 const HERO_GRADIENT =
@@ -40,8 +42,9 @@ export default function WhatsNewPage() {
             Что&nbsp;нового
           </h1>
           <p className="max-w-[560px] text-body-l text-text-secondary">
-            Рассказываем, что&nbsp;изменилось в&nbsp;платформе: новые возможности агентов,
-            навыки и&nbsp;команды, пространства и&nbsp;коннекторы к&nbsp;внешним системам.
+            Рассказываем, что&nbsp;изменилось в&nbsp;платформе: новые
+            возможности агентов, навыки и&nbsp;команды, пространства
+            и&nbsp;коннекторы к&nbsp;внешним системам.
           </p>
         </div>
       </section>

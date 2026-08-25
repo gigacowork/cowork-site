@@ -48,20 +48,11 @@ const BKG_BAND = "inset-0 md:top-0 md:bottom-auto md:h-[1200px] md:w-full";
  */
 const BKG_EDGE = "linear-gradient(to right, #ffffff 0%, #ffffff 100%)";
 
-/**
- * Прогрессивное размытие подложки под контентом.
- *
- * `backdrop-filter` нельзя задать градиентом, поэтому размытие набирается
- * стопкой слоёв: каждый следующий размывает сильнее, но его маска уже —
- * к центральной вертикали радиусы складываются, а к краям сходят в ноль.
- * Слои лежат МЕЖДУ картинкой (-z-10) и контентом, поэтому размывают только фон.
- */
-const BLUR_LAYERS = [
-  { blur: 1.5, mask: "transparent 0%, black 18%, black 82%, transparent 100%" },
-  { blur: 3, mask: "transparent 8%, black 28%, black 72%, transparent 92%" },
-  { blur: 5, mask: "transparent 18%, black 36%, black 64%, transparent 82%" },
-  { blur: 8, mask: "transparent 28%, black 44%, black 56%, transparent 72%" },
-];
+/*
+  Раньше здесь стояла стопка слоёв с `backdrop-filter`, дававшая прогрессивное
+  размытие подложки к центральной вертикали (радиусы 1.5 / 3 / 5 / 8 с
+  сужающимися масками). По просьбе убрано: картинка hero показывается как есть.
+*/
 
 export type HeroProps = {
   /** Слот для встроенного чата (PROTO / Hero Chat · Embedded), только desktop. */
@@ -88,22 +79,6 @@ export function Hero({ chat }: HeroProps) {
             className="absolute inset-0 size-full object-cover [object-position:center_top]"
           />
         </div>
-      </div>
-
-      {/* Размытие фона: сильнее к центральной вертикали, слабее к краям */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5]">
-        {BLUR_LAYERS.map((layer) => (
-          <div
-            key={layer.blur}
-            className="absolute inset-0"
-            style={{
-              backdropFilter: `blur(${layer.blur}px)`,
-              WebkitBackdropFilter: `blur(${layer.blur}px)`,
-              maskImage: `linear-gradient(to right, ${layer.mask})`,
-              WebkitMaskImage: `linear-gradient(to right, ${layer.mask})`,
-            }}
-          />
-        ))}
       </div>
 
       {/*

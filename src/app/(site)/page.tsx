@@ -1,4 +1,8 @@
 import Clients from "@/components/sections/Clients";
+import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 import NoHours from "@/components/sections/NoHours";
 import HowAgentsWork from "@/components/sections/HowAgentsWork";
 import Metrics from "@/components/sections/Metrics";
@@ -17,9 +21,17 @@ import TokenIllustrations from "@/components/interactive/TokenIllustrations";
 
 /* Шапка и подвал — в src/app/layout.tsx, они общие для всех страниц. */
 
+/*
+  Метатеги главной перекрывают корневые: там они запасные для всего сайта,
+  здесь — из SEO-документа страницы.
+*/
+export const metadata: Metadata = seoMetadata(PAGE_SEO.home);
+
 export default function Home() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.home.jsonLd!} />
+
       {/* 2 — Hero + анимированный чат */}
       <HeroWithChat />
 

@@ -1,4 +1,7 @@
 import { asset } from "@/lib/asset";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 import type { Metadata } from "next";
 import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
@@ -18,11 +21,7 @@ import VideoGuides from "@/components/interactive/VideoGuides";
  * Хуки для интерактива: `data-guide-tab`, `data-guide-item`, `data-guide-video`.
  */
 
-export const metadata: Metadata = {
-  title: "Обучающие видео\u00A0— GigaCowork",
-  description:
-    "Короткие видеоинструкции по\u00A0работе с\u00A0платформой GigaCowork: агенты, задачи, навыки, команды, коннекторы и\u00A0пространства.",
-};
+export const metadata: Metadata = seoMetadata(PAGE_SEO.guides);
 
 type Guide = {
   id: string;
@@ -107,6 +106,8 @@ const HERO_GRADIENT =
 export default function VideoGuidesPage() {
   return (
     <VideoGuides>
+      <JsonLd data={PAGE_SEO.guides.jsonLd!} />
+
       {/*
         Hero.
 
@@ -131,11 +132,12 @@ export default function VideoGuidesPage() {
         <div className="container-page flex flex-col gap-16">
           <h1 className="text-h3 font-medium text-neutral-1000 md:text-h2">
             Начните работать
-            <br />с&nbsp;GigaCowork
+            <br />
+            с&nbsp;GigaCowork
           </h1>
           <p className="max-w-[560px] text-body-l text-text-secondary">
-            Короткие видео помогут разобраться в&nbsp;основных возможностях платформы
-            и&nbsp;покажут, как&nbsp;делегировать задачи ИИ-агентам.
+            Короткие видео помогут разобраться в&nbsp;основных возможностях
+            платформы и&nbsp;покажут, как&nbsp;делегировать задачи ИИ-агентам.
           </p>
         </div>
       </section>
@@ -177,7 +179,10 @@ export default function VideoGuidesPage() {
                     {guide.title}
                   </h2>
                   {guide.paragraphs.map((text) => (
-                    <p key={text} className="text-body-m text-text-secondary md:text-body-l">
+                    <p
+                      key={text}
+                      className="text-body-m text-text-secondary md:text-body-l"
+                    >
                       {text}
                     </p>
                   ))}
@@ -190,6 +195,13 @@ export default function VideoGuidesPage() {
                 >
                   <video
                     src={asset(guide.video)}
+                    /*
+                      Постер — первый кадр ролика. Нужен не только глазу (без
+                      него до запуска видна чёрная плашка), но и микроразметке:
+                      у VideoObject поле thumbnailUrl обязательное, и ссылается
+                      оно на этот же файл (см. src/content/seo.ts).
+                    */
+                    poster={asset(`/img/guides/${guide.id}-poster.webp`)}
                     muted
                     loop
                     playsInline
@@ -210,7 +222,12 @@ export default function VideoGuidesPage() {
             <p className="text-h4 font-medium text-text-primary md:text-h3">
               Узнайте больше о&nbsp;платформе
             </p>
-            <Button href="/lead" variant="primary" size="lg" className="text-body-m!">
+            <Button
+              href="/lead"
+              variant="primary"
+              size="lg"
+              className="text-body-m!"
+            >
               Попробовать бесплатно
             </Button>
           </div>

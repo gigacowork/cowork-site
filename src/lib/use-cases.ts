@@ -52,6 +52,11 @@ export type UseCaseStep = {
   video?: string;
   /** Первый кадр — показывается, пока видео не загрузилось. */
   videoPoster?: string;
+  /**
+   * Пропорция кадра «ширина/высота» из самого файла: карточка кадрируется
+   * ровно по ней, без полей по краям.
+   */
+  videoRatio?: string;
 };
 
 export type UseCaseTag = { label: string; icon: string };
@@ -879,6 +884,7 @@ export const USE_CASES: UseCase[] = [
         videoLabel: "Видео: не\u00A0тратьте время на\u00A0ручную сверку",
         video: "/video/accounting-reconciliation.mp4",
         videoPoster: "/img/use-cases/accounting-reconciliation-poster.webp",
+        videoRatio: "1164/648",
       },
       {
         title: "Делегируйте сбор документов\nпо\u00A0десяткам контрагентов",
@@ -886,6 +892,9 @@ export const USE_CASES: UseCase[] = [
           "ИИ-агент собирает закрывающие документы по\u00A0каждому юридическому лицу, отслеживает недостающие акты и\u00A0счета-фактуры и\u00A0отправляет напоминания контрагентам.",
         ],
         videoLabel: "Видео: делегируйте сбор документов по\u00A0десяткам контрагентов",
+        video: "/video/accounting-collect-docs.mp4",
+        videoPoster: "/img/use-cases/accounting-collect-docs-poster.webp",
+        videoRatio: "1164/648",
       },
       {
         title: "Создайте базу знаний для\u00A0коллег",
@@ -893,6 +902,9 @@ export const USE_CASES: UseCase[] = [
           "Загрузите инструкции и\u00A0ответы на\u00A0типовые вопросы. ИИ-помощник понятным языком расскажет о\u00A0датах выплат, расчетных листках и\u00A0других внутренних процессах.",
         ],
         videoLabel: "Видео: создайте базу знаний для\u00A0коллег",
+        video: "/video/accounting-knowledge-base.mp4",
+        videoPoster: "/img/use-cases/accounting-knowledge-base-poster.webp",
+        videoRatio: "1164/648",
       },
       {
         title: "Поручите подготовку отчетов ИИ",
@@ -904,6 +916,9 @@ export const USE_CASES: UseCase[] = [
           "Статистическую отчетность по\u00A0численности работников и\u00A0фонду оплаты труда, включая формы ПМ, П-4\u00A0и\u00A0П-5",
         ],
         videoLabel: "Видео: поручите подготовку отчетов ИИ",
+        video: "/video/accounting-reports.mp4",
+        videoPoster: "/img/use-cases/accounting-reports-poster.webp",
+        videoRatio: "1164/648",
       },
     ],
     benefitsTitle: "ИИ поможет закрыть\nотчетный период быстрее",
