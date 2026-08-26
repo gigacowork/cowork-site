@@ -51,6 +51,26 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Обучающие видео", href: "/guides" },
 ];
 
+/**
+ * Навигация-«таблетка» из макета 3607:37216: белая подложка, размытие 11,
+ * скругление 98, отступ внутрь от краёв страницы. Раньше так выглядела шапка
+ * только над hero, а дальше по странице превращалась в сплошную полосу — теперь
+ * форма одна на всю страницу. Ниже md таблетки нет: там полоса во всю ширину,
+ * на неё же опирается выезжающее меню.
+ *
+ * Одна строка на откат: `false` возвращает сплошную полосу на всех ширинах.
+ */
+const PILL_NAV = true;
+
+/**
+ * Сдвиг прокрутки (px), после которого у шапки появляется подложка.
+ *
+ * Ровно ноль брать нельзя: тачпад и iOS отдают микроскопические сдвиги и
+ * отрицательные значения на «резинке», от которых подложка мигала бы, пока
+ * страница стоит на месте.
+ */
+const SCROLL_START = 4;
+
 /** Подсветка активного пункта: точное совпадение или вложенный маршрут. */
 function isActive(pathname: string, href: string) {
   if (!href.startsWith("/") || href.startsWith("/#")) return false;
@@ -101,30 +121,20 @@ export function Header() {
   }, [openMenu]);
 
   /*
-    The header sits ON TOP of the hero, so while it is still over the hero it
-    stays fully transparent and the hero background shows through behind the
-    navigation. It only picks up a surface once the hero has scrolled past —
-    note the hero grows when the chat opens, so this tracks the live edge
-    rather than a fixed scroll offset.
+    Шапка лежит поверх страницы, и в самом верху под ней нет ничего: первый
+    экран виден целиком, пункты меню стоят прямо на нём. Подложка появляется,
+    как только страница тронулась с места, и дальше едет вместе с ней.
+
+    Раньше здесь отслеживался нижний край hero: над ним шапка была прозрачной,
+    после — сплошной. Теперь состояний по-прежнему два, но переключает их сам
+    факт прокрутки, а вид подложки один на всю страницу.
   */
   useEffect(() => {
     let frame = 0;
 
     const check = () => {
       frame = 0;
-      const hero = document.getElementById("hero");
-      const headerH =
-        parseFloat(
-          getComputedStyle(document.documentElement).getPropertyValue(
-            "--header-h",
-          ),
-        ) || 0;
-      /*
-        Прозрачной шапка бывает только над hero главной. На страницах без hero
-        (например «Обучающие видео») фон светлый и однотонный — там шапка
-        сплошная с самого верха, иначе пункты меню висят в воздухе.
-      */
-      setScrolled(hero ? hero.getBoundingClientRect().bottom <= headerH : true);
+      setScrolled(window.scrollY > SCROLL_START);
     };
 
     const onScroll = () => {
@@ -142,31 +152,43 @@ export function Header() {
     };
   }, []);
 
-  const solid = scrolled || menuOpen;
+  const surface = scrolled || menuOpen;
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 w-full transition-colors duration-300 ${
-        solid ? "bg-bg-page/85" : "bg-transparent"
-      }`}
-    >
+    /*
+      Заливки на самой шапке нет: её несёт подложка ниже, иначе в верху
+      страницы поверх первого экрана лежала бы полоса во всю ширину.
+    */
+    <header className="fixed inset-x-0 top-0 z-50 w-full">
       {/*
-        Подложка навигации. Над hero шапка остаётся прозрачной, но контент под
-        ней размывается — иначе сообщения чата, проезжающие снизу, перебивают
-        пункты меню. Маска гасит размытие к низу, чтобы не было видно линии
-        среза; после hero шапка получает заливку и размывает всю свою высоту.
+        Подложка навигации — «таблетка» из макета 3607:37216: белая, размытие
+        11, скругление 98. Был вариант с градиентом (3607:37388, #e4faff →
+        #f4fbff под 5.6°) — по просьбе вернулись к белой заливке.
+        Непрозрачность поднята с макетных 60% до 78%: на пёстром фоне пункты
+        меню читались тяжеловато.
 
-        Радиус размытия — 6: этого хватает, чтобы пункты меню читались поверх
-        проезжающего контента, но фон hero под шапкой остаётся узнаваемым. На 14
-        картинка под навигацией превращалась в ровное пятно.
+        Ширину считаем от контейнера страницы: шапка тянется во всю ширину
+        окна, поэтому боковой отступ — это поле до контейнера (100% − 1280) / 2
+        плюс 10, то есть 40 отступа контейнера минус 30 напуска. Таблетка
+        выступает за содержимое ровно на 30 с каждой стороны, как в макете. На
+        узких экранах контейнер шире окна — там `max` оставляет те же 10. По
+        вертикали — 8 от краёв шапки.
+
+        Ниже md таблетки нет: полоса во всю ширину и размытие 6 — этого
+        хватает, чтобы пункты читались поверх проезжающего контента, а фон
+        под шапкой оставался узнаваемым (на 14 он превращался в ровное пятно).
+
+        Появление — только через прозрачность: геометрия у подложки всегда
+        одна и та же, поэтому в переходе ничего не разъезжается и не прыгает.
+        В самом верху страницы подложки не видно совсем.
       */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-0 -z-10 backdrop-blur-[6px] transition-[mask-image] duration-300 ${
-          solid
-            ? ""
-            : "[mask-image:linear-gradient(to_bottom,black_0%,black_62%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_62%,transparent_100%)]"
-        }`}
+        className={`pointer-events-none absolute inset-0 -z-10 bg-bg-page/85 backdrop-blur-[6px] transition-opacity duration-300 ${
+          PILL_NAV
+            ? "md:inset-x-[max(10px,calc((100%_-_1280px)/2_+_10px))] md:inset-y-[8px] md:rounded-[98px] md:bg-[rgba(255,255,255,0.78)] md:backdrop-blur-[11px]"
+            : ""
+        } ${surface ? "opacity-100" : "opacity-0"}`}
       />
 
       {/*

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { createScrollFollower } from "@/lib/scroll-follower";
 
 /**
  * Stacking-scroll wrapper for "Как работают ИИ-агенты GigaCowork".
@@ -50,7 +51,7 @@ export function StackingCards({ children }: { children: ReactNode }) {
     if (!root) return;
 
     const cards = Array.from(
-      root.querySelectorAll<HTMLElement>("[data-stack-card]")
+      root.querySelectorAll<HTMLElement>("[data-stack-card]"),
     );
     if (cards.length < 2) return;
 
@@ -69,7 +70,6 @@ export function StackingCards({ children }: { children: ReactNode }) {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     let active = false;
-    let frame = 0;
     let spacers: HTMLElement[] = [];
 
     const settled = cards.map((card, i) => {
@@ -119,12 +119,12 @@ export function StackingCards({ children }: { children: ReactNode }) {
 
       const headerH =
         parseFloat(
-          getComputedStyle(document.documentElement).getPropertyValue("--header-h")
+          getComputedStyle(document.documentElement).getPropertyValue(
+            "--header-h",
+          ),
         ) || 0;
       headingTop = headerH + HEADING_GAP;
-      pinTop = heading
-        ? headingTop + heading.offsetHeight + CARD_GAP
-        : PIN_TOP;
+      pinTop = heading ? headingTop + heading.offsetHeight + CARD_GAP : PIN_TOP;
 
       // Pinning would hide part of a card on short viewports — leave it alone.
       if (cards[0].offsetHeight + pinTop > window.innerHeight) return;
@@ -149,10 +149,20 @@ export function StackingCards({ children }: { children: ReactNode }) {
       });
       list.appendChild(makeSpacer(TAIL_HOLD));
 
+      /* После пересчёта раскладки догонять нечего — начинаем с нуля. */
+      follower.sync();
       update();
     };
 
-    const update = () => {
+    /*
+      `lag` — отставание анимации от страницы (см. lib/scroll-follower).
+      Позиции самих карточек держит нативный `sticky` и трогать их не нужно,
+      а вот масштаб считается здесь — и без сглаживания он менялся ступеньками
+      по щелчку колеса. Прибавляя `lag` к замерам, получаем положение соседней
+      карточки, каким оно было мгновение назад: масштаб доезжает за несколько
+      кадров.
+    */
+    const update = (lag = 0) => {
       if (!active) return;
 
       /*
@@ -171,19 +181,22 @@ export function StackingCards({ children }: { children: ReactNode }) {
         const last = cards[cards.length - 1];
         const listBottom = list.getBoundingClientRect().bottom + window.scrollY;
         const releaseY =
-          listBottom - (pinTop + settled[cards.length - 1].offset) - last.offsetHeight;
-        const over = Math.max(0, window.scrollY - releaseY);
+          listBottom -
+          (pinTop + settled[cards.length - 1].offset) -
+          last.offsetHeight;
+        const over = Math.max(0, window.scrollY - lag - releaseY);
         heading.style.top = `${headingTop - over}px`;
       }
 
       for (let i = 0; i < cards.length - 1; i++) {
         const next = cards[i + 1].getBoundingClientRect();
+        const nextTop = next.top + lag;
         const pinnedTop = pinTop + settled[i].offset;
         const height = cards[i].offsetHeight;
         // 0 → the next card has not reached us; 1 → it fully covers us.
         const progress = Math.min(
           1,
-          Math.max(0, (pinnedTop + height - next.top) / height)
+          Math.max(0, (pinnedTop + height - nextTop) / height),
         );
         const scale = 1 - (1 - settled[i].scale) * progress;
         cards[i].style.transform = `scale(${scale})`;
@@ -191,13 +204,9 @@ export function StackingCards({ children }: { children: ReactNode }) {
       cards[cards.length - 1].style.transform = "";
     };
 
-    const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        update();
-      });
-    };
+    const follower = createScrollFollower(update);
+
+    const onScroll = () => follower.kick();
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", measure);
@@ -206,7 +215,7 @@ export function StackingCards({ children }: { children: ReactNode }) {
     measure();
 
     return () => {
-      if (frame) cancelAnimationFrame(frame);
+      follower.stop();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", measure);
       desktop.removeEventListener("change", measure);

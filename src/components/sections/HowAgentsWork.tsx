@@ -46,7 +46,8 @@ export const HOW_IT_WORKS_CARDS: HowItWorksCard[] = [
   {
     id: "receive",
     titleLines: ["Получают задачу", "от\u00A0сотрудников"],
-    description: "Принимают запрос на\u00A0естественном языке и\u00A0уточняют детали",
+    description:
+      "Принимают запрос на\u00A0естественном языке\nи\u00A0уточняют детали",
     image: {
       src: "/img/agents/receive.png",
       // исходник перевыгружен в 1.5× — рендер-ширина прежняя, растр чётче

@@ -147,8 +147,10 @@ export default async function UseCasePage({
       <UseCaseHero
         title={useCase.title}
         intro={useCase.intro}
+        introWidth={useCase.introWidth}
         image={useCase.heroImage}
         imageMobile={useCase.heroImageMobile}
+        textBlur={useCase.heroTextBlur}
       />
 
       {(useCase.order ?? DEFAULT_ORDER).map((key) => (

@@ -22,8 +22,15 @@ import { LEGAL_PDF } from "@/lib/legal";
  * пользователя на пустой URL. Как появится ручка — поменять `handleSubmit`.
  */
 
+/*
+  Заливка карточки — Gradient/Omni/Neuton 2, углы из макетов: 236.719° на
+  мобильном (I2397:43460;1866:16434) и 224.038° на десктопе
+  (I2397:43444;1866:16434). Прежде здесь стоял Neuton_Light_3 под 61.375° —
+  другой набор цветов и другое направление.
+*/
 const FORM_GRADIENT =
-  "bg-[linear-gradient(61.375deg,#c5f8e5_0.952%,#dcf9ff_50.802%,#e4f5ff_101.64%)]";
+  "bg-[linear-gradient(236.719deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)] " +
+  "md:bg-[linear-gradient(224.038deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)]";
 
 const FIELD_CLASS =
   "h-[56px] w-full rounded-[16px] border border-border-default bg-bg-input p-16 " +
@@ -34,7 +41,12 @@ const FIELD_CLASS =
 
 const FIELDS = [
   { name: "name", label: "Имя", type: "text", autoComplete: "name" },
-  { name: "email", label: "Рабочая почта", type: "email", autoComplete: "email" },
+  {
+    name: "email",
+    label: "Рабочая почта",
+    type: "email",
+    autoComplete: "email",
+  },
   { name: "phone", label: "Телефон", type: "tel", autoComplete: "tel" },
   {
     name: "company",
@@ -71,7 +83,8 @@ export function LeadForm() {
             Заявка отправлена
           </p>
           <p className="text-body-m text-text-secondary">
-            Мы свяжемся с&nbsp;вами по&nbsp;указанной почте и&nbsp;откроем пробный доступ.
+            Мы свяжемся с&nbsp;вами по&nbsp;указанной почте и&nbsp;откроем
+            пробный доступ.
           </p>
         </div>
       ) : (
@@ -112,9 +125,9 @@ export function LeadForm() {
               htmlFor="lead-consent"
               className="flex-1 cursor-pointer text-left text-caption text-text-secondary"
             >
-              Даю <LegalLink href={LEGAL_PDF.materials}>согласие</LegalLink> на&nbsp;получение
-              материалов о&nbsp;сервисе, приглашений на&nbsp;мероприятия и&nbsp;рекламных
-              сообщений в&nbsp;соответствии{" "}
+              Даю <LegalLink href={LEGAL_PDF.materials}>согласие</LegalLink>{" "}
+              на&nbsp;получение материалов о&nbsp;сервисе, приглашений
+              на&nbsp;мероприятия и&nbsp;рекламных сообщений в&nbsp;соответствии{" "}
               <LegalLink href={LEGAL_PDF.privacy}>
                 с&nbsp;Политикой конфиденциальности
               </LegalLink>
@@ -133,8 +146,8 @@ export function LeadForm() {
           */}
           <p className="w-full px-16 text-left text-caption text-text-secondary md:px-48">
             Нажимая на&nbsp;кнопку,{" "}
-            <LegalLink href={LEGAL_PDF.personal}>я соглашаюсь</LegalLink> на&nbsp;обработку
-            моих персональных данных в&nbsp;соответствии с{" "}
+            <LegalLink href={LEGAL_PDF.personal}>я соглашаюсь</LegalLink>{" "}
+            на&nbsp;обработку моих персональных данных в&nbsp;соответствии с{" "}
             <LegalLink href={LEGAL_PDF.privacy}>
               Политикой конфиденциальности
             </LegalLink>

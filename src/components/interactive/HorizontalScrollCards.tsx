@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { createScrollFollower } from "@/lib/scroll-follower";
 
 /**
  * Scroll-jacking wrapper for the "Не тратьте часы на задачи…" section.
@@ -47,7 +48,6 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
 
     let stickyTop = 0;
     let active = false;
-    let frame = 0;
 
     /*
       Превращение карточек: задачи уходят, на их месте появляется знак «забрал
@@ -70,7 +70,9 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
       прокрутке, пока секция уезжает вверх. Поэтому и отсчёт ведётся от
       непорезанного `-top`, а не от прогресса 0…1.
     */
-    const cards = Array.from(track.querySelectorAll<HTMLElement>("[data-card-id]"));
+    const cards = Array.from(
+      track.querySelectorAll<HTMLElement>("[data-card-id]"),
+    );
     /* Во сколько раз превращение одной карточки длиннее шага между ними. */
     const SPAN_RATIO = 1.6;
     /*
@@ -80,6 +82,8 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
     const DEAD = 40;
     let stagger = 0;
     let span = 0;
+    /** Последнее записанное `--done` каждой карточки. */
+    const painted: (string | null)[] = cards.map(() => null);
 
     const measureCards = () => {
       /*
@@ -103,15 +107,27 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
         не успеваешь. На телефоне карточки остаются со списком задач.
       */
       if (!desktop.matches || reduced.matches || !span) {
-        cards.forEach((card) => card.style.removeProperty("--done"));
+        cards.forEach((card, i) => {
+          card.style.removeProperty("--done");
+          painted[i] = null;
+        });
         return;
       }
       cards.forEach((card, i) => {
         const done = Math.min(
           1,
-          Math.max(0, (shift - DEAD - i * stagger) / span)
+          Math.max(0, (shift - DEAD - i * stagger) / span),
         );
-        card.style.setProperty("--done", done.toFixed(3));
+        /*
+          Записываем только изменившееся: каждая запись переменной пересчитывает
+          стили всех задач внутри карточки, а на большей части хода значение
+          стоит на 0 или 1 и трогать его незачем.
+        */
+        const next = done.toFixed(3);
+        if (painted[i] !== next) {
+          painted[i] = next;
+          card.style.setProperty("--done", next);
+        }
       });
     };
 
@@ -168,10 +184,19 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
       track.style.willChange = "transform";
       // Хвост считается только для закреплённой секции — пересчитываем здесь.
       measureCards();
+      /* После пересчёта раскладки догонять нечего — начинаем с нуля. */
+      follower.sync();
       update();
     };
 
-    const update = () => {
+    /*
+      `lag` — насколько анимация отстаёт от страницы (см. lib/scroll-follower).
+      Прибавляем его к замеру: получается положение секции, каким оно было
+      мгновение назад. Благодаря этому щелчок колеса, двигающий страницу
+      сразу на сотню пикселей, лента проезжает за несколько кадров, а не
+      прыжком.
+    */
+    const update = (lag = 0) => {
       if (!active) return;
       /*
         `travelled` не режется по длине ленты: после того как лента доехала до
@@ -181,13 +206,15 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
       */
       const travelled = Math.max(
         0,
-        stickyTop - outer.getBoundingClientRect().top
+        stickyTop - (outer.getBoundingClientRect().top + lag),
       );
       const progress = Math.min(1, travelled / distance);
       track.style.transform = `translate3d(${-progress * distance}px,0,0)`;
       syncNav(progress);
       paintCards(travelled);
     };
+
+    const follower = createScrollFollower(update);
 
     /*
       Когда секция не закреплена (телефон, «уменьшить движение», низкое окно),
@@ -200,13 +227,7 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
       paintCards(track.scrollLeft);
     };
 
-    const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        update();
-      });
-    };
+    const onScroll = () => follower.kick();
 
     // Prev / next buttons: drive window scroll while pinned, scrollLeft otherwise.
     const step = () => {
@@ -243,7 +264,7 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
 
       const progress = Math.min(
         1,
-        Math.max(0, -outer.getBoundingClientRect().top / distance)
+        Math.max(0, -outer.getBoundingClientRect().top / distance),
       );
       if (
         (event.deltaX < 0 && progress <= 0) ||
@@ -273,7 +294,7 @@ export function HorizontalScrollCards({ children }: { children: ReactNode }) {
     measure();
 
     return () => {
-      if (frame) cancelAnimationFrame(frame);
+      follower.stop();
       prevBtn?.removeEventListener("click", onPrev);
       nextBtn?.removeEventListener("click", onNext);
       pin.removeEventListener("wheel", onWheel);
