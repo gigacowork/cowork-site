@@ -174,12 +174,132 @@ const ACCOUNTING: ScenarioPreview[] = [
 ];
 
 /**
+ * Превью роли «Финансы» (/use_cases/finance).
+ * Порядок совпадает с `USE_CASES[slug: "finance"].scenarios`.
+ */
+const FINANCE: ScenarioPreview[] = [
+  {
+    asset: "/img/use-cases/finance-investment.webp",
+    alt: "Интерфейс GigaCowork: комплект документации по\u00A0инвестиционному проекту, собранный агентом",
+  },
+  {
+    asset: "/img/use-cases/finance-reconciliation.webp",
+    alt: "Интерфейс GigaCowork: сверка расчётов с\u00A0найденными расхождениями",
+  },
+  {
+    asset: "/img/use-cases/finance-budget.webp",
+    alt: "Интерфейс GigaCowork: разбор отклонений бюджета\u00A0— план, факт и\u00A0причины расхождений",
+  },
+];
+
+/**
+ * Превью роли «Продажи» (/use_cases/salesforce).
+ * Порядок совпадает с `USE_CASES[slug: "salesforce"].scenarios`.
+ */
+const SALESFORCE: ScenarioPreview[] = [
+  {
+    asset: "/img/use-cases/salesforce-offers.webp",
+    alt: "Интерфейс GigaCowork: коммерческое предложение, собранное агентом под\u00A0запрос клиента",
+  },
+  {
+    asset: "/img/use-cases/salesforce-reports.webp",
+    alt: "Интерфейс GigaCowork: отчёт по\u00A0выполнению плана продаж за\u00A0месяц",
+  },
+  {
+    asset: "/img/use-cases/salesforce-feedback.webp",
+    alt: "Интерфейс GigaCowork: разбор обратной связи клиентов с\u00A0выделенными темами",
+  },
+];
+
+/**
+ * Превью роли «Закупки» (/use_cases/procurement).
+ * Порядок совпадает с `USE_CASES[slug: "procurement"].scenarios`.
+ */
+const PROCUREMENT: ScenarioPreview[] = [
+  {
+    asset: "/img/use-cases/procurement-compare.webp",
+    alt: "Интерфейс GigaCowork: сравнение предложений поставщиков по\u00A0цене, срокам и\u00A0условиям",
+  },
+  {
+    asset: "/img/use-cases/procurement-stock.webp",
+    alt: "Интерфейс GigaCowork: расчёт нормирования запасов ТМЦ\u00A0— излишки, риск дефицита и\u00A0замороженные средства",
+  },
+  {
+    asset: "/img/use-cases/procurement-search.webp",
+    alt: "Интерфейс GigaCowork: подбор поставщиков и\u00A0аналогов МТР по\u00A0техническим требованиям",
+  },
+];
+
+/**
+ * Превью роли «Юристы» (/use_cases/legal-team).
+ * Порядок совпадает с `USE_CASES[slug: "legal-team"].scenarios`.
+ */
+const LEGAL_TEAM: ScenarioPreview[] = [
+  {
+    asset: "/img/use-cases/legal-draft.webp",
+    alt: "Интерфейс GigaCowork: проект договора, подготовленный агентом по\u00A0шаблону компании",
+  },
+  {
+    asset: "/img/use-cases/legal-claim.webp",
+    alt: "Интерфейс GigaCowork: расчёт задолженности и\u00A0неустойки с\u00A0проверкой сроков исковой давности и\u00A0готовым черновиком претензии",
+  },
+  {
+    asset: "/img/use-cases/legal-review.webp",
+    alt: "Интерфейс GigaCowork: разбор договора контрагента с\u00A0выделенными условиями и\u00A0рисками",
+  },
+];
+
+/**
+ * Превью роли «HR и кадры» (/use_cases/hr-team).
+ * Порядок совпадает с `USE_CASES[slug: "hr-team"].scenarios`.
+ */
+const HR_TEAM: ScenarioPreview[] = [
+  {
+    asset: "/img/use-cases/hr-transcripts.webp",
+    alt: "Интерфейс GigaCowork: разбор расшифровки интервью\u00A0— ключевые тезисы, соответствие компетенциям и\u00A0риски",
+  },
+  {
+    asset: "/img/use-cases/hr-screening.webp",
+    alt: "Интерфейс GigaCowork: рейтинг кандидатов по\u00A0соответствию требованиям вакансии",
+  },
+  {
+    asset: "/img/use-cases/hr-analytics.webp",
+    alt: "Интерфейс GigaCowork: дашборд по\u00A0персоналу\u00A0— текучесть по\u00A0подразделениям и\u00A0конверсия воронки подбора",
+  },
+];
+
+/**
+ * Превью роли «ИТ-поддержка» (/use_cases/it-support).
+ * Порядок совпадает с `USE_CASES[slug: "it-support"].scenarios`.
+ */
+const IT_SUPPORT: ScenarioPreview[] = [
+  {
+    asset: "/img/use-cases/it-incidents.webp",
+    alt: "Интерфейс GigaCowork: разбор инцидента по\u00A0логам приложения с\u00A0найденной причиной",
+  },
+  {
+    asset: "/img/use-cases/it-first-line.webp",
+    alt: "Интерфейс GigaCowork: ответ агента первой линии на\u00A0обращение сотрудника",
+  },
+  {
+    asset: "/img/use-cases/it-service-desk.webp",
+    alt: "Интерфейс GigaCowork: обращение в\u00A0сервис-деске с\u00A0историей и\u00A0результатами анализа",
+  },
+];
+
+/**
  * Ключ — slug роли из `USE_CASES`. Роли без превью просто отсутствуют:
  * `ScenarioStack` в этом случае рисует градиент-заглушку, как сейчас.
  */
 export const SCENARIO_PREVIEWS: Record<string, ScenarioPreview[]> = {
   ceo: CEO,
+  finance: FINANCE,
+  salesforce: SALESFORCE,
+  procurement: PROCUREMENT,
+  "legal-team": LEGAL_TEAM,
+  "hr-team": HR_TEAM,
   accounting: ACCOUNTING,
+  "it-support": IT_SUPPORT,
 };
 
 /** Превью конкретного сценария; `undefined` — заглушка. */

@@ -186,6 +186,13 @@ const BENEFITS = [
   },
 ];
 
+/*
+  Иконки чипов — из макета 2888:17823. У «Приватности» и «On-premise» это не
+  голые щит и пятиугольник, а те же контуры с галочкой внутри; в Figma галочка
+  лежит отдельным вектором поверх иконки. Базовые shield.svg и pentagon.svg
+  оставлены как есть: shield используется в тегах «Доступы» и «Ошибки» на
+  страницах ролей.
+*/
 const SECURITY_CARDS = [
   {
     tag: { label: "Юрисдикция РФ", icon: "/img/icons/double-headed-eagle.svg" },
@@ -193,12 +200,12 @@ const SECURITY_CARDS = [
     text: "Российское правовое поле. Без\u00A0санкционных рисков и\u00A0вопросов к\u00A0юрисдикции данных.",
   },
   {
-    tag: { label: "Приватность", icon: "/img/icons/shield.svg" },
+    tag: { label: "Приватность", icon: "/img/icons/shield-check.svg" },
     title: "Данные под\u00A0контролем",
     text: "Ваши данные никогда не\u00A0используются для\u00A0дообучения моделей",
   },
   {
-    tag: { label: "On-premise", icon: "/img/icons/pentagon.svg" },
+    tag: { label: "On-premise", icon: "/img/icons/pentagon-check.svg" },
     title: "On-premise",
     text: "Под\u00A0строгие требования ИБ есть внедрение внутри контура компании",
   },
@@ -447,20 +454,31 @@ export default function PlatformPage() {
                 <article
                   key={card.title}
                   data-token-card={card.title}
-                  className={`relative flex min-h-[291px] flex-col justify-between gap-24 overflow-hidden rounded-[24px] px-24 pt-32 pb-24 md:px-40 md:pt-40 ${CARD_GRADIENT_39}`}
+                  className={`relative flex min-h-[291px] flex-col overflow-hidden rounded-[24px] px-24 pt-32 pb-24 md:px-40 md:pt-40 ${CARD_GRADIENT_39}`}
                 >
-                  <div className="flex flex-col gap-16 lg:max-w-[320px]">
-                    <h3 className="text-h4 font-medium text-text-primary md:text-h3">
-                      {card.title}
-                    </h3>
-                    <p className="text-body-m text-text-secondary">
-                      {card.text}
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-8 lg:max-w-[320px]">
-                    {card.tags.map((tag) => (
-                      <Tag key={tag.label} {...tag} />
-                    ))}
+                  {/*
+                    Текст и теги — в общей колонке во всю высоту карточки, теги
+                    в ней прижаты книзу (`mt-auto`). Раньше `justify-between`
+                    стояло на самой карточке, но третьим её ребёнком идёт
+                    обёртка иллюстрации: рисунок внутри позиционирован
+                    абсолютно, высота обёртки нулевая, и «между» раскладывалось
+                    на три элемента — теги зависали в середине, а под ними
+                    оставалась пустая полоса.
+                  */}
+                  <div className="flex flex-1 flex-col gap-24">
+                    <div className="flex flex-col gap-16 lg:max-w-[320px]">
+                      <h3 className="text-h4 font-medium text-text-primary md:text-h3">
+                        {card.title}
+                      </h3>
+                      <p className="text-body-m text-text-secondary">
+                        {card.text}
+                      </p>
+                    </div>
+                    <div className="mt-auto flex flex-wrap gap-8 lg:max-w-[320px]">
+                      {card.tags.map((tag) => (
+                        <Tag key={tag.label} {...tag} />
+                      ))}
+                    </div>
                   </div>
                   {/*
                   Illustration (2888:17773 → x 360, y 19, 300×168) — панель

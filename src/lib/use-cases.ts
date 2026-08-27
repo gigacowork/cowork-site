@@ -169,8 +169,23 @@ export type UseCase = {
  * а не про отдел. Меняется только последний абзац: кто именно подключается
  * там, где нужно решение человека.
  */
-function commonSteps(role: string): UseCaseStep[] {
-  return [
+/**
+ * Записи экрана к шагам `commonSteps`, по индексу шага.
+ *
+ * Сами тексты общие, а видео у каждой роли своё: показывают её базу знаний и
+ * её агента. Поэтому файл не зашит в шаблон, а передаётся ролью, и шаг без
+ * записи остаётся с прежней белой заглушкой.
+ */
+type StepVideo = { video: string; videoPoster: string };
+
+/** Пропорция всех записей экрана после пережатия — см. public/video. */
+const VIDEO_RATIO = "1176/654";
+
+function commonSteps(
+  role: string,
+  videos: (StepVideo | undefined)[] = [],
+): UseCaseStep[] {
+  const steps: UseCaseStep[] = [
     {
       title: "Добавьте базу знаний",
       paragraphs: [
@@ -199,6 +214,10 @@ function commonSteps(role: string): UseCaseStep[] {
       videoLabel: "Видео: делегируйте задачи",
     },
   ];
+
+  return steps.map((step, i) =>
+    videos[i] ? { ...step, ...videos[i], videoRatio: VIDEO_RATIO } : step,
+  );
 }
 
 const SCENARIOS_TITLE = "Какие задачи ИИ-агенты\nрешают прямо сейчас";
@@ -288,6 +307,9 @@ export const USE_CASES: UseCase[] = [
           "Соберут данные из\u00A0корпоративных пространств, дашбордов и\u00A0рабочих переписок\u00A0– без\u00A0напоминаний подразделениям.",
         ],
         videoLabel: "Видео: управленческая сводка",
+        video: "/video/ceo-summary.mp4",
+        videoPoster: "/img/use-cases/ceo-summary-poster.webp",
+        videoRatio: "1176/654",
       },
       {
         title: "Суммаризируют договоренности\nиз\u00A0разных источников",
@@ -295,6 +317,9 @@ export const USE_CASES: UseCase[] = [
           "Проанализируют записи встреч, переписку, подсветят ключевые решения и\u00A0открытые вопросы. Составят краткое резюме.",
         ],
         videoLabel: "Видео: суммаризация договорённостей",
+        video: "/video/ceo-agreements.mp4",
+        videoPoster: "/img/use-cases/ceo-agreements-poster.webp",
+        videoRatio: "1176/678",
       },
       {
         /*
@@ -306,6 +331,9 @@ export const USE_CASES: UseCase[] = [
           "Подготовят презентацию для\u00A0совета директоров, стратегическое резюме для\u00A0руководителей или\u00A0ясную коммуникацию для\u00A0сотрудников.",
         ],
         videoLabel: "Видео: решения в\u00A0понятных коммуникациях",
+        video: "/video/ceo-comms.mp4",
+        videoPoster: "/img/use-cases/ceo-comms-poster.webp",
+        videoRatio: "1176/678",
       },
     ],
     benefitsTitle: "Делегировать задачи\u00A0– легко",
@@ -405,6 +433,9 @@ export const USE_CASES: UseCase[] = [
           "Платформа поддерживает интеграцию с\u00A01С, ERP-, CRM-системами и\u00A0другими рабочими инструментами.",
         ],
         videoLabel: "Видео: работайте в\u00A0привычных системах",
+        video: "/video/finance-systems.mp4",
+        videoPoster: "/img/use-cases/finance-systems-poster.webp",
+        videoRatio: "1176/654",
       },
       {
         title: "Формируйте отчеты\nв\u00A0Word, Excel, PPTX и\u00A0PDF",
@@ -414,6 +445,9 @@ export const USE_CASES: UseCase[] = [
         ],
         videoLabel:
           "Видео: формируйте отчеты в\u00A0Word, Excel, PPTX и\u00A0PDF",
+        video: "/video/finance-documents.mp4",
+        videoPoster: "/img/use-cases/finance-documents-poster.webp",
+        videoRatio: "1176/654",
       },
       {
         title: "Масштабируйте знания\nвнутри команды",
@@ -422,6 +456,9 @@ export const USE_CASES: UseCase[] = [
         ],
         videoLabel:
           "Видео: совместное пространство, публикация агентов и\u00A0навыков",
+        video: "/video/finance-knowledge.mp4",
+        videoPoster: "/img/use-cases/finance-knowledge-poster.webp",
+        videoRatio: "1176/654",
       },
     ],
     /* Блока с карточками преимуществ на этой странице в макете нет. */
@@ -490,18 +527,27 @@ export const USE_CASES: UseCase[] = [
         paragraphs: [
           "Агент соберет историю обращений, документы, последние статусы в\u00A0СRМ\u00A0– подготовит материалы и\u00A0сводку ко\u00A0встрече",
         ],
+        video: "/video/salesforce-brief.mp4",
+        videoPoster: "/img/use-cases/salesforce-brief-poster.webp",
+        videoRatio: "1176/654",
       },
       {
-        title: "Автоматизируйте\nработу с\u00A0CRM",
+        title: "Превращайте встречу\nв\u00A0план действий",
         paragraphs: [
-          "ИИ зафиксирует договоренности, внесет изменения по\u00A0сделкам в\u00A0системе и\u00A0создаст план дальнейших действий",
+          "Агент разберет запись встречи, зафиксирует договоренности, покажет изменения по\u00A0сделке и\u00A0соберет план следующих шагов со\u00A0сроками и\u00A0ответственными.",
         ],
+        video: "/video/salesforce-meeting.mp4",
+        videoPoster: "/img/use-cases/salesforce-meeting-poster.webp",
+        videoRatio: "1176/654",
       },
       {
-        title: "Делегируйте подготовку\nписем и\u00A0КП",
+        title: "Не\u00A0теряйте сделки\nиз\u00A0виду",
         paragraphs: [
-          "Агент напишет письмо по\u00A0итогам встречи, при\u00A0необходимости внесет правки от\u00A0сотрудника и\u00A0отправит прямо из\u00A0чата",
+          "Агент проверит активные сделки, найдет те, где давно нет движения, сверит данные с\u00A0перепиской и\u00A0подскажет, за\u00A0какие браться сегодня",
         ],
+        video: "/video/salesforce-deals.mp4",
+        videoPoster: "/img/use-cases/salesforce-deals-poster.webp",
+        videoRatio: "1176/654",
       },
     ],
     benefitsTitle:
@@ -628,6 +674,9 @@ export const USE_CASES: UseCase[] = [
           "Результат\u00A0— аналитическая справка с\u00A0рекомендациями.",
         ],
         videoLabel: "Видео: анализ рынка и\u00A0подготовка закупки",
+        video: "/video/procurement-analysis.mp4",
+        videoPoster: "/img/use-cases/procurement-analysis-poster.webp",
+        videoRatio: "1176/654",
       },
       {
         title: "Подготовка проекта договора",
@@ -636,6 +685,9 @@ export const USE_CASES: UseCase[] = [
           "Заполняет ключевые разделы, проверяет документ на\u00A0противоречия, пропущенные условия и\u00A0соответствие корпоративным требованиям.",
         ],
         videoLabel: "Видео: подготовка проекта договора",
+        video: "/video/procurement-contract.mp4",
+        videoPoster: "/img/use-cases/procurement-contract-poster.webp",
+        videoRatio: "1176/654",
       },
       {
         title: "Проверка заявок участников",
@@ -644,6 +696,9 @@ export const USE_CASES: UseCase[] = [
           "Сотрудник получает сводный отчет с\u00A0результатами проверки.",
         ],
         videoLabel: "Видео: проверка заявок участников",
+        video: "/video/procurement-bids.mp4",
+        videoPoster: "/img/use-cases/procurement-bids-poster.webp",
+        videoRatio: "1176/654",
       },
     ],
   },
@@ -714,6 +769,9 @@ export const USE_CASES: UseCase[] = [
           "Агент за\u00A0минуты проанализирует несколько договоров и\u00A0подготовит список несоответствий: что\u00A0добавили, удалили и\u00A0какие пункты требуют внимания.",
         ],
         videoLabel: "Видео: различия между версиями за\u00A0минуты",
+        video: "/video/legal-versions.mp4",
+        videoPoster: "/img/use-cases/legal-versions-poster.webp",
+        videoRatio: "1176/654",
       },
       {
         title: "Мгновенный поиск\nпо\u00A0базе знаний",
@@ -722,6 +780,9 @@ export const USE_CASES: UseCase[] = [
           "Нужная информация по\u00A0условиям любого договора\u00A0— за\u00A0секунды по\u00A0запросу.",
         ],
         videoLabel: "Видео: условия из\u00A0любого договора по\u00A0запросу",
+        video: "/video/legal-search.mp4",
+        videoPoster: "/img/use-cases/legal-search-poster.webp",
+        videoRatio: "1176/654",
       },
       {
         title: "Объяснение правок\nпростым языком",
@@ -729,6 +790,9 @@ export const USE_CASES: UseCase[] = [
           "Не\u00A0тратьте время на\u00A0одни и\u00A0те\u00A0же разъяснения коллегам\u00A0– агент подсветит изменения в\u00A0документах и\u00A0укажет причину правок.",
         ],
         videoLabel: "Видео: пояснения к\u00A0правкам простым языком",
+        video: "/video/legal-explain.mp4",
+        videoPoster: "/img/use-cases/legal-explain-poster.webp",
+        videoRatio: "1176/654",
       },
     ],
     process: {
@@ -825,7 +889,20 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     stepsTitle: STEPS_TITLE,
-    steps: commonSteps("HR"),
+    steps: commonSteps("HR", [
+      {
+        video: "/video/hr-knowledge.mp4",
+        videoPoster: "/img/use-cases/hr-knowledge-poster.webp",
+      },
+      {
+        video: "/video/hr-agent.mp4",
+        videoPoster: "/img/use-cases/hr-agent-poster.webp",
+      },
+      {
+        video: "/video/hr-delegate.mp4",
+        videoPoster: "/img/use-cases/hr-delegate-poster.webp",
+      },
+    ]),
     benefits: [
       {
         title: "Релевантные ответы\nна\u00A0вопросы",
