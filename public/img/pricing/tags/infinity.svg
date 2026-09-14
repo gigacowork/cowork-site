@@ -1,0 +1,5 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="#fff"/><path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="url(#g_inf)"/>
+<defs><linearGradient id="g_inf" x1="-0.36" y1="24" x2="28.63" y2="6.70" gradientUnits="userSpaceOnUse"><stop stop-color="#A6FDDC"/><stop offset="0.504475" stop-color="#B1F1FF"/><stop offset="1" stop-color="#CFE7FF"/></linearGradient></defs>
+<path d="M7.25 7.5C4.35 7.5 2.5 9.35 2.5 12C2.5 14.65 4.35 16.5 7.25 16.5C9.35 16.5 10.72 15.06 12 13.35C13.28 15.06 14.65 16.5 16.75 16.5C19.65 16.5 21.5 14.65 21.5 12C21.5 9.35 19.65 7.5 16.75 7.5C14.65 7.5 13.28 8.94 12 10.65C10.72 8.94 9.35 7.5 7.25 7.5Z" stroke="#171F2D" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

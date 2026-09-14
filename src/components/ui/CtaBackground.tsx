@@ -1,3 +1,6 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
+
 import { HeroImage } from "@/components/ui/HeroImage";
 
 /**
@@ -5,7 +8,7 @@ import { HeroImage } from "@/components/ui/HeroImage";
  *
  * Раньше это был градиент — один и тот же, продублированный пятью константами
  * по страницам. Теперь картинка, и чтобы она не расползлась такими же копиями,
- * подложка вынесена сюда: во всех CTA лежит один и тот же элемент.
+ * подложка вынесена сюда.
  *
  * Кадры разные под ширину экрана: десктопный 2880×974 (почти 3:1, широкая
  * панорама), мобильный 1170×807 (3:2, тот же мотив, но кадрирован под узкий
@@ -19,11 +22,42 @@ import { HeroImage } from "@/components/ui/HeroImage";
  */
 export const CTA_FALLBACK = "bg-[#f7f8fa]";
 
-export function CtaBackground() {
+/**
+ * Кадров в макетах два, и они чередуются от страницы к странице:
+ *   `disc` — крупный стеклянный диск в левой половине (главная, «Рабочие
+ *            пространства», «Навыки», «Задачи по расписанию», роли «Финансы»,
+ *            «Закупки», «Юристы», «ИТ-поддержка», «Руководитель»);
+ *   `slab` — плоскость с диагональным бликом («Обзор платформы», «ИИ-агенты»,
+ *            «Коннекторы», «Быстрые команды», роли «Продажи», «HR»,
+ *            «Бухгалтерия»).
+ * Чередование не декоративная вольность, а порядок из макетов — соседние по
+ * навигации страницы не должны заканчиваться одинаковой картинкой.
+ */
+export type CtaVariant = "disc" | "slab";
+
+/*
+  Второго кадра в проекте может ещё не быть: он растровый, и выгрузить его из
+  Figma автоматически нельзя. Пока файлов нет, `slab` тихо отдаёт первый кадр —
+  страница выглядит как раньше, а не мигает пустой заливкой. Появятся файлы —
+  чередование включится само, править код не нужно.
+*/
+const CTA_DIR = path.join(process.cwd(), "public", "img", "cta");
+const SLAB_READY =
+  existsSync(path.join(CTA_DIR, "cta-bg-2.webp")) &&
+  existsSync(path.join(CTA_DIR, "cta-bg-2-mob.webp"));
+
+export function CtaBackground({
+  variant = "disc",
+}: {
+  /** Кадр из макета этой страницы. По умолчанию — первый. */
+  variant?: CtaVariant;
+}) {
+  const slab = variant === "slab" && SLAB_READY;
+
   return (
     <HeroImage
-      desktop="/img/cta/cta-bg.webp"
-      mobile="/img/cta/cta-bg-mob.webp"
+      desktop={slab ? "/img/cta/cta-bg-2.webp" : "/img/cta/cta-bg.webp"}
+      mobile={slab ? "/img/cta/cta-bg-2-mob.webp" : "/img/cta/cta-bg-mob.webp"}
       className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
     />
   );

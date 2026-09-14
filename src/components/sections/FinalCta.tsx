@@ -1,5 +1,9 @@
 import { Button } from "@/components/ui/Button";
-import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
+import {
+  CTA_FALLBACK,
+  CtaBackground,
+  type CtaVariant,
+} from "@/components/ui/CtaBackground";
 
 /**
  * FinalCta — «Готовы делегировать работу ИИ-агентам?»
@@ -7,8 +11,8 @@ import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
  *   column 588, gap 40)
  * Figma mobile:  2569:43383 (px 24 / py 64, H3 25px)
  *
- * Подложка одна на все страницы: на главной и на страницах «Для кого» блок
- * выглядит одинаково.
+ * Подложка приходит снаружи: в макетах кадров два и они чередуются по
+ * страницам (см. `CtaVariant`). На главной — первый.
  *
  * Блок центрирован везде и на всех ширинах. Раньше на главной он ниже md был
  * прижат влево — под общую левую выключку мобильных секций; по просьбе
@@ -18,16 +22,19 @@ import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 
 export function FinalCta({
   title,
+  background,
 }: {
   /** Заголовок. У части страниц он свой — например «Быстрый старт с GigaCowork». */
   title?: string;
+  /** Кадр фона из макета страницы. По умолчанию — первый. */
+  background?: CtaVariant;
 }) {
   return (
     <section
       id="final-cta"
       className={`relative isolate w-full overflow-hidden py-64 md:py-[160px] ${CTA_FALLBACK}`}
     >
-      <CtaBackground />
+      <CtaBackground variant={background} />
 
       <div className="container-page flex items-center justify-center gap-24 md:items-start">
         {/* CTA / Left Column — 2546:41683 */}

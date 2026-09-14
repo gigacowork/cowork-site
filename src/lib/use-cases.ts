@@ -19,6 +19,8 @@
  * Секции с пустыми данными (метрики, преимущества) шаблон просто не рисует.
  */
 
+import type { CtaVariant } from "@/components/ui/CtaBackground";
+
 export type UseCaseMetric = {
   /** знак перед числом того же кегля («×» у юристов) */
   prefix?: string;
@@ -162,6 +164,11 @@ export type UseCase = {
   process?: UseCaseProcess;
   /** Свой заголовок финального CTA вместо общего по умолчанию. */
   ctaTitle?: string;
+  /**
+   * Кадр фона финального CTA. В макетах их два, и по ролям они чередуются —
+   * см. `CtaVariant`. Нет поля — первый кадр.
+   */
+  ctaBackground?: CtaVariant;
 };
 
 /**
@@ -467,6 +474,7 @@ export const USE_CASES: UseCase[] = [
 
   {
     slug: "salesforce",
+    ctaBackground: "slab",
     navLabel: "Продажи",
     cardId: "commercial",
     /* Тексты — из макета Sales / Desktop (2943:36651), дословно. */
@@ -831,6 +839,7 @@ export const USE_CASES: UseCase[] = [
 
   {
     slug: "hr-team",
+    ctaBackground: "slab",
     navLabel: "HR и\u00A0кадры",
     cardId: "hr",
     title: "ИИ-агенты для HR",
@@ -942,6 +951,7 @@ export const USE_CASES: UseCase[] = [
 
   {
     slug: "accounting",
+    ctaBackground: "slab",
     navLabel: "Бухгалтерия",
     cardId: "accounting",
     /* Тексты — из макета Accounting / Desktop (2672:11839), дословно. */

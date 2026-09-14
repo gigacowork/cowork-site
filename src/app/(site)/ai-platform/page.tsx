@@ -689,7 +689,7 @@ export default function PlatformPage() {
       <section
         className={`relative isolate w-full overflow-hidden py-64 md:py-160 ${CTA_FALLBACK}`}
       >
-        <CtaBackground />
+        <CtaBackground variant="slab" />
         <div className="container-page flex flex-col items-center gap-40">
           <h2 className="max-w-[522px] text-center text-h3 font-medium text-text-primary md:text-h2">
             Готовы делегировать

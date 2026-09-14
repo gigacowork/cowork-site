@@ -212,7 +212,8 @@
   --radius-full: 9999px;
 
   /* --- Typography --- */
-  --font-sans: "SB Sans Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans:
+    "SB Sans Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: "SB Sans Display", "SB Sans Text", system-ui, sans-serif;
   --font-caps: "SB Sans Text Caps", "SB Sans Text", system-ui, sans-serif;
   --font-druk: "Druk Wide Cyr", "SB Sans Display", system-ui, sans-serif;
@@ -285,9 +286,12 @@
   --shadow-drop-sm: 0 4px 16px -4px #60738f33;
   --shadow-drop-md: 0 8px 28px -6px #60738f33;
   --shadow-drop-lg: 0 12px 48px -8px #60738f33;
-  --shadow-raised-sm: -3px -3px 16px -2px #f8fbffb2, 3px 4px 16px -3px #60738f33;
-  --shadow-raised-md: -5px -5px 28px -4px #f8fbffb2, 5px 7px 28px -5px #60738f33;
-  --shadow-raised-lg: -8px -8px 48px -6px #f8fbffb2, 8px 12px 48px -8px #60738f33;
+  --shadow-raised-sm:
+    -3px -3px 16px -2px #f8fbffb2, 3px 4px 16px -3px #60738f33;
+  --shadow-raised-md:
+    -5px -5px 28px -4px #f8fbffb2, 5px 7px 28px -5px #60738f33;
+  --shadow-raised-lg:
+    -8px -8px 48px -6px #f8fbffb2, 8px 12px 48px -8px #60738f33;
 
   /* Alias kept for the sections written against the earlier token name. */
   --shadow-elevation-lg: 0 12px 48px -8px #60738f33;
@@ -645,6 +649,15 @@ input[type="checkbox"].checkbox-tick:checked {
 
   .marquee-group {
     gap: var(--marquee-gap);
+  }
+
+  /*
+    Вдвое просторнее — для партнёрских логотипов: у них нет полей внутри
+    файлов, и на обычном шаге ряд читался слитно. Переменную подхватывают
+    и дорожка, и группы, поэтому стык копий остаётся ровным.
+  */
+  .marquee-wide {
+    --marquee-gap: 80px;
   }
 
   /*

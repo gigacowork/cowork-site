@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
 import { LegalLink } from "@/components/ui/LegalLink";
 import { LEGAL_PDF } from "@/lib/legal";
+import { sendLead, type LeadFields, type LeadTarget } from "@/lib/crm";
 
 /**
  * Form / Lead CTA — I2397:43444 (desktop) / I2397:43460 (mobile)
@@ -17,9 +18,9 @@ import { LEGAL_PDF } from "@/lib/legal";
  *   чекбокс    контрол 20×20 в боксе 24, rounded 4, border icon-secondary (843:4074)
  *   ссылки     status-accent #8c8fe4 (549:222)
  *
- * Отправка НЕ подключена: бэкенда для заявок в проекте нет. Сабмит
- * перехватывается и показывает состояние «принято», чтобы форма не уводила
- * пользователя на пустой URL. Как появится ручка — поменять `handleSubmit`.
+ * Отправка включается пропом `target`: с ним форма уходит в SberCRM
+ * (`src/lib/crm.ts`), без него — прежнее поведение-заглушка, потому что для
+ * остальных страниц ручка пока не заведена.
  */
 
 /*
@@ -57,50 +58,107 @@ const FIELDS = [
   { name: "inn", label: "ИНН", type: "text", autoComplete: "off" },
 ] as const;
 
-export function LeadForm() {
-  const [sent, setSent] = useState(false);
+/** Без `target` обязательны только имя и почта — как было до подключения CRM. */
+const BASE_REQUIRED = new Set<string>(["name", "email"]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+type LeadFormProps = {
+  /** Куда уходит заявка. Не передан — форма не отправляется никуда. */
+  target?: LeadTarget;
+  /** Требовать заполнения всех полей (нужно CRM, чтобы завести компанию). */
+  requireAll?: boolean;
+  /** Подпись кнопки. */
+  submitLabel?: string;
+  /** Текст под заголовком экрана «Заявка отправлена». */
+  successText?: string;
+  /** Префикс id полей — на случай двух форм на одной странице. */
+  idPrefix?: string;
+  className?: string;
+};
+
+export function LeadForm({
+  target,
+  requireAll = false,
+  submitLabel = "Попробовать бесплатно",
+  successText,
+  idPrefix = "lead",
+  className = "",
+}: LeadFormProps = {}) {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle",
+  );
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSent(true);
+    if (status === "sending") return;
+
+    // Ручки нет — прежнее поведение: показываем «принято», никуда не идём.
+    if (!target) {
+      setStatus("sent");
+      return;
+    }
+
+    const data = new FormData(event.currentTarget);
+    const value = (key: string) => String(data.get(key) ?? "");
+    const fields: LeadFields = {
+      name: value("name"),
+      email: value("email"),
+      phone: value("phone"),
+      company: value("company"),
+      inn: value("inn"),
+      consent: data.get("consent") === "on",
+    };
+
+    setStatus("sending");
+    try {
+      await sendLead(fields, target);
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   };
+
+  const isRequired = (name: string) => requireAll || BASE_REQUIRED.has(name);
 
   return (
     <form
       onSubmit={handleSubmit}
-      aria-label="Заявка на\u00A0пробный доступ"
+      aria-label={"Заявка на\u00A0пробный доступ"}
       /*
         Внутренние поля и шаг на десктопе берутся из переменных страницы
         (`lead-fit` в globals.css): на невысоких экранах они ужимаются, чтобы
         форма помещалась целиком. Значения по умолчанию — из макета, поэтому
         вне страницы заявки компонент выглядит как прежде.
       */
-      className={`flex w-full max-w-[840px] flex-col items-center gap-24 rounded-[16px] border border-[#e6e6e6] py-24 md:w-[588px] md:gap-[var(--lead-form-gap,24px)] md:px-12 md:py-[var(--lead-form-py,48px)] ${FORM_GRADIENT}`}
+      className={`flex w-full max-w-[840px] flex-col items-center gap-24 rounded-[16px] border border-[#e6e6e6] py-24 md:w-[588px] md:gap-[var(--lead-form-gap,24px)] md:px-12 md:py-[var(--lead-form-py,48px)] ${FORM_GRADIENT} ${className}`}
     >
-      {sent ? (
+      {status === "sent" ? (
         <div className="flex flex-col items-center gap-12 px-16 py-40 text-center md:px-48">
           <p className="text-h4 font-medium text-text-primary">
             Заявка отправлена
           </p>
           <p className="text-body-m text-text-secondary">
-            Мы свяжемся с&nbsp;вами по&nbsp;указанной почте и&nbsp;откроем
-            пробный доступ.
+            {successText ?? (
+              <>
+                Мы свяжемся с&nbsp;вами по&nbsp;указанной почте и&nbsp;откроем
+                пробный доступ.
+              </>
+            )}
           </p>
         </div>
       ) : (
         <>
           {FIELDS.map((field) => (
             <div key={field.name} className="w-full px-16 md:px-48">
-              <label className="sr-only" htmlFor={`lead-${field.name}`}>
+              <label className="sr-only" htmlFor={`${idPrefix}-${field.name}`}>
                 {field.label}
               </label>
               <input
-                id={`lead-${field.name}`}
+                id={`${idPrefix}-${field.name}`}
                 name={field.name}
                 type={field.type}
                 autoComplete={field.autoComplete}
                 placeholder={field.label}
-                required={field.name === "name" || field.name === "email"}
+                required={isRequired(field.name)}
                 className={FIELD_CLASS}
               />
             </div>
@@ -110,7 +168,7 @@ export function LeadForm() {
           <div className="flex w-full items-start gap-12 px-16 md:px-48">
             <span className="flex size-[24px] shrink-0 items-center justify-center">
               <input
-                id="lead-consent"
+                id={`${idPrefix}-consent`}
                 name="consent"
                 type="checkbox"
                 /*
@@ -122,7 +180,7 @@ export function LeadForm() {
               />
             </span>
             <label
-              htmlFor="lead-consent"
+              htmlFor={`${idPrefix}-consent`}
               className="flex-1 cursor-pointer text-left text-caption text-text-secondary"
             >
               Даю <LegalLink href={LEGAL_PDF.materials}>согласие</LegalLink>{" "}
@@ -135,9 +193,24 @@ export function LeadForm() {
             </label>
           </div>
 
-          <Button type="submit" variant="primary" size="lg">
-            Попробовать бесплатно
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            disabled={status === "sending"}
+          >
+            {status === "sending" ? "Отправляем…" : submitLabel}
           </Button>
+
+          {status === "error" ? (
+            <p
+              role="alert"
+              className="w-full px-16 text-left text-caption text-text-primary md:px-48"
+            >
+              Не&nbsp;удалось отправить заявку. Попробуйте ещё раз или напишите
+              нам на&nbsp;почту.
+            </p>
+          ) : null}
 
           {/*
             Жёсткого переноса больше нет: он был рассчитан на выключку по

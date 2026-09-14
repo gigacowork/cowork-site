@@ -19,7 +19,13 @@ import { USE_CASES } from "@/lib/use-cases";
  * открытом состоянии он просто поворачивается на 180°.
  */
 
-type NavLeaf = { label: string; href: string };
+/**
+ * `soon` — раздел уже стоит в меню, но страницы ещё нет: пункт показывается
+ * приглушённым и не кликается. Адрес всё равно записан — он из
+ * ПРОЕКТ_COWORK_RU.md и понадобится, как только страница соберётся: снять
+ * флаг, и пункт станет обычной ссылкой.
+ */
+type NavLeaf = { label: string; href: string; soon?: boolean };
 type NavItem = { label: string; href?: string; children?: NavLeaf[] };
 
 /*
@@ -31,6 +37,12 @@ const NAV_ITEMS: NavItem[] = [
     label: "О\u00A0платформе",
     children: [
       { label: "Обзор платформы", href: "/ai-platform" },
+      { label: "Рабочие пространства", href: "/ai-platform/workspace" },
+      { label: "ИИ-агенты", href: "/ai-platform/agents" },
+      { label: "Навыки", href: "/ai-platform/skill" },
+      { label: "Коннекторы", href: "/ai-platform/connectors" },
+      { label: "Быстрые команды", href: "/ai-platform/quick-commands" },
+      { label: "Задачи по\u00A0расписанию", href: "/ai-platform/schedule" },
       { label: "Что\u00A0нового", href: "/ai-platform/new-features" },
       { label: "Документация", href: "/ai-platform/docs/" },
     ],
@@ -48,7 +60,21 @@ const NAV_ITEMS: NavItem[] = [
       href: `/use_cases/${item.slug}`,
     })),
   },
+  { label: "Безопасность", href: "/trust-and-safety" },
+  { label: "Поставки", href: "/pricing" },
   { label: "Обучающие видео", href: "/guides" },
+  {
+    label: "Компания",
+    /*
+      Адреса из ПРОЕКТ_COWORK_RU.md. Обеих страниц пока нет, поэтому пункты
+      приглушены: раздел в меню виден, но никуда не ведёт. Соберутся страницы —
+      снять `soon`, больше ничего менять не нужно.
+    */
+    children: [
+      { label: "О\u00A0компании", href: "/company/about" },
+      { label: "Партнёрам", href: "/company/partners" },
+    ],
+  },
 ];
 
 /**
@@ -71,10 +97,41 @@ const PILL_NAV = true;
  */
 const SCROLL_START = 4;
 
-/** Подсветка активного пункта: точное совпадение или вложенный маршрут. */
-function isActive(pathname: string, href: string) {
+/** Адрес без завершающего слэша: у проекта trailingSlash, в меню — как записано. */
+const trimSlash = (href: string) =>
+  href.length > 1 ? href.replace(/\/+$/, "") : href;
+
+/** Все адреса меню — нужны, чтобы из двух совпавших пунктов выбрать точный. */
+const NAV_HREFS = NAV_ITEMS.flatMap((item) =>
+  item.children
+    ? item.children.filter((leaf) => !leaf.soon).map((leaf) => leaf.href)
+    : item.href
+      ? [item.href]
+      : [],
+).map(trimSlash);
+
+function matchesRoute(pathname: string, href: string) {
   if (!href.startsWith("/") || href.startsWith("/#")) return false;
-  return pathname === href || pathname.startsWith(`${href}/`);
+  const page = trimSlash(pathname);
+  const link = trimSlash(href);
+  return page === link || page.startsWith(`${link}/`);
+}
+
+/**
+ * Подсветка активного пункта: точное совпадение или вложенный маршрут.
+ *
+ * «Вложенный» — с оговоркой. /ai-platform/workspace лежит внутри /ai-platform,
+ * и по одному только префиксу в раскрывашке подсвечивались бы сразу два пункта:
+ * «Обзор платформы» и сама страница. Из совпавших выигрывает самый длинный
+ * адрес меню — так детальная страница релиза по-прежнему подсвечивает «Что
+ * нового», а у раздела горит только он сам.
+ */
+function isActive(pathname: string, href: string) {
+  if (!matchesRoute(pathname, href)) return false;
+  const own = trimSlash(href);
+  return !NAV_HREFS.some(
+    (other) => other.length > own.length && matchesRoute(pathname, other),
+  );
 }
 
 export function Header() {
@@ -211,7 +268,13 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav ref={navRef} className="hidden items-center md:flex">
+        {/*
+          Настольное меню включается с lg, а не с md: после того как в нём
+          появились «Безопасность» и «Компания», на 768 шесть пунктов
+          с кнопкой перестали помещаться и распирали страницу вбок.
+          До lg работает бургер.
+        */}
+        <nav ref={navRef} className="hidden items-center lg:flex">
           <ul className="flex items-center gap-8 p-8">
             {NAV_ITEMS.map((item) => {
               if (!item.children) {
@@ -231,6 +294,8 @@ export function Header() {
               }
 
               const open = openMenu === item.label;
+              const lastGroup =
+                item.label === NAV_ITEMS[NAV_ITEMS.length - 1].label;
               const groupActive = item.children.some((leaf) =>
                 isActive(pathname, leaf.href),
               );
@@ -272,8 +337,15 @@ export function Header() {
                     иначе указатель по дороге к ссылке выходит за пределы <li>
                     и меню схлопывается.
                   */}
+                  {/*
+                    Последняя группа раскрывается влево от своего края: панель
+                    шириной 304 у правого пункта вылезала за окно и добавляла
+                    странице горизонтальную прокрутку на узком десктопе.
+                  */}
                   <div
-                    className={`absolute top-full left-0 pt-8 transition-[opacity,transform] duration-200 ${
+                    className={`absolute top-full pt-8 transition-[opacity,transform] duration-200 ${
+                      lastGroup ? "right-0" : "left-0"
+                    } ${
                       open
                         ? "pointer-events-auto translate-y-0 opacity-100"
                         : "pointer-events-none -translate-y-4 opacity-0"
@@ -291,18 +363,34 @@ export function Header() {
                             Dropdown Item (3432:15088): высота 41, отступы по 12,
                             скругление полное, Body/M. В ховере — подложка
                             Action/Secondary/Hover и текст Text/Strong.
+
+                            У раздела, которого ещё нет, — тот же пункт, но
+                            текстом Text/Tertiary и без ссылки: ведёт он пока
+                            в никуда, а клавиатуре и скринридеру лучше вообще
+                            не предлагать такую цель.
                           */}
-                          <Link
-                            href={leaf.href}
-                            tabIndex={open ? undefined : -1}
-                            aria-current={
-                              isActive(pathname, leaf.href) ? "page" : undefined
-                            }
-                            onClick={() => setOpenMenu(null)}
-                            className="flex h-[41px] items-center rounded-full px-12 text-body-m whitespace-nowrap text-text-primary transition-colors hover:bg-action-secondary-hover hover:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
-                          >
-                            {leaf.label}
-                          </Link>
+                          {leaf.soon ? (
+                            <span
+                              aria-disabled="true"
+                              className="flex h-[41px] cursor-default items-center rounded-full px-12 text-body-m whitespace-nowrap text-text-tertiary select-none"
+                            >
+                              {leaf.label}
+                            </span>
+                          ) : (
+                            <Link
+                              href={leaf.href}
+                              tabIndex={open ? undefined : -1}
+                              aria-current={
+                                isActive(pathname, leaf.href)
+                                  ? "page"
+                                  : undefined
+                              }
+                              onClick={() => setOpenMenu(null)}
+                              className="flex h-[41px] items-center rounded-full px-12 text-body-m whitespace-nowrap text-text-primary transition-colors hover:bg-action-secondary-hover hover:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
+                            >
+                              {leaf.label}
+                            </Link>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -319,7 +407,7 @@ export function Header() {
         </nav>
 
         {/* Mobile actions */}
-        <div className="flex items-center gap-8 md:hidden">
+        <div className="flex items-center gap-8 lg:hidden">
           {/*
             Header/Mobile/Open (2567:9427): в открытом меню в полосе остаются
             только логотип и крестик — кнопка действия уезжает в блок под
@@ -371,7 +459,7 @@ export function Header() {
         сверху и 64 снизу, шаг 24 между навигацией и блоком действий.
       */}
       <div
-        className={`overflow-hidden bg-bg-page transition-[max-height,opacity] duration-300 md:hidden ${
+        className={`overflow-hidden bg-bg-page transition-[max-height,opacity] duration-300 lg:hidden ${
           menuOpen
             ? "max-h-[calc(100dvh-var(--header-h))] overflow-y-auto opacity-100"
             : "max-h-0 opacity-0"
@@ -441,17 +529,28 @@ export function Header() {
                       {item.children.map((leaf) => (
                         <li key={leaf.href}>
                           {/* Тот же Dropdown Item (3432:15088), что и на десктопе. */}
-                          <Link
-                            href={leaf.href}
-                            tabIndex={open ? undefined : -1}
-                            aria-current={
-                              isActive(pathname, leaf.href) ? "page" : undefined
-                            }
-                            onClick={() => setMenuOpen(false)}
-                            className="flex h-[41px] items-center justify-center rounded-full px-12 text-body-m text-text-primary transition-colors active:bg-action-secondary-hover active:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
-                          >
-                            {leaf.label}
-                          </Link>
+                          {leaf.soon ? (
+                            <span
+                              aria-disabled="true"
+                              className="flex h-[41px] cursor-default items-center justify-center rounded-full px-12 text-body-m text-text-tertiary select-none"
+                            >
+                              {leaf.label}
+                            </span>
+                          ) : (
+                            <Link
+                              href={leaf.href}
+                              tabIndex={open ? undefined : -1}
+                              aria-current={
+                                isActive(pathname, leaf.href)
+                                  ? "page"
+                                  : undefined
+                              }
+                              onClick={() => setMenuOpen(false)}
+                              className="flex h-[41px] items-center justify-center rounded-full px-12 text-body-m text-text-primary transition-colors active:bg-action-secondary-hover active:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
+                            >
+                              {leaf.label}
+                            </Link>
+                          )}
                         </li>
                       ))}
                     </ul>

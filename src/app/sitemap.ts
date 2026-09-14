@@ -44,6 +44,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: url("/"), changeFrequency: "monthly", priority: 1 },
     { url: url("/ai-platform/"), changeFrequency: "monthly", priority: 0.9 },
     {
+      url: url("/ai-platform/workspace/"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: url("/ai-platform/agents/"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: url("/ai-platform/skill/"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: url("/ai-platform/connectors/"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: url("/ai-platform/quick-commands/"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: url("/ai-platform/schedule/"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: url("/ai-platform/new-features/"),
       changeFrequency: "monthly",
       priority: 0.7,
@@ -55,6 +85,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
       ...(release.date ? { lastModified: new Date(release.date) } : {}),
     })),
+    { url: url("/pricing/"), changeFrequency: "monthly", priority: 0.8 },
+    {
+      url: url("/trust-and-safety/"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    { url: url("/media/"), changeFrequency: "weekly", priority: 0.7 },
+    { url: url("/company/about/"), changeFrequency: "yearly", priority: 0.6 },
+    {
+      url: url("/company/partners/"),
+      changeFrequency: "yearly",
+      priority: 0.6,
+    },
     { url: url("/guides/"), changeFrequency: "monthly", priority: 0.7 },
     ...USE_CASES.map((useCase) => ({
       url: url(`/use_cases/${useCase.slug}/`),

@@ -161,7 +161,7 @@ export default async function UseCasePage({
         Подложка та же, что на главной: в макете CTA страниц «Для кого»
         (2745:15473) стоит тот же градиент 227.36°, а не белый фон.
       */}
-      <FinalCta title={useCase.ctaTitle} />
+      <FinalCta title={useCase.ctaTitle} background={useCase.ctaBackground} />
     </>
   );
 }

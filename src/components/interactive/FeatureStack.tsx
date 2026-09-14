@@ -100,17 +100,43 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
     /* Переменную держим на общем родителе — её читают и заголовок, и обёртка. */
     const scope = header?.parentElement ?? null;
 
+    /*
+      Тем же приёмом укорачивается липкий диапазон подписи слева.
+
+      Подпись живёт в ячейке на всю высоту сетки, а низ у сетки дальше низа
+      стопки: после карточек идёт строка-распорка. Из-за этого подпись
+      отрывалась почти на 350 позже карточек и последняя из них — «Запуск по
+      расписанию или событию» — оставалась висеть в пустоте, когда заголовок
+      и стопка уже уехали.
+
+      Хвост здесь — не отступ родителя, а собственный `padding-bottom`
+      подписи: он входит в её габарит, по которому считается открепление, и
+      при этом ничего не двигает — подпись прозрачная, а ячейка втрое выше.
+    */
+    const tailFor = (el: HTMLElement) => {
+      const top = parseFloat(getComputedStyle(el).top) || 0;
+      return Math.max(
+        0,
+        Math.round(STICKY_TOP + cards[0].offsetHeight - top - el.offsetHeight),
+      );
+    };
+
     const syncTail = () => {
-      if (!header || !scope) return;
       if (!desktop.matches) {
-        scope.style.removeProperty("--stack-tail");
+        scope?.style.removeProperty("--stack-tail");
+        texts.forEach((text) => text.style.removeProperty("padding-bottom"));
         return;
       }
+
       // Сначала снимаем прошлый хвост, иначе он попадёт в замер высоты.
+      texts.forEach((text) => {
+        text.style.paddingBottom = "0px";
+        text.style.paddingBottom = `${tailFor(text)}px`;
+      });
+
+      if (!header || !scope) return;
       scope.style.setProperty("--stack-tail", "0px");
-      const top = parseFloat(getComputedStyle(header).top) || 0;
-      const tail = STICKY_TOP + cards[0].offsetHeight - top - header.offsetHeight;
-      scope.style.setProperty("--stack-tail", `${Math.max(0, Math.round(tail))}px`);
+      scope.style.setProperty("--stack-tail", `${tailFor(header)}px`);
     };
 
     let shown = -1;
@@ -141,6 +167,10 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
         text.style.pointerEvents = "";
         text.removeAttribute("aria-hidden");
       });
+      /* Хвост держится на инлайновом стиле — снимаем вместе с остальным. */
+      if (!desktop.matches) {
+        texts.forEach((text) => text.style.removeProperty("padding-bottom"));
+      }
       /* Ниже lg стопки нет, карточки не перекрываются — тень у всех. */
       shots.forEach((shot) => {
         if (shot) shot.style.filter = "";
@@ -199,6 +229,7 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
       window.removeEventListener("resize", onResize);
       desktop.removeEventListener("change", onResize);
       scope?.style.removeProperty("--stack-tail");
+      texts.forEach((text) => text.style.removeProperty("padding-bottom"));
       reset();
     };
   }, []);

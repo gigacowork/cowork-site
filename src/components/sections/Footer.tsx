@@ -32,20 +32,27 @@ const NAV_GROUPS: NavGroup[] = [
     title: "ПЛАТФОРМА",
     width: "xl:w-[178px]",
     links: [
-      { label: "Обзор платформы", href: "#platform" },
-      { label: "Что\u00A0нового", href: "#whats-new" },
+      /*
+        Адреса — из структуры проекта (ПРОЕКТ_COWORK_RU.md) и совпадают с
+        раскрывашкой «О платформе» в шапке. Раньше здесь стояли «#platform» и
+        «#whats-new» — якоря, которых на сайте нет ни на одной странице: обе
+        ссылки просто дописывали решётку к текущему адресу и никуда не вели.
+      */
+      { label: "Обзор платформы", href: "/ai-platform" },
+      { label: "Рабочие пространства", href: "/ai-platform/workspace" },
+      { label: "ИИ-агенты", href: "/ai-platform/agents" },
+      { label: "Навыки", href: "/ai-platform/skill" },
+      { label: "Коннекторы", href: "/ai-platform/connectors" },
+      { label: "Быстрые команды", href: "/ai-platform/quick-commands" },
+      { label: "Задачи по\u00A0расписанию", href: "/ai-platform/schedule" },
+      { label: "Что\u00A0нового", href: "/ai-platform/new-features" },
       /*
         Адрес со слэшем на конце — как в шапке: документация лежит статикой в
         public, и без слэша сервер отдаёт редирект вместо самой страницы.
       */
       { label: "Документация", href: "/ai-platform/docs/" },
-      { label: "Пространства", href: "#spaces", hidden: true },
-      { label: "ИИ-агенты", href: "#agents", hidden: true },
-      { label: "Навыки", href: "#skills", hidden: true },
-      { label: "Быстрые команды", href: "#commands", hidden: true },
-      { label: "Коннекторы", href: "#connectors", hidden: true },
-      { label: "Запуск по\u00A0расписанию", href: "#schedule", hidden: true },
-      { label: "Безопасность", href: "#security", hidden: true },
+      { label: "Безопасность", href: "/trust-and-safety" },
+      /* Страницы ещё нет — пункт не показываем. */
       { label: "Помощь и\u00A0поддержка", href: "#support", hidden: true },
     ],
   },
@@ -66,20 +73,25 @@ const NAV_GROUPS: NavGroup[] = [
     title: "ПОСТАВКИ",
     width: "xl:w-[142px]",
     links: [
-      { label: "Облако", href: "#cloud", hidden: true },
-      { label: "Гибрид", href: "#hybrid", hidden: true },
-      { label: "ПАК", href: "#pak", hidden: true },
-      { label: "Сравнить варианты", href: "#compare", hidden: true },
+      /*
+        Отдельных страниц под варианты поставки нет — все три живут секциями
+        на /pricing, поэтому ссылки якорные. Раньше здесь стояли голые «#cloud»
+        и прочие, которые дописывали решётку к текущему адресу и никуда не вели.
+      */
+      { label: "Облако", href: "/pricing#cloud" },
+      { label: "Гибрид", href: "/pricing#hybrid" },
+      { label: "ПАК", href: "/pricing#pak" },
+      { label: "Сравнить варианты", href: "/pricing#compare" },
     ],
   },
   {
     title: "КОМПАНИЯ",
     width: "xl:w-[101px]",
     links: [
-      { label: "О\u00A0компании", href: "#about", hidden: true },
+      { label: "О\u00A0компании", href: "/company/about" },
       { label: "Кейсы", href: "#cases", hidden: true },
       { label: "Блог", href: "#blog", hidden: true },
-      { label: "Партнёрам", href: "#partners", hidden: true },
+      { label: "Партнёрам", href: "/company/partners" },
       { label: "Карьера", href: "#career", hidden: true },
     ],
   },
@@ -144,10 +156,7 @@ export function Footer() {
                 <ul className="flex flex-col gap-8 text-body-m text-text-primary">
                   {group.links.map((link) => (
                     <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-link"
-                      >
+                      <Link href={link.href} className="text-link">
                         {link.label}
                       </Link>
                     </li>
