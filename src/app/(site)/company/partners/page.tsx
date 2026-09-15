@@ -6,7 +6,6 @@ import LeadForm from "@/components/sections/LeadForm";
 import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
-import { Image } from "@/components/ui/Image";
 import { Kicker } from "@/components/ui/Kicker";
 import { PARTNER_LEAD } from "@/lib/crm";
 import { pageMetadata } from "@/lib/site";
@@ -44,6 +43,16 @@ export const metadata: Metadata = pageMetadata({
 /** Заливка карточек — та же линейная мятно-голубая, что на «О компании». */
 const CARD_GRADIENT =
   "bg-[linear-gradient(55deg,#c5f8e5_0%,#caf5ff_48%,#cfedff_100%)]";
+
+/**
+ * Заливка большой карточки «Мы создаем платформу» (4412:22394 / 4431:3090).
+ * Своя, а не общая `CARD_GRADIENT`: в макете эта карточка светлее остальных —
+ * голубой уходит почти в белый, без мятного. Угол на мобильном другой
+ * (245.871° против 227.565°), это тоже из макета.
+ */
+const PARTNERSHIP_CARD_GRADIENT =
+  "bg-[linear-gradient(245.871deg,#d4e2ff_6.2585%,#f7feff_89.86%)] " +
+  "lg:bg-[linear-gradient(227.565deg,#d4e2ff_6.2585%,#f7feff_89.86%)]";
 
 /**
  * Фон секций «Как устроено партнерство» и «Кто может стать партнером»
@@ -300,6 +309,65 @@ const STEPS = [
 
 /* ─────────────────────────── мелкие компоненты ─────────────────────────── */
 
+/** Строки кабинета партнёра (I4410:25100;4916:6477…6485). */
+const PARTNER_CABINET_ROWS = [
+  { client: "Клиент А", value: "+120 000 000 ₽", accent: true },
+  { client: "Клиент Б", value: "+95 000 000 ₽", accent: true },
+  { client: "Клиент В", value: "в работе", accent: false },
+] as const;
+
+/**
+ * Кадр-мокап «Кабинет партнера» — Illustration / Partnership (4410:25100).
+ *
+ * Собран разметкой, а не картинкой: в макете это обычные текстовые слои и
+ * фреймы на токенах, растра там нет. Разметкой суммы остаются текстом — их
+ * видно поиском, они не мылятся на ретине и правятся без перевыгрузки SVG.
+ * Оформление то же, что у соседнего кадра «Монетизации» (`CardIllustration`)
+ * — это одно семейство иллюстраций на странице.
+ *
+ * `whitespace-nowrap`: строка «Клиент А +120 000 000 ₽» в макете не переносится,
+ * а справа кадр и так срезается краем карточки.
+ */
+function PartnerCabinet({ className = "" }: { className?: string }) {
+  return (
+    <div
+      aria-hidden
+      className={`flex flex-col gap-24 rounded-[16px] border-[1.5px] border-brand-blue/22 bg-white/72 p-32 whitespace-nowrap shadow-[0_2px_4px_rgba(0,0,0,0.05)] ${className}`}
+    >
+      <p className="text-caption text-text-primary">Кабинет партнера</p>
+
+      <div className="flex flex-col gap-16">
+        {PARTNER_CABINET_ROWS.map((row) => (
+          <div
+            key={row.client}
+            /*
+              В макете поля строки 10×8. Десятки в шкале нет, берём ближайший
+              токен 8 — разница в пиксель, а хардкод в шкале отступов заводить
+              под неё незачем.
+            */
+            className="flex items-center gap-12 rounded-[8px] bg-bg-glass px-8 py-8 text-caption shadow-drop-sm"
+          >
+            <span className="text-text-primary">{row.client}</span>
+            <span
+              className={
+                row.accent ? "text-status-accent" : "text-text-secondary"
+              }
+            >
+              {row.value}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Итог за месяц — тот же акцентный чип, что у «Монетизации». */}
+      <div className="flex items-center gap-4 rounded-[8px] bg-brand-blue/16 px-24 py-16 text-caption text-status-accent">
+        <span>За месяц</span>
+        <span>215 000 000 ₽</span>
+      </div>
+    </div>
+  );
+}
+
 /** Кадр-мокап «Монетизации» — собран разметкой по 2294:9655. */
 function CardIllustration({ ill }: { ill: Illustration }) {
   const rowBase =
@@ -402,47 +470,65 @@ export default function PartnersPage() {
 
           <RevealCards selector="article">
             <div className="grid gap-16 lg:grid-cols-[589fr_486fr] lg:gap-24">
-              {/* Большая карточка с иллюстрацией партнёрства (4412:22394) */}
+              {/* Большая карточка с иллюстрацией партнёрства (4412:22394 / 4431:3090) */}
               <article
-                className={`relative flex flex-col gap-40 overflow-hidden rounded-24 border border-white p-24 md:p-40 lg:h-[532px] ${CARD_GRADIENT}`}
+                /*
+                  Раскладка макета (текст слева, кадр в правом нижнем углу)
+                  включается с xl, а не с lg. Причина в ширине: колонка карточки
+                  — 589fr из 1075, и ровно 589 она набирает только когда
+                  контейнер дорос до своих 1200, то есть от 1280. На 1024 в той
+                  же колонке 504, и пара «текст 310 + кадр 300» туда не влезает
+                  — кадр наезжал бы на описание, текст уходил под
+                  полупрозрачную подложку и не читался. Поэтому на 1024–1279
+                  работает та же раскладка, что на планшете: кадр под текстом.
+                */
+                className={`relative flex flex-col gap-24 overflow-hidden rounded-24 border border-white p-24 md:p-40 xl:h-[532px] ${PARTNERSHIP_CARD_GRADIENT}`}
               >
-                <div className="flex flex-col gap-12 lg:max-w-[280px]">
+                <div className="flex flex-col gap-12 xl:max-w-[310px]">
                   {/*
-                    Точек нет: две части разведены переносом, как в остальных
-                    заголовках сайта.
+                    Точки в конце нет: две части разведены запятой и переносом,
+                    как в макете. Кегль — Heading/H2 (36) на обеих ширинах, это
+                    прямо указано и в десктопном, и в мобильном фрейме.
                   */}
-                  <h3 className="text-h3 font-medium text-text-primary">
-                    Мы&nbsp;создаем платформу <br />
-                    Вы&nbsp;развиваете бизнес
+                  <h3 className="text-h2 font-medium text-text-primary">
+                    Мы&nbsp;создаем платформу, <br />
+                    вы&nbsp;развиваете бизнес
                   </h3>
-                  <p className="text-body-m text-text-primary">
-                    GigaCowork готов к&nbsp;внедрению в&nbsp;крупных компаниях.
-                    Мы&nbsp;развиваем платформу и&nbsp;продуктовую экспертизу,
-                    а&nbsp;партнер работает с&nbsp;заказчиком, внедряет решение
-                    и&nbsp;развивает проект.
-                  </p>
+                  {/*
+                    Два абзаца, а не один: в макете между ними отбивка 16.
+                    Жёсткий перенос внутри первого абзаца снят — колонка и так
+                    310, фраза ломается по тому же месту сама, а на узких
+                    экранах перенос рвал бы строку посередине.
+                  */}
+                  <div className="flex flex-col gap-16 text-body-l text-text-primary">
+                    <p>
+                      GigaCowork готов к&nbsp;внедрению в&nbsp;крупных
+                      компаниях.
+                    </p>
+                    <p>
+                      Мы&nbsp;развиваем платформу и&nbsp;продуктовую экспертизу,
+                      а&nbsp;партнер работает с&nbsp;заказчиком, внедряет
+                      решение и&nbsp;развивает проект.
+                    </p>
+                  </div>
                 </div>
                 {/*
-                  Кадр в макете выведен из потока и прижат к правому нижнему
-                  углу карточки. Ниже lg он идёт обычным блоком под текстом.
+                  Иллюстрация в макете выведена из потока и прижата к правому
+                  нижнему углу, правым краем уходя за границу карточки: часть
+                  сумм срезается, и понятно, что список продолжается. Карточка
+                  и так `overflow-hidden`, срез делает она.
 
-                  В самом файле кадр шире колонки и наезжает на описание —
-                  текст уходит под полупрозрачную карточку и не читается.
-                  Поэтому здесь он ужат целиком (`scale` от правого нижнего
-                  угла) и начинается правее текстовой колонки.
-
-                  Правым краем кадр стоит вплотную к краю карточки: между ними
-                  не должно быть поля. Ниже lg он так же выходит за внутренний
-                  отступ карточки отрицательным полем.
+                  Ниже xl иллюстрация идёт обычным блоком под текстом во всю
+                  ширину колонки — в мобильном фрейме она целиком внутри
+                  карточки, ничего не срезано.
                 */}
-                <Image
-                  src="/img/partners/partnership.svg"
-                  alt=""
-                  width={319}
-                  height={283}
-                  aria-hidden
-                  className="-mr-24 ml-auto w-[240px] md:-mr-40 md:w-[319px] lg:absolute lg:right-0 lg:bottom-40 lg:mr-0 lg:origin-bottom-right lg:scale-[0.78]"
-                />
+                {/*
+                  Ниже xl ширина ограничена 360: в мобильном макете кадр во всю
+                  колонку (310 из 358), но на планшете карточка уже 700+, и без
+                  потолка строки «Клиент А — сумма» разъезжались бы на всю
+                  ширину с пустотой посередине.
+                */}
+                <PartnerCabinet className="max-w-[360px] xl:absolute xl:right-[-70px] xl:bottom-40 xl:w-[300px] xl:max-w-none" />
               </article>
 
               {/* Три инфо-карточки (4350:38827) */}

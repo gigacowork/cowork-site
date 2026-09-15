@@ -131,22 +131,21 @@ export default function SchedulePage() {
       */}
       <section className="relative isolate flex min-h-[464px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
         {/*
-          Кадр приближен от правого верхнего угла. В исходнике вертикальное
-          ребро стеклянной формы идёт примерно по 18% ширины, а логотип
-          стоит на поле контейнера, которое растёт с шириной окна, — где-то
-          между 1500 и 1900 они совпадают, и ребро проходит прямо по
-          логотипу. Привязка к правому верхнему углу срезает левую часть
-          кадра вместе с ребром: под шапкой остаётся ровный градиент
-          на любой ширине, а сама форма уходит ниже и правее.
+          Кадр показывается как есть, без подгонки композиции: ни приближения,
+          ни сдвига точки кадрирования. Прежний кадр приходилось приближать от
+          правого верхнего угла — у него по левой части шло вертикальное ребро
+          стеклянной формы, и на широких окнах оно попадало прямо на логотип.
+          В новом кадре этого ребра нет, подпорка больше не нужна.
 
-          `object-left` остаётся для узких экранов, где кадр шире секции.
-          Ниже md приближения нет: там свой файл под узкий экран,
-          и логотип с ребром там не пересекаются.
+          `object-cover` — не масштабирование композиции, а способ растянуть
+          фон на всю секцию. На ширине макета он ничего не меняет: файлы
+          выгружены ровно в два фрейма (2880×1520 при секции 1440×760 и
+          780×928 при 390×464), так что кадр ложится один в один.
         */}
         <HeroImage
           desktop="/img/schedule/hero.webp"
           mobile="/img/schedule/hero-mob.webp"
-          className="pointer-events-none absolute inset-0 -z-10 size-full object-cover object-left md:origin-top-right md:scale-[1.32]"
+          className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
         />
         <div className="container-page flex flex-col items-center gap-32 text-center md:items-start md:gap-40 md:text-left">
           <div className="flex flex-col gap-16 md:max-w-[720px] md:gap-24">
