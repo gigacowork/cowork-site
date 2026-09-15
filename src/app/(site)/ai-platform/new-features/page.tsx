@@ -138,24 +138,31 @@ export default function WhatsNewPage() {
               здесь&nbsp;— от&nbsp;версии к&nbsp;версии.
             </p>
           )}
+        </div>
+      </section>
 
-          {/* Нижний CTA */}
-          <div
-            className={`relative isolate flex flex-col items-center gap-24 overflow-hidden rounded-[24px] px-24 py-40 text-center md:px-48 md:py-48 ${CTA_FALLBACK}`}
+      {/*
+        CTA — такой же, как на остальных страницах: секция во всю ширину
+        с кадром-подложкой, а не карточка внутри контентной секции.
+        Ритм и кегль оттуда же: py-64 / md:py-160, шаг 40, заголовок H3 → H2.
+      */}
+      <section
+        className={`relative isolate w-full overflow-hidden py-64 md:py-160 ${CTA_FALLBACK}`}
+      >
+        <CtaBackground />
+        <div className="container-page flex flex-col items-center gap-40">
+          <h2 className="max-w-[522px] text-center text-h3 font-medium text-text-primary md:text-h2">
+            Попробуйте <br className="hidden md:block" />
+            новые возможности
+          </h2>
+          <Button
+            href="/lead"
+            variant="primary"
+            size="lg"
+            className="text-body-m!"
           >
-            <CtaBackground />
-            <p className="text-h4 font-medium text-text-primary md:text-h3">
-              Попробуйте новые возможности
-            </p>
-            <Button
-              href="/lead"
-              variant="primary"
-              size="lg"
-              className="text-body-m!"
-            >
-              Попробовать бесплатно
-            </Button>
-          </div>
+            Попробовать бесплатно
+          </Button>
         </div>
       </section>
     </>

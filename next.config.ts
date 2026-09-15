@@ -19,10 +19,10 @@ const nextConfig: NextConfig = {
   /*
     /page → /page/index.html, иначе Pages отдаёт 404 на вложенных маршрутах.
 
-    Заодно это закрывает вопрос с документацией: Antora выгружена в public/ai-platform/docs,
+    Заодно это закрывает вопрос с документацией: Antora выгружена в public/docs,
     и раньше на неё стоял redirects() из этого файла. В статическом экспорте
     redirects() не работает — он требует сервер. Но и не нужен: Pages сам
-    resolve'ит каталог, /ai-platform/docs/ отдаёт public/ai-platform/docs/index.html, а тот уже
+    resolve'ит каталог, /docs/ отдаёт public/docs/index.html, а тот уже
     переадресует на актуальную версию. Адрес без слэша Pages redirect'ит на
     вариант со слэшем самостоятельно.
   */
@@ -33,6 +33,28 @@ const nextConfig: NextConfig = {
 
   basePath: basePath || undefined,
   assetPrefix: basePath || undefined,
+
+  /*
+    Статические разделы из public/ — документация и стендовая страница —
+    доступны по адресу каталога только на боевом хостинге: там сервер сам
+    отдаёт index.html для каталога. В `next dev` такого resolve нет: public
+    отдаётся файл в файл, и /docs/ с /landing-gigaconf/ отвечали 404 — открывался
+    только полный путь с index.html.
+
+    Поэтому в режиме разработки добавляем явный rewrite. Только в dev:
+    в экспорте rewrites не работают (сервера нет) и Next каждый раз
+    предупреждал бы об этом в сборке.
+  */
+  ...(process.env.NODE_ENV === "development"
+    ? {
+        async rewrites() {
+          return ["/docs", "/landing-gigaconf"].map((dir) => ({
+            source: dir,
+            destination: `${dir}/index.html`,
+          }));
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;

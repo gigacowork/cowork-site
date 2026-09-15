@@ -40,11 +40,11 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
       /*
-        Выставочный стенд для тач-панели: в навигации сайта его нет, в выдаче
-        ему делать нечего. В самих страницах стоит ещё и meta robots
+        Стендовые страницы для тач-панелей: ссылок из навигации на них нет,
+        в выдаче им делать нечего. В самих страницах стоит ещё и meta robots
         noindex — robots.txt закрывает обход, meta закрывает выдачу.
       */
-      disallow: "/landing-events",
+      disallow: ["/landing-events", "/landing-gigaconf"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

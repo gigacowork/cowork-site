@@ -287,39 +287,48 @@ export default async function ReleasePage({
                 ))}
               </article>
             ))}
+          </div>
+        </div>
+      </section>
 
-            {/* Нижний CTA */}
-            <div
-              className={`relative isolate flex flex-col items-center gap-24 overflow-hidden rounded-[24px] px-24 py-40 text-center md:px-48 md:py-48 ${CTA_FALLBACK}`}
+      {/*
+        CTA — единый для сайта: секция во всю ширину с кадром-подложкой,
+        py-64 / md:py-160, шаг 40, заголовок H3 → H2. Здесь у него есть
+        пояснение и вторая кнопка — текст сохранён, меняется только оправа.
+      */}
+      <section
+        className={`relative isolate w-full overflow-hidden py-64 md:py-160 ${CTA_FALLBACK}`}
+      >
+        <CtaBackground />
+        <div className="container-page flex flex-col items-center gap-40">
+          <div className="flex max-w-[720px] flex-col items-center gap-16 text-center">
+            <h2 className="text-h3 font-medium text-text-primary md:text-h2">
+              Начните использовать GigaCowork <br className="hidden md:block" />
+              уже сегодня
+            </h2>
+            <p className="text-body-l text-text-secondary">
+              Мы хотим, чтобы технологии снижали нагрузку на&nbsp;сотрудников и
+              упрощали работу всей компании, поэтому описываем и&nbsp;обучаем
+              разным сценариям использования ИИ-агентов.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-16">
+            <Button
+              href="/lead"
+              variant="primary"
+              size="lg"
+              className="text-body-m!"
             >
-              <CtaBackground />
-              <p className="text-h4 font-medium text-text-primary md:text-h3">
-                Начните использовать GigaCowork уже сегодня
-              </p>
-              <p className="max-w-[560px] text-body-m text-text-secondary">
-                Мы хотим, чтобы технологии снижали нагрузку на&nbsp;сотрудников
-                и упрощали работу всей компании, поэтому описываем
-                и&nbsp;обучаем разным сценариям использования ИИ-агентов.
-              </p>
-              <div className="flex flex-wrap justify-center gap-16">
-                <Button
-                  href="/lead"
-                  variant="primary"
-                  size="lg"
-                  className="text-body-m!"
-                >
-                  Попробовать продукт
-                </Button>
-                <Button
-                  href="/guides"
-                  variant="secondary"
-                  size="lg"
-                  className="text-body-m!"
-                >
-                  Обучающие видео
-                </Button>
-              </div>
-            </div>
+              Попробовать продукт
+            </Button>
+            <Button
+              href="/guides"
+              variant="secondary"
+              size="lg"
+              className="text-body-m!"
+            >
+              Обучающие видео
+            </Button>
           </div>
         </div>
       </section>

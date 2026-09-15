@@ -65,10 +65,16 @@ const TAKEOVER = 0.45;
  * Тень карточки — Elevation/Drop/Lg, та же, что в разметке.
  *
  * Носят её только передняя карточка и те, что ещё идут снизу. У карточек,
- * ушедших под стопку, тень снимается: тени падали бы друг на друга и на
- * выступающие сверху полоски и давали вокруг стопки грязную серую кайму.
+ * ушедших под стопку, тень снимается: тени падали друг на друга и на
+ * выступающие сверху полоски, складывались и давали вокруг стопки грязную
+ * серую кайму. Так же сделано в `ScenarioStack` и `FeatureStack`.
  */
 const SHADOW = "0 12px 48px -8px #60738f33";
+/*
+  Та же тень в записи для filter: у drop-shadow нет spread, а радиус вдвое
+  меньше, чем у box-shadow.
+*/
+const IMAGE_SHADOW = "drop-shadow(0 12px 24px #60738f33)";
 
 export function StickyScenarios({ items }: { items: StickyScenario[] }) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -96,10 +102,21 @@ export function StickyScenarios({ items }: { items: StickyScenario[] }) {
         text.style.pointerEvents = on ? "" : "none";
         text.setAttribute("aria-hidden", on ? "false" : "true");
       });
+      /*
+        Тень остаётся у передней карточки и у тех, что ещё идут снизу: они
+        видны на фоне и должны отделяться от него. У закрытых карточек её нет —
+        от них видна только верхняя полоска, и тень там лишняя.
+      */
       surfaces.forEach((surface, i) => {
-        // Тень стопки — только для пустых слотов: у кадра она своя, внутри
-        // файла, и вторая ложилась бы прямоугольником вокруг картинки.
-        if (surface && surface.tagName !== "IMG") {
+        if (!surface) return;
+        /*
+          У заглушки скругление задано стилем — годится box-shadow. У готового
+          кадра оно запечено в альфу картинки, и тень должна идти по контуру,
+          поэтому там фильтр.
+        */
+        if (surface.tagName === "IMG") {
+          surface.style.filter = i >= next ? IMAGE_SHADOW : "none";
+        } else {
           surface.style.boxShadow = i >= next ? SHADOW : "none";
         }
       });
@@ -114,7 +131,9 @@ export function StickyScenarios({ items }: { items: StickyScenario[] }) {
       });
       /* Ниже lg стопки нет, карточки не перекрываются — тень у всех. */
       surfaces.forEach((surface) => {
-        if (surface) surface.style.boxShadow = "";
+        if (!surface) return;
+        surface.style.boxShadow = "";
+        surface.style.filter = "";
       });
     };
 

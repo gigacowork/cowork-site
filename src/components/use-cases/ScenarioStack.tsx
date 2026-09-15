@@ -219,7 +219,13 @@ export function ScenarioStack({
               <p className="text-body-l text-text-secondary">
                 <Paragraphs items={item.paragraphs} />
               </p>
-              {/* Effects List (2616:11246) — маркер-точка 24 + Body/M */}
+              {/*
+                Effects List (2616:11246) — маркер-точка 24 + Body/L.
+                В макете здесь стоит Body/M (14), но абзац над списком — Body/L
+                (16), и разный кегль в одном блоке читался как опечатка.
+                На страницах платформы (`StickyScenarios`) такой же список
+                изначально набран Body/L — привели к нему.
+              */}
               <ul className="flex flex-col gap-12">
                 {item.effects.map((effect) => (
                   <li
@@ -237,7 +243,7 @@ export function ScenarioStack({
                     >
                       <span className="size-[8px] rounded-full bg-icon-primary" />
                     </span>
-                    <span className="text-body-m text-text-secondary lg:flex-1">
+                    <span className="text-body-l text-text-secondary lg:flex-1">
                       {effect}
                     </span>
                   </li>

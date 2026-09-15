@@ -407,8 +407,13 @@ export default function PartnersPage() {
                 className={`relative flex flex-col gap-40 overflow-hidden rounded-24 border border-white p-24 md:p-40 lg:h-[532px] ${CARD_GRADIENT}`}
               >
                 <div className="flex flex-col gap-12 lg:max-w-[280px]">
+                  {/*
+                    Точек нет: две части разведены переносом, как в остальных
+                    заголовках сайта.
+                  */}
                   <h3 className="text-h3 font-medium text-text-primary">
-                    Мы&nbsp;создаем платформу. Вы&nbsp;развиваете бизнес.
+                    Мы&nbsp;создаем платформу <br />
+                    Вы&nbsp;развиваете бизнес
                   </h3>
                   <p className="text-body-m text-text-primary">
                     GigaCowork готов к&nbsp;внедрению в&nbsp;крупных компаниях.

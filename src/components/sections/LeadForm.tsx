@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
 import { LegalLink } from "@/components/ui/LegalLink";
 import { LEGAL_PDF } from "@/lib/legal";
@@ -21,6 +21,12 @@ import { sendLead, type LeadFields, type LeadTarget } from "@/lib/crm";
  * Отправка включается пропом `target`: с ним форма уходит в SberCRM
  * (`src/lib/crm.ts`), без него — прежнее поведение-заглушка, потому что для
  * остальных страниц ручка пока не заведена.
+ *
+ * Проверка полей своя, а не браузерная. У `required` и `type="email"` разметка
+ * системная: серое всплывающее облачко у поля, шрифт и скругления от ОС, текст
+ * («Заполните это поле») на языке браузера, а не сайта. К стилю страницы это
+ * не привести никак — облачко рисует сам браузер. Поэтому на форме стоит
+ * `noValidate`, а ошибки считаются здесь и выводятся подписью под полем.
  */
 
 /*
@@ -34,28 +40,90 @@ const FORM_GRADIENT =
   "md:bg-[linear-gradient(224.038deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)]";
 
 const FIELD_CLASS =
-  "h-[56px] w-full rounded-[16px] border border-border-default bg-bg-input p-16 " +
+  "h-[56px] w-full rounded-[16px] border bg-bg-input p-16 " +
   "text-body-m text-text-primary placeholder:text-text-secondary " +
   "transition-colors duration-200 outline-none " +
-  "hover:border-border-strong focus:border-border-strong " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary";
 
+/**
+ * Рамка поля. В ошибке — status-error и вторым пикселем внутрь (`inset`), а не
+ * `border-2`: толщина рамки не меняет высоту и ширину поля, и строка не
+ * дёргается в момент подсветки. Тень вместо outline — outline занят фокусом.
+ */
+const FIELD_OK =
+  "border-border-default hover:border-border-strong focus:border-border-strong";
+const FIELD_BAD =
+  "border-status-error shadow-[inset_0_0_0_1px_var(--color-status-error)]";
+
+/**
+ * Поля и их проверки. `error` возвращает текст ошибки или пустую строку.
+ * Пустое значение проверяется отдельно (обязательность зависит от `requireAll`),
+ * здесь — только разбор того, что человек уже ввёл.
+ */
 const FIELDS = [
-  { name: "name", label: "Имя", type: "text", autoComplete: "name" },
+  {
+    name: "name",
+    label: "Имя",
+    type: "text",
+    autoComplete: "name",
+    empty: "Укажите имя",
+    error: (v: string) => (v.trim().length < 2 ? "Имя слишком короткое" : ""),
+  },
   {
     name: "email",
     label: "Рабочая почта",
-    type: "email",
+    /*
+      Тип `text`, а не `email`: при `type="email"` браузер и с `noValidate`
+      подставляет свою проверку в `checkValidity`, а Safari вдобавок сам чистит
+      значение. Проверяем регуляркой ниже — сообщение тогда наше.
+      `inputMode="email"` оставляет мобильную клавиатуру с «@».
+    */
+    type: "text",
+    inputMode: "email" as const,
     autoComplete: "email",
+    empty: "Укажите рабочую почту",
+    error: (v: string) =>
+      /^[^\s@]+@[^\s@]+\.[a-zA-Zа-яА-Я]{2,}$/.test(v.trim())
+        ? ""
+        : "Проверьте адрес — он должен быть вида name@company.ru",
   },
-  { name: "phone", label: "Телефон", type: "tel", autoComplete: "tel" },
+  {
+    name: "phone",
+    label: "Телефон",
+    type: "tel",
+    inputMode: "tel" as const,
+    autoComplete: "tel",
+    empty: "Укажите телефон",
+    /* Считаем только цифры: +7, скобки, пробелы и дефисы человек ставит как хочет. */
+    error: (v: string) => {
+      const digits = v.replace(/\D/g, "").length;
+      return digits >= 10 && digits <= 15
+        ? ""
+        : "Телефон должен содержать от 10 до 15 цифр";
+    },
+  },
   {
     name: "company",
     label: "Название организации",
     type: "text",
     autoComplete: "organization",
+    empty: "Укажите название организации",
+    error: (v: string) =>
+      v.trim().length < 2 ? "Название слишком короткое" : "",
   },
-  { name: "inn", label: "ИНН", type: "text", autoComplete: "off" },
+  {
+    name: "inn",
+    label: "ИНН",
+    type: "text",
+    inputMode: "numeric" as const,
+    autoComplete: "off",
+    empty: "Укажите ИНН",
+    /* 10 цифр у организации, 12 у ИП. Контрольную сумму не считаем — её проверит CRM. */
+    error: (v: string) =>
+      /^\d{10}$|^\d{12}$/.test(v.trim())
+        ? ""
+        : "ИНН — это 10 цифр у организации или 12 у ИП",
+  },
 ] as const;
 
 /** Без `target` обязательны только имя и почта — как было до подключения CRM. */
@@ -86,10 +154,66 @@ export function LeadForm({
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
+  /** Тексты ошибок по имени поля. Пусто — поле в порядке. */
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  /*
+    До первой отправки ошибки не показываем: подсвечивать «Укажите ИНН», пока
+    человек печатает имя, — это ругань на незаполненную форму. После неё
+    проверяем на каждый ввод, чтобы подпись уходила сразу, как поле починили.
+  */
+  const submitted = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const isRequired = (name: string) => requireAll || BASE_REQUIRED.has(name);
+
+  /** Ошибка одного поля: сначала обязательность, потом разбор значения. */
+  const checkField = (field: (typeof FIELDS)[number], raw: string) => {
+    const value = raw.trim();
+    if (!value) return isRequired(field.name) ? field.empty : "";
+    return field.error(value);
+  };
+
+  /** Ошибки всей формы по текущим значениям полей. */
+  const checkAll = (form: HTMLFormElement) => {
+    const data = new FormData(form);
+    const next: Record<string, string> = {};
+    FIELDS.forEach((field) => {
+      const message = checkField(field, String(data.get(field.name) ?? ""));
+      if (message) next[field.name] = message;
+    });
+    return next;
+  };
+
+  /* Пересчёт по ходу ввода — только после первой попытки отправить. */
+  const handleInput = () => {
+    if (!submitted.current || !formRef.current) return;
+    setErrors(checkAll(formRef.current));
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (status === "sending") return;
+
+    const form = event.currentTarget;
+    submitted.current = true;
+
+    const found = checkAll(form);
+    setErrors(found);
+    if (Object.keys(found).length) {
+      /*
+        Уводим курсор в первое незаполненное поле — иначе на мобильном
+        подпись об ошибке может оказаться за пределами экрана, и нажатие на
+        кнопку выглядит как «ничего не произошло». Порядок берём из FIELDS,
+        а не из объекта ошибок: у объекта он не гарантирован.
+      */
+      const first = FIELDS.find((field) => found[field.name]);
+      if (first) {
+        form
+          .querySelector<HTMLInputElement>(`[name="${first.name}"]`)
+          ?.focus({ preventScroll: false });
+      }
+      return;
+    }
 
     // Ручки нет — прежнее поведение: показываем «принято», никуда не идём.
     if (!target) {
@@ -97,7 +221,7 @@ export function LeadForm({
       return;
     }
 
-    const data = new FormData(event.currentTarget);
+    const data = new FormData(form);
     const value = (key: string) => String(data.get(key) ?? "");
     const fields: LeadFields = {
       name: value("name"),
@@ -117,11 +241,17 @@ export function LeadForm({
     }
   };
 
-  const isRequired = (name: string) => requireAll || BASE_REQUIRED.has(name);
-
   return (
     <form
+      ref={formRef}
       onSubmit={handleSubmit}
+      onInput={handleInput}
+      /*
+        Своя проверка вместо браузерной — см. шапку файла. `required` на полях
+        остаётся: он ничего не рисует при `noValidate`, но экранный диктор по
+        нему сообщает, что поле обязательное.
+      */
+      noValidate
       aria-label={"Заявка на\u00A0пробный доступ"}
       /*
         Внутренние поля и шаг на десктопе берутся из переменных страницы
@@ -147,22 +277,55 @@ export function LeadForm({
         </div>
       ) : (
         <>
-          {FIELDS.map((field) => (
-            <div key={field.name} className="w-full px-16 md:px-48">
-              <label className="sr-only" htmlFor={`${idPrefix}-${field.name}`}>
-                {field.label}
-              </label>
-              <input
-                id={`${idPrefix}-${field.name}`}
-                name={field.name}
-                type={field.type}
-                autoComplete={field.autoComplete}
-                placeholder={field.label}
-                required={isRequired(field.name)}
-                className={FIELD_CLASS}
-              />
-            </div>
-          ))}
+          {FIELDS.map((field) => {
+            const message = errors[field.name];
+            const errorId = `${idPrefix}-${field.name}-error`;
+            return (
+              /*
+                Подпись ошибки лежит в потоке под полем, а не поверх него: шаг
+                между полями задан gap у формы, и всплывающая подпись
+                перекрыла бы следующее поле. Из-за этого форма при ошибке
+                становится выше — но она и так не привязана к высоте экрана.
+              */
+              <div
+                key={field.name}
+                className="flex w-full flex-col gap-8 px-16 md:px-48"
+              >
+                <label
+                  className="sr-only"
+                  htmlFor={`${idPrefix}-${field.name}`}
+                >
+                  {field.label}
+                </label>
+                <input
+                  id={`${idPrefix}-${field.name}`}
+                  name={field.name}
+                  type={field.type}
+                  inputMode={"inputMode" in field ? field.inputMode : undefined}
+                  autoComplete={field.autoComplete}
+                  placeholder={field.label}
+                  required={isRequired(field.name)}
+                  aria-invalid={message ? true : undefined}
+                  aria-describedby={message ? errorId : undefined}
+                  className={`${FIELD_CLASS} ${message ? FIELD_BAD : FIELD_OK}`}
+                />
+                {message ? (
+                  /*
+                    `role="alert"` на самой подписи, а не общий live-region
+                    внизу формы: так диктор читает ошибку рядом с полем, в
+                    которое только что увели курсор.
+                  */
+                  <p
+                    id={errorId}
+                    role="alert"
+                    className="text-left text-caption text-status-error"
+                  >
+                    {message}
+                  </p>
+                ) : null}
+              </div>
+            );
+          })}
 
           {/* Consent — I2397:43444;1866:16715 */}
           <div className="flex w-full items-start gap-12 px-16 md:px-48">
@@ -205,7 +368,7 @@ export function LeadForm({
           {status === "error" ? (
             <p
               role="alert"
-              className="w-full px-16 text-left text-caption text-text-primary md:px-48"
+              className="w-full px-16 text-left text-caption text-status-error md:px-48"
             >
               Не&nbsp;удалось отправить заявку. Попробуйте ещё раз или напишите
               нам на&nbsp;почту.

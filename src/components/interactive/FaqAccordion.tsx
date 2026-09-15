@@ -67,12 +67,29 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
             )}
 
             {item.answer ? (
+              /*
+                Раскрытие — анимация высоты через сетку: строка ездит от 0fr
+                к 1fr, и браузер сам считает конечную высоту. Так не нужно
+                ни измерять ответ в JS, ни прибивать `max-height` наглазок:
+                с запасом по max-height короткие ответы распахиваются рывком,
+                а длинные обрезаются.
+
+                `inert` на свёрнутом блоке вместо прежнего `hidden`: содержимое
+                остаётся в разметке (иначе анимировать нечего), но не ловит
+                фокус и не читается скринридером.
+              */
               <div
                 id={`${id}-${i}`}
-                hidden={!expanded}
-                className="flex flex-col gap-16 pt-24 text-body-m text-text-secondary md:text-body-l"
+                inert={!expanded}
+                className={`grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none ${
+                  expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                }`}
               >
-                {item.answer}
+                <div className="overflow-hidden">
+                  <div className="flex flex-col gap-16 pt-24 text-body-m text-text-secondary md:text-body-l">
+                    {item.answer}
+                  </div>
+                </div>
               </div>
             ) : null}
           </div>

@@ -119,7 +119,11 @@ export function UseCaseSteps({
                       </p>
                     ))}
 
-                    {/* Перечень под абзацами — есть только у части рядов. */}
+                    {/*
+                      Перечень под абзацами — есть только у части рядов.
+                      Кегль наследуется от блока (Body/L): свой Body/M делал список
+                      мельче соседнего абзаца в том же столбце.
+                    */}
                     {step.bullets?.length ? (
                       <ul className="flex flex-col gap-12 text-left">
                         {step.bullets.map((bullet) => (
@@ -130,7 +134,7 @@ export function UseCaseSteps({
                             >
                               <span className="size-[8px] rounded-full bg-icon-primary" />
                             </span>
-                            <span className="flex-1 text-body-m">{bullet}</span>
+                            <span className="flex-1">{bullet}</span>
                           </li>
                         ))}
                       </ul>

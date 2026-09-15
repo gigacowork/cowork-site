@@ -20,7 +20,7 @@ const RISE = 24;
 /** Длительность одной карточки. */
 const DURATION = 600;
 /** Задержка между соседними карточками. */
-const STAGGER = 120;
+const STAGGER = 90;
 /** Доля секции во вьюпорте, после которой отсчитывается задержка. */
 const THRESHOLD = 0.35;
 /**
@@ -30,7 +30,7 @@ const THRESHOLD = 0.35;
  * движения складывались и выезд читался как рывок. Задержка даёт блоку встать
  * на место, и карточки появляются уже на неподвижном фоне.
  */
-const START_DELAY = 380;
+const START_DELAY = 220;
 
 export type RevealCardsProps = {
   children: ReactNode;
@@ -98,7 +98,7 @@ export function RevealCards({
           }
         }
       },
-      { threshold: THRESHOLD }
+      { threshold: THRESHOLD },
     );
     observer.observe(root);
 

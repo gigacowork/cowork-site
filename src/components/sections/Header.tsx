@@ -25,7 +25,17 @@ import { USE_CASES } from "@/lib/use-cases";
  * ПРОЕКТ_COWORK_RU.md и понадобится, как только страница соберётся: снять
  * флаг, и пункт станет обычной ссылкой.
  */
-type NavLeaf = { label: string; href: string; soon?: boolean };
+/**
+ * `support` — вспомогательная страница, а не раздел продукта. Такие пункты
+ * собираются в отдельный блок внизу раскрывашки со своей подложкой,
+ * чтобы их не читали как продолжение списка сущностей платформы.
+ */
+type NavLeaf = {
+  label: string;
+  href: string;
+  soon?: boolean;
+  support?: boolean;
+};
 type NavItem = { label: string; href?: string; children?: NavLeaf[] };
 
 /*
@@ -43,8 +53,12 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Коннекторы", href: "/ai-platform/connectors" },
       { label: "Быстрые команды", href: "/ai-platform/quick-commands" },
       { label: "Задачи по\u00A0расписанию", href: "/ai-platform/schedule" },
-      { label: "Что\u00A0нового", href: "/ai-platform/new-features" },
-      { label: "Документация", href: "/ai-platform/docs/" },
+      {
+        label: "Что\u00A0нового",
+        href: "/ai-platform/new-features",
+        support: true,
+      },
+      { label: "Документация", href: "/docs/", support: true },
     ],
   },
   {
@@ -299,6 +313,43 @@ export function Header() {
               const groupActive = item.children.some((leaf) =>
                 isActive(pathname, leaf.href),
               );
+              const main = item.children.filter((leaf) => !leaf.support);
+              const support = item.children.filter((leaf) => leaf.support);
+
+              /*
+                Dropdown Item (3432:15088): высота 41, отступы по 12, скругление
+                полное, Body/M. В ховере — подложка Action/Secondary/Hover
+                и текст Text/Strong.
+
+                У раздела, которого ещё нет, — тот же пункт, но текстом
+                Text/Tertiary и без ссылки: ведёт он пока в никуда, а клавиатуре
+                и скринридеру лучше вообще не предлагать такую цель.
+              */
+              const renderLeaf = (leaf: NavLeaf, onTint = false) =>
+                leaf.soon ? (
+                  <span
+                    aria-disabled="true"
+                    className="flex h-[41px] cursor-default items-center rounded-full px-12 text-body-m whitespace-nowrap text-text-tertiary select-none"
+                  >
+                    {leaf.label}
+                  </span>
+                ) : (
+                  <Link
+                    href={leaf.href}
+                    tabIndex={open ? undefined : -1}
+                    aria-current={
+                      isActive(pathname, leaf.href) ? "page" : undefined
+                    }
+                    onClick={() => setOpenMenu(null)}
+                    className={`flex h-[41px] items-center rounded-full px-12 text-body-m whitespace-nowrap transition-colors ${
+                      onTint
+                        ? "text-text-secondary hover:bg-action-secondary-pressed hover:text-text-strong aria-[current=page]:bg-action-secondary-pressed aria-[current=page]:text-text-strong"
+                        : "text-text-primary hover:bg-action-secondary-hover hover:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
+                    }`}
+                  >
+                    {leaf.label}
+                  </Link>
+                );
 
               return (
                 <li
@@ -355,45 +406,30 @@ export function Header() {
                       Dropdown Panel (3435:15092): ширина 304, скругление 24,
                       внутренний отступ 12, шаг между пунктами 4, обводка
                       Border/Subtle и тень Elevation/Drop/Sm.
-                    */}
-                    <ul className="flex w-[304px] flex-col gap-4 overflow-hidden rounded-[24px] border border-border-subtle bg-bg-page p-12 shadow-drop-sm">
-                      {item.children.map((leaf) => (
-                        <li key={leaf.href}>
-                          {/*
-                            Dropdown Item (3432:15088): высота 41, отступы по 12,
-                            скругление полное, Body/M. В ховере — подложка
-                            Action/Secondary/Hover и текст Text/Strong.
 
-                            У раздела, которого ещё нет, — тот же пункт, но
-                            текстом Text/Tertiary и без ссылки: ведёт он пока
-                            в никуда, а клавиатуре и скринридеру лучше вообще
-                            не предлагать такую цель.
-                          */}
-                          {leaf.soon ? (
-                            <span
-                              aria-disabled="true"
-                              className="flex h-[41px] cursor-default items-center rounded-full px-12 text-body-m whitespace-nowrap text-text-tertiary select-none"
-                            >
-                              {leaf.label}
-                            </span>
-                          ) : (
-                            <Link
-                              href={leaf.href}
-                              tabIndex={open ? undefined : -1}
-                              aria-current={
-                                isActive(pathname, leaf.href)
-                                  ? "page"
-                                  : undefined
-                              }
-                              onClick={() => setOpenMenu(null)}
-                              className="flex h-[41px] items-center rounded-full px-12 text-body-m whitespace-nowrap text-text-primary transition-colors hover:bg-action-secondary-hover hover:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
-                            >
-                              {leaf.label}
-                            </Link>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
+                      Вспомогательный блок — карточка внутри панели, со своим
+                      скруглением по всем четырём углам: полоса во всю ширину
+                      давала сверху острые углы.
+                    */}
+                    <div className="w-[304px] rounded-[24px] border border-border-subtle bg-bg-page p-12 shadow-drop-sm">
+                      <ul className="flex flex-col gap-4">
+                        {main.map((leaf) => (
+                          <li key={leaf.href}>{renderLeaf(leaf)}</li>
+                        ))}
+                      </ul>
+                      {/*
+                        «Что нового» и «Документация» — не сущности платформы,
+                        поэтому они собраны в отдельную плашку. Ховер здесь
+                        на ступень темнее: обычный совпал бы с фоном плашки.
+                      */}
+                      {support.length > 0 ? (
+                        <ul className="mt-8 flex flex-col gap-4 rounded-[16px] bg-bg-footer p-4">
+                          {support.map((leaf) => (
+                            <li key={leaf.href}>{renderLeaf(leaf, true)}</li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
                   </div>
                 </li>
               );
@@ -525,35 +561,60 @@ export function Header() {
                       open ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >
-                    <ul className="flex flex-col gap-4 pb-8">
-                      {item.children.map((leaf) => (
-                        <li key={leaf.href}>
-                          {/* Тот же Dropdown Item (3432:15088), что и на десктопе. */}
-                          {leaf.soon ? (
-                            <span
-                              aria-disabled="true"
-                              className="flex h-[41px] cursor-default items-center justify-center rounded-full px-12 text-body-m text-text-tertiary select-none"
-                            >
-                              {leaf.label}
-                            </span>
-                          ) : (
-                            <Link
-                              href={leaf.href}
-                              tabIndex={open ? undefined : -1}
-                              aria-current={
-                                isActive(pathname, leaf.href)
-                                  ? "page"
-                                  : undefined
-                              }
-                              onClick={() => setMenuOpen(false)}
-                              className="flex h-[41px] items-center justify-center rounded-full px-12 text-body-m text-text-primary transition-colors active:bg-action-secondary-hover active:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
-                            >
-                              {leaf.label}
-                            </Link>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
+                    {/*
+                      Тот же Dropdown Item (3432:15088), что и на десктопе.
+                      Вспомогательные страницы отбиты отдельной плашкой,
+                      как и в раскрывашке на десктопе — только без обводки:
+                      здесь меню во весь экран, а не панель.
+                    */}
+                    {(
+                      [
+                        [item.children.filter((leaf) => !leaf.support), false],
+                        [item.children.filter((leaf) => leaf.support), true],
+                      ] as [NavLeaf[], boolean][]
+                    ).map(([leaves, onTint]) =>
+                      leaves.length === 0 ? null : (
+                        <ul
+                          key={onTint ? "support" : "main"}
+                          className={`flex flex-col gap-4 ${
+                            onTint
+                              ? "mt-8 mb-8 rounded-[16px] bg-bg-footer p-4"
+                              : "pb-8"
+                          }`}
+                        >
+                          {leaves.map((leaf) => (
+                            <li key={leaf.href}>
+                              {leaf.soon ? (
+                                <span
+                                  aria-disabled="true"
+                                  className="flex h-[41px] cursor-default items-center justify-center rounded-full px-12 text-body-m text-text-tertiary select-none"
+                                >
+                                  {leaf.label}
+                                </span>
+                              ) : (
+                                <Link
+                                  href={leaf.href}
+                                  tabIndex={open ? undefined : -1}
+                                  aria-current={
+                                    isActive(pathname, leaf.href)
+                                      ? "page"
+                                      : undefined
+                                  }
+                                  onClick={() => setMenuOpen(false)}
+                                  className={`flex h-[41px] items-center justify-center rounded-full px-12 text-body-m transition-colors ${
+                                    onTint
+                                      ? "text-text-secondary active:bg-action-secondary-pressed active:text-text-strong aria-[current=page]:bg-action-secondary-pressed aria-[current=page]:text-text-strong"
+                                      : "text-text-primary active:bg-action-secondary-hover active:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
+                                  }`}
+                                >
+                                  {leaf.label}
+                                </Link>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      ),
+                    )}
                   </div>
                 </div>
               );

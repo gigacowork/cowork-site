@@ -131,17 +131,22 @@ export default function SchedulePage() {
       */}
       <section className="relative isolate flex min-h-[464px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
         {/*
-          `object-left` вместо центра по умолчанию: кадр шире секции на всех
-          ширинах уже 1440 (пропорции 1440×760 против 2880×1520), и при
-          центровке обрезка съедала левый край так, что вертикальное ребро
-          стеклянной формы вставало прямо под логотипом. С привязкой к левому
-          краю обрезается только правая часть, и ребро уходит правее. На 1440 и
-          шире горизонтальной обрезки нет вовсе — там правило ничего не меняет.
+          Кадр приближен от правого верхнего угла. В исходнике вертикальное
+          ребро стеклянной формы идёт примерно по 18% ширины, а логотип
+          стоит на поле контейнера, которое растёт с шириной окна, — где-то
+          между 1500 и 1900 они совпадают, и ребро проходит прямо по
+          логотипу. Привязка к правому верхнему углу срезает левую часть
+          кадра вместе с ребром: под шапкой остаётся ровный градиент
+          на любой ширине, а сама форма уходит ниже и правее.
+
+          `object-left` остаётся для узких экранов, где кадр шире секции.
+          Ниже md приближения нет: там свой файл под узкий экран,
+          и логотип с ребром там не пересекаются.
         */}
         <HeroImage
           desktop="/img/schedule/hero.webp"
           mobile="/img/schedule/hero-mob.webp"
-          className="pointer-events-none absolute inset-0 -z-10 size-full object-cover object-left"
+          className="pointer-events-none absolute inset-0 -z-10 size-full object-cover object-left md:origin-top-right md:scale-[1.32]"
         />
         <div className="container-page flex flex-col items-center gap-32 text-center md:items-start md:gap-40 md:text-left">
           <div className="flex flex-col gap-16 md:max-w-[720px] md:gap-24">

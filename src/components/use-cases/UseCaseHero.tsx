@@ -27,7 +27,7 @@ export function UseCaseHero({
   introWidth = "calc(var(--container-page) / 2)",
   image,
   imageMobile,
-  textBlur = false,
+  imageClassName = "",
 }: {
   title: string;
   intro: string[];
@@ -36,8 +36,14 @@ export function UseCaseHero({
   image?: string;
   /** Свой кадр ниже md: у мобильной версии другая пропорция (1170×1680). */
   imageMobile?: string;
-  /** Приглушить фон под текстовой колонкой (см. `heroTextBlur` в use-cases). */
-  textBlur?: boolean;
+  /**
+   * Дополнительные классы кадра — подгонка композиции под конкретную
+   * роль. Нужны там, где рисунок фона наезжает на текстовую колонку:
+   * кадры 2880\u00D71520 совпадают с секцией по пропорциям, поэтому
+   * `object-position` на них ничего не меняет — сдвигается только
+   * приближением от нужного края.
+   */
+  imageClassName?: string;
 }) {
   return (
     <section
@@ -56,30 +62,7 @@ export function UseCaseHero({
         <HeroImage
           desktop={image}
           mobile={imageMobile}
-          className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
-        />
-      ) : null}
-
-      {/*
-        Размытие фона под текстом.
-
-        Слой лежит на том же `-z-10`, но ниже картинки по разметке — значит,
-        рисуется поверх неё, а `backdrop-filter` размывает всё, что под ним, то
-        есть саму картинку. Контент секции идёт следующим и остаётся резким.
-
-        Маска очерчивает не прямоугольник, а мягкое пятно: за её пределами
-        кадр не тронут. От md полоса идёт слева, под текстовой колонкой (она
-        занимает половину контейнера), и сходит на нет к середине. Ниже md
-        текст во всю ширину, поэтому там маска вертикальная: гасится к верхнему
-        и нижнему краям экрана.
-
-        Радиус 14: грань стекла под строками уходит совсем, но кадр не
-        превращается в ровное пятно — фактура и общий рисунок ещё читаются.
-      */}
-      {image && textBlur ? (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 backdrop-blur-[14px] [mask-image:linear-gradient(to_bottom,transparent_6%,black_20%,black_76%,transparent_94%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_6%,black_20%,black_76%,transparent_94%)] md:[mask-image:linear-gradient(to_right,black_0%,black_38%,transparent_68%)] md:[-webkit-mask-image:linear-gradient(to_right,black_0%,black_38%,transparent_68%)]"
+          className={`pointer-events-none absolute inset-0 -z-10 size-full object-cover ${imageClassName}`}
         />
       ) : null}
 
