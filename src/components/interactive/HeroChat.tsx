@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { HERO_RESET_EVENT } from "@/lib/hero-reset";
 
 /**
  * HeroChat — hero-embedded chat (NOT a modal).
@@ -67,7 +68,11 @@ const SCENARIOS: Scenario[] = [
     result: {
       title: "Готово",
       text: "Отчёт подготовлен.",
-      actions: ["Скачать .pptx", "Открыть в\u00A0браузере", "Отправить на\u00A0почту"],
+      actions: [
+        "Скачать .pptx",
+        "Открыть в\u00A0браузере",
+        "Отправить на\u00A0почту",
+      ],
     },
   },
   {
@@ -117,7 +122,11 @@ const SCENARIOS: Scenario[] = [
     result: {
       title: "Итог",
       text: "Сравнительная таблица подготовлена. Рекомендован поставщик №2: минимальная стоимость и\u00A0лучшие условия поставки.",
-      actions: ["Скачать таблицу", "Создать заявку", "Подготовить пояснительную записку"],
+      actions: [
+        "Скачать таблицу",
+        "Создать заявку",
+        "Подготовить пояснительную записку",
+      ],
     },
   },
   {
@@ -204,7 +213,6 @@ const BUBBLE_MAX = 460;
 const LIST_GAP = 24;
 const LIST_HEIGHT = 445 + LIST_GAP;
 
-
 /** How much of the top dissolves once the list is capped and starts scrolling. */
 const MAX_TOP_FADE = 88;
 
@@ -276,7 +284,7 @@ export function HeroChat() {
             },
           ]);
           if (index === replies.length - 1) setTyping(false);
-        }, elapsed)
+        }, elapsed),
       );
     });
   }, []);
@@ -293,7 +301,10 @@ export function HeroChat() {
       пустотой и только потом закрывается.
     */
     timers.current.push(
-      setTimeout(() => setMessages([]), reducedRef.current ? 0 : HEIGHT_DURATION)
+      setTimeout(
+        () => setMessages([]),
+        reducedRef.current ? 0 : HEIGHT_DURATION,
+      ),
     );
   }, []);
 
@@ -302,8 +313,20 @@ export function HeroChat() {
       timers.current.forEach(clearTimeout);
       timers.current = [];
     },
-    []
+    [],
   );
+
+  /*
+    Клик по логотипу в шапке возвращает главную в исходный вид. Маршрут при
+    этом не меняется — Next видит тот же адрес и ничего не перерисовывает, —
+    поэтому свернуть отыгранный сценарий некому, кроме самого чата. Сигнал
+    шлёт шапка (`src/lib/hero-reset.ts`), здесь его ловим и закрываемся тем же
+    путём, что и по повторному клику на активный чип.
+  */
+  useEffect(() => {
+    window.addEventListener(HERO_RESET_EVENT, close);
+    return () => window.removeEventListener(HERO_RESET_EVENT, close);
+  }, [close]);
 
   /*
     Чат раскрыт с момента, когда выбран сценарий, и дальше высота не меняется.
@@ -323,7 +346,7 @@ export function HeroChat() {
       el.scrollTo({
         top: el.scrollHeight,
         behavior: reducedRef.current ? "auto" : "smooth",
-      })
+      }),
     );
     return () => cancelAnimationFrame(frame);
   }, [messages, typing, opened]);
@@ -358,7 +381,7 @@ export function HeroChat() {
       ? `linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0.08) ${(
           topFade * 0.3
         ).toFixed(1)}px, rgba(0,0,0,0.45) ${(topFade * 0.62).toFixed(
-          1
+          1,
         )}px, rgba(0,0,0,1) ${topFade.toFixed(1)}px)`
       : undefined;
 
@@ -405,7 +428,10 @@ export function HeroChat() {
                 /* Chat / Message 1098:4383 (Type=Agent 357:596) */
                 <li key={message.id} className="flex items-start gap-8 p-8">
                   {/* Icon=bot 826:6909, 24×24 */}
-                  <Icon src="/img/icons/bot.svg" className="mt-4 size-[24px] text-icon-primary" />
+                  <Icon
+                    src="/img/icons/bot.svg"
+                    className="mt-4 size-[24px] text-icon-primary"
+                  />
                   <div
                     className={`chat-bubble-in chat-glass flex min-w-0 flex-1 flex-col gap-12 rounded-[16px] px-16 py-12 backdrop-blur-[12px] ${
                       message.actions ? "chat-glass-outlined" : ""
@@ -445,13 +471,16 @@ export function HeroChat() {
                     ) : null}
                   </div>
                 </li>
-              )
+              ),
             )}
 
             {typing ? (
               <li className="flex items-start gap-8 p-8">
                 {/* Icon=bot 826:6909, 24×24 */}
-                <Icon src="/img/icons/bot.svg" className="mt-4 size-[24px] text-icon-primary" />
+                <Icon
+                  src="/img/icons/bot.svg"
+                  className="mt-4 size-[24px] text-icon-primary"
+                />
                 <span className="chat-bubble-in chat-glass flex items-center gap-4 rounded-[16px] px-16 py-12 backdrop-blur-[12px]">
                   {[0, 1, 2].map((dot) => (
                     <span

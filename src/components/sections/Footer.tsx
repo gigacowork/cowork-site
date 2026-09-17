@@ -19,7 +19,17 @@ import { LEGAL_LINES, LEGAL_PDF } from "@/lib/legal";
  * составе и порядке. Группа, у которой не осталось видимых пунктов, целиком
  * выпадает из разметки — пустых заголовков в подвале не появляется.
  */
-type NavLink = { label: string; href: string; hidden?: boolean };
+/**
+ * `blank` — пункт открывается в новой вкладке, как и в шапке. Нужен
+ * документации: она лежит отдельной статикой в `public/docs`, а не страницей
+ * сайта.
+ */
+type NavLink = {
+  label: string;
+  href: string;
+  hidden?: boolean;
+  blank?: boolean;
+};
 
 type NavGroup = {
   title: string;
@@ -50,7 +60,7 @@ const NAV_GROUPS: NavGroup[] = [
         Адрес со слэшем на конце — как в шапке: документация лежит статикой в
         public, и без слэша сервер отдаёт редирект вместо самой страницы.
       */
-      { label: "Документация", href: "/docs/" },
+      { label: "Документация", href: "/docs/", blank: true },
       { label: "Безопасность", href: "/trust-and-safety" },
       /* Страницы ещё нет — пункт не показываем. */
       { label: "Помощь и\u00A0поддержка", href: "#support", hidden: true },
@@ -156,7 +166,13 @@ export function Footer() {
                 <ul className="flex flex-col gap-8 text-body-m text-text-primary">
                   {group.links.map((link) => (
                     <li key={link.href}>
-                      <Link href={link.href} className="text-link">
+                      <Link
+                        href={link.href}
+                        {...(link.blank
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : null)}
+                        className="text-link"
+                      >
                         {link.label}
                       </Link>
                     </li>

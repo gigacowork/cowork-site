@@ -425,7 +425,8 @@ export default function ConnectorsPage() {
               Работайте в&nbsp;привычных системах вместе с&nbsp;ИИ
             </h1>
             <p className="text-body-l text-text-secondary">
-              Интегрируйте агентов в&nbsp;бизнес-контекст компании: CRM, 1С,
+              Интегрируйте агентов в&nbsp;бизнес-контекст компании: CRM, 1С,{" "}
+              <br className="hidden md:inline" />
               почту и&nbsp;другие корпоративные сервисы
             </p>
           </div>

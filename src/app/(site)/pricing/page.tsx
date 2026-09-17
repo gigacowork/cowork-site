@@ -78,16 +78,25 @@ type Supply = {
   lead: ReactNode;
   tags: SupplyTag[];
   /**
-   * Кадр поставки. `top` — сдвиг относительно верхнего края карточки.
+   * Кадр поставки (4071:15194).
    *
-   * Числа разные, и это не произвол: у каждого файла своя прозрачная рамка
-   * вокруг рисунка, поэтому одинаковый `top` давал бы разную высоту видимой
-   * части. Значения подобраны так, чтобы нижний край самого рисунка у всех
-   * трёх карточек приходился на одну линию (около 57 от верха карточки) — при
-   * высоте бокса 200 видимая часть кончается на 187.5 у «Облака», 172 у
-   * «Гибрида» и 175 у «ПАК». Меняется файл — пересчитываем `top`.
+   * `width`/`height` — реальные размеры файла: из них берётся пропорция.
+   * `box` — ширина кадра на десктопе; высота считается сама, поэтому у файла
+   * с другой пропорцией (у «ПАК» снизу шире прозрачная рамка) рисунок не
+   * сплющивается.
+   *
+   * Верхний край у всех трёх один и тот же — так в макете: рамки стоят на
+   * 140 / −68 от угла карточки, и отличаются только шириной. Раньше `top`
+   * подбирался каждой карточке свой, чтобы совпали нижние края рисунков; из-за
+   * этого кадры уезжали вверх и заходили на hero, а верхние края расходились.
    */
-  illustration: { src: string; width: number; height: number; top: number };
+  illustration: {
+    src: string;
+    width: number;
+    height: number;
+    box: number;
+    top: number;
+  };
   benefits: SupplyBenefit[];
 };
 
@@ -114,9 +123,10 @@ const SUPPLIES: Supply[] = [
     ],
     illustration: {
       src: "/img/pricing/cloud.webp",
-      width: 252,
-      height: 200,
-      top: -130,
+      width: 504,
+      height: 400,
+      box: 252,
+      top: -68,
     },
     benefits: [
       {
@@ -154,9 +164,10 @@ const SUPPLIES: Supply[] = [
     ],
     illustration: {
       src: "/img/pricing/hybrid.webp",
-      width: 238,
-      height: 200,
-      top: -115,
+      width: 477,
+      height: 400,
+      box: 238,
+      top: -68,
     },
     benefits: [
       {
@@ -204,9 +215,10 @@ const SUPPLIES: Supply[] = [
     ],
     illustration: {
       src: "/img/pricing/pak.webp",
-      width: 221,
-      height: 210,
-      top: -118,
+      width: 443,
+      height: 421,
+      box: 221,
+      top: -68,
     },
     benefits: [
       {
@@ -508,7 +520,13 @@ export default function PricingPage() {
                 Отступом справа так не сделать — у «Гибрида» и «ПАК» лид
                 длинный, и он сжимался в узкую колонку с дырой под кадром.
               */}
-              <div className="lg:flex lg:flex-col lg:gap-8">
+              {/*
+                48 между названием и лидом — из макета (Header 4071:15190:
+                заголовок 0…30, лид с 78). Отбивка большая не для красоты: лид
+                начинается ровно там, где кончается кадр поставки, и без неё
+                первые строки «Гибрида» и «ПАК» уходили под рисунок.
+              */}
+              <div className="lg:flex lg:flex-col lg:gap-48">
                 {/*
                   Кадр поставки. От lg он выходит из потока и висит над верхним
                   краем карточки — так в макете (4071:15194 — absolute,
@@ -525,9 +543,10 @@ export default function PricingPage() {
                   style={
                     {
                       "--ill-top": `${supply.illustration.top}px`,
+                      "--ill-box": `${supply.illustration.box}px`,
                     } as CSSProperties
                   }
-                  className="pointer-events-none float-right -mr-8 ml-12 h-[150px] w-auto object-contain lg:absolute lg:top-[var(--ill-top)] lg:left-[140px] lg:float-none lg:mr-0 lg:ml-0 lg:h-[200px]"
+                  className="pointer-events-none float-right -mr-8 ml-12 h-[150px] w-auto object-contain lg:absolute lg:top-[var(--ill-top)] lg:left-[140px] lg:float-none lg:mr-0 lg:ml-0 lg:h-auto lg:w-[var(--ill-box)]"
                 />
                 <h2 className="text-h3 font-medium text-text-primary">
                   {supply.title}

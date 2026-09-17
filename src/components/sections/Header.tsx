@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { requestHeroReset } from "@/lib/hero-reset";
 import { USE_CASES } from "@/lib/use-cases";
 
 /**
@@ -30,12 +31,21 @@ import { USE_CASES } from "@/lib/use-cases";
  * собираются в отдельный блок внизу раскрывашки со своей подложкой,
  * чтобы их не читали как продолжение списка сущностей платформы.
  */
+/**
+ * `blank` — пункт открывается в новой вкладке. Нужен документации: она лежит
+ * отдельной статикой в `public/docs`, а не страницей сайта, и уводить из неё
+ * пользователя с уже открытой страницы незачем.
+ */
 type NavLeaf = {
   label: string;
   href: string;
   soon?: boolean;
   support?: boolean;
+  blank?: boolean;
 };
+
+/** Атрибуты внешней цели — одинаковые в обоих меню, шапке и мобильном. */
+const BLANK_PROPS = { target: "_blank", rel: "noopener noreferrer" } as const;
 type NavItem = { label: string; href?: string; children?: NavLeaf[] };
 
 /*
@@ -58,7 +68,7 @@ const NAV_ITEMS: NavItem[] = [
         href: "/ai-platform/new-features",
         support: true,
       },
-      { label: "Документация", href: "/docs/", support: true },
+      { label: "Документация", href: "/docs/", support: true, blank: true },
     ],
   },
   {
@@ -110,6 +120,26 @@ const PILL_NAV = true;
  * страница стоит на месте.
  */
 const SCROLL_START = 4;
+
+/**
+ * Возврат страницы наверх после клика по логотипу на главной.
+ *
+ * Одного `scrollTo` мало: hero при сбросе схлопывается анимацией высоты
+ * (360 мс в `HeroChat`), страница за это время становится короче, и браузер
+ * оставляет её на пару десятков пикселей ниже нуля — шапка так и остаётся
+ * с прокрученной подложкой. Поэтому доводим ещё раз, когда высота улеглась.
+ *
+ * Второй заход только если пользователь сам не уехал вниз за эти полсекунды:
+ * иначе клик по логотипу дёргал бы страницу из-под руки.
+ */
+const SETTLE_DELAY = 420;
+
+function backToTop() {
+  window.scrollTo({ top: 0 });
+  window.setTimeout(() => {
+    if (window.scrollY < 200) window.scrollTo({ top: 0 });
+  }, SETTLE_DELAY);
+}
 
 /** Адрес без завершающего слэша: у проекта trailingSlash, в меню — как записано. */
 const trimSlash = (href: string) =>
@@ -270,7 +300,24 @@ export function Header() {
       */}
       <div className="container-page flex min-h-[var(--header-h)] items-center justify-between py-16">
         {/* Logo — desktop 155×33, mobile 117×25 */}
-        <Link href="/" aria-label="GigaCowork" className="shrink-0">
+        {/*
+          На главной клик по логотипу никуда не ведёт — маршрут тот же, и Next
+          просто ничего не делает. При этом в hero к тому моменту может быть
+          отыгран сценарий чата, и страница остаётся «в середине разговора».
+          Поэтому здесь логотип работает как кнопка «в начало»: шлём сигнал,
+          по которому чат сворачивается в исходное состояние (ловит его
+          `HeroChat`). На остальных страницах это обычная ссылка на главную.
+        */}
+        <Link
+          href="/"
+          aria-label="GigaCowork"
+          className="shrink-0"
+          onClick={() => {
+            if (pathname !== "/") return;
+            requestHeroReset();
+            backToTop();
+          }}
+        >
           <Image
             src="/img/logo-gigacowork.svg"
             alt="GigaCowork"
@@ -336,6 +383,7 @@ export function Header() {
                 ) : (
                   <Link
                     href={leaf.href}
+                    {...(leaf.blank ? BLANK_PROPS : null)}
                     tabIndex={open ? undefined : -1}
                     aria-current={
                       isActive(pathname, leaf.href) ? "page" : undefined
@@ -594,6 +642,7 @@ export function Header() {
                               ) : (
                                 <Link
                                   href={leaf.href}
+                                  {...(leaf.blank ? BLANK_PROPS : null)}
                                   tabIndex={open ? undefined : -1}
                                   aria-current={
                                     isActive(pathname, leaf.href)

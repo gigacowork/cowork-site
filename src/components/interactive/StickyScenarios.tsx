@@ -37,8 +37,13 @@ export type StickyScenario = {
    * между абзацами (16 по макету, а не пустая строка) держит обёртка ниже.
    */
   body: ReactNode;
-  /** Маркированный список под описанием. Нет — блок не рисуется. */
-  effects?: string[];
+  /**
+   * Маркированный список под описанием. Нет — блок не рисуется.
+   *
+   * Узлы, а не строки: пункту иногда нужен свой перенос строки, как заголовку
+   * и описанию рядом.
+   */
+  effects?: ReactNode[];
   /** Класс-заливка слота Image Slot (2276:15336) — у каждого сценария своя. */
   gradient: string;
   /**
@@ -232,8 +237,14 @@ export function StickyScenarios({ items }: { items: StickyScenario[] }) {
               {/* Effects List (3649:3156) — точка 8 в боксе 24 + Body/L */}
               {item.effects ? (
                 <ul className="flex flex-col gap-12">
-                  {item.effects.map((effect) => (
-                    <li key={effect} className="flex items-center gap-8">
+                  {/* Список статичный, порядок не меняется — ключ по индексу. */}
+                  {item.effects.map((effect, i) => (
+                    <li key={i} className="flex items-start gap-8">
+                      {/*
+                        Точка прижата к первой строке, а не к середине пункта:
+                        у пункта в две строки центрирование сажало её на стык
+                        строк.
+                      */}
                       <span
                         aria-hidden
                         className="flex size-[24px] shrink-0 items-center justify-center"

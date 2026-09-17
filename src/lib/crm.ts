@@ -1,14 +1,17 @@
 /**
  * Отправка заявок в SberCRM.
  *
- * Вебхук принимает готовую запись лида: контакт (`kontakt$c`), компанию
- * (`kompaniya$c`), метку источника (`istochnik_lida$c`) и идентификатор формы
- * (`id`). Структура задана на стороне CRM — переименовывать поля нельзя,
- * суффикс `$c` означает пользовательский атрибут.
+ * Вебхук принимает готовую запись лида: заголовок (`name`), контакт
+ * (`kontakt$c`), компанию (`kompaniya$c`) и метку источника
+ * (`istochnik_lida$c`). Структура задана на стороне CRM — переименовывать поля
+ * нельзя, суффикс `$c` означает пользовательский атрибут.
  *
- * Идентификатор контакта из примера интеграции (`kontakt$c.id`) сюда намеренно
- * не попал: это ключ конкретной тестовой карточки, и если слать его с каждой
- * заявкой, все лиды будут переписывать один и тот же контакт.
+ * Никаких `id` в теле быть не должно — ни своего, ни контакта. Верхнеуровневый
+ * `id` для вебхука означает «это существующая запись, обнови её», поэтому
+ * заявки не заводились новыми лидами, а уходили в одну и ту же карточку; форма
+ * при этом отвечала «отправлено». Ровно такое же тело, но без `id`, шлёт
+ * работающая форма на gigaenterprise.ai/partners — сверено по её `js/main.js`
+ * (ветка `company`), вебхук тот же.
  */
 
 export const CRM_WEBHOOK =
@@ -29,8 +32,6 @@ export type LeadFields = {
 export type LeadTarget = {
   /** Заголовок лида в CRM — поле `name`. */
   title: string;
-  /** Идентификатор формы в CRM — верхнеуровневое `id`. */
-  formId: string;
   /** Метка источника — `istochnik_lida$c`. */
   source: string;
   /** Тип связи компании — `kompaniya$c.relationType`. */
@@ -40,7 +41,6 @@ export type LeadTarget = {
 /** Партнёрская форма — /company/partners/ */
 export const PARTNER_LEAD: LeadTarget = {
   title: "Новый лид - партнер",
-  formId: "17c9a78f-ce39-4b49-baae-6e63a439f63d",
   source: "enterprisegigachatpartners",
   relationType: "Partner",
 };
@@ -73,7 +73,8 @@ export function buildLeadPayload(fields: LeadFields, target: LeadTarget) {
       mobilePhone: normalizePhone(fields.phone),
       firstName: name,
       email: fields.email.trim(),
-      marketing_consent_date$c: consentDate(),
+      /* Галочки нет — даты согласия тоже нет, а не сегодняшнее число. */
+      marketing_consent_date$c: fields.consent ? consentDate() : null,
       marketing_consent$c: fields.consent,
       name,
     },
@@ -83,7 +84,6 @@ export function buildLeadPayload(fields: LeadFields, target: LeadTarget) {
       shortName: fields.company.trim(),
     },
     istochnik_lida$c: target.source,
-    id: target.formId,
   };
 }
 
@@ -93,8 +93,13 @@ export function buildLeadPayload(fields: LeadFields, target: LeadTarget) {
  * Сайт статический, серверной ручки-посредника нет, поэтому запрос идёт из
  * браузера прямо в CRM. Основной путь — обычный `application/json`: он даёт
  * читаемый статус, но требует, чтобы вебхук отвечал на предзапрос CORS.
- * Если предзапрос не проходит, повторяем «простым» запросом (`text/plain`,
- * `no-cors`) — тело то же самое, ответ непрозрачный, зато заявка доходит.
+ * Вебхук отвечает: с test.cowork.ru ответ читается так же, как с
+ * gigaenterprise.ai, — источник он не ограничивает.
+ *
+ * Запасной путь (`text/plain`, `no-cors`) остаётся на случай, когда предзапрос
+ * всё-таки не прошёл — например, его срезал корпоративный прокси. Ответ там
+ * непрозрачный, и форма отрапортует «отправлено», ничего не зная о судьбе
+ * заявки; полагаться на него как на обычный режим нельзя.
  */
 export async function sendLead(
   fields: LeadFields,
