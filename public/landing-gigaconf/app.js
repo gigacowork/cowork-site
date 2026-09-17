@@ -173,7 +173,7 @@ function setProgress(task, value) {
   progress.setAttribute("aria-valuenow", String(displayedAmount));
 }
 
-function animateProgress(task, duration = 14000) {
+function animateProgress(task, duration = 7000) {
   setProgress(task, 0);
   return new Promise((resolve) => {
     const start = performance.now();
@@ -196,7 +196,7 @@ function animateProgress(task, duration = 14000) {
 function finishAllProgress() {
   // One clock and one render callback for every remaining bar, including the last.
   const jobs = [...activeProgress].map((job) => ({ job, from: job.amount }));
-  return animateFor(1000, (t) => {
+  return animateFor(500, (t) => {
     for (const { job, from } of jobs) {
       job.amount = t >= 1 ? 100 : from + (100 - from) * smoothStep(t);
       setProgress(job.task, job.amount);
@@ -260,7 +260,7 @@ function animateStats(previous, next) {
     Math.round(24 + 38 * next / sequence.length),
     Math.round(12 + 90 * next / sequence.length),
   ];
-  return animateFor(650, (t) => {
+  return animateFor(325, (t) => {
     const eased = easeOut(t);
     [statTasks, statDocs, statHours].forEach((element, index) => {
       element.textContent = String(Math.round(from[index] + (to[index] - from[index]) * eased));
@@ -572,7 +572,7 @@ async function runStep(step) {
       finishingCycle = true;
     }
     // Procurement starts earlier and should finish naturally before the final HR task.
-    const progressDuration = entry.agent.key === "procurement" ? 7500 : 14000;
+    const progressDuration = entry.agent.key === "procurement" ? 3750 : 7000;
     const progressAnimation = animateProgress(task, progressDuration).then(() => {
       const previous = completedTasks;
       completedTasks += 1;

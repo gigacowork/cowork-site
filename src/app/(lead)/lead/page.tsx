@@ -20,7 +20,7 @@ import { LEGAL_LINES } from "@/lib/legal";
 export const metadata: Metadata = pageMetadata({
   title: "Оставить заявку\u00A0— GigaCowork",
   description:
-    "Оставьте заявку, чтобы получить пробный доступ к\u00A0GigaCowork: 3\u00A0месяца от\u00A0демо до\u00A0первого ROI, безлимитные токены, готовое решение без\u00A0изменения ИТ-систем.",
+    "Оставьте заявку, чтобы получить пробный доступ к\u00A0GigaCowork на\u00A07\u00A0дней: 3\u00A0месяца от\u00A0демо до\u00A0первого ROI, безлимитные токены, готовое решение без\u00A0изменения ИТ-систем.",
   path: "/lead/",
 });
 
@@ -78,9 +78,19 @@ export default function LeadPage() {
             <h1 className="w-full text-center text-h2 font-medium md:w-[522px] md:text-left">
               Готовы делегировать работу ИИ-агентам?
             </h1>
-            <p className="w-full text-center text-body-l md:w-[304px] md:text-left">
+            {/*
+              Жёсткий перенос стоит только ниже md — на десктопе колонка 304 и
+              строка ломается сама.
+
+              `text-balance` там же: со сроком фраза перестала помещаться в две
+              строки, а третья набиралась одним «на 7 дней» — висячий обрывок
+              под двумя полными строками. Балансировка раскладывает те же три
+              строки поровну. Браузер без поддержки просто переносит как
+              обычно, и хуже, чем было, не становится.
+            */}
+            <p className="w-full text-center text-body-l md:w-[304px] md:text-left md:text-balance">
               Оставьте заявку, чтобы получить <br className="md:hidden" />
-              пробный доступ к&nbsp;GigaCowork
+              пробный доступ к&nbsp;GigaCowork на&nbsp;7&nbsp;дней
             </p>
           </div>
 
