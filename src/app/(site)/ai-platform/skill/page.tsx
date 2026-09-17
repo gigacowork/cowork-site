@@ -7,8 +7,10 @@ import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Icon } from "@/components/ui/Icon";
 import { Kicker } from "@/components/ui/Kicker";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
 import { asset } from "@/lib/asset";
-import { pageMetadata } from "@/lib/site";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «Навыки» — /ai-platform/skill
@@ -24,12 +26,7 @@ import { pageMetadata } from "@/lib/site";
  * Шапка и подвал — общие из src/app/(site)/layout.tsx.
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "Навыки агентов — GigaCowork",
-  description:
-    "Навык GigaCowork — экспертиза компании, записанная один раз: задача и результат, методика и стандарты, источники данных и требования безопасности. Агент работает по ней независимо от того, кто поставил задачу.",
-  path: "/ai-platform/skill/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.skill);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -281,6 +278,8 @@ function SourcesIllustration() {
 export default function SkillPage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.skill.jsonLd!} />
+
       {/* ── Hero (3680:27473 / 3832:61680) ── */}
       <section className="relative isolate flex min-h-[668px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
         <HeroImage

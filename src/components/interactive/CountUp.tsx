@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
+import { groupDigits } from "@/lib/format";
+
 /**
  * Counter animation for the metrics block.
  *
@@ -24,7 +26,18 @@ const START_DELAY = 420;
 const THRESHOLD = 0.5;
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
-export function CountUp({ children }: { children: ReactNode }) {
+export function CountUp({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  /**
+   * Классы обёртки. Обёртка — реальный блок в потоке (по ней и считается
+   * попадание в кадр), поэтому там, где она мешает раскладке, позиционирование
+   * вешается на неё, а не на содержимое.
+   */
+  className?: string;
+}) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,7 +46,7 @@ export function CountUp({ children }: { children: ReactNode }) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const nodes = Array.from(
-      root.querySelectorAll<HTMLElement>("[data-counter][data-counter-value]")
+      root.querySelectorAll<HTMLElement>("[data-counter][data-counter-value]"),
     );
     if (!nodes.length) return;
 
@@ -49,8 +62,17 @@ export function CountUp({ children }: { children: ReactNode }) {
     nodes.forEach((n) => {
       n.style.display = "inline-block";
       n.style.minWidth = `${n.getBoundingClientRect().width}px`;
-      n.style.textAlign = "center";
+      /*
+        По умолчанию по центру — так набраны крупные метрики. В строке, где
+        число стоит рядом с подписью, выключка должна быть та же, что у
+        строки, иначе цифры на ходу гуляют относительно подписи.
+      */
+      n.style.textAlign = n.dataset.counterAlign ?? "center";
     });
+
+    /* `data-counter-group` — разбивать ли разряды по дороге и в конце. */
+    const render = (node: HTMLElement, value: number) =>
+      "counterGroup" in node.dataset ? groupDigits(value) : String(value);
 
     let raf = 0;
     let start = 0;
@@ -62,13 +84,13 @@ export function CountUp({ children }: { children: ReactNode }) {
       const t = Math.min(1, (now - start) / DURATION);
       const eased = easeOutCubic(t);
       nodes.forEach((n, i) => {
-        n.textContent = String(Math.round(targets[i] * eased));
+        n.textContent = render(n, Math.round(targets[i] * eased));
       });
       if (t < 1) {
         raf = requestAnimationFrame(tick);
       } else {
         nodes.forEach((n, i) => {
-          n.textContent = String(targets[i]);
+          n.textContent = render(n, targets[i]);
         });
       }
     };
@@ -88,7 +110,7 @@ export function CountUp({ children }: { children: ReactNode }) {
           }
         }
       },
-      { threshold: THRESHOLD }
+      { threshold: THRESHOLD },
     );
     observer.observe(root);
 
@@ -97,12 +119,16 @@ export function CountUp({ children }: { children: ReactNode }) {
       window.clearTimeout(delayTimer);
       if (raf) cancelAnimationFrame(raf);
       nodes.forEach((n, i) => {
-        n.textContent = String(targets[i]);
+        n.textContent = render(n, targets[i]);
       });
     };
   }, []);
 
-  return <div ref={rootRef}>{children}</div>;
+  return (
+    <div ref={rootRef} className={className}>
+      {children}
+    </div>
+  );
 }
 
 export default CountUp;

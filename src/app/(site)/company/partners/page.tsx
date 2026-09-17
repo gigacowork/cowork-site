@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import CountUp from "@/components/interactive/CountUp";
 import RevealCards from "@/components/interactive/RevealCards";
 import { Clients, PARTNER_LOGOS } from "@/components/sections/Clients";
 import LeadForm from "@/components/sections/LeadForm";
@@ -7,8 +8,11 @@ import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Kicker } from "@/components/ui/Kicker";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
 import { PARTNER_LEAD } from "@/lib/crm";
-import { pageMetadata } from "@/lib/site";
+import { groupDigits } from "@/lib/format";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «Партнёрам» — /company/partners
@@ -31,12 +35,7 @@ import { pageMetadata } from "@/lib/site";
  * подложка в стиле карточки: появятся исходники — меняется только `MediaSlot`.
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "Партнёрам — GigaCowork",
-  description:
-    "Партнёрская программа GigaCowork: продажа корпоративной AI-платформы, внедрение ИИ-агентов и сопровождение проектов. Обучение команды, совместный пресейл, защита сделок и доход на всём жизненном цикле клиента.",
-  path: "/company/partners/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.partners);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -309,12 +308,20 @@ const STEPS = [
 
 /* ─────────────────────────── мелкие компоненты ─────────────────────────── */
 
-/** Строки кабинета партнёра (I4410:25100;4916:6477…6485). */
+/**
+ * Строки кабинета партнёра (I4410:25100;4916:6477…6485).
+ *
+ * Суммы — числами, а не строкой: их докручивает счётчик, ему нужна цифра.
+ * Разряды разбивает `groupDigits`, тем же неразрывным пробелом, что и счётчик.
+ */
 const PARTNER_CABINET_ROWS = [
-  { client: "Клиент А", value: "+120 000 000 ₽", accent: true },
-  { client: "Клиент Б", value: "+95 000 000 ₽", accent: true },
-  { client: "Клиент В", value: "в работе", accent: false },
+  { client: "Клиент А", amount: 120_000_000 },
+  { client: "Клиент Б", amount: 95_000_000 },
+  { client: "Клиент В", note: "в работе" },
 ] as const;
+
+/** Итог месяца (I4410:25100;4916:6488) — сумма строк выше. */
+const PARTNER_CABINET_TOTAL = 215_000_000;
 
 /**
  * Кадр-мокап «Кабинет партнера» — Illustration / Partnership (4410:25100).
@@ -327,12 +334,34 @@ const PARTNER_CABINET_ROWS = [
  *
  * `whitespace-nowrap`: строка «Клиент А +120 000 000 ₽» в макете не переносится,
  * а справа кадр и так срезается краем карточки.
+ *
+ * Суммы докручиваются счётчиком, когда кадр попадает в кадр прокрутки. Обёртку
+ * `CountUp` компонент не ставит сам: она — реальный блок в потоке, и на xl
+ * именно на ней висит позиционирование кадра в углу карточки. Считает счётчик
+ * только цифры, поэтому «+» и «₽» стоят отдельными узлами снаружи, а
+ * `data-counter-align="start"` держит выключку строки: по умолчанию счётчик
+ * центрует число в зафиксированной ширине, и цифры гуляли бы относительно
+ * подписи.
  */
-function PartnerCabinet({ className = "" }: { className?: string }) {
+function PartnerCabinet() {
+  const amount = (value: number) => (
+    <>
+      <span
+        data-counter
+        data-counter-group
+        data-counter-align="start"
+        data-counter-value={value}
+      >
+        {groupDigits(value)}
+      </span>
+      &nbsp;₽
+    </>
+  );
+
   return (
     <div
       aria-hidden
-      className={`flex flex-col gap-24 rounded-[16px] border-[1.5px] border-brand-blue/22 bg-white/72 p-32 whitespace-nowrap shadow-[0_2px_4px_rgba(0,0,0,0.05)] ${className}`}
+      className="flex flex-col gap-24 rounded-[16px] border-[1.5px] border-brand-blue/22 bg-white/72 p-32 whitespace-nowrap shadow-[0_2px_4px_rgba(0,0,0,0.05)]"
     >
       <p className="text-caption text-text-primary">Кабинет партнера</p>
 
@@ -348,13 +377,11 @@ function PartnerCabinet({ className = "" }: { className?: string }) {
             className="flex items-center gap-12 rounded-[8px] bg-bg-glass px-8 py-8 text-caption shadow-drop-sm"
           >
             <span className="text-text-primary">{row.client}</span>
-            <span
-              className={
-                row.accent ? "text-status-accent" : "text-text-secondary"
-              }
-            >
-              {row.value}
-            </span>
+            {"amount" in row ? (
+              <span className="text-status-accent">+{amount(row.amount)}</span>
+            ) : (
+              <span className="text-text-secondary">{row.note}</span>
+            )}
           </div>
         ))}
       </div>
@@ -362,7 +389,7 @@ function PartnerCabinet({ className = "" }: { className?: string }) {
       {/* Итог за месяц — тот же акцентный чип, что у «Монетизации». */}
       <div className="flex items-center gap-4 rounded-[8px] bg-brand-blue/16 px-24 py-16 text-caption text-status-accent">
         <span>За месяц</span>
-        <span>215 000 000 ₽</span>
+        <span>{amount(PARTNER_CABINET_TOTAL)}</span>
       </div>
     </div>
   );
@@ -431,6 +458,8 @@ function CardIllustration({ ill }: { ill: Illustration }) {
 export default function PartnersPage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.partners.jsonLd!} />
+
       {/* ── Hero (4325:37703) ── */}
       <section className="relative isolate flex min-h-[588px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[48px] md:min-h-[760px] md:pt-[272px] md:pb-96">
         <HeroImage
@@ -528,7 +557,9 @@ export default function PartnersPage() {
                   потолка строки «Клиент А — сумма» разъезжались бы на всю
                   ширину с пустотой посередине.
                 */}
-                <PartnerCabinet className="max-w-[360px] xl:absolute xl:right-[-70px] xl:bottom-40 xl:w-[300px] xl:max-w-none" />
+                <CountUp className="max-w-[360px] xl:absolute xl:right-[-70px] xl:bottom-40 xl:w-[300px] xl:max-w-none">
+                  <PartnerCabinet />
+                </CountUp>
               </article>
 
               {/* Три инфо-карточки (4350:38827) */}

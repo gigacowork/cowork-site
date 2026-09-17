@@ -16,7 +16,9 @@ import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Image } from "@/components/ui/Image";
 import { Kicker } from "@/components/ui/Kicker";
-import { pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «Поставки» — /pricing
@@ -35,12 +37,7 @@ import { pageMetadata } from "@/lib/site";
  * вопросами», а не в конце страницы, — на мобильном так же.
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "Поставки — GigaCowork",
-  description:
-    "Три варианта поставки GigaCowork: облако в ЦОД на территории РФ, гибрид с данными в вашем контуре и ПАК внутри периметра компании. Сравнение по инфраструктуре, безопасности, масштабу и внедрению.",
-  path: "/pricing/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.pricing);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -176,7 +173,7 @@ const SUPPLIES: Supply[] = [
       },
       {
         title: "Помощь с внедрением и обучением",
-        text: "100 часов консалтинга по настройке процессов и корпоративное обучение в СберУниверситете.",
+        text: "100 часов консалтинга по настройке процессов и корпоративное обучение.",
       },
     ],
   },
@@ -219,7 +216,7 @@ const SUPPLIES: Supply[] = [
       { title: "ОС в составе ПАК", text: "Поставляется вместе с сервером." },
       {
         title: "Внедрение и обучение",
-        text: "200 часов консалтинга и обучение в СберУниверситете.",
+        text: "200 часов консалтинга и корпоративное обучение.",
       },
       {
         title: "12 месяцев поддержки",
@@ -439,6 +436,8 @@ function FaqSpec({ title, items }: { title: string; items: string[] }) {
 export default function PricingPage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.pricing.jsonLd!} />
+
       {/*
         ── Hero (3956:35192 / 4158:77674) ──
 

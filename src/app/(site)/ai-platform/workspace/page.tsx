@@ -9,7 +9,9 @@ import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Kicker } from "@/components/ui/Kicker";
-import { pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «Рабочие пространства» — /ai-platform/workspace
@@ -28,12 +30,7 @@ import { pageMetadata } from "@/lib/site";
  * страницах.
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "Рабочие пространства — GigaCowork",
-  description:
-    "Рабочие пространства GigaCowork: изолированная область для каждой команды, общие агенты и навыки, передача сессий и знаний без потери контекста.",
-  path: "/ai-platform/workspace/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.workspace);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -182,6 +179,8 @@ const STEPS: { number: string; title: string; text: ReactNode }[] = [
 export default function WorkspacePage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.workspace.jsonLd!} />
+
       {/*
         ── Hero (3501:19036 / 3656:22462) ──
 

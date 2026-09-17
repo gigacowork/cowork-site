@@ -63,54 +63,41 @@ const LOGOS: ClientLogo[] = [
 ];
 
 /**
- * Логотипы партнёров (страница «Партнёрам»). Исходники — «Исходники
- * партнеры/Partners logo».
+ * Логотипы партнёров (страница «Партнёрам»). Макет — All Partners / Logo
+ * (4905:26853), исходники файлов — «Исходники партнеры/Partners logo».
  *
- * Высота подобрана оптически, а не одним числом — у логотипов разное
- * устройство:
- *   • чистые надписи (АБАК, Napoleon IT, SWC, Profit) — 22: при равной
- *     с остальными высоте они перевешивают ряд;
- *   • надпись со знаком (Astraway, «Простор») — 40 и 36: знак съедает
- *     часть высоты, и сама надпись выходит мельче соседних;
- *   • «ТехноЯрд» — 40: знак плюс надпись в две строки, на одну строку
- *     приходится половина высоты файла.
- * Ширину считает браузер по пропорции.
+ * Порядок и высоты — из макета, слева направо. Высота у каждого своя, и это
+ * не произвол: у логотипов разное устройство — чистая надпись (Profit,
+ * Napoleon IT, АБАК) занимает высотой всю себя, а надпись со знаком
+ * (Astraway, «Простор», «ТехноЯрд») отдаёт часть высоты знаку, и при равной
+ * высоте её буквы вышли бы мельче соседних. Раньше эти числа подбирались
+ * здесь на глаз; теперь они проставлены в макете, и берём их оттуда.
+ *
+ * Ряд в макете заметно сплющили: самый высокий логотип теперь 36 вместо 50,
+ * «Простор» — 24 вместо 43, «ТехноЯрд» — 24 вместо 34. Это не ошибка выгрузки,
+ * а новая редакция блока, поэтому высоты переписаны целиком.
+ *
+ * Ширину считает браузер по пропорции: у всех семи файлов пропорция сходится
+ * с макетом до десятых (например, napoleon-it 371×30 при высоте 18.548 даёт
+ * 229.4 против 229.536 в макете).
+ *
+ * TODO: в макете список из десяти логотипов — между «ТехноЯрдом» и Profit
+ * стоят ещё три, файлов на которые нет ни в исходниках, ни в
+ * `public/img/partners/logos`:
+ *   • SMART technologies (ST_Logo_rgb_2lines_black, 4986:23901) — 90×30;
+ *   • Nicotech (4975:35093) — 112.957×22;
+ *   • true.code (Purple 1, 4962:25240) — 90×22.
+ * Выгрузить их из Figma не получается: домен ассетов закрыт политикой сети —
+ * и из облака, и с машины разработчика. Появятся SVG — добавить тремя
+ * записями на эти места, порядок именно такой.
  */
 export const PARTNER_LOGOS: ClientLogo[] = [
   {
-    name: "Astraway",
-    src: "/img/partners/logos/astraway.svg",
-    width: 168,
-    height: 50,
-    sizeClassName: "h-[40px] w-auto",
-  },
-  {
-    name: "Abak",
-    src: "/img/partners/logos/abak.svg",
-    width: 333,
+    name: "ТехноЯрд",
+    src: "/img/partners/logos/technoyard.svg",
+    width: 114,
     height: 30,
-    sizeClassName: "h-[22px] w-auto",
-  },
-  {
-    name: "Napoleon IT",
-    src: "/img/partners/logos/napoleon-it.svg",
-    width: 371,
-    height: 30,
-    sizeClassName: "h-[22px] w-auto",
-  },
-  {
-    name: "SWC",
-    src: "/img/partners/logos/swc.svg",
-    width: 101,
-    height: 30,
-    sizeClassName: "h-[22px] w-auto",
-  },
-  {
-    name: "Простор",
-    src: "/img/partners/logos/prostor.svg",
-    width: 242,
-    height: 50,
-    sizeClassName: "h-[36px] w-auto",
+    sizeClassName: "h-[24px] w-auto",
   },
   {
     name: "Profit",
@@ -120,11 +107,39 @@ export const PARTNER_LOGOS: ClientLogo[] = [
     sizeClassName: "h-[22px] w-auto",
   },
   {
-    name: "ТехноЯрд",
-    src: "/img/partners/logos/technoyard.svg",
-    width: 114,
+    name: "Napoleon IT",
+    src: "/img/partners/logos/napoleon-it.svg",
+    width: 371,
     height: 30,
-    sizeClassName: "h-[40px] w-auto",
+    sizeClassName: "h-[18.548px] w-auto",
+  },
+  {
+    name: "Простор",
+    src: "/img/partners/logos/prostor.svg",
+    width: 242,
+    height: 50,
+    sizeClassName: "h-[24px] w-auto",
+  },
+  {
+    name: "SWC",
+    src: "/img/partners/logos/swc.svg",
+    width: 101,
+    height: 30,
+    sizeClassName: "h-[24px] w-auto",
+  },
+  {
+    name: "Astraway",
+    src: "/img/partners/logos/astraway.svg",
+    width: 168,
+    height: 50,
+    sizeClassName: "h-[36px] w-auto",
+  },
+  {
+    name: "Abak",
+    src: "/img/partners/logos/abak.svg",
+    width: 333,
+    height: 30,
+    sizeClassName: "h-[19px] w-auto",
   },
 ];
 

@@ -9,7 +9,9 @@ import { HeroImage } from "@/components/ui/HeroImage";
 import { Icon } from "@/components/ui/Icon";
 import { Image } from "@/components/ui/Image";
 import { Kicker } from "@/components/ui/Kicker";
-import { pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «О компании» — /company/about
@@ -19,7 +21,8 @@ import { pageMetadata } from "@/lib/site";
  *   Hero       4215:24060 / 4215:24261
  *   Кто мы     4228:25579 / 4215:24270
  *   GigaCowork 4229:25764 / 4280:28644 — карточка с этапами и две инфо-карточки
- *   Команда    4231:28427 / 4215:24357 — карусель карточек с видео
+ *   Команда    4231:28427 / 4215:24357 — карусель карточек с видео,
+ *              сейчас скрыта (см. `SHOW_TEAM`)
  *   Сообщество 4262:83199 / 4308:28879
  *   Контакты   4270:22014 / 4308:28950 — реквизиты и карта 2ГИС
  *   CTA        4215:24258 / 4215:24369
@@ -28,12 +31,7 @@ import { pageMetadata } from "@/lib/site";
  * подписью из макета. Появятся файлы — меняется только `ExpertVideo`.
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "О компании — GigaCowork",
-  description:
-    "«Салют для бизнеса» — аккредитованная российская ИТ-компания в группе Сбер, разработчик платформы GigaCowork для корпоративных ИИ-агентов. Команда, подход к внедрению и контакты московского офиса.",
-  path: "/company/about/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.about);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -113,6 +111,17 @@ const INFO_CARDS = [
     text: "Тесно взаимодействуем с\u00A0командой заказчика\u00A0– от\u00A0запуска до\u00A0масштабирования.",
   },
 ];
+
+/**
+ * Показывать ли секцию «Команда».
+ *
+ * Сейчас выключена: блок скрыт по просьбе. Разметка, карточки экспертов и
+ * карусель оставлены на месте, а не вырезаны, — вернуть блок нужно будет
+ * заменой одного слова, и при этом не придётся заново собирать имена,
+ * должности и цитаты. Удалять всё это имеет смысл, только если решение
+ * окончательное.
+ */
+const SHOW_TEAM = false;
 
 /** Карточки экспертов (4239:35084 / 35099 / 35114). */
 const EXPERTS = [
@@ -220,6 +229,8 @@ function ExpertVideo() {
 export default function AboutCompanyPage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.about.jsonLd!} />
+
       {/* ── Hero (4215:24060 / 4215:24261) ── */}
       <section className="relative isolate flex min-h-[588px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[48px] md:min-h-[760px] md:pt-[272px] md:pb-96">
         <HeroImage
@@ -417,56 +428,58 @@ export default function AboutCompanyPage() {
       </section>
 
       {/* ── Команда (4231:28427 / 4215:24357) ── */}
-      <section className="w-full overflow-x-clip bg-bg-page py-64 md:pt-96 md:pb-120">
-        <div className="container-page flex flex-col gap-32 md:gap-48">
-          <Kicker>Команда</Kicker>
-          <div className="flex flex-col gap-16 md:max-w-[677px]">
-            <h2 className="text-h3 font-medium text-text-primary md:text-h2">
-              Познакомьтесь с&nbsp;командой GigaCowork
-            </h2>
-            <p className="text-body-m text-text-secondary">
-              ML-инженеры, архитекторы, продакты, специалисты
-              по&nbsp;информационной безопасности&nbsp;– все объединены
-              стремлением создать лучший ИИ-продукт для&nbsp;бизнеса
-              на&nbsp;российском рынке.
-            </p>
-          </div>
+      {SHOW_TEAM ? (
+        <section className="w-full overflow-x-clip bg-bg-page py-64 md:pt-96 md:pb-120">
+          <div className="container-page flex flex-col gap-32 md:gap-48">
+            <Kicker>Команда</Kicker>
+            <div className="flex flex-col gap-16 md:max-w-[677px]">
+              <h2 className="text-h3 font-medium text-text-primary md:text-h2">
+                Познакомьтесь с&nbsp;командой GigaCowork
+              </h2>
+              <p className="text-body-m text-text-secondary">
+                ML-инженеры, архитекторы, продакты, специалисты
+                по&nbsp;информационной безопасности&nbsp;– все объединены
+                стремлением создать лучший ИИ-продукт для&nbsp;бизнеса
+                на&nbsp;российском рынке.
+              </p>
+            </div>
 
-          <ExpertCarousel>
-            <ul className="flex w-max gap-16 md:gap-24">
-              {EXPERTS.map((expert) => (
-                <li
-                  key={expert.name}
-                  className="w-[302px] shrink-0 snap-start md:w-[588px]"
-                >
-                  <article
-                    className={`flex h-full flex-col gap-24 rounded-24 border border-neutral-200 p-24 shadow-[0_2px_4px_rgba(0,0,0,0.05)] md:h-[620px] md:p-32 ${EXPERT_CARD_GRADIENT}`}
+            <ExpertCarousel>
+              <ul className="flex w-max gap-16 md:gap-24">
+                {EXPERTS.map((expert) => (
+                  <li
+                    key={expert.name}
+                    className="w-[302px] shrink-0 snap-start md:w-[588px]"
                   >
-                    <ExpertVideo />
-                    {/*
+                    <article
+                      className={`flex h-full flex-col gap-24 rounded-24 border border-neutral-200 p-24 shadow-[0_2px_4px_rgba(0,0,0,0.05)] md:h-[620px] md:p-32 ${EXPERT_CARD_GRADIENT}`}
+                    >
+                      <ExpertVideo />
+                      {/*
                       Имя с должностью сверху, цитата прижата к низу карточки —
                       в макете у этого блока SPACE_BETWEEN и нижний отступ 24.
                     */}
-                    <div className="flex flex-1 flex-col justify-between gap-16 pb-24">
-                      <div className="flex flex-col gap-4">
-                        <p className="text-h4 font-medium text-text-primary">
-                          {expert.name}
-                        </p>
-                        <p className="text-caption text-text-secondary">
-                          {expert.role}
+                      <div className="flex flex-1 flex-col justify-between gap-16 pb-24">
+                        <div className="flex flex-col gap-4">
+                          <p className="text-h4 font-medium text-text-primary">
+                            {expert.name}
+                          </p>
+                          <p className="text-caption text-text-secondary">
+                            {expert.role}
+                          </p>
+                        </div>
+                        <p className="text-body-m text-text-primary">
+                          {expert.quote}
                         </p>
                       </div>
-                      <p className="text-body-m text-text-primary">
-                        {expert.quote}
-                      </p>
-                    </div>
-                  </article>
-                </li>
-              ))}
-            </ul>
-          </ExpertCarousel>
-        </div>
-      </section>
+                    </article>
+                  </li>
+                ))}
+              </ul>
+            </ExpertCarousel>
+          </div>
+        </section>
+      ) : null}
 
       {/* ── Сообщество (4262:83199 / 4308:28879) ── */}
       <section className="w-full bg-bg-page py-64 md:py-48">

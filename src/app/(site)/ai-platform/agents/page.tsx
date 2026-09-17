@@ -11,7 +11,9 @@ import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Icon } from "@/components/ui/Icon";
 import { Kicker } from "@/components/ui/Kicker";
-import { pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «ИИ-агенты» — /ai-platform/agents
@@ -30,12 +32,7 @@ import { pageMetadata } from "@/lib/site";
  * рендерятся через `Icon` маской, чтобы цвет брался из токена.
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "ИИ-агенты — GigaCowork",
-  description:
-    "ИИ-агенты GigaCowork принимают цель, а не пошаговую инструкцию: сами строят план, работают с документами и корпоративными системами, действуют от имени сотрудника и под контролем.",
-  path: "/ai-platform/agents/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.agents);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -404,6 +401,8 @@ function ConnectorsIllustration() {
 export default function AgentsPage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.agents.jsonLd!} />
+
       {/*
         ── Hero (3672:27321 / 3755:71357) ──
 

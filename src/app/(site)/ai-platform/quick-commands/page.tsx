@@ -8,7 +8,9 @@ import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Kicker } from "@/components/ui/Kicker";
-import { pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «Быстрые команды» — /ai-platform/quick-commands
@@ -22,12 +24,7 @@ import { pageMetadata } from "@/lib/site";
  * Шапка и подвал — общие из src/app/(site)/layout.tsx.
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "Быстрые команды — GigaCowork",
-  description:
-    "Быстрые команды GigaCowork — часто используемые промпты, сохранённые один раз: весь контекст задачи в инструкции команды, единый сценарий для всех сотрудников и запуск в одну кнопку.",
-  path: "/ai-platform/quick-commands/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.quickCommands);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -138,6 +135,8 @@ const STEPS: {
 export default function QuickCommandsPage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.quickCommands.jsonLd!} />
+
       {/*
         ── Hero (4530:93093 / 4530:93053) ──
 

@@ -9,7 +9,9 @@ import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import Image from "@/components/ui/Image";
 import { Kicker } from "@/components/ui/Kicker";
-import { pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «Коннекторы» — /ai-platform/connectors
@@ -20,12 +22,7 @@ import { pageMetadata } from "@/lib/site";
  * CTA (3680:27922).
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "Коннекторы — GigaCowork",
-  description:
-    "40+ готовых коннекторов GigaCowork к почте, календарям, CRM, ERP, мессенджерам и базам знаний. Плюс собственные MCP-коннекторы компании — агент работает в пределах прав вашей учётной записи.",
-  path: "/ai-platform/connectors/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.connectors);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -413,6 +410,8 @@ function ControlIllustration() {
 export default function ConnectorsPage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.connectors.jsonLd!} />
+
       {/* ── Hero (3680:27874 / 3919:32445) ── */}
       <section className="relative isolate flex min-h-[629px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
         <HeroImage

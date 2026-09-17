@@ -9,7 +9,9 @@ import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Icon } from "@/components/ui/Icon";
-import { pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «Безопасность» — /trust-and-safety
@@ -27,12 +29,7 @@ import { pageMetadata } from "@/lib/site";
  * тоже нет, а выдумывать подписи ради общего стиля сайта не стали.
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "Безопасность — GigaCowork",
-  description:
-    "Безопасность корпоративного ИИ GigaCowork: модели ГигаЧат в реестре ПО Минцифры, российские ОС, шифрование TLS, ролевая модель доступа, аудит действий и настраиваемые правила поведения модели.",
-  path: "/trust-and-safety/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.trustAndSafety);
 
 /* ──────────────────────────────── градиенты ────────────────────────────── */
 
@@ -198,6 +195,8 @@ function Card({ card }: { card: TagCard }) {
 export default function TrustAndSafetyPage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.trustAndSafety.jsonLd!} />
+
       {/* ── Hero ── */}
       <section className="relative isolate flex min-h-[464px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
         <HeroImage

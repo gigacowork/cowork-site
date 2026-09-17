@@ -8,7 +8,9 @@ import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Kicker } from "@/components/ui/Kicker";
-import { pageMetadata } from "@/lib/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PAGE_SEO } from "@/content/seo";
+import { seoMetadata } from "@/lib/site";
 
 /**
  * «Задачи по расписанию» — /ai-platform/schedule
@@ -22,12 +24,7 @@ import { pageMetadata } from "@/lib/site";
  * Шапка и подвал — общие из src/app/(site)/layout.tsx.
  */
 
-export const metadata: Metadata = pageMetadata({
-  title: "Задачи по расписанию — GigaCowork",
-  description:
-    "Регулярные задачи в GigaCowork: настройте условия один раз, укажите периодичность — ежедневно, еженедельно или ежемесячно, — и ИИ-агент будет выполнять работу по графику и присылать результат.",
-  path: "/ai-platform/schedule/",
-});
+export const metadata: Metadata = seoMetadata(PAGE_SEO.schedule);
 
 /* ──────────────────────────── градиенты из макета ──────────────────────── */
 
@@ -123,6 +120,8 @@ const STEPS: { number: string; title: string; text: React.ReactNode }[] = [
 export default function SchedulePage() {
   return (
     <>
+      <JsonLd data={PAGE_SEO.schedule.jsonLd!} />
+
       {/*
         ── Hero (4513:81154 / 4513:81087) ──
 
