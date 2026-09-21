@@ -193,10 +193,15 @@ export default function LeadGigaconfPage() {
                 aria-hidden
                 className="h-[2px] w-[96px] rounded-full bg-[linear-gradient(90deg,var(--gc-accent-from)_0%,var(--gc-accent-to)_70%,transparent_100%)]"
               />
-              <span>
+              {/*
+                Интерлиньяж плотнее базового (1.2 у Body/L): строка переносится
+                на узкой колонке, и две строки одной фразы должны читаться
+                единым блоком, а не как два пункта.
+              */}
+              <span className="leading-[1.1]">
                 А&nbsp;вы контролируете{" "}
                 <span className="font-normal text-text-secondary">
-                  роли, доступы, автономность
+                  роли, доступы и&nbsp;автономность
                 </span>
               </span>
             </p>

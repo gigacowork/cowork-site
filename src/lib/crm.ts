@@ -51,6 +51,8 @@ export type LeadTarget = {
   endpoint?: string;
   /** Путь страницы заявки — уходит в `url_lead$c` абсолютным адресом. */
   page?: string;
+  /** Идентификатор мероприятия в CRM — `event$c.id`. */
+  event?: string;
 };
 
 /** Партнёрская форма — /company/partners/ */
@@ -66,10 +68,18 @@ export const PARTNER_LEAD: LeadTarget = {
  * Свой вебхук: заявки со стенда не смешиваются с партнёрскими. Полей всего
  * три, поэтому ни компании, ни ИНН в теле нет — менеджер уточняет их при
  * созвоне.
+ *
+ * `source` — значение из справочника `istochnik_lida` на стороне CRM. Список
+ * закрытый: на любое слово не из справочника вебхук отвечает 400 и «Не найдено
+ * значение … в справочнике istochnik_lida», заявка при этом не создаётся.
+ * Поэтому произвольную метку сюда писать нельзя.
+ *
+ * `event` — карточка мероприятия в CRM, к которой подшиваются заявки.
  */
 export const GIGACONF_LEAD: LeadTarget = {
   title: "Новый лид - GigaConf",
-  source: "gigaconf",
+  source: "event_konferencziya",
+  event: "acb5b017-400e-42f1-a13c-c8136a36e75b",
   endpoint: GIGACONF_WEBHOOK,
   page: "/lead-gigaconf/",
 };
@@ -121,6 +131,8 @@ export function buildLeadPayload(fields: LeadFields, target: LeadTarget) {
         }
       : {}),
     ...(target.page ? { url_lead$c: absoluteUrl(target.page) } : {}),
+    /* Только `id`: название мероприятия хранится в самой карточке CRM. */
+    ...(target.event ? { event$c: { id: target.event } } : {}),
     istochnik_lida$c: target.source,
   };
 }
