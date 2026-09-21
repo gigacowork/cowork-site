@@ -837,3 +837,230 @@ input[type="checkbox"].checkbox-tick:checked {
     opacity: 0;
   }
 }
+
+/* ============================================================
+   Заявка с мероприятия — /lead-gigaconf
+   ============================================================
+
+   Тёмная тема страницы сделана переопределением токенов, а не вторым набором
+   классов в `LeadForm`: утилиты Tailwind компилируются в `var(--color-*)`,
+   поэтому достаточно задать другие значения на обёртке — и форма, поля,
+   чекбокс и подписи переезжают в тёмную палитру целиком, без единой правки в
+   компоненте. Светлые страницы заявки при этом не трогаются вовсе.
+
+   Палитра снята пипеткой со слайда доклада: фон чёрный, акцент — градиент от
+   синего #3c69f6 к мятному #75fad4, кнопка — та же пара, приглушённая под
+   заливку.
+*/
+.lead-gigaconf {
+  --gc-accent-from: #3c69f6;
+  --gc-accent-to: #75fad4;
+  --gc-cta: linear-gradient(90deg, #2f5ce0 0%, #47c9a6 100%);
+
+  /*
+    Фон: чёрная основа и два мягких свечения по углам — сверху справа, снизу
+    слева. Заливку (`background-color`) ставит утилита `bg-bg-page`, здесь
+    только картинка поверх, поэтому спорить за приоритет не с чем.
+
+    Нижнее свечение вдвое слабее верхнего: над ним идёт строка с реквизитами,
+    и на полной яркости серый текст по бирюзовому переставал читаться.
+  */
+  background-image:
+    radial-gradient(
+      70% 55% at 100% 0%,
+      rgb(83 152 171 / 0.72) 0%,
+      rgb(46 92 140 / 0.26) 34%,
+      transparent 72%
+    ),
+    radial-gradient(
+      62% 50% at 0% 100%,
+      rgb(88 141 152 / 0.44) 0%,
+      rgb(45 92 96 / 0.16) 36%,
+      transparent 74%
+    );
+
+  --color-bg-page: #000000;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a7b0bd;
+  --color-text-tertiary: #6b7382;
+  --color-text-inverse: #ffffff;
+  --color-text-strong: #ffffff;
+
+  /* Поля: подложка чуть светлее фона, рамка — тонкая светлая. */
+  --color-bg-input: #14171c;
+  --color-border-default: #2c313a;
+  --color-border-strong: #6d7788;
+  --color-icon-secondary: #5b636f;
+
+  /* Кнопка и чекбокс: заливку кнопки перекрывает градиент, см. ниже. */
+  --color-action-primary-default: #2f5ce0;
+  --color-action-primary-hover: #2f5ce0;
+  --color-action-primary-disabled: #20242b;
+  --color-action-secondary-default: #14171c;
+
+  --color-status-error: #ff8080;
+}
+
+/*
+  Карточка формы. У неё в разметке свой градиент и рамка «арбитрарными»
+  классами — токеном их не перебить, поэтому правило отдельное. Селектор из
+  двух классов, чтобы уверенно выигрывать у одиночной утилиты.
+*/
+.lead-gigaconf .gc-card {
+  position: relative;
+  border-color: #23272e;
+  /*
+    Два слоя: снизу тёмная подложка, поверх — та же пара цветов, что у кнопки
+    и заголовка, разведённая до подсветки. Синий заходит из верхнего левого
+    угла, мятный подсвечивает нижний правый; между ними прозрачная середина,
+    иначе поля на карточке теряют контраст.
+  */
+  background:
+    linear-gradient(
+      145deg,
+      rgb(60 105 246 / 0.42) 0%,
+      rgb(60 105 246 / 0.12) 38%,
+      rgb(117 250 212 / 0.12) 64%,
+      rgb(117 250 212 / 0.4) 100%
+    ),
+    linear-gradient(160deg, #0f1217 0%, #090b0f 100%);
+}
+
+/*
+  Кромка тем же градиентом. Рисуется прослойкой в 1px: сам градиент кладётся
+  на весь бокс, а середина вырезается маской — `border-image` со скруглением
+  не работает, и обычной рамкой градиент не задать.
+
+  Под `@supports`, потому что при отсутствии `mask-composite` слой закрасил бы
+  карточку целиком. Без него остаётся сплошная рамка выше — так и было
+  до этой правки.
+*/
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  .lead-gigaconf .gc-card {
+    border-color: transparent;
+  }
+
+  .lead-gigaconf .gc-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      145deg,
+      rgb(60 105 246 / 0.85) 0%,
+      rgb(255 255 255 / 0.1) 48%,
+      rgb(117 250 212 / 0.75) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+/*
+  Кнопка отправки. `background-image` ложится поверх заливки от токена, а
+  ховер у Button меняет только `background-color` — под градиентом его не
+  видно, поэтому отклик даём яркостью.
+*/
+.lead-gigaconf .gc-card button[type="submit"] {
+  background-image: var(--gc-cta);
+  color: #ffffff;
+  /*
+    Капслок стилем, а не в тексте: диктор читает слова, а не по буквам, и при
+    копировании остаётся нормальная строка. Разрядка обязательна — кириллица
+    в верхнем регистре без неё сбивается в плотный блок.
+  */
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition:
+    filter 0.2s ease,
+    background-color 0.2s ease;
+}
+.lead-gigaconf .gc-card button[type="submit"]:not(:disabled):hover {
+  filter: brightness(1.12);
+}
+.lead-gigaconf .gc-card button[type="submit"]:disabled {
+  background-image: none;
+}
+
+/*
+  Выделение текста. Общее правило в `@layer base` красит выделение цветом
+  текста, а здесь и `--color-text-primary`, и `--color-text-inverse` белые —
+  выделение выходило белым по белому.
+
+  Градиентом выделение сделать нельзя: `::selection` по спецификации принимает
+  только цвет, фоновая картинка в нём игнорируется. Берём синий конец
+  градиента кнопки — на нём белые буквы держат контраст 5.6:1, на мятном конце
+  было бы 1.9:1 и текст поплыл бы так же, как сейчас.
+*/
+.lead-gigaconf::selection,
+.lead-gigaconf ::selection {
+  background: #2f5ce0;
+  color: #ffffff;
+}
+
+/* Заголовок и акценты — градиентом по тексту, как заголовки на слайдах. */
+.gc-gradient-text {
+  background: linear-gradient(
+    90deg,
+    var(--gc-accent-from) 0%,
+    var(--gc-accent-to) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/*
+  Запасной вариант: без обрезки фона по тексту `color: transparent` съел бы
+  слово целиком. Браузеров без поддержки почти не осталось, но заголовок —
+  не то место, где можно на это положиться.
+*/
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+  .gc-gradient-text {
+    background: none;
+    color: inherit;
+  }
+}
+
+/*
+  Появление пунктов на /lead-gigaconf.
+
+  Цель — обозначить порядок чтения, а не показать анимацию: сдвиг на 8 и
+  полсекунды на пункт, с шагом 90 мс между ними. Весь список укладывается
+  меньше чем в секунду.
+
+  `backwards` обязателен: без него элемент до своей задержки стоит видимым и
+  на долю секунды мигает перед тем, как начать выезжать.
+
+  Порядковый номер приходит переменной из разметки — так очередь задаётся там
+  же, где перечислены сами пункты.
+*/
+@keyframes gc-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.lead-gigaconf [data-rise] {
+  animation: gc-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(0.12s + var(--rise) * 0.09s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lead-gigaconf [data-rise] {
+    animation: none;
+  }
+}

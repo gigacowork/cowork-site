@@ -177,12 +177,17 @@ type Illustration = { caption: string; rowWidth?: string; rows: IllRow[] };
 const REVENUE: { title: string; text: string; ill: Illustration }[] = [
   {
     title: "Продажа платформы",
-    text: "Получайте комиссию с\u00A0продажи лицензий GigaCowork.",
+    text: "Получайте вознаграждение с\u00A0продажи лицензий GigaCowork.",
     ill: {
       caption: "Монетизация",
       rows: [
         { kind: "row", label: "Продажа лицензии" },
-        { kind: "row", label: "Комиссия партнёра", accent: true, arrow: true },
+        {
+          kind: "row",
+          label: "Вознаграждение партнёра",
+          accent: true,
+          arrow: true,
+        },
       ],
     },
   },
@@ -690,7 +695,7 @@ export default function PartnersPage() {
             <p className="text-body-l text-text-secondary">
               Партнер зарабатывает на&nbsp;всем жизненном цикле клиента: продаже
               платформы, внедрении, развитии сценариев, поддержке
-              и&nbsp;консалтинге. Размер комиссии, зоны ответственности
+              и&nbsp;консалтинге. Размер вознаграждения, зоны ответственности
               и&nbsp;SLA фиксируются в&nbsp;партнерском соглашении.
             </p>
           </header>

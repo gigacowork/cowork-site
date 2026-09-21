@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 
 import {
   StickyScenarios,
@@ -87,10 +87,15 @@ const SCENARIOS: Scenario[] = [
         пункт на три строки вместо двух. От 1280 колонка 328 — ровно на «для
         каждой команды» второй строкой.
       */
-      <>
+      /*
+        Ключ обязателен: React проверяет массив в момент, когда он собран, а
+        не когда `StickyScenarios` разложит его по `<li>`. Без ключа в консоли
+        сервера висело «Each child in a list should have a unique key».
+      */
+      <Fragment key="isolated">
         Изолированная рабочая область <br className="hidden xl:inline" />
         для каждой команды
-      </>,
+      </Fragment>,
       "Документы и знания доступны участникам пространства",
     ],
   },

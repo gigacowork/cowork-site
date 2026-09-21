@@ -371,8 +371,13 @@ export function Header() {
                 У раздела, которого ещё нет, — тот же пункт, но текстом
                 Text/Tertiary и без ссылки: ведёт он пока в никуда, а клавиатуре
                 и скринридеру лучше вообще не предлагать такую цель.
+
+                `muted` — пункт вспомогательного блока внизу: текст на ступень
+                тише, ховер общий. Свой, на ступень темнее, у него был, пока
+                блок стоял на заливке и обычный ховер с ней совпадал; теперь
+                блок выделен рамкой и фон у него общий с панелью.
               */
-              const renderLeaf = (leaf: NavLeaf, onTint = false) =>
+              const renderLeaf = (leaf: NavLeaf, muted = false) =>
                 leaf.soon ? (
                   <span
                     aria-disabled="true"
@@ -389,10 +394,8 @@ export function Header() {
                       isActive(pathname, leaf.href) ? "page" : undefined
                     }
                     onClick={() => setOpenMenu(null)}
-                    className={`flex h-[41px] items-center rounded-full px-12 text-body-m whitespace-nowrap transition-colors ${
-                      onTint
-                        ? "text-text-secondary hover:bg-action-secondary-pressed hover:text-text-strong aria-[current=page]:bg-action-secondary-pressed aria-[current=page]:text-text-strong"
-                        : "text-text-primary hover:bg-action-secondary-hover hover:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
+                    className={`flex h-[41px] items-center rounded-full px-12 text-body-m whitespace-nowrap transition-colors hover:bg-action-secondary-hover hover:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong ${
+                      muted ? "text-text-secondary" : "text-text-primary"
                     }`}
                   >
                     {leaf.label}
@@ -458,8 +461,14 @@ export function Header() {
                       Вспомогательный блок — карточка внутри панели, со своим
                       скруглением по всем четырём углам: полоса во всю ширину
                       давала сверху острые углы.
+
+                      Скругления в навигации живут по одному правилу: у
+                      вложенного угла радиус внешнего минус отступ между ними.
+                      Пункты — таблетки (радиус 20.5 при высоте 41), отступ у
+                      плашки 4, значит её угол — 24. Он же у панели, и все три
+                      кривые ложатся друг на друга вместо трёх разных.
                     */}
-                    <div className="w-[304px] rounded-[24px] border border-border-subtle bg-bg-page p-12 shadow-drop-sm">
+                    <div className="w-[304px] rounded-24 border border-border-subtle bg-bg-page p-12 shadow-drop-sm">
                       <ul className="flex flex-col gap-4">
                         {main.map((leaf) => (
                           <li key={leaf.href}>{renderLeaf(leaf)}</li>
@@ -467,11 +476,12 @@ export function Header() {
                       </ul>
                       {/*
                         «Что нового» и «Документация» — не сущности платформы,
-                        поэтому они собраны в отдельную плашку. Ховер здесь
-                        на ступень темнее: обычный совпал бы с фоном плашки.
+                        поэтому они отбиты в отдельный блок. Отбивка рамкой, а
+                        не заливкой: заливка добавляла в панель второй уровень
+                        фона, а рамка только очерчивает группу.
                       */}
                       {support.length > 0 ? (
-                        <ul className="mt-8 flex flex-col gap-4 rounded-[16px] bg-bg-footer p-4">
+                        <ul className="mt-8 flex flex-col gap-4 rounded-24 border border-border-subtle p-4">
                           {support.map((leaf) => (
                             <li key={leaf.href}>{renderLeaf(leaf, true)}</li>
                           ))}
@@ -611,22 +621,21 @@ export function Header() {
                   >
                     {/*
                       Тот же Dropdown Item (3432:15088), что и на десктопе.
-                      Вспомогательные страницы отбиты отдельной плашкой,
-                      как и в раскрывашке на десктопе — только без обводки:
-                      здесь меню во весь экран, а не панель.
+                      Вспомогательные страницы отбиты отдельным блоком, как и
+                      в раскрывашке на десктопе, — рамкой, а не заливкой.
                     */}
                     {(
                       [
                         [item.children.filter((leaf) => !leaf.support), false],
                         [item.children.filter((leaf) => leaf.support), true],
                       ] as [NavLeaf[], boolean][]
-                    ).map(([leaves, onTint]) =>
+                    ).map(([leaves, muted]) =>
                       leaves.length === 0 ? null : (
                         <ul
-                          key={onTint ? "support" : "main"}
+                          key={muted ? "support" : "main"}
                           className={`flex flex-col gap-4 ${
-                            onTint
-                              ? "mt-8 mb-8 rounded-[16px] bg-bg-footer p-4"
+                            muted
+                              ? "mt-8 mb-8 rounded-24 border border-border-subtle p-4"
                               : "pb-8"
                           }`}
                         >
@@ -650,10 +659,10 @@ export function Header() {
                                       : undefined
                                   }
                                   onClick={() => setMenuOpen(false)}
-                                  className={`flex h-[41px] items-center justify-center rounded-full px-12 text-body-m transition-colors ${
-                                    onTint
-                                      ? "text-text-secondary active:bg-action-secondary-pressed active:text-text-strong aria-[current=page]:bg-action-secondary-pressed aria-[current=page]:text-text-strong"
-                                      : "text-text-primary active:bg-action-secondary-hover active:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong"
+                                  className={`flex h-[41px] items-center justify-center rounded-full px-12 text-body-m transition-colors active:bg-action-secondary-hover active:text-text-strong aria-[current=page]:bg-action-secondary-hover aria-[current=page]:text-text-strong ${
+                                    muted
+                                      ? "text-text-secondary"
+                                      : "text-text-primary"
                                   }`}
                                 >
                                   {leaf.label}

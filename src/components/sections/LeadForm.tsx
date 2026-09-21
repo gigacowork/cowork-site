@@ -129,15 +129,95 @@ const FIELDS = [
 /** Без `target` обязательны только имя и почта — как было до подключения CRM. */
 const BASE_REQUIRED = new Set<string>(["name", "email"]);
 
+/**
+ * Галочка в круге на экране «Заявка отправлена».
+ *
+ * Рисуется по правилам остальных иконок сайта: сетка 24, `fill: none`, обводка
+ * со скруглёнными концами, толщина 1.6 — как у `check.svg`. Размер 48: это не
+ * иконка в строке, а знак состояния, и она масштабируется вместе с сеткой,
+ * сохраняя оптический вес.
+ *
+ * Цвет — градиент страницы. Стопы читают переменные темы через `style`, а не
+ * через атрибут: в атрибуте `var()` не разбирается. Запасное значение —
+ * основной цвет текста, поэтому на светлых страницах заявки иконка выйдет
+ * обычной тёмной, а не пропадёт.
+ *
+ * Идентификатор градиента берёт префикс формы: двух одинаковых `id` на
+ * странице с двумя формами быть не должно.
+ */
+function SuccessIcon({ idPrefix }: { idPrefix: string }) {
+  const gradientId = `${idPrefix}-success-gradient`;
+  const stroke = `url(#${gradientId})`;
+
+  return (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+      className="shrink-0"
+    >
+      <defs>
+        <linearGradient
+          id={gradientId}
+          x1="3"
+          y1="3"
+          x2="21"
+          y2="21"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop style={{ stopColor: "var(--gc-accent-from, currentColor)" }} />
+          <stop
+            offset="1"
+            style={{ stopColor: "var(--gc-accent-to, currentColor)" }}
+          />
+        </linearGradient>
+      </defs>
+      <circle cx="12" cy="12" r="9.2" stroke={stroke} strokeWidth="1.6" />
+      <path
+        d="M7.9 12.3 10.8 15.2 16.1 9.3"
+        stroke={stroke}
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+type FieldName = (typeof FIELDS)[number]["name"];
+
 type LeadFormProps = {
   /** Куда уходит заявка. Не передан — форма не отправляется никуда. */
   target?: LeadTarget;
+  /**
+   * Какие поля показывать и в каком порядке. Не передан — все пять.
+   *
+   * Урезанный набор нужен формам мероприятий: там спрашивают минимум, а
+   * компанию и ИНН менеджер уточняет при созвоне. Проверка и отправка
+   * работают только по показанным полям, остальные уходят в CRM пустыми.
+   */
+  fields?: readonly FieldName[];
+  /**
+   * Другие подписи полей. `label` — плейсхолдер и подпись для скринридера,
+   * `empty` — текст ошибки у пустого поля.
+   *
+   * Пара, а не одна строка: вывести «Укажите почту» из «Почта» нельзя, в
+   * ошибке слово стоит в винительном падеже.
+   */
+  labels?: Partial<Record<FieldName, { label: string; empty: string }>>;
   /** Требовать заполнения всех полей (нужно CRM, чтобы завести компанию). */
   requireAll?: boolean;
   /** Подпись кнопки. */
   submitLabel?: string;
   /** Текст под заголовком экрана «Заявка отправлена». */
   successText?: string;
+  /**
+   * Показывать галочку над заголовком «Заявка отправлена». По умолчанию нет —
+   * экраны светлых страниц заявки остаются такими, какими были.
+   */
+  successIcon?: boolean;
   /** Префикс id полей — на случай двух форм на одной странице. */
   idPrefix?: string;
   className?: string;
@@ -145,12 +225,30 @@ type LeadFormProps = {
 
 export function LeadForm({
   target,
+  fields,
+  labels,
   requireAll = false,
   submitLabel = "Попробовать бесплатно",
   successText,
+  successIcon = false,
   idPrefix = "lead",
   className = "",
 }: LeadFormProps = {}) {
+  /*
+    Показанные поля в заданном порядке, с подменёнными подписями. Неизвестные
+    имена молча отбрасываем.
+  */
+  const shown = (
+    fields
+      ? fields
+          .map((name) => FIELDS.find((field) => field.name === name))
+          .filter((field) => field !== undefined)
+      : FIELDS
+  ).map((field) => {
+    const custom = labels?.[field.name];
+    return custom ? { ...field, ...custom } : field;
+  });
+
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
@@ -167,17 +265,24 @@ export function LeadForm({
   const isRequired = (name: string) => requireAll || BASE_REQUIRED.has(name);
 
   /** Ошибка одного поля: сначала обязательность, потом разбор значения. */
-  const checkField = (field: (typeof FIELDS)[number], raw: string) => {
+  /*
+    Тип структурный, а не `(typeof FIELDS)[number]`: с подменёнными подписями
+    `label` и `empty` становятся обычными строками, а не литералами из FIELDS.
+  */
+  const checkField = (
+    field: { name: string; empty: string; error: (value: string) => string },
+    raw: string,
+  ) => {
     const value = raw.trim();
     if (!value) return isRequired(field.name) ? field.empty : "";
     return field.error(value);
   };
 
-  /** Ошибки всей формы по текущим значениям полей. */
+  /** Ошибки всей формы по текущим значениям полей. Скрытые не проверяем. */
   const checkAll = (form: HTMLFormElement) => {
     const data = new FormData(form);
     const next: Record<string, string> = {};
-    FIELDS.forEach((field) => {
+    shown.forEach((field) => {
       const message = checkField(field, String(data.get(field.name) ?? ""));
       if (message) next[field.name] = message;
     });
@@ -203,10 +308,10 @@ export function LeadForm({
       /*
         Уводим курсор в первое незаполненное поле — иначе на мобильном
         подпись об ошибке может оказаться за пределами экрана, и нажатие на
-        кнопку выглядит как «ничего не произошло». Порядок берём из FIELDS,
-        а не из объекта ошибок: у объекта он не гарантирован.
+        кнопку выглядит как «ничего не произошло». Порядок берём из списка
+        полей, а не из объекта ошибок: у объекта он не гарантирован.
       */
-      const first = FIELDS.find((field) => found[field.name]);
+      const first = shown.find((field) => found[field.name]);
       if (first) {
         form
           .querySelector<HTMLInputElement>(`[name="${first.name}"]`)
@@ -263,6 +368,7 @@ export function LeadForm({
     >
       {status === "sent" ? (
         <div className="flex flex-col items-center gap-12 px-16 py-40 text-center md:px-48">
+          {successIcon ? <SuccessIcon idPrefix={idPrefix} /> : null}
           <p className="text-h4 font-medium text-text-primary">
             Заявка отправлена
           </p>
@@ -277,7 +383,7 @@ export function LeadForm({
         </div>
       ) : (
         <>
-          {FIELDS.map((field) => {
+          {shown.map((field) => {
             const message = errors[field.name];
             const errorId = `${idPrefix}-${field.name}-error`;
             return (

@@ -4,6 +4,12 @@ import { Fragment, useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 
 import { asset } from "@/lib/asset";
+import { createStackCollapse } from "@/lib/stack-collapse";
+import {
+  applyStickyTail,
+  clearStickyTail,
+  stackRelease,
+} from "@/lib/sticky-tail";
 
 /**
  * Липкая стопка сценариев подстраниц «О платформе».
@@ -18,7 +24,9 @@ import { asset } from "@/lib/asset";
  * `UseCaseScenario` и на готовые кадры ролей из `scenario-previews`, а здесь
  * приходят произвольные узлы и градиентные заглушки вместо скриншотов.
  * Разводить их шаблоном значило бы переписывать компонент, от которого зависят
- * восемь живых страниц. **Правку механики нужно вносить в оба файла.**
+ * восемь живых страниц. **Правку механики нужно вносить в оба файла.** Общая
+ * у них пока только сборка стопки в конце — она вынесена в
+ * `src/lib/stack-collapse.ts` и используется всеми тремя стопками сайта.
  *
  * Используется на /ai-platform/workspace (3657:4896) и /ai-platform/agents
  * (3671:26882).
@@ -41,7 +49,8 @@ export type StickyScenario = {
    * Маркированный список под описанием. Нет — блок не рисуется.
    *
    * Узлы, а не строки: пункту иногда нужен свой перенос строки, как заголовку
-   * и описанию рядом.
+   * и описанию рядом. Узлу нужен `key` прямо в данных — React проверяет массив
+   * там, где он собран, а не там, где мы раскладываем его по `<li>`.
    */
   effects?: ReactNode[];
   /** Класс-заливка слота Image Slot (2276:15336) — у каждого сценария своя. */
@@ -96,6 +105,30 @@ export function StickyScenarios({ items }: { items: StickyScenario[] }) {
     if (cards.length < 2 || texts.length !== cards.length) return;
 
     const desktop = window.matchMedia("(min-width: 1024px)");
+    /* Сборка стопки в конце — общая для всех стопок сайта. */
+    const collapse = createStackCollapse({
+      root,
+      cards,
+      stickyTop: STICKY_TOP,
+      cardStep: CARD_STEP,
+    });
+
+    /*
+      Подпись слева открепляется вместе со стопкой, а не позже неё
+      (`src/lib/sticky-tail.ts`). Она живёт в ячейке на всю высоту сетки, а низ
+      у сетки дальше низа стопки — после карточек идёт строка-распорка. Из-за
+      этого карточки уезжали вверх, а подпись оставалась висеть: на «ИИ-агентах»
+      разрыв доходил до 275.
+    */
+    const syncTail = () => {
+      if (!desktop.matches) {
+        texts.forEach(clearStickyTail);
+        return;
+      }
+      const release = stackRelease(cards, STICKY_TOP);
+      texts.forEach((text) => applyStickyTail(text, release));
+    };
+
     let shown = -1;
 
     const paint = (next: number) => {
@@ -134,18 +167,36 @@ export function StickyScenarios({ items }: { items: StickyScenario[] }) {
         text.style.pointerEvents = "";
         text.removeAttribute("aria-hidden");
       });
+      /* Хвост держится на инлайновом стиле — снимаем вместе с остальным. */
+      if (!desktop.matches) texts.forEach(clearStickyTail);
       /* Ниже lg стопки нет, карточки не перекрываются — тень у всех. */
       surfaces.forEach((surface) => {
         if (!surface) return;
         surface.style.boxShadow = "";
         surface.style.filter = "";
       });
+      /* И раскладка возвращается к исходным позициям из разметки. */
+      collapse.layout(0);
     };
 
     const update = () => {
       // Ниже lg подмены нет: текст и превью идут парами обычным потоком.
       if (!desktop.matches) {
         reset();
+        return;
+      }
+
+      const t = collapse.progress();
+      collapse.layout(t);
+
+      /*
+        Пока стопка собирается, карточки едут вверх, и край каждой снова
+        оказывается выше линии подмены — без этой оговорки подпись слева
+        перескочила бы назад на предпоследний сценарий. Стопка собирается —
+        значит, верх за последней карточкой.
+      */
+      if (t > 0) {
+        paint(cards.length - 1);
         return;
       }
 
@@ -174,17 +225,29 @@ export function StickyScenarios({ items }: { items: StickyScenario[] }) {
       }
     };
 
+    /* Хвост зависит от размеров, а не от прокрутки — пересчитываем по resize. */
+    const onResize = () => {
+      syncTail();
+      onScroll();
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    desktop.addEventListener("change", onScroll);
+    window.addEventListener("resize", onResize);
+    desktop.addEventListener("change", onResize);
+    collapse.reduceMotion.addEventListener("change", onResize);
+    syncTail();
     update();
 
     return () => {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      desktop.removeEventListener("change", onScroll);
+      window.removeEventListener("resize", onResize);
+      desktop.removeEventListener("change", onResize);
+      collapse.reduceMotion.removeEventListener("change", onResize);
       reset();
+      texts.forEach(clearStickyTail);
+      /* Последним: `reset` возвращает исходные `--top`, здесь они уже не нужны. */
+      collapse.clear();
     };
   }, []);
 
@@ -321,9 +384,14 @@ export function StickyScenarios({ items }: { items: StickyScenario[] }) {
         Пустая строка-распорка. Липкий диапазон карточки ограничен контентной
         областью сетки, поэтому нижний padding его не удлинит — нужна именно
         строка. Без неё последняя карточка уезжает вверх, едва успев сесть.
+
+        По ней же считается сборка стопки (`src/lib/stack-collapse.ts`):
+        распорка едет вместе со страницей, когда карточки уже прикреплены, —
+        отсюда и `data-spacer`.
       */}
       <div
         aria-hidden
+        data-spacer
         style={{ "--row": String(items.length + 1) } as React.CSSProperties}
         className="hidden lg:col-start-2 lg:row-start-[var(--row)] lg:block lg:h-[45vh]"
       />

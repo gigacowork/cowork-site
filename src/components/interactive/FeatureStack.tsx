@@ -3,6 +3,14 @@
 import Image from "@/components/ui/Image";
 import { Fragment, useEffect, useRef } from "react";
 
+import { createStackCollapse } from "@/lib/stack-collapse";
+import {
+  applyStickyTail,
+  clearStickyTail,
+  stackRelease,
+  stickyTailFor,
+} from "@/lib/sticky-tail";
+
 /**
  * Стопка возможностей платформы (2888:17785).
  *
@@ -57,27 +65,6 @@ const CARD_STEP = 36;
 const TAKEOVER = 0.45;
 
 /**
- * Схлопывание стопки после последней карточки.
- *
- * Когда «Запуск по расписанию или событию» встал на своё место, стопка ещё
- * какое-то время стоит прикреплённой — раньше в этот момент не происходило
- * ничего. Теперь на этом отрезке карточки синхронно подтягиваются снизу
- * вверх: шаг между всеми уменьшается от `CARD_STEP` до нуля, и в конце
- * последняя закрывает остальные целиком.
- *
- * Собираются к верхней границе стопки, а не к передней карточке: у карточки
- * `i` `top` уменьшается от `S + i·CARD_STEP` до `S`. Верхний край стопки
- * остаётся там же, где был всё время прокрутки, — она не съезжает вниз
- * относительно липкого заголовка секции и соседних блоков. Едет передняя
- * карточка и все, что под ней, кроме самой верхней: та уже стоит на `S`.
- *
- * Длину отрезка берём долей от распорки в конце сетки: это и есть тот запас
- * прокрутки, на котором стопка стоит прикреплённой. Остаток запаса стопка
- * едет уже собранной, прежде чем открепиться.
- */
-const COLLAPSE_SHARE = 0.55;
-
-/**
  * Тень карточки — Elevation/Drop/Lg (2888:17921) в записи для filter.
  *
  * Её носит только передняя карточка и те, что ещё въезжают снизу. У карточек,
@@ -100,13 +87,13 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
     if (cards.length < 2 || texts.length !== cards.length) return;
 
     const desktop = window.matchMedia("(min-width: 1024px)");
-    const spacer = root.querySelector<HTMLElement>("[data-spacer]");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    /** Позиция карточки в разложенной стопке. */
-    const baseTop = (i: number) => STICKY_TOP + i * CARD_STEP;
-    /** Где встаёт последняя карточка, когда стопка разложена целиком. */
-    const settledTop = baseTop(cards.length - 1);
+    /* Сборка стопки в конце — общая для всех стопок сайта. */
+    const collapse = createStackCollapse({
+      root,
+      cards,
+      stickyTop: STICKY_TOP,
+      cardStep: CARD_STEP,
+    });
 
     /*
       Липкий заголовок секции живёт снаружи стопки, но открепиться должен вместе
@@ -130,42 +117,32 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
     const scope = header?.parentElement ?? null;
 
     /*
-      Тем же приёмом укорачивается липкий диапазон подписи слева.
+      Тем же приёмом укорачивается липкий диапазон подписи слева — общий для
+      всех стопок сайта код в `src/lib/sticky-tail.ts`.
 
       Подпись живёт в ячейке на всю высоту сетки, а низ у сетки дальше низа
       стопки: после карточек идёт строка-распорка. Из-за этого подпись
       отрывалась почти на 350 позже карточек и последняя из них — «Запуск по
       расписанию или событию» — оставалась висеть в пустоте, когда заголовок
       и стопка уже уехали.
-
-      Хвост здесь — не отступ родителя, а собственный `padding-bottom`
-      подписи: он входит в её габарит, по которому считается открепление, и
-      при этом ничего не двигает — подпись прозрачная, а ячейка втрое выше.
     */
-    const tailFor = (el: HTMLElement) => {
-      const top = parseFloat(getComputedStyle(el).top) || 0;
-      return Math.max(
-        0,
-        Math.round(STICKY_TOP + cards[0].offsetHeight - top - el.offsetHeight),
-      );
-    };
-
     const syncTail = () => {
       if (!desktop.matches) {
         scope?.style.removeProperty("--stack-tail");
-        texts.forEach((text) => text.style.removeProperty("padding-bottom"));
+        texts.forEach(clearStickyTail);
         return;
       }
 
-      // Сначала снимаем прошлый хвост, иначе он попадёт в замер высоты.
-      texts.forEach((text) => {
-        text.style.paddingBottom = "0px";
-        text.style.paddingBottom = `${tailFor(text)}px`;
-      });
+      const release = stackRelease(cards, STICKY_TOP);
+      texts.forEach((text) => applyStickyTail(text, release));
 
       if (!header || !scope) return;
+      /* Сначала обнуляем: прошлый хвост иначе войдёт в замер высоты. */
       scope.style.setProperty("--stack-tail", "0px");
-      scope.style.setProperty("--stack-tail", `${tailFor(header)}px`);
+      scope.style.setProperty(
+        "--stack-tail",
+        `${stickyTailFor(header, release)}px`,
+      );
     };
 
     let shown = -1;
@@ -198,50 +175,14 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
       });
       /* Хвост держится на инлайновом стиле — снимаем вместе с остальным. */
       if (!desktop.matches) {
-        texts.forEach((text) => text.style.removeProperty("padding-bottom"));
+        texts.forEach(clearStickyTail);
       }
       /* Ниже lg стопки нет, карточки не перекрываются — тень у всех. */
       shots.forEach((shot) => {
         if (shot) shot.style.filter = "";
       });
       /* И раскладка возвращается к исходным позициям из разметки. */
-      cards.forEach((card, i) =>
-        card.style.setProperty("--top", `${baseTop(i)}px`),
-      );
-    };
-
-    /**
-     * Доля схлопывания, 0…1.
-     *
-     * Меряем по распорке, а не по самой карточке: та прикреплена, её `top`
-     * перестаёт меняться ровно в тот момент, от которого нужно считать.
-     * Распорка же едет вместе со страницей всё время.
-     *
-     * Ноль отсчёта — положение распорки в тот миг, когда последняя карточка
-     * встала на место: это её `top` плюс высота карточки и вертикальный зазор
-     * сетки.
-     */
-    const collapseProgress = () => {
-      if (!spacer || reduceMotion.matches) return 0;
-      const span = spacer.offsetHeight * COLLAPSE_SHARE;
-      if (span <= 0) return 0;
-      const gap = parseFloat(getComputedStyle(root).rowGap) || 0;
-      const anchor = settledTop + cards[cards.length - 1].offsetHeight + gap;
-      const past = anchor - spacer.getBoundingClientRect().top;
-      return Math.max(0, Math.min(1, past / span));
-    };
-
-    /*
-      Шаг между карточками тает от CARD_STEP до нуля — синхронно у всех.
-      Цель у всех одна, STICKY_TOP: стопка собирается вверх, к своей верхней
-      границе, а не вниз к передней карточке.
-    */
-    const layout = (t: number) => {
-      cards.forEach((card, i) => {
-        const top =
-          t <= 0 ? baseTop(i) : baseTop(i) + (STICKY_TOP - baseTop(i)) * t;
-        card.style.setProperty("--top", `${top}px`);
-      });
+      collapse.layout(0);
     };
 
     const update = () => {
@@ -251,13 +192,13 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
         return;
       }
 
-      const t = collapseProgress();
-      layout(t);
+      const t = collapse.progress();
+      collapse.layout(t);
 
       /*
-        Пока стопка схлопывается, карточки едут вниз, и их край снова
+        Пока стопка собирается, карточки едут вверх, и край каждой снова
         оказывается выше линии подмены — без этой оговорки подпись слева
-        перескочила бы назад на предпоследний пункт. Сложилась стопка —
+        перескочила бы назад на предпоследний пункт. Стопка собирается —
         значит, верх за последней карточкой.
       */
       if (t > 0) {
@@ -301,7 +242,7 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
     desktop.addEventListener("change", onResize);
-    reduceMotion.addEventListener("change", onResize);
+    collapse.reduceMotion.addEventListener("change", onResize);
     syncTail();
     update();
 
@@ -310,11 +251,12 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
       desktop.removeEventListener("change", onResize);
-      reduceMotion.removeEventListener("change", onResize);
+      collapse.reduceMotion.removeEventListener("change", onResize);
       scope?.style.removeProperty("--stack-tail");
-      cards.forEach((card) => card.style.removeProperty("--top"));
-      texts.forEach((text) => text.style.removeProperty("padding-bottom"));
+      texts.forEach(clearStickyTail);
       reset();
+      /* Последним: `reset` возвращает исходные `--top`, здесь они уже не нужны. */
+      collapse.clear();
     };
   }, []);
 

@@ -4,6 +4,12 @@ import { Fragment, useEffect, useRef } from "react";
 import Image from "@/components/ui/Image";
 import { Lines, Paragraphs } from "@/components/use-cases/Lines";
 import { getScenarioPreview } from "@/lib/scenario-previews";
+import { createStackCollapse } from "@/lib/stack-collapse";
+import {
+  applyStickyTail,
+  clearStickyTail,
+  stackRelease,
+} from "@/lib/sticky-tail";
 import type { UseCaseScenario } from "@/lib/use-cases";
 
 /**
@@ -15,9 +21,10 @@ import type { UseCaseScenario } from "@/lib/use-cases";
  *
  * Механика та же, что в «Возможностях платформы» (FeatureStack): превью
  * наслаиваются на липких позициях с нарастающим `top`, а текст слева стоит на
- * месте и целиком сменяется на подпись верхней карточки. В макете все три ряда
- * нарисованы подряд — Figma не умеет показывать липкость, поэтому «доп
- * карточки» и лежат отдельным фреймом.
+ * месте и целиком сменяется на подпись верхней карточки. В конце стопка
+ * собирается — общий для всех стопок сайта код в `src/lib/stack-collapse.ts`.
+ * В макете все три ряда нарисованы подряд — Figma не умеет показывать
+ * липкость, поэтому «доп карточки» и лежат отдельным фреймом.
  *
  * Наслоение — чистый CSS (`position: sticky`), JS только решает, какая карточка
  * взяла верх, и переключает текст. Подмена пишется прямо в стиль, а не через
@@ -79,6 +86,28 @@ export function ScenarioStack({
     if (cards.length < 2 || texts.length !== cards.length) return;
 
     const desktop = window.matchMedia("(min-width: 1024px)");
+    /* Сборка стопки в конце — общая для всех стопок сайта. */
+    const collapse = createStackCollapse({
+      root,
+      cards,
+      stickyTop: STICKY_TOP,
+      cardStep: CARD_STEP,
+    });
+
+    /*
+      Подпись слева открепляется вместе со стопкой, а не позже неё
+      (`src/lib/sticky-tail.ts`). Она живёт в ячейке на всю высоту сетки, а низ
+      у сетки дальше низа стопки — после карточек идёт строка-распорка.
+    */
+    const syncTail = () => {
+      if (!desktop.matches) {
+        texts.forEach(clearStickyTail);
+        return;
+      }
+      const release = stackRelease(cards, STICKY_TOP);
+      texts.forEach((text) => applyStickyTail(text, release));
+    };
+
     let shown = -1;
 
     const paint = (next: number) => {
@@ -117,18 +146,36 @@ export function ScenarioStack({
         text.style.pointerEvents = "";
         text.removeAttribute("aria-hidden");
       });
+      /* Хвост держится на инлайновом стиле — снимаем вместе с остальным. */
+      if (!desktop.matches) texts.forEach(clearStickyTail);
       /* Ниже lg стопки нет, карточки не перекрываются — тень у всех. */
       surfaces.forEach((surface) => {
         if (!surface) return;
         surface.style.boxShadow = "";
         surface.style.filter = "";
       });
+      /* И раскладка возвращается к исходным позициям из разметки. */
+      collapse.layout(0);
     };
 
     const update = () => {
       // Ниже lg подмены нет: текст и превью идут парами обычным потоком.
       if (!desktop.matches) {
         reset();
+        return;
+      }
+
+      const t = collapse.progress();
+      collapse.layout(t);
+
+      /*
+        Пока стопка собирается, карточки едут вверх, и край каждой снова
+        оказывается выше линии подмены — без этой оговорки подпись слева
+        перескочила бы назад на предпоследний сценарий. Стопка собирается —
+        значит, верх за последней карточкой.
+      */
+      if (t > 0) {
+        paint(cards.length - 1);
         return;
       }
 
@@ -157,17 +204,29 @@ export function ScenarioStack({
       }
     };
 
+    /* Хвост зависит от размеров, а не от прокрутки — пересчитываем по resize. */
+    const onResize = () => {
+      syncTail();
+      onScroll();
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    desktop.addEventListener("change", onScroll);
+    window.addEventListener("resize", onResize);
+    desktop.addEventListener("change", onResize);
+    collapse.reduceMotion.addEventListener("change", onResize);
+    syncTail();
     update();
 
     return () => {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      desktop.removeEventListener("change", onScroll);
+      window.removeEventListener("resize", onResize);
+      desktop.removeEventListener("change", onResize);
+      collapse.reduceMotion.removeEventListener("change", onResize);
       reset();
+      texts.forEach(clearStickyTail);
+      /* Последним: `reset` возвращает исходные `--top`, здесь они уже не нужны. */
+      collapse.clear();
     };
   }, []);
 
@@ -301,9 +360,14 @@ export function ScenarioStack({
         Пустая строка-распорка. Липкий диапазон карточки ограничен контентной
         областью сетки, поэтому нижний padding его не удлинит — нужна именно
         строка. Без неё последняя карточка уезжает вверх, едва успев сесть.
+
+        По ней же считается сборка стопки (`src/lib/stack-collapse.ts`):
+        распорка едет вместе со страницей, когда карточки уже прикреплены, —
+        отсюда и `data-spacer`.
       */}
       <div
         aria-hidden
+        data-spacer
         style={{ "--row": String(items.length + 1) } as React.CSSProperties}
         className="hidden lg:col-start-2 lg:row-start-[var(--row)] lg:block lg:h-[45vh]"
       />

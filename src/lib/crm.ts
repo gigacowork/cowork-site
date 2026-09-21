@@ -12,10 +12,18 @@
  * при этом отвечала «отправлено». Ровно такое же тело, но без `id`, шлёт
  * работающая форма на gigaenterprise.ai/partners — сверено по её `js/main.js`
  * (ветка `company`), вебхук тот же.
+ *
+ * Вебхук у каждой формы может быть свой: он указывается в `LeadTarget`.
  */
+
+import { absoluteUrl } from "@/lib/site";
 
 export const CRM_WEBHOOK =
   "https://app.sbercrm.com/react-gateway/api/webhook/22f4c432-27f6-4862-bae2-d1298f3bd468";
+
+/** Отдельный вебхук мероприятия — заявки со стенда GigaConf. */
+export const GIGACONF_WEBHOOK =
+  "https://app.sbercrm.com/react-gateway/api/webhook/baf83ad4-8876-4515-8a35-e87122a115dd";
 
 /** Значения полей формы — ровно то, что ввёл пользователь. */
 export type LeadFields = {
@@ -34,8 +42,15 @@ export type LeadTarget = {
   title: string;
   /** Метка источника — `istochnik_lida$c`. */
   source: string;
-  /** Тип связи компании — `kompaniya$c.relationType`. */
-  relationType: string;
+  /**
+   * Тип связи компании — `kompaniya$c.relationType`. Не задан — блок компании
+   * не уходит вовсе: на форме без полей «Компания» и «ИНН» он был бы пустым.
+   */
+  relationType?: string;
+  /** Вебхук страницы. По умолчанию общий `CRM_WEBHOOK`. */
+  endpoint?: string;
+  /** Путь страницы заявки — уходит в `url_lead$c` абсолютным адресом. */
+  page?: string;
 };
 
 /** Партнёрская форма — /company/partners/ */
@@ -43,6 +58,20 @@ export const PARTNER_LEAD: LeadTarget = {
   title: "Новый лид - партнер",
   source: "enterprisegigachatpartners",
   relationType: "Partner",
+};
+
+/**
+ * Форма мероприятия — /lead-gigaconf/
+ *
+ * Свой вебхук: заявки со стенда не смешиваются с партнёрскими. Полей всего
+ * три, поэтому ни компании, ни ИНН в теле нет — менеджер уточняет их при
+ * созвоне.
+ */
+export const GIGACONF_LEAD: LeadTarget = {
+  title: "Новый лид - GigaConf",
+  source: "gigaconf",
+  endpoint: GIGACONF_WEBHOOK,
+  page: "/lead-gigaconf/",
 };
 
 /**
@@ -78,11 +107,20 @@ export function buildLeadPayload(fields: LeadFields, target: LeadTarget) {
       marketing_consent$c: fields.consent,
       name,
     },
-    kompaniya$c: {
-      inn: fields.inn.trim(),
-      relationType: target.relationType,
-      shortName: fields.company.trim(),
-    },
+    /*
+      Блок компании уходит только там, где эти поля есть на форме: пустые
+      `inn` и `shortName` завели бы в CRM компанию без названия.
+    */
+    ...(target.relationType
+      ? {
+          kompaniya$c: {
+            inn: fields.inn.trim(),
+            relationType: target.relationType,
+            shortName: fields.company.trim(),
+          },
+        }
+      : {}),
+    ...(target.page ? { url_lead$c: absoluteUrl(target.page) } : {}),
     istochnik_lida$c: target.source,
   };
 }
@@ -104,7 +142,7 @@ export function buildLeadPayload(fields: LeadFields, target: LeadTarget) {
 export async function sendLead(
   fields: LeadFields,
   target: LeadTarget,
-  endpoint: string = CRM_WEBHOOK,
+  endpoint: string = target.endpoint ?? CRM_WEBHOOK,
 ): Promise<void> {
   const body = JSON.stringify(buildLeadPayload(fields, target));
 
