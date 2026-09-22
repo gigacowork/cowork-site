@@ -192,7 +192,7 @@ function commonSteps(
       paragraphs: [
         "Загрузите инструкции, политики, регламенты и\u00A0другие документы компании.",
         "Подключите корпоративные системы: почту, порталы, Confluence.",
-        "35+ коннекторов уже на\u00A0платформе.",
+        "40+ интеграций уже на\u00A0платформе.",
       ],
       videoLabel: "Видео: добавьте базу знаний",
     },
@@ -844,12 +844,12 @@ export const USE_CASES: UseCase[] = [
     heroImage: "/img/use-cases/hr-team-hero.webp",
     heroImageMobile: "/img/use-cases/hr-team-hero-mob.webp",
     metrics: [
-      { value: 40, suffix: "%", caption: "больше скорость\nзакрытия вакансий" },
-      { value: 75, suffix: "%", caption: "больше скорость\nоценки кандидата" },
+      { value: 40, suffix: "%", caption: "выше скорость\nзакрытия вакансий" },
+      { value: 75, suffix: "%", caption: "выше скорость\nоценки кандидата" },
       {
         value: 93,
         suffix: "%",
-        caption: "больше скорость поиска\nкандидата на\u00A01\u00A0заявку",
+        caption: "выше скорость поиска\nкандидата на\u00A01\u00A0заявку",
       },
     ],
     scenariosTitle: SCENARIOS_TITLE,
@@ -915,7 +915,7 @@ export const USE_CASES: UseCase[] = [
         ],
         tags: [
           { label: "База знаний", icon: "/img/icons/document.svg" },
-          { label: "Коннекторы", icon: "/img/icons/shared-agents.svg" },
+          { label: "Интеграции", icon: "/img/icons/shared-agents.svg" },
         ],
       },
       {

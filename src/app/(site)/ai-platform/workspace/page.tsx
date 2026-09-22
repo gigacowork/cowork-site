@@ -12,6 +12,7 @@ import { Kicker } from "@/components/ui/Kicker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Рабочие пространства» — /ai-platform/workspace
@@ -214,6 +215,7 @@ export default function WorkspacePage() {
         не перекрывал белый фон body.
       */}
       <section className="relative isolate flex min-h-[795px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[180px] pb-120 md:min-h-[760px] md:pt-120 md:pb-96">
+        <Breadcrumbs items={[{ label: "Рабочие пространства" }]} />
         <HeroImage
           desktop="/img/workspace/hero.webp"
           mobile="/img/workspace/hero-mob.webp"

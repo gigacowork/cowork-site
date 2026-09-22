@@ -13,6 +13,7 @@ import { PAGE_SEO } from "@/content/seo";
 import { PARTNER_LEAD } from "@/lib/crm";
 import { groupDigits } from "@/lib/format";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Партнёрам» — /company/partners
@@ -199,7 +200,7 @@ const REVENUE: { title: string; text: string; ill: Illustration }[] = [
       rowWidth: "w-[166px]",
       rows: [
         { kind: "row", label: "AI-агенты", check: true },
-        { kind: "row", label: "Коннекторы", check: true },
+        { kind: "row", label: "Интеграции", check: true },
         { kind: "row", label: "Регламенты", check: true },
         { kind: "row", label: "Решение запущено", accent: true, check: true },
       ],
@@ -467,6 +468,7 @@ export default function PartnersPage() {
 
       {/* ── Hero (4325:37703) ── */}
       <section className="relative isolate flex min-h-[588px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[48px] md:min-h-[760px] md:pt-[272px] md:pb-96">
+        <Breadcrumbs items={[{ label: "Партнёрам" }]} />
         <HeroImage
           desktop="/img/partners/hero.webp"
           mobile="/img/partners/hero-mob.webp"

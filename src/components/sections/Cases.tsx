@@ -1,5 +1,8 @@
+import Link from "next/link";
+
 import Image from "@/components/ui/Image";
 import { Icon } from "@/components/ui/Icon";
+import { HOME_CASES, type CaseStudy, type CaseTag } from "@/content/cases";
 
 /**
  * Cases — «Опыт клиентов»
@@ -8,84 +11,6 @@ import { Icon } from "@/components/ui/Icon";
  * Figma mobile:  1927:17417 (Clients — px 16 / py 64, gap 32, header row в колонку,
  *                            карточки 358 в столбик, gap 16)
  */
-
-type CaseTag = {
-  label: string;
-  /** имя иконки в Figma (Icon=<name>) — ассет ещё не выгружен */
-  icon: string;
-};
-
-type CaseStudy = {
-  /** имя слоя Figma: "Card / Case Study · <company>" */
-  company: string;
-  metric: string;
-  metricCaption: string;
-  description: string;
-  logo: { src: string; width: number; height: number; className: string };
-  tags: [CaseTag, CaseTag];
-  /** mobile — общий градиент; md: собственный угол из Figma */
-  gradientClassName: string;
-};
-
-const CASES: CaseStudy[] = [
-  {
-    company: "ФосАгро",
-    metric: "-93%",
-    metricCaption: "сокращение времени на\u00A0поиск кандидата",
-    description:
-      "ИИ-агент для\u00A0анализа резюме и\u00A0первичной оценки кандидатов\u00A0– подключается к\u00A0корпоративным системам вакансий и\u00A0автоматически готовит заключение по\u00A0каждому соискателю",
-    logo: {
-      src: "/img/cases/phosagro.svg",
-      width: 132,
-      height: 32,
-      className: "h-[32px] w-[132px]",
-    },
-    tags: [
-      { label: "Промышленность", icon: "factory" },
-      { label: "HR", icon: "users-round" },
-    ],
-    gradientClassName:
-      "md:bg-[image:linear-gradient(60.08deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
-  },
-  {
-    company: "Frank Auto",
-    metric: "200+",
-    metricCaption: "часов экономии в\u00A0месяц",
-    description:
-      "Встроили ГигаЧат в\u00A0сервис речевой аналитики. Прослушивание звонков стало автоматическим. Аналитики перестали тратить время на\u00A0рутинную оценку коммуникаций",
-    logo: {
-      src: "/img/cases/frank-auto.svg",
-      width: 111,
-      height: 29,
-      className: "h-[29px] w-[110.941px]",
-    },
-    tags: [
-      { label: "Автодилер", icon: "car-front" },
-      { label: "Аналитика звонков", icon: "chart-no-axes-combined" },
-    ],
-    gradientClassName:
-      "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
-  },
-  {
-    company: "BI Group",
-    metric: "90%",
-    metricCaption: "консультаций автоматизировано",
-    description:
-      "ИИ-помощник на\u00A0базе ГигаЧат консультирует клиентов по\u00A0объектам и\u00A0условиям покупки, отвечает на\u00A0типовые вопросы и\u00A0записывает на\u00A0встречу",
-    logo: {
-      src: "/img/cases/bi-group.svg",
-      width: 134,
-      height: 26,
-      className: "h-[26px] w-[134px]",
-    },
-    tags: [
-      { label: "Финансы", icon: "Money" },
-      { label: "Клиентский сервис", icon: "thumbs-up" },
-    ],
-    gradientClassName:
-      "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
-  },
-];
 
 /*
   Tag кейса — I1927:15622;816:3940: иконка 24 в боксе с полями по 8, подпись
@@ -96,12 +21,18 @@ const CASES: CaseStudy[] = [
 */
 function Tag({ tag }: { tag: CaseTag }) {
   return (
-    <li className="flex shrink-0 items-center justify-center gap-4 rounded-full bg-bg-tag px-8 py-8">
-      {/* Icon frame 354:151 — exported per tag, 24×24 */}
-      <Icon
-        src={`/img/icons/${tag.icon.toLowerCase()}.svg`}
-        className="size-[24px] text-icon-primary"
-      />
+    <li
+      className={`flex shrink-0 items-center justify-center gap-4 rounded-full bg-bg-tag py-8 ${
+        tag.icon ? "px-8" : "px-12"
+      }`}
+    >
+      {/* Icon frame 354:151 — exported per tag, 24×24. Иконка необязательна. */}
+      {tag.icon ? (
+        <Icon
+          src={`/img/icons/${tag.icon.toLowerCase()}.svg`}
+          className="size-[24px] text-icon-primary"
+        />
+      ) : null}
       <span className="text-caption whitespace-nowrap text-text-primary">{tag.label}</span>
     </li>
   );
@@ -153,13 +84,18 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
           share one centre line.
         */}
         <div className="mt-24 flex h-[32px] shrink-0 items-center md:mt-[30px]">
-          <Image
-            src={study.logo.src}
-            alt={study.company}
-            width={study.logo.width}
-            height={study.logo.height}
-            className={`${study.logo.className} max-h-[32px] w-auto object-contain object-left`}
-          />
+          {/* Файла нет — в слоте название компании текстом. */}
+          {study.logo ? (
+            <Image
+              src={study.logo.src}
+              alt={study.company}
+              width={study.logo.width}
+              height={study.logo.height}
+              className={`${study.logo.className} max-h-[32px] w-auto object-contain object-left`}
+            />
+          ) : (
+            <span className="text-h4 font-medium text-text-primary">{study.company}</span>
+          )}
         </div>
 
         {/*
@@ -176,12 +112,15 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
         {/*
           Карточка кликабельна целиком (Card / Info 1312:4755). В макете у кейса
           нет видимой ссылки, поэтому зона клика — невидимая растянутая ссылка.
+          Ведёт на страницу кейса; у кейсов без своей страницы её нет.
         */}
-        <a
-          href="#case"
-          aria-label={`Открыть кейс — ${study.company}`}
-          className="absolute inset-0 z-10 focus-visible:outline-none"
-        />
+        {study.slug ? (
+          <Link
+            href={`/success-stories/${study.slug}`}
+            aria-label={`Открыть кейс — ${study.company}`}
+            className="absolute inset-0 z-10 focus-visible:outline-none"
+          />
+        ) : null}
 
         {/*
           Tags — I1927:15620;515:1152, прижаты к нижнему полю карточки.
@@ -221,21 +160,16 @@ export function Cases() {
           <h2 className="text-h3 font-medium text-text-primary md:w-full md:text-center md:text-h2">
             Опыт клиентов
           </h2>
-          {/*
-            ВРЕМЕННО СКРЫТО: страницы со списком кейсов ещё нет, ссылка вела в
-            несуществующий якорь #cases-all. Вернуть — раскомментировать блок
-            ниже (иконка — Icon / arrow up-right 418:4735, 9×9).
-
-            <div className="flex pt-8 md:absolute md:top-0 md:right-0 md:pt-0">
-              <a
-                href="#cases-all"
-                className="flex items-center justify-center gap-8 rounded-full py-12 text-body-m text-text-primary transition-colors hover:bg-neutral-100 md:px-24"
-              >
-                <span className="whitespace-nowrap">Все кейсы</span>
-                <Icon src="/img/icons/arrow-up-right.svg" className="size-[9px] text-icon-primary" />
-              </a>
-            </div>
-          */}
+          {/* Ссылка на раздел кейсов (иконка — Icon / arrow up-right 418:4735, 9×9). */}
+          <div className="flex pt-8 md:absolute md:top-0 md:right-0 md:pt-0">
+            <Link
+              href="/success-stories"
+              className="flex items-center justify-center gap-8 rounded-full py-12 text-body-m text-text-primary transition-colors hover:bg-neutral-100 md:px-24"
+            >
+              <span className="whitespace-nowrap">Все кейсы</span>
+              <Icon src="/img/icons/arrow-up-right.svg" className="size-[9px] text-icon-primary" />
+            </Link>
+          </div>
         </div>
 
         {/*
@@ -247,7 +181,7 @@ export function Cases() {
           других. С фиксированными 504 это было незаметно.
         */}
         <ul className="flex w-full flex-col gap-16 md:flex-row md:gap-24">
-          {CASES.map((study, index) => (
+          {HOME_CASES.map((study, index) => (
             <CaseCard key={study.company} study={study} lead={index === 0} />
           ))}
         </ul>

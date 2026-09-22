@@ -14,6 +14,7 @@ import { Kicker } from "@/components/ui/Kicker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «ИИ-агенты» — /ai-platform/agents
@@ -136,7 +137,7 @@ const FEATURES: {
     text: (
       <>
         Собирать информацию из&nbsp;различных источников: баз знаний, офисных
-        приложений и&nbsp;систем учета&nbsp;– укажите название коннектора
+        приложений и&nbsp;систем учета&nbsp;– укажите название интеграции
         в&nbsp;задаче и&nbsp;агент сам найдет и&nbsp;заберет нужные данные.
       </>
     ),
@@ -186,7 +187,7 @@ const MANAGEMENT: { tag: TagItem; title: ReactNode; text: ReactNode }[] = [
     text: (
       <>
         Созданных агентов можно редактировать: добавлять или&nbsp;убирать
-        навыки, команды и&nbsp;коннекторы.
+        навыки, команды и&nbsp;интеграции.
       </>
     ),
   },
@@ -410,6 +411,7 @@ export default function AgentsPage() {
         и 780×1442 (2× фрейма 390×721).
       */}
       <section className="relative isolate flex min-h-[721px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
+        <Breadcrumbs items={[{ label: "ИИ-агенты" }]} />
         <HeroImage
           desktop="/img/agents/hero.webp"
           mobile="/img/agents/hero-mob.webp"

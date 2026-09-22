@@ -12,6 +12,7 @@ import { Icon } from "@/components/ui/Icon";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Безопасность» — /trust-and-safety
@@ -21,7 +22,7 @@ import { seoMetadata } from "@/lib/site";
  * «Безопасность и контроль корпоративного уровня» на «Обзоре платформы»
  * (2888:17815): карточки с тегом-пилюлей и список правил с линией сверху.
  *
- * Кадр hero — дубль со страницы «Коннекторы».
+ * Кадр hero — дубль со страницы «Интеграции».
  *
  * Заголовки и тексты — дословно из файла. В том числе то, что заголовок
  * «Разверните GigaCowork в своём контуре безопасности» стоит в нём дважды: у
@@ -199,6 +200,7 @@ export default function TrustAndSafetyPage() {
 
       {/* ── Hero ── */}
       <section className="relative isolate flex min-h-[464px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
+        <Breadcrumbs items={[{ label: "Безопасность" }]} />
         <HeroImage
           desktop="/img/trust-and-safety/hero.webp"
           mobile="/img/trust-and-safety/hero-mob.webp"

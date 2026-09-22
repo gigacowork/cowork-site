@@ -19,6 +19,7 @@ import { Kicker } from "@/components/ui/Kicker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Поставки» — /pricing
@@ -457,6 +458,7 @@ export default function PricingPage() {
         (2× фрейма 390×588).
       */}
       <section className="relative isolate flex min-h-[588px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
+        <Breadcrumbs items={[{ label: "Поставки" }]} />
         <HeroImage
           desktop="/img/pricing/hero.webp"
           mobile="/img/pricing/hero-mob.webp"

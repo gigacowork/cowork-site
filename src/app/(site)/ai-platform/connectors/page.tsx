@@ -12,9 +12,10 @@ import { Kicker } from "@/components/ui/Kicker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
- * «Коннекторы» — /ai-platform/connectors
+ * «Интеграции» — /ai-platform/connectors
  *
  * Макеты: desktop 3680:27873 (Connectors / Desktop 1440), mobile 3919:32444.
  * Секции: Hero (3680:27874 / 3919:32445), Catalog (3856:64808 / 3919:34145),
@@ -51,7 +52,7 @@ const MOCK_BORDER = "border-[#0dace038]";
 const MOCK_SHADOW = "shadow-[0_16px_34px_0_#173d631f]";
 const MOCK_CELL_SHADOW = "shadow-[0_3px_10px_0_#173d6314]";
 
-/* ──────────────────────────── каталог коннекторов ──────────────────────── */
+/* ──────────────────────────── каталог интеграций ──────────────────────── */
 
 /**
  * Логотипы сервисов лежат в `public/img/connectors/logos/<slug>.{svg,png,webp}`.
@@ -200,7 +201,7 @@ const CATEGORIES: Category[] = [
   {
     /* В макете карточка шире — занимает две колонки из трёх (3872:23371). */
     title: <>Собственные интеграции</>,
-    products: [{ label: "MCP-коннекторы вашей компании", slug: "mcp" }],
+    products: [{ label: "MCP-серверы вашей компании", slug: "mcp" }],
     wide: true,
   },
 ];
@@ -221,7 +222,7 @@ const BENEFITS: {
     ),
     text: (
       <>
-        Используйте готовые решения или&nbsp;подключайте свои MCP-коннекторы.
+        Используйте готовые интеграции или&nbsp;подключайте свои MCP-серверы.
         Работайте с&nbsp;внешними сервисами через платформу.
       </>
     ),
@@ -256,9 +257,9 @@ const STEPS: { number: string; title: ReactNode; text: ReactNode }[] = [
     ),
     text: (
       <>
-        Откройте раздел «Коннекторы» или&nbsp;выберите нужный сервис
-        в&nbsp;чате. Используйте встроенные интеграции или&nbsp;подключайте свои
-        MCP-коннекторы через администратора вашей компании.
+        Откройте раздел «Интеграции» или&nbsp;выберите нужный сервис
+        в&nbsp;чате. Используйте готовые интеграции или&nbsp;подключайте свой
+        MCP-сервер через администратора вашей компании.
       </>
     ),
   },
@@ -320,7 +321,7 @@ function OwnIllustration() {
       className={`flex w-[300px] flex-col gap-12 overflow-hidden rounded-[18px] border-[1.5px] p-16 ${MOCK_SURFACE} ${MOCK_BORDER} ${MOCK_SHADOW}`}
     >
       <p className="text-caption text-text-primary" {...layer(0, -10, 0)}>
-        Коннекторы
+        Интеграции
       </p>
       <div className="flex flex-col gap-8">
         {pairs.map((pair, i) => (
@@ -346,7 +347,7 @@ function OwnIllustration() {
             +
           </span>
           <span className="text-caption text-text-inverse">
-            Свой MCP-коннектор
+            Свой MCP-сервер
           </span>
         </div>
       </div>
@@ -414,6 +415,7 @@ export default function ConnectorsPage() {
 
       {/* ── Hero (3680:27874 / 3919:32445) ── */}
       <section className="relative isolate flex min-h-[629px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
+        <Breadcrumbs items={[{ label: "Интеграции" }]} />
         <HeroImage
           desktop="/img/connectors/hero.webp"
           mobile="/img/connectors/hero-mob.webp"
@@ -450,9 +452,9 @@ export default function ConnectorsPage() {
           */}
         <div className="container-page flex flex-col gap-32 md:gap-[56px]">
           <div className="flex flex-col gap-12 md:gap-16">
-            <Kicker>Коннекторы</Kicker>
+            <Kicker>Интеграции</Kicker>
             <h2 className="text-h3 font-medium text-text-primary md:text-h2">
-              40+ готовых коннекторов <br className="hidden md:inline" />
+              40+ готовых интеграций <br className="hidden md:inline" />
               уже на&nbsp;платформе
             </h2>
             <p className="text-body-l text-text-primary">
@@ -505,7 +507,7 @@ export default function ConnectorsPage() {
                 {/*
                   ВРЕМЕННО СКРЫТО: в макете под списком стоит ссылка
                   «Подробнее» (Text Link, 3875:70077), но страницы про
-                  MCP-коннекторы в структуре проекта нет, и адрес брать неоткуда.
+                  MCP-серверы в структуре проекта нет, и адрес брать неоткуда.
                   Появится раздел — раскомментировать и подставить href.
 
                   {category.wide ? (
@@ -581,7 +583,7 @@ export default function ConnectorsPage() {
       {/* ── How To Add (3855:64787 / 3947:35100) ── */}
       <section className="w-full bg-bg-page py-64 md:py-96">
         <div className="container-page flex flex-col gap-16">
-          <Kicker>Настройка коннектора</Kicker>
+          <Kicker>Настройка интеграции</Kicker>
           <h2 className="text-h3 font-medium text-text-primary md:text-h2">
             Как начать работу
           </h2>

@@ -13,6 +13,7 @@ import CountUp from "@/components/interactive/CountUp";
 import FeatureStack from "@/components/interactive/FeatureStack";
 import TokenIllustrations from "@/components/interactive/TokenIllustrations";
 import { useCaseHref } from "@/lib/use-cases";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «О платформе» — /platform
@@ -160,7 +161,7 @@ const AGENT_BLOCKS = [
     preview: "/img/platform/agent-tasks.webp",
   },
   {
-    title: "Коннекторы",
+    title: "Интеграции",
     text: "Подключите корпоративные системы, чтобы агенты работали с\u00A0актуальными данными и\u00A0по\u00A0корпоративным правилам",
     preview: "/img/platform/agent-connectors.webp",
   },
@@ -331,6 +332,8 @@ export default function PlatformPage() {
         */
         className="relative isolate flex min-h-[720px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-120 pb-48 md:min-h-[760px] md:pb-[100px]"
       >
+        <Breadcrumbs items={[{ label: "Обзор платформы" }]} />
+
         {/*
           hero-illustration (2888:17749). В макете это заливка плюс растр на
           40% прозрачности; в экспорте прозрачность уже сведена, поэтому

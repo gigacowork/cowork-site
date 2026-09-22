@@ -60,7 +60,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Рабочие пространства", href: "/ai-platform/workspace" },
       { label: "ИИ-агенты", href: "/ai-platform/agents" },
       { label: "Навыки", href: "/ai-platform/skill" },
-      { label: "Коннекторы", href: "/ai-platform/connectors" },
+      { label: "Интеграции", href: "/ai-platform/connectors" },
       { label: "Быстрые команды", href: "/ai-platform/quick-commands" },
       { label: "Задачи по\u00A0расписанию", href: "/ai-platform/schedule" },
       {
@@ -86,7 +86,19 @@ const NAV_ITEMS: NavItem[] = [
   },
   { label: "Безопасность", href: "/trust-and-safety" },
   { label: "Поставки", href: "/pricing" },
-  { label: "Обучающие видео", href: "/guides" },
+  {
+    label: "Центр знаний",
+    /*
+      Раздел собран 22.09.2026 по карте сайта. До него «Обучающие видео»
+      висели отдельным пунктом верхнего уровня, а «Кейсы» и «Медиа» в шапку
+      не попадали вовсе — хотя страницы уже собраны.
+    */
+    children: [
+      { label: "Кейсы", href: "/success-stories" },
+      { label: "Медиа", href: "/media" },
+      { label: "Обучающие видео", href: "/guides" },
+    ],
+  },
   {
     label: "Компания",
     /*

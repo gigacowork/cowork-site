@@ -4,6 +4,7 @@ import Link from "next/link";
 import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { RELEASES } from "@/content/releases";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Что нового» — /whats-new
@@ -19,7 +20,7 @@ import { RELEASES } from "@/content/releases";
 export const metadata: Metadata = pageMetadata({
   title: "Что\u00A0нового\u00A0— GigaCowork",
   description:
-    "Релизы и\u00A0обновления платформы GigaCowork: новые возможности агентов, навыки, команды, пространства и\u00A0коннекторы.",
+    "Релизы и\u00A0обновления платформы GigaCowork: новые возможности агентов, навыки, команды, пространства и\u00A0интеграции.",
   path: "/ai-platform/new-features/",
 });
 
@@ -38,13 +39,15 @@ export default function WhatsNewPage() {
         className={`w-full pt-[calc(64px+var(--header-h))] pb-48 md:pt-[calc(80px+var(--header-h))] md:pb-64 ${HERO_GRADIENT}`}
       >
         <div className="container-page flex flex-col gap-16">
+          {/* hero без растрового фона — крошки стоят в потоке, а не абсолютом */}
+          <Breadcrumbs variant="inline" items={[{ label: "Что\u00A0нового" }]} />
           <h1 className="text-h3 font-medium text-neutral-1000 md:text-h2">
             Что&nbsp;нового
           </h1>
           <p className="max-w-[560px] text-body-l text-text-secondary">
             Рассказываем, что&nbsp;изменилось в&nbsp;платформе: новые
             возможности агентов, навыки и&nbsp;команды, пространства
-            и&nbsp;коннекторы к&nbsp;внешним системам.
+            и&nbsp;интеграции с&nbsp;внешними системами.
           </p>
         </div>
       </section>

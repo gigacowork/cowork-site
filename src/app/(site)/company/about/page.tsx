@@ -12,6 +12,7 @@ import { Kicker } from "@/components/ui/Kicker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «О компании» — /company/about
@@ -233,6 +234,7 @@ export default function AboutCompanyPage() {
 
       {/* ── Hero (4215:24060 / 4215:24261) ── */}
       <section className="relative isolate flex min-h-[588px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[48px] md:min-h-[760px] md:pt-[272px] md:pb-96">
+        <Breadcrumbs items={[{ label: "О\u00A0компании" }]} />
         <HeroImage
           desktop="/img/about/hero.webp"
           mobile="/img/about/hero-mob.webp"

@@ -37,6 +37,18 @@ type NavGroup = {
   links: NavLink[];
 };
 
+/**
+ * Подписи сценариев, которые в подвале называются не так, как в шапке.
+ *
+ * Обычно подпись одна на оба меню — она лежит в `navLabel` справочника ролей.
+ * «Управленческие решения» по просьбе заказчика (22.09.2026) в подвале
+ * называются «Для руководителей»; в шапке и в хлебных крошках подпись
+ * прежняя, поэтому переименование сделано здесь, а не в справочнике.
+ */
+const FOOTER_LABELS: Record<string, string> = {
+  ceo: "Для\u00A0руководителей",
+};
+
 const NAV_GROUPS: NavGroup[] = [
   {
     title: "ПЛАТФОРМА",
@@ -52,7 +64,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Рабочие пространства", href: "/ai-platform/workspace" },
       { label: "ИИ-агенты", href: "/ai-platform/agents" },
       { label: "Навыки", href: "/ai-platform/skill" },
-      { label: "Коннекторы", href: "/ai-platform/connectors" },
+      { label: "Интеграции", href: "/ai-platform/connectors" },
       { label: "Быстрые команды", href: "/ai-platform/quick-commands" },
       { label: "Задачи по\u00A0расписанию", href: "/ai-platform/schedule" },
       { label: "Что\u00A0нового", href: "/ai-platform/new-features" },
@@ -62,8 +74,7 @@ const NAV_GROUPS: NavGroup[] = [
       */
       { label: "Документация", href: "/docs/", blank: true },
       { label: "Безопасность", href: "/trust-and-safety" },
-      /* Страницы ещё нет — пункт не показываем. */
-      { label: "Помощь и\u00A0поддержка", href: "#support", hidden: true },
+      { label: "Помощь и\u00A0поддержка", href: "/support" },
     ],
   },
   {
@@ -75,7 +86,7 @@ const NAV_GROUPS: NavGroup[] = [
     title: "СЦЕНАРИИ",
     width: "xl:w-[196px]",
     links: USE_CASES.map((item) => ({
-      label: item.navLabel,
+      label: FOOTER_LABELS[item.slug] ?? item.navLabel,
       href: `/use_cases/${item.slug}`,
     })),
   },
@@ -99,7 +110,7 @@ const NAV_GROUPS: NavGroup[] = [
     width: "xl:w-[101px]",
     links: [
       { label: "О\u00A0компании", href: "/company/about" },
-      { label: "Кейсы", href: "#cases", hidden: true },
+      { label: "Кейсы", href: "/success-stories" },
       { label: "Блог", href: "#blog", hidden: true },
       { label: "Партнёрам", href: "/company/partners" },
       { label: "Карьера", href: "#career", hidden: true },

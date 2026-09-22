@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Button } from "@/components/ui/Button";
 import { Lines, Paragraphs } from "@/components/use-cases/Lines";
@@ -23,6 +24,7 @@ const HERO_GRADIENT =
 
 export function UseCaseHero({
   title,
+  breadcrumb,
   intro,
   introWidth = "calc(var(--container-page) / 2)",
   image,
@@ -30,6 +32,8 @@ export function UseCaseHero({
   imageClassName = "",
 }: {
   title: string;
+  /** Подпись текущей страницы в крошках — короткая, как в меню «Для кого». */
+  breadcrumb?: string;
   intro: string[];
   /** Ширина колонки подзаголовка от md и выше. */
   introWidth?: string;
@@ -58,6 +62,8 @@ export function UseCaseHero({
         image ? "bg-bg-page" : HERO_GRADIENT
       }`}
     >
+      {breadcrumb ? <Breadcrumbs items={[{ label: breadcrumb }]} /> : null}
+
       {image ? (
         <HeroImage
           desktop={image}

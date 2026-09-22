@@ -11,6 +11,7 @@ import { Kicker } from "@/components/ui/Kicker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Задачи по расписанию» — /ai-platform/schedule
@@ -129,6 +130,7 @@ export default function SchedulePage() {
         и 780×928 (2× фрейма 390×464).
       */}
       <section className="relative isolate flex min-h-[464px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
+        <Breadcrumbs items={[{ label: "Задачи по\u00A0расписанию" }]} />
         {/*
           Кадр показывается как есть, без подгонки композиции: ни приближения,
           ни сдвига точки кадрирования. Прежний кадр приходилось приближать от

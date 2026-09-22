@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { RELEASES, getRelease, type Block } from "@/content/releases";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * Страница релиза — /whats-new/[slug]
@@ -215,12 +216,17 @@ export default async function ReleasePage({
         className={`w-full pt-[calc(48px+var(--header-h))] pb-48 md:pt-[calc(64px+var(--header-h))] md:pb-64 ${HERO_GRADIENT}`}
       >
         <div className="container-page flex flex-col gap-24">
-          <Link
-            href="/ai-platform/new-features"
-            className="text-body-m text-text-secondary transition-colors hover:text-text-primary"
-          >
-            ← Что&nbsp;нового
-          </Link>
+          {/*
+            Крошки на месте прежней ссылки «← Что нового»: они дают тот же
+            возврат к разводящей, но ещё и показывают, где страница лежит.
+          */}
+          <Breadcrumbs
+            variant="inline"
+            items={[
+              { label: "Что\u00A0нового", href: "/ai-platform/new-features" },
+              { label: release.version },
+            ]}
+          />
 
           <div className="flex flex-wrap items-center gap-8">
             <span className="rounded-full bg-action-primary-default py-4 pl-12 pr-[14px] text-caption text-text-inverse">

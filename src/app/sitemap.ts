@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { USE_CASES } from "@/lib/use-cases";
 import { RELEASES } from "@/content/releases";
+import { CASES_WITH_STORY } from "@/content/cases";
 
 /**
  * Карта сайта.
@@ -93,6 +94,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     { url: url("/media/"), changeFrequency: "weekly", priority: 0.7 },
+    { url: url("/success-stories/"), changeFrequency: "monthly", priority: 0.8 },
+    ...CASES_WITH_STORY.map((item) => ({
+      url: url(`/success-stories/${item.slug}/`),
+      changeFrequency: "yearly" as const,
+      priority: 0.6,
+    })),
     { url: url("/company/about/"), changeFrequency: "yearly", priority: 0.6 },
     {
       url: url("/company/partners/"),
@@ -100,6 +107,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     { url: url("/guides/"), changeFrequency: "monthly", priority: 0.7 },
+    { url: url("/support/"), changeFrequency: "monthly", priority: 0.6 },
     ...USE_CASES.map((useCase) => ({
       url: url(`/use_cases/${useCase.slug}/`),
       changeFrequency: "monthly" as const,

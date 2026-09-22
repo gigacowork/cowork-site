@@ -146,6 +146,7 @@ export default async function UseCasePage({
 
       <UseCaseHero
         title={useCase.title}
+        breadcrumb={useCase.navLabel}
         intro={useCase.intro}
         introWidth={useCase.introWidth}
         image={useCase.heroImage}

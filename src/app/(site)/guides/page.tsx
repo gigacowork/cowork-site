@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import VideoGuides from "@/components/interactive/VideoGuides";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Обучающие видео» — /video
@@ -78,11 +79,11 @@ const GUIDES: Guide[] = [
   },
   {
     id: "connectors",
-    tab: "Коннекторы",
+    tab: "Интеграции",
     number: "05",
     title: "Как\u00A0подключить корпоративные системы",
     paragraphs: [
-      "Агент работает с\u00A0вашими сервисами напрямую через открытый стандарт MCP. В\u00A0релизе уже 19\u00A0готовых коннекторов к\u00A0самым популярным системам. Выберите нужный сервис из\u00A0списка и\u00A0подключите за\u00A0пару кликов. Дальше агент берет данные оттуда сам.",
+      "Агент работает с\u00A0вашими сервисами напрямую через открытый стандарт MCP. В\u00A0релизе уже 40+\u00A0готовых интеграций с\u00A0самыми популярными системами. Выберите нужный сервис из\u00A0списка и\u00A0подключите за\u00A0пару кликов. Дальше агент берет данные оттуда сам.",
     ],
     video: "/video/connectors.mp4",
   },
@@ -130,6 +131,8 @@ export default function VideoGuidesPage() {
         className={`w-full pt-[calc(120px+var(--header-h))] pb-64 md:pt-[calc(160px+var(--header-h))] md:pb-80 ${HERO_GRADIENT}`}
       >
         <div className="container-page flex flex-col gap-16">
+          {/* hero без растрового фона — крошки стоят в потоке, а не абсолютом */}
+          <Breadcrumbs variant="inline" items={[{ label: "Обучающие видео" }]} />
           <h1 className="text-h3 font-medium text-neutral-1000 md:text-h2">
             Начните работать
             <br />

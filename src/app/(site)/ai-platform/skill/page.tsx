@@ -11,6 +11,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
 import { asset } from "@/lib/asset";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Навыки» — /ai-platform/skill
@@ -92,12 +93,12 @@ const ASSET_CARDS: {
     ),
     text: (
       <>
-        В навыке прописаны коннекторы к&nbsp;базам знаний и&nbsp;системам&nbsp;—
+        В навыке прописаны интеграции с&nbsp;базами знаний и&nbsp;системами&nbsp;—
         агент берет данные с&nbsp;учетом политик доступа.
       </>
     ),
     tags: [
-      { label: "Коннекторы", icon: "/img/icons/component.svg" },
+      { label: "Интеграции", icon: "/img/icons/component.svg" },
       { label: "Политики доступа", icon: "/img/icons/key.svg" },
     ],
     illustration: "sources",
@@ -282,6 +283,7 @@ export default function SkillPage() {
 
       {/* ── Hero (3680:27473 / 3832:61680) ── */}
       <section className="relative isolate flex min-h-[668px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
+        <Breadcrumbs items={[{ label: "Навыки" }]} />
         <HeroImage
           desktop="/img/skills/hero.webp"
           mobile="/img/skills/hero-mob.webp"

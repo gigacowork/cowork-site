@@ -11,6 +11,7 @@ import { Kicker } from "@/components/ui/Kicker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
 import { seoMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Быстрые команды» — /ai-platform/quick-commands
@@ -144,6 +145,7 @@ export default function QuickCommandsPage() {
         и 780×928 (2× фрейма 390×464).
       */}
       <section className="relative isolate flex min-h-[464px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-[80px] md:min-h-[760px] md:pt-[180px] md:pb-120">
+        <Breadcrumbs items={[{ label: "Быстрые команды" }]} />
         <HeroImage
           desktop="/img/quick-commands/hero.webp"
           mobile="/img/quick-commands/hero-mob.webp"

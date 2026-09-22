@@ -5,6 +5,7 @@ import SubscribeForm from "@/components/interactive/SubscribeForm";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Kicker } from "@/components/ui/Kicker";
 import { pageMetadata } from "@/lib/site";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 /**
  * «Медиа» — /media
@@ -98,6 +99,7 @@ export default function MediaPage() {
     <>
       {/* ── Hero (4539:94850 / 4530:93741) ── */}
       <section className="relative isolate flex min-h-[329px] w-full flex-col justify-end overflow-hidden bg-bg-page pt-[120px] pb-48 md:min-h-[500px] md:pt-[272px] md:pb-96">
+        <Breadcrumbs items={[{ label: "Медиа" }]} />
         <HeroImage
           desktop="/img/media/hero.webp"
           mobile="/img/media/hero-mob.webp"
