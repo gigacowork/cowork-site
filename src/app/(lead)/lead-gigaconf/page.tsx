@@ -84,16 +84,23 @@ export default function LeadGigaconfPage() {
         </Link>
       </header>
 
-      <main className="container-page flex flex-1 flex-col items-center gap-40 py-40 md:flex-row md:items-start md:gap-24 md:pt-[var(--lead-main-pt,70px)] md:pb-[var(--lead-main-pb,80px)]">
-        <div className="flex w-full flex-col items-start gap-32 text-text-primary md:min-w-0 md:flex-1 md:gap-48">
-          <div className="flex w-full flex-col gap-16 md:max-w-[560px] md:gap-24">
+      {/*
+        Две колонки включаются с xl, а не с md. У формы фиксированная ширина
+        588 плюс отбивка 24, и колонка набирает свои 588 только когда
+        контейнер дорос до 1200, то есть от 1280. На md и lg колонке
+        оставалось 76–332 px и заголовок рассыпался в узкий столбец, поэтому
+        до xl заголовок, пункты и форма идут друг под другом во всю ширину.
+      */}
+      <main className="container-page flex flex-1 flex-col items-center gap-40 py-40 xl:flex-row xl:items-start xl:gap-24 md:pt-[var(--lead-main-pt,70px)] md:pb-[var(--lead-main-pb,80px)]">
+        <div className="flex w-full flex-col items-start gap-32 text-text-primary xl:min-w-0 xl:flex-1 xl:gap-48">
+          <div className="flex w-full flex-col gap-16 xl:max-w-[560px] xl:gap-24">
             {/*
               Заголовок набран жирным начертанием и с градиентом по первым
               двум словам — так же, как заголовки шагов на слайдах. Браузер
               без `background-clip: text` получит обычный белый текст: запасной
               вариант описан в globals.css через `@supports`.
             */}
-            <h1 className="text-h3 font-bold md:text-h2">
+            <h1 className="text-h3 font-bold md:text-h2 xl:text-h1">
               {/*
                 `whitespace-nowrap`: строка ломалась по дефису внутри
                 «GenAI-команду», и градиентное слово разрывалось надвое.
@@ -104,13 +111,19 @@ export default function LeadGigaconfPage() {
               </span>
               &nbsp;в&nbsp;деле?
             </h1>
-            {/* Двоеточие не украшение: фраза продолжается пунктами списка. */}
-            <p className="text-body-l text-text-secondary">
-              Оставьте контакты, и&nbsp;мы покажем как GigaCowork:
+            {/*
+              Подзаголовок идёт основным цветом и на широких экранах кеглем
+              Heading/H4: он часть первого экрана вместе с заголовком, а не
+              подпись к списку. Вторичным цветом он терялся между крупным
+              заголовком и пунктами ниже.
+            */}
+            <p className="text-body-l text-text-primary md:text-h4">
+              Оставьте контакты, и&nbsp;мы проведем персональное демо
+              GigaCowork
             </p>
           </div>
 
-          <div className="flex w-full flex-col gap-24 md:max-w-[560px] md:gap-32">
+          <div className="flex w-full flex-col gap-24 xl:max-w-[560px] xl:gap-32">
             {/*
               Маркер — галочка: то, что платформа уже умеет, читается как
               отмеченный пункт. Рисунок взят у `check.svg` остальных иконок
@@ -231,7 +244,7 @@ export default function LeadGigaconfPage() {
             globals.css. Так диктор читает слова, а не по буквам, и текст
             остаётся нормальным при копировании.
           */
-          submitLabel="Запросить демо"
+          submitLabel="Отправить"
           idPrefix="gigaconf"
           className="gc-card"
           successIcon
