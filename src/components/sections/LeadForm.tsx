@@ -364,7 +364,12 @@ export function LeadForm({
         форма помещалась целиком. Значения по умолчанию — из макета, поэтому
         вне страницы заявки компонент выглядит как прежде.
       */
-      className={`flex w-full max-w-[840px] flex-col items-center gap-24 rounded-[16px] border border-[#e6e6e6] py-24 md:w-[588px] md:gap-[var(--lead-form-gap,24px)] md:px-12 md:py-[var(--lead-form-py,48px)] ${FORM_GRADIENT} ${className}`}
+      /*
+        Ниже md отступы и шаг тоже берутся из переменных `.lead-fit`, а не
+        числами: по умолчанию там прежние 24/24, так что /lead не меняется,
+        а страница GigaConf ужимает их, чтобы поместиться в один экран.
+      */
+      className={`flex w-full max-w-[840px] flex-col items-center gap-[var(--lead-m-form-gap,24px)] rounded-[16px] border border-[#e6e6e6] py-[var(--lead-m-form-py,24px)] md:w-[588px] md:gap-[var(--lead-form-gap,24px)] md:px-12 md:py-[var(--lead-form-py,48px)] ${FORM_GRADIENT} ${className}`}
     >
       {status === "sent" ? (
         <div className="flex flex-col items-center gap-12 px-16 py-40 text-center md:px-48">

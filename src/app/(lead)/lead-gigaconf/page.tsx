@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import type { CSSProperties } from "react";
 import Link from "next/link";
 
 import LeadForm from "@/components/sections/LeadForm";
@@ -12,7 +11,8 @@ import { pageMetadata } from "@/lib/site";
  * «Пробный доступ» для GigaConf — /lead-gigaconf
  *
  * Клон страницы заявки (/lead) под мероприятие. Отличий три:
- *   • текст слева — тезисы доклада вместо общих выгод продукта;
+ *   • текст слева — одно обещание вместо общих выгод продукта: на стенде
+ *     подробности человек слышит вживую, экран нужен под форму;
  *   • тёмная тема в стиле слайдов (палитра — в globals.css, `.lead-gigaconf`);
  *   • три поля вместо пяти: имя, телефон, почта. Компанию и ИНН менеджер
  *     уточняет при созвоне — на стенде каждое лишнее поле стоит заявок.
@@ -36,36 +36,20 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-/**
- * Пункты продолжают фразу над списком: «покажем, как GigaCowork…». Отсюда и
- * глаголы в настоящем времени, и двоеточие в конце лида.
- *
- * Сказуемое и обстоятельство разделены не тире в строке, а разметкой: на
- * узкой колонке фраза ломается, и тире оставалось бы висеть в конце строки.
- */
-const POINTS: { title: string; text: string }[] = [
-  {
-    title: "Масштабирует опыт",
-    text: "от\u00A0личных задач до\u00A0процессов компании",
-  },
-  {
-    title: "Узнаёт компанию",
-    text: "через документы, встречи, подключённые системы",
-  },
-  {
-    title: "Действует",
-    text: "выполняя задачи по\u00A0событию или\u00A0расписанию",
-  },
-];
-
 export default function LeadGigaconfPage() {
   return (
     /*
       `lead-fit` — тот же вертикальный ритм, что и на /lead: на невысоких
       экранах отступы ужимаются, чтобы форма помещалась целиком. `lead-gigaconf`
-      поверх него переопределяет палитру.
+      поверх него переопределяет палитру и задаёт мобильную лесенку отступов:
+      на стенде страница обязана помещаться в экран без прокрутки.
+
+      `min-h-dvh`, а не `min-h-screen`: на телефоне `100vh` — это высота без
+      панелей браузера, и страница, сверстанная под неё, в реальном Safari
+      всё равно прокручивалась. Динамическая единица считает ровно ту высоту,
+      которую человек видит сейчас.
     */
-    <div className="lead-fit lead-gigaconf flex min-h-screen w-full flex-col bg-bg-page">
+    <div className="lead-fit lead-gigaconf flex min-h-dvh w-full flex-col bg-bg-page">
       {/* Шапка — только логотип, как на /lead. Белый вариант: фон чёрный. */}
       <header className="container-page flex h-[62px] shrink-0 items-center justify-between py-16 md:h-[81px]">
         <Link
@@ -85,140 +69,57 @@ export default function LeadGigaconfPage() {
       </header>
 
       {/*
-        Две колонки включаются с xl, а не с md. У формы фиксированная ширина
-        588 плюс отбивка 24, и колонка набирает свои 588 только когда
-        контейнер дорос до 1200, то есть от 1280. На md и lg колонке
-        оставалось 76–332 px и заголовок рассыпался в узкий столбец, поэтому
-        до xl заголовок, пункты и форма идут друг под другом во всю ширину.
+        Одна колонка на всех ширинах: заголовок, обещание, форма — друг под
+        другом по центру страницы. Двухколоночной раскладки больше нет, от неё
+        остался только `md:`-ритм отступов: на десктопе воздуха больше.
+
+        `justify-center` — остаток высоты раздаётся сверху и снизу, а не
+        копится одной дырой перед подвалом. `items-center` ставит блоки по
+        центру ширины: и текст, и карточка формы уже контейнера, без него они
+        прижимались бы к левому краю.
       */}
-      <main className="container-page flex flex-1 flex-col items-center gap-40 py-40 xl:flex-row xl:items-start xl:gap-24 md:pt-[var(--lead-main-pt,70px)] md:pb-[var(--lead-main-pb,80px)]">
-        <div className="flex w-full flex-col items-start gap-32 text-text-primary xl:min-w-0 xl:flex-1 xl:gap-48">
-          <div className="flex w-full flex-col gap-16 xl:max-w-[560px] xl:gap-24">
+      <main className="container-page flex flex-1 flex-col items-center justify-center gap-[var(--lead-m-main-gap,40px)] py-[var(--lead-m-main-py,40px)] md:gap-[var(--lead-main-gap,32px)] md:pt-[var(--lead-main-pt,70px)] md:pb-[var(--lead-main-pb,80px)]">
+        {/*
+          Мера строки ограничена: выключенный по центру текст читается тем
+          хуже, чем длиннее строка, — глаз каждый раз ищет новое начало. 720
+          держит обещание в одну строку на десктопе, а заголовок в две.
+        */}
+        <div className="flex w-full max-w-[720px] flex-col gap-16 text-center text-text-primary md:gap-24">
+          {/*
+            Заголовок набран жирным начертанием и с градиентом по первым
+            двум словам — так же, как заголовки шагов на слайдах. Браузер
+            без `background-clip: text` получит обычный белый текст: запасной
+            вариант описан в globals.css через `@supports`.
+          */}
+          <h1 className="text-h3 font-bold md:text-h2">
             {/*
-              Заголовок набран жирным начертанием и с градиентом по первым
-              двум словам — так же, как заголовки шагов на слайдах. Браузер
-              без `background-clip: text` получит обычный белый текст: запасной
-              вариант описан в globals.css через `@supports`.
+              `whitespace-nowrap`: строка ломалась по дефису внутри
+              «GenAI-команду», и градиентное слово разрывалось надвое.
             */}
-            <h1 className="text-h3 font-bold md:text-h2 xl:text-h1">
-              {/*
-                `whitespace-nowrap`: строка ломалась по дефису внутри
-                «GenAI-команду», и градиентное слово разрывалось надвое.
-              */}
-              Готовы увидеть{" "}
-              <span className="gc-gradient-text whitespace-nowrap">
-                GenAI-команду
-              </span>
-              &nbsp;в&nbsp;деле?
-            </h1>
+            Готовы увидеть{" "}
+            <span className="gc-gradient-text whitespace-nowrap">
+              GenAI-команду
+            </span>
+            &nbsp;в&nbsp;деле?
+          </h1>
+          {/*
+            Обещание одной строкой — оно же единственная подводка к форме,
+            поэтому набрано Heading/H4 основным цветом, а не кеглем подписи:
+            на 16 вторичным цветом строка терялась между заголовком и
+            карточкой.
+
+            `data-lead-sub`: на совсем низких экранах строка скрывается
+            совсем, чтобы форма влезла целиком (правило в globals.css).
+          */}
+          <p data-lead-sub className="text-h4 font-medium text-text-primary">
             {/*
-              Подзаголовок идёт основным цветом и на широких экранах кеглем
-              Heading/H4: он часть первого экрана вместе с заголовком, а не
-              подпись к списку. Вторичным цветом он терялся между крупным
-              заголовком и пунктами ниже.
+              Неразрывный пробел перед названием: иначе на десктопе строка
+              ломается после «демо», и «GigaCowork» остаётся висеть в
+              отдельной строке один.
             */}
-            <p className="text-body-l text-text-primary md:text-h4">
-              Оставьте контакты, и&nbsp;мы проведем персональное демо
-              GigaCowork
-            </p>
-          </div>
-
-          <div className="flex w-full flex-col gap-24 xl:max-w-[560px] xl:gap-32">
-            {/*
-              Маркер — галочка: то, что платформа уже умеет, читается как
-              отмеченный пункт. Рисунок взят у `check.svg` остальных иконок
-              сайта один в один, меняется только цвет обводки.
-
-              Градиент объявлен один раз ниже и переиспользуется всеми тремя:
-              три одинаковых `id` на странице ломали бы заливку.
-
-              Шаг только из шкалы темы: 20 в ней нет, и Tailwind молча даёт 80.
-            */}
-            <svg width="0" height="0" aria-hidden className="absolute">
-              <defs>
-                <linearGradient id="gc-check" x1="0" y1="0" x2="1" y2="1">
-                  <stop style={{ stopColor: "var(--gc-accent-from)" }} />
-                  <stop
-                    offset="1"
-                    style={{ stopColor: "var(--gc-accent-to)" }}
-                  />
-                </linearGradient>
-              </defs>
-            </svg>
-
-            <ul className="flex w-full flex-col gap-16 md:gap-24">
-              {POINTS.map((point, i) => (
-                <li
-                  key={point.title}
-                  data-rise
-                  style={{ "--rise": String(i) } as CSSProperties}
-                  className="flex gap-12"
-                >
-                  {/*
-                    Галочка выровнена по первой строке заголовка, а не по
-                    центру пункта: описание под ним переносится, и по центру
-                    маркер уезжал бы вниз.
-                  */}
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    aria-hidden
-                    className="mt-[1px] shrink-0"
-                  >
-                    <path
-                      d="M4.75 12.75 9.75 17.75 19.25 6.75"
-                      stroke="url(#gc-check)"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <div className="flex flex-col">
-                    <p className="text-body-l font-medium text-text-primary">
-                      {point.title}
-                    </p>
-                    <p className="text-body-m text-text-secondary">
-                      {point.text}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            {/*
-              Про контроль — не четвёртый пункт списка, а оборот на читателя:
-              выше перечислено, что делает платформа, здесь — что остаётся за
-              человеком. Поэтому и оформлено иначе: вместо вертикальной черты
-              слева горизонтальная линия сверху, и строка идёт одной фразой, а
-              не парой «сказуемое / обстоятельство».
-
-              Линия того же градиента, но уходит в прозрачность: она отбивает
-              строку от списка, не превращаясь во второй такой же маркер.
-            */}
-            <p
-              data-rise
-              style={{ "--rise": String(POINTS.length) } as CSSProperties}
-              className="flex w-full flex-col gap-12 text-body-l font-medium text-text-primary"
-            >
-              <span
-                aria-hidden
-                className="h-[2px] w-[96px] rounded-full bg-[linear-gradient(90deg,var(--gc-accent-from)_0%,var(--gc-accent-to)_70%,transparent_100%)]"
-              />
-              {/*
-                Интерлиньяж плотнее базового (1.2 у Body/L): строка переносится
-                на узкой колонке, и две строки одной фразы должны читаться
-                единым блоком, а не как два пункта.
-              */}
-              <span className="leading-[1.1]">
-                А&nbsp;вы контролируете{" "}
-                <span className="font-normal text-text-secondary">
-                  роли, доступы и&nbsp;автономность
-                </span>
-              </span>
-            </p>
-          </div>
+            Оставьте контакты, и&nbsp;мы проведем персональное
+            демо&nbsp;GigaCowork
+          </p>
         </div>
 
         {/*
@@ -254,8 +155,9 @@ export default function LeadGigaconfPage() {
         />
       </main>
 
-      <footer className="container-page shrink-0 pt-24 pb-32 md:pt-[var(--lead-footer-pt,48px)] md:pb-[var(--lead-footer-pb,40px)]">
-        <p className="text-center text-caption text-text-secondary md:text-left">
+      <footer className="container-page shrink-0 pt-[var(--lead-m-footer-pt,24px)] pb-[var(--lead-m-footer-pb,32px)] md:pt-[var(--lead-footer-pt,48px)] md:pb-[var(--lead-footer-pb,40px)]">
+        {/* По центру и на десктопе: страница целиком выстроена по оси. */}
+        <p className="text-center text-caption text-text-secondary">
           {LEGAL_LINES[0]}
           <br className="hidden md:inline" /> {LEGAL_LINES[1]}
         </p>

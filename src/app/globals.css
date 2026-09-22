@@ -537,16 +537,36 @@
 .lead-fit {
   --lead-main-pt: 70px;
   --lead-main-pb: 80px;
+  /*
+    Зазор между текстом и карточкой формы. Тоже в лесенке: страница
+    выстроена в одну колонку, и на низком окне ноутбука именно он
+    выталкивал подвал за экран.
+  */
+  --lead-main-gap: 32px;
   --lead-form-py: 48px;
   --lead-form-gap: 24px;
   --lead-footer-pt: 48px;
   --lead-footer-pb: 40px;
+
+  /*
+    Мобильный ритм. Значения по умолчанию равны тем, что стояли в разметке
+    числами, — то есть /lead ниже md выглядит ровно как раньше. Ужимает их
+    только `.lead-gigaconf` (см. ниже): там страница обязана помещаться в один
+    экран, а на /lead прокрутка допустима.
+  */
+  --lead-m-main-py: 40px;
+  --lead-m-main-gap: 40px;
+  --lead-m-form-py: 24px;
+  --lead-m-form-gap: 24px;
+  --lead-m-footer-pt: 24px;
+  --lead-m-footer-pb: 32px;
 }
 
 @media (min-width: 768px) and (max-height: 1060px) {
   .lead-fit {
     --lead-main-pt: 48px;
     --lead-main-pb: 48px;
+    --lead-main-gap: 24px;
     --lead-form-py: 36px;
     --lead-form-gap: 20px;
     --lead-footer-pt: 32px;
@@ -558,6 +578,7 @@
   .lead-fit {
     --lead-main-pt: 32px;
     --lead-main-pb: 32px;
+    --lead-main-gap: 20px;
     --lead-form-py: 28px;
     --lead-form-gap: 16px;
     --lead-footer-pt: 24px;
@@ -569,10 +590,59 @@
   .lead-fit {
     --lead-main-pt: 20px;
     --lead-main-pb: 20px;
+    --lead-main-gap: 16px;
     --lead-form-py: 20px;
     --lead-form-gap: 12px;
     --lead-footer-pt: 16px;
     --lead-footer-pb: 12px;
+  }
+}
+
+/*
+  Мобильная страница GigaConf целиком помещается в экран — это её рабочее
+  требование: на стенде человек не должен скроллить, чтобы найти форму.
+  Тезисы доклада (список и строка про контроль) ниже md спрятаны разметкой,
+  а отступы ужимаются здесь — по той же лесенке, что и на десктопе.
+
+  Ужимаем только GigaConf, а не весь `.lead-fit`: на /lead пять полей и более
+  длинный текст, там прокрутка — нормальное поведение, и менять её ритм
+  заодно значило бы трогать страницу, которую никто не просил трогать.
+*/
+@media (max-width: 767px) {
+  .lead-gigaconf {
+    --lead-m-main-py: 24px;
+    --lead-m-main-gap: 20px;
+    --lead-m-form-py: 20px;
+    --lead-m-form-gap: 14px;
+    --lead-m-footer-pt: 14px;
+    --lead-m-footer-pb: 16px;
+  }
+}
+
+/*
+  Порог 800, а не «высота телефона»: в Safari видимая область на 844-точечном
+  экране — около 745, и ступень должна включаться именно там, иначе страница
+  помещается только с убранными панелями браузера.
+*/
+@media (max-width: 767px) and (max-height: 800px) {
+  .lead-gigaconf {
+    --lead-m-main-py: 16px;
+    --lead-m-main-gap: 16px;
+    --lead-m-form-py: 16px;
+    --lead-m-form-gap: 10px;
+    --lead-m-footer-pt: 10px;
+    --lead-m-footer-pb: 12px;
+  }
+}
+
+/*
+  Совсем низкие экраны (iPhone SE): отступы ужимать дальше некуда, и строка
+  под заголовком уступает место форме. Заголовок остаётся — без него форма
+  висит в воздухе.
+*/
+@media (max-width: 767px) and (max-height: 700px) {
+  .lead-gigaconf [data-lead-sub] {
+    display: none;
   }
 }
 
@@ -1030,37 +1100,3 @@ input[type="checkbox"].checkbox-tick:checked {
   }
 }
 
-/*
-  Появление пунктов на /lead-gigaconf.
-
-  Цель — обозначить порядок чтения, а не показать анимацию: сдвиг на 8 и
-  полсекунды на пункт, с шагом 90 мс между ними. Весь список укладывается
-  меньше чем в секунду.
-
-  `backwards` обязателен: без него элемент до своей задержки стоит видимым и
-  на долю секунды мигает перед тем, как начать выезжать.
-
-  Порядковый номер приходит переменной из разметки — так очередь задаётся там
-  же, где перечислены сами пункты.
-*/
-@keyframes gc-rise {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.lead-gigaconf [data-rise] {
-  animation: gc-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  animation-delay: calc(0.12s + var(--rise) * 0.09s);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .lead-gigaconf [data-rise] {
-    animation: none;
-  }
-}
