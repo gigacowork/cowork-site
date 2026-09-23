@@ -636,13 +636,25 @@
 }
 
 /*
-  Совсем низкие экраны (iPhone SE): отступы ужимать дальше некуда, и строка
-  под заголовком уступает место форме. Заголовок остаётся — без него форма
-  висит в воздухе.
+  Совсем низкие экраны (iPhone SE и старые андроиды). Подзаголовок здесь
+  остаётся — он часть обещания, без него страница теряет смысл, — но платит
+  за место: набирается кеглем подписи вместо Heading/H4, а поля формы и
+  отступы ужимаются до предела, на котором всё ещё влезает в экран.
 */
 @media (max-width: 767px) and (max-height: 700px) {
+  .lead-gigaconf {
+    --lead-m-main-py: 12px;
+    --lead-m-main-gap: 12px;
+    --lead-m-form-py: 12px;
+    --lead-m-form-gap: 8px;
+    --lead-m-footer-pt: 8px;
+    --lead-m-footer-pb: 8px;
+    --lead-field-h: 48px;
+  }
+
   .lead-gigaconf [data-lead-sub] {
-    display: none;
+    font-size: var(--text-body-l);
+    line-height: var(--text-body-l--line-height);
   }
 }
 

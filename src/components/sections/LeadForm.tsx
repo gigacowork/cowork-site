@@ -40,7 +40,12 @@ const FORM_GRADIENT =
   "md:bg-[linear-gradient(224.038deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)]";
 
 const FIELD_CLASS =
-  "h-[56px] w-full rounded-[16px] border bg-bg-input p-16 " +
+  /*
+    Высота через переменную: по умолчанию прежние 56, и /lead не меняется.
+    Ужимает её только страница мероприятия на низких экранах — там форма
+    обязана помещаться целиком вместе с заголовком и подзаголовком.
+  */
+  "h-[var(--lead-field-h,56px)] w-full rounded-[16px] border bg-bg-input p-16 " +
   "text-body-m text-text-primary placeholder:text-text-secondary " +
   "transition-colors duration-200 outline-none " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary";
