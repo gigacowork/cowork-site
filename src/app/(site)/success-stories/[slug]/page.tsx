@@ -182,12 +182,22 @@ function Block({ block }: { block: StoryBlock }) {
       return (
         <figure className="mx-auto flex w-full max-w-[755px] flex-col gap-8">
           {block.src ? (
+            /*
+              Кадр подменяет слот целиком, а не ложится внутрь него: рамка,
+              скругление и тень нарисованы в самом файле, поля вокруг вырезаны
+              прозрачностью. Со стилями слота получалась карточка в карточке, а
+              `object-cover` подрезал бы кадр, если пропорции файла и слота
+              разойдутся. Тот же приём, что у превью в `ScenarioStack`.
+
+              Высоту задаёт сам файл: размеры здесь — из исходника, чтобы
+              браузер держал место до загрузки и страница не прыгала.
+            */
             <Image
               src={block.src}
               alt={block.caption}
-              width={768}
-              height={400}
-              className="w-full rounded-24 border border-[#f5f5f5] object-cover shadow-drop-lg"
+              width={1670}
+              height={947}
+              className="h-auto w-full"
             />
           ) : (
             <ArticlePlaceholder />
@@ -250,13 +260,19 @@ export default async function CaseStoryPage({
     <>
       {/* ── Hero (5136:51868 / 5136:51886) ── */}
       <section className="relative isolate flex min-h-[539px] w-full flex-col justify-end overflow-hidden bg-bg-page pt-[120px] pb-80 md:min-h-[500px] md:pt-[160px] md:pb-[73px]">
-        <Breadcrumbs items={[
+        <Breadcrumbs
+          items={[
             { label: "Кейсы", href: "/success-stories" },
             { label: study.company },
-          ]} />
+          ]}
+        />
+        {/*
+          Кадр у детальной страницы свой: у ленты hero ниже (318 на телефоне),
+          и её мобильный кадр 780×636 на экране кейса (539) растянулся бы.
+        */}
         <HeroImage
-          desktop="/img/cases/hero.webp"
-          mobile="/img/cases/hero-mob.webp"
+          desktop="/img/cases/case-hero.webp"
+          mobile="/img/cases/case-hero-mob.webp"
           className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
         />
         <div className="container-page flex flex-col items-center gap-16 text-center md:items-start md:gap-24 md:text-left">

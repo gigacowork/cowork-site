@@ -13,6 +13,8 @@
  * [data-app-preview] (+ data-depth="0|1|2", 2 — передний слой).
  */
 
+import Link from "next/link";
+
 import Image from "@/components/ui/Image";
 import { Icon } from "@/components/ui/Icon";
 import Button from "@/components/ui/Button";
@@ -44,14 +46,13 @@ const INFO_CARD_DESKTOP =
   (Default без тени → Hover Drop/Lg → Pressed Drop/Sm) и несут ссылку
   «Подробнее».
 
-  ВРЕМЕННО ОТКЛЮЧЕНО: страниц «Три варианта поставки» и «Обучение и
-  сопровождение» ещё нет в плане релизов, а ссылка в никуда и наведение,
-  обещающее переход, вводят в заблуждение. Чтобы вернуть: раскомментировать
-  <MoreLink> в обеих карточках и добавить `card-interactive` обратно в начало
-  строки ниже — больше ничего менять не нужно.
+  Ссылки ведут на существующие разделы: «Три варианта поставки» — на страницу
+  поставок, «Обучение и сопровождение» — на обучающие видео. Пока этих страниц
+  не было, ссылка и наведение были сняты; теперь карточки снова кликабельны
+  целиком — зону клика растягивает `stretched-target` внутри `card-interactive`.
 */
 const INFO_CARD_BASE =
-  "relative flex min-h-[254px] flex-col justify-between gap-40 overflow-hidden rounded-[24px] " +
+  "card-interactive relative flex min-h-[254px] flex-col justify-between gap-40 overflow-hidden rounded-[24px] " +
   "border border-[rgba(255,255,255,0.5)] p-40 " +
   INFO_CARD_DESKTOP;
 
@@ -76,18 +77,37 @@ const SUPPLY_TAGS = [
 ];
 
 /**
- * Card / Cowork / App Preview ×3 (I1927:15610;1078:3397 / ;1410:17350 / ;1410:15527).
- * Каждый PNG уже экспортирован с «запечённой» прозрачностью и обрезан по правому
- * и нижнему краю карточки, поэтому позиционируется как bottom-0 / right-0,
- * а ширина задана в процентах от 690px карточки (310/690, 285/690, 333/690).
+ * Card / Cowork / App Preview ×3 — 3284:73413 (I…;1078:3397 / ;1410:17350 /
+ * ;1410:15527).
+ *
+ * В макете это три экземпляра одного и того же экрана приложения: различаются
+ * только положением и прозрачностью (60 / 40 / 100 %). Поэтому в проекте один
+ * файл, а не три картинки: `app-preview.webp` — видимая часть переднего слоя,
+ * обрезанная по правому и нижнему краю карточки (293×364 в единицах макета,
+ * экспорт 2×). Прозрачность и сдвиг задней пары делает CSS.
+ *
+ * Позиционирование — от правого нижнего угла карточки: картинка вылезает за её
+ * край, как в макете, и остаётся прижатой к углу, какой бы высоты карточка ни
+ * оказалась (на 768–1023 она выше макетных 532 — её тянет соседняя колонка).
+ *
+ * Сдвиги заданы в процентах от самой картинки, а не карточки: так пара за
+ * передним слоем едет вместе с ним при любой ширине. В единицах макета это
+ * +23 / −14 и +48 / −25 — разница координат слоёв (420−397, 168−154 и
+ * 445−397, 168−143).
  */
+const PREVIEW_SRC = "/img/team/app-preview.webp";
+const PREVIEW_W = 586;
+const PREVIEW_H = 728;
+/** Ширина в процентах от карточки: 293 из 690 макетных. */
+const PREVIEW_WIDTH = "42.4638%";
+
 const APP_PREVIEWS = [
-  // x=420 y=154, opacity 60% — средний слой стопки
-  { src: "/img/team/app-preview.png", w: 310, h: 406, width: "44.93%" },
-  // x=445 y=143, opacity 40% — самый дальний слой
-  { src: "/img/team/app-preview-1.png", w: 285, h: 417, width: "41.3%" },
-  // x=397 y=168, opacity 100% — передний слой (Избранное: Продажи / Финансы)
-  { src: "/img/team/app-preview-2.png", w: 333, h: 392, width: "48.26%" },
+  // x=445 y=143 — самый дальний слой
+  { key: "far", opacity: 0.4, shift: "translate(16.3823%, -6.8681%)" },
+  // x=420 y=154 — средний слой
+  { key: "mid", opacity: 0.6, shift: "translate(7.8498%, -3.8462%)" },
+  // x=397 y=168 — передний слой, по нему обрезана картинка
+  { key: "front", opacity: 1, shift: "none" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -104,15 +124,15 @@ function Tag({ children }: { children: React.ReactNode }) {
  * Text Link 1003:4161. Растягивает свою зону клика на всю карточку, поэтому
  * кликабельна карточка целиком, а разметка остаётся валидной и доступной.
  */
-function MoreLink({ label }: { label: string }) {
+function MoreLink({ href, label }: { href: string; label: string }) {
   return (
-    <a
-      href="#more"
+    <Link
+      href={href}
       aria-label={label}
       className="text-link stretched-target flex w-fit cursor-pointer items-center justify-center py-4 text-caption focus-visible:outline-none"
     >
       Подробнее
-    </a>
+    </Link>
   );
 }
 
@@ -167,8 +187,9 @@ export function PartOfTeam() {
                   единая среда
                 </h3>
                 <p className="text-body-l text-text-primary">
-                  где агенты и&nbsp;сотрудники работают вместе с&nbsp;документами, базами
-                  знаний и&nbsp;данными из&nbsp;корпоративных систем
+                  где агенты и&nbsp;сотрудники работают вместе
+                  с&nbsp;документами, базами знаний и&nbsp;данными
+                  из&nbsp;корпоративных систем
                 </p>
               </div>
 
@@ -198,14 +219,18 @@ export function PartOfTeam() {
             >
               {APP_PREVIEWS.map((preview, index) => (
                 <Image
-                  key={preview.src}
+                  key={preview.key}
                   data-app-preview
                   data-depth={index}
-                  src={preview.src}
+                  src={PREVIEW_SRC}
                   alt=""
-                  width={preview.w}
-                  height={preview.h}
-                  style={{ width: preview.width }}
+                  width={PREVIEW_W}
+                  height={PREVIEW_H}
+                  style={{
+                    width: PREVIEW_WIDTH,
+                    opacity: preview.opacity,
+                    transform: preview.shift,
+                  }}
                   className="absolute right-0 bottom-0 h-auto max-w-none"
                 />
               ))}
@@ -228,11 +253,13 @@ export function PartOfTeam() {
                   Облако, Гибрид и&nbsp;ПАК.
                   <br />
                   Подберём под&nbsp;требования ИБ
-                  <br />и&nbsp;вашей бизнес-потребности
+                  <br />
+                  и&nbsp;вашей бизнес-потребности
                 </p>
                 <p className="hidden text-body-l text-text-secondary md:block">
                   Подберём под&nbsp;требования ИБ
-                  <br />и&nbsp;вашей бизнес-потребности
+                  <br />
+                  и&nbsp;вашей бизнес-потребности
                 </p>
               </div>
 
@@ -250,13 +277,19 @@ export function PartOfTeam() {
                     className="flex w-full items-center justify-start gap-4 rounded-full bg-bg-tag py-8 pl-12 pr-[14px] text-caption text-text-primary"
                   >
                     {/* Icon frame 354:151 — cloud / component / model, 24×24 */}
-                    <Icon src={icon} className="size-[24px] text-icon-primary" />
+                    <Icon
+                      src={icon}
+                      className="size-[24px] text-icon-primary"
+                    />
                     {label}
                   </li>
                 ))}
               </ul>
 
-              {/* <MoreLink label="Подробнее о трёх вариантах поставки" /> */}
+              <MoreLink
+                href="/pricing"
+                label="Подробнее о трёх вариантах поставки"
+              />
             </article>
 
             {/* Card / Info · Обучение и сопровождение — 1927:15613 / 1927:17416 */}
@@ -266,22 +299,33 @@ export function PartOfTeam() {
               <div className="flex flex-col gap-16">
                 <h3 className="text-h3 font-medium text-text-primary">
                   Обучение
-                  <br />и&nbsp;сопровождение
+                  <br />
+                  и&nbsp;сопровождение
                 </h3>
                 <p className="text-body-l text-text-secondary md:hidden">
                   Онлайн база знаний.
                   <br />
                   Консалтинг и&nbsp;экспертное сопровождение на&nbsp;всех этапах
-                  внедрения. Корпоративные курсы по&nbsp;ГенИИ в&nbsp;СберУниверситете
+                  внедрения. Корпоративные курсы по&nbsp;ГенИИ
+                  в&nbsp;СберУниверситете
                 </p>
                 <p className="hidden text-body-l text-text-secondary md:block">
                   База знаний, консалтинг и&nbsp;сопровождение внедрения.
                   Корпоративные курсы по&nbsp;ГенИИ
-                  <br />в&nbsp;СберУниверситете
+                  <br />
+                  в&nbsp;СберУниверситете
                 </p>
               </div>
 
-              {/* <MoreLink label="Подробнее об обучении и сопровождении" /> */}
+              {/*
+                Ведёт на «Академию»: с 25.09.2026 обучающие ролики вошли в неё
+                первым блоком, и это теперь единственный раздел про обучение
+                в навигации сайта.
+              */}
+              <MoreLink
+                href="/ai-academy"
+                label="Подробнее об обучении и сопровождении"
+              />
             </article>
           </div>
         </div>

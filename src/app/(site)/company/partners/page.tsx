@@ -889,6 +889,14 @@ export default function PartnersPage() {
           </div>
           <LeadForm
             target={PARTNER_LEAD}
+            /*
+              Партнёру мы отвечаем договором, а не письмом «Здравствуйте,
+              Иван»: в документах нужны фамилия и имя. Подмена подписи
+              локальная — на /lead и /lead-gigaconf поле остаётся «Имя».
+            */
+            labels={{
+              name: { label: "Имя и фамилия", empty: "Укажите имя и фамилию" },
+            }}
             requireAll
             idPrefix="partner"
             submitLabel="Стать партнером"

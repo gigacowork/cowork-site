@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { CarouselControl } from "@/components/ui/CarouselControl";
 import { Icon } from "@/components/ui/Icon";
 
 /**
@@ -102,12 +103,20 @@ function Pagination() {
       aria-label="Страницы материалов"
       className="flex items-center justify-center gap-8"
     >
-      <span className="flex size-[48px] items-center justify-center rounded-full border border-border-default text-text-tertiary">
-        <Icon
-          src="/img/icons/arrow-next.svg"
-          className="size-[20px] rotate-180 text-icon-secondary"
-        />
-      </span>
+      {/*
+        Стрелки — тот же Carousel Control (802:3907), что листает карточки в
+        блоке «Не тратьте часы…» на главной: 56×44, рамка 1.5, состояния
+        default / hover / pressed / disabled. Раньше здесь был свой кружок 48
+        с рамкой 1 — две разные стрелки на одном сайте.
+
+        Первая страница открыта, листать назад некуда: кнопка в состоянии
+        disabled, и это же снимает её с клавиатуры.
+      */}
+      <CarouselControl
+        direction="previous"
+        label="Предыдущая страница"
+        disabled
+      />
       {pages.map((page, i) => (
         <span
           key={page + i}
@@ -121,12 +130,18 @@ function Pagination() {
           {page}
         </span>
       ))}
-      <span className="flex size-[48px] items-center justify-center rounded-full border border-border-default">
-        <Icon
-          src="/img/icons/arrow-next.svg"
-          className="size-[20px] text-icon-primary"
-        />
-      </span>
+      {/*
+        Листать вперёд тоже пока некуда, но серой её не делаем: в макете
+        пагинация нарисована рабочей. Чтобы кнопка не ловила фокус впустую,
+        она убрана из обхода и от диктора — появятся страницы, снять
+        `tabIndex` и `aria-hidden` и повесить обработчик.
+      */}
+      <CarouselControl
+        direction="next"
+        label="Следующая страница"
+        tabIndex={-1}
+        aria-hidden
+      />
     </nav>
   );
 }

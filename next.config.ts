@@ -48,10 +48,12 @@ const nextConfig: NextConfig = {
   ...(process.env.NODE_ENV === "development"
     ? {
         async rewrites() {
-          return ["/docs", "/landing-gigaconf"].map((dir) => ({
-            source: dir,
-            destination: `${dir}/index.html`,
-          }));
+          return ["/docs", "/landing-gigaconf", "/landing-demo-events"].map(
+            (dir) => ({
+              source: dir,
+              destination: `${dir}/index.html`,
+            }),
+          );
         },
       }
     : {}),

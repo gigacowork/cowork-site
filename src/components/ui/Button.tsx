@@ -30,10 +30,17 @@ const variantClasses: Record<Variant, string> = {
     "bg-action-primary-default text-text-inverse " +
     "not-disabled:hover:bg-action-primary-hover " +
     "disabled:bg-action-primary-disabled disabled:text-text-tertiary",
+  /*
+    Обводка нарисована внутренней тенью, а не `border`: рамка не занимает
+    места, и кнопка остаётся 41 (33 / 30) в высоту — как в макете, где обводка
+    тоже лежит внутри бокса. С настоящим border кнопка становилась на 2 px
+    выше и шире соседней Primary, и в ряду переключателей (например, темы на
+    «Академии») активная таблетка заметно не совпадала с остальными.
+  */
   secondary:
-    "bg-action-secondary-default text-text-primary border border-border-strong " +
+    "bg-action-secondary-default text-text-primary shadow-[inset_0_0_0_1px_var(--color-border-strong)] " +
     "not-disabled:hover:bg-action-secondary-hover " +
-    "disabled:border-border-subtle disabled:text-text-tertiary",
+    "disabled:shadow-[inset_0_0_0_1px_var(--color-border-subtle)] disabled:text-text-tertiary",
   ghost:
     "bg-action-secondary-default text-text-primary " +
     "not-disabled:hover:bg-action-secondary-hover " +

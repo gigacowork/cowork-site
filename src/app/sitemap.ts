@@ -12,8 +12,8 @@ import { CASES_WITH_STORY } from "@/content/cases";
  * здесь, без отдельного списка, который кто-нибудь забудет обновить.
  *
  * Что в карту НЕ попадает:
- *   • `/landing-events/**` и `/landing-gigaconf/` — стендовые страницы,
- *     закрыты `noindex` и в robots.txt;
+ *   • `/landing-events/**`, `/landing-gigaconf/` и `/landing-demo-events/` —
+ *     стендовые страницы, закрыты `noindex` и в robots.txt;
  *   • `/docs/**` — выгрузка Antora со своей навигацией и сотнями
  *     страниц: в карте сайта ей делать нечего, поисковик дойдёт по ссылкам;
  *   • 404 — по определению.
@@ -107,6 +107,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     { url: url("/guides/"), changeFrequency: "monthly", priority: 0.7 },
+    { url: url("/ai-academy/"), changeFrequency: "monthly", priority: 0.7 },
     { url: url("/support/"), changeFrequency: "monthly", priority: 0.6 },
     ...USE_CASES.map((useCase) => ({
       url: url(`/use_cases/${useCase.slug}/`),

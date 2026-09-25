@@ -44,7 +44,11 @@ export default function robots(): MetadataRoute.Robots {
         в выдаче им делать нечего. В самих страницах стоит ещё и meta robots
         noindex — robots.txt закрывает обход, meta закрывает выдачу.
       */
-      disallow: ["/landing-events", "/landing-gigaconf"],
+      disallow: [
+        "/landing-events",
+        "/landing-gigaconf",
+        "/landing-demo-events",
+      ],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

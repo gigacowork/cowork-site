@@ -22,6 +22,14 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
  * в `MediaFeed`.
  */
 
+/**
+ * Секция «Подписка на новые материалы» временно скрыта: рассылки пока нет,
+ * и форма собирала бы адреса, на которые некому писать. Разметка и сам
+ * `SubscribeForm` остаются на месте — появится рассылка, ставим `true`,
+ * больше менять нечего.
+ */
+const SHOW_SUBSCRIBE = false;
+
 export const metadata: Metadata = pageMetadata({
   title: "Медиа — GigaCowork",
   description:
@@ -154,13 +162,15 @@ export default function MediaPage() {
         </div>
       </section>
 
-      {/* ── Подписка (4579:97921 / 4530:93790) ── */}
+      {/* ── Подписка (4579:97921 / 4530:93790) — см. SHOW_SUBSCRIBE ── */}
       {/* Фон секции из макета: светло-голубой к почти белому. */}
-      <section className="w-full bg-[linear-gradient(180deg,#f0f8ff_0%,#f7f7f8_100%)] py-64 md:py-80">
-        <div className="container-page">
-          <SubscribeForm />
-        </div>
-      </section>
+      {SHOW_SUBSCRIBE ? (
+        <section className="w-full bg-[linear-gradient(180deg,#f0f8ff_0%,#f7f7f8_100%)] py-64 md:py-80">
+          <div className="container-page">
+            <SubscribeForm />
+          </div>
+        </section>
+      ) : null}
     </>
   );
 }

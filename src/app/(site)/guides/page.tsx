@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import VideoGuides from "@/components/interactive/VideoGuides";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { GUIDES, guidePoster } from "@/content/guides";
 
 /**
  * «Обучающие видео» — /video
@@ -23,81 +24,6 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
  */
 
 export const metadata: Metadata = seoMetadata(PAGE_SEO.guides);
-
-type Guide = {
-  id: string;
-  /** короткая подпись для таба */
-  tab: string;
-  number: string;
-  title: string;
-  /** абзацы описания (во втором ролике источника их два) */
-  paragraphs: string[];
-  video: string;
-};
-
-const GUIDES: Guide[] = [
-  {
-    id: "overview",
-    tab: "Обзор платформы",
-    number: "01",
-    title: "Обзор возможностей платформы",
-    paragraphs: [
-      "Первый релиз GigaCowork\u00A0— это все необходимое для\u00A0продуктивной работы: от\u00A0анализа документов до\u00A0автоматизации рутинных задач.",
-      "Делегируйте работу агентам уже сегодня: добавляйте документы, навыки, подключайте свои системы и\u00A0приглашайте коллег к\u00A0совместной работе.",
-    ],
-    video: "/video/overview.mp4",
-  },
-  {
-    id: "first-task",
-    tab: "Первый запуск",
-    number: "02",
-    title: "Первый запуск: как\u00A0поставить задачу",
-    paragraphs: [
-      "Откройте платформу и\u00A0просто напишите, что\u00A0нужно сделать. Своими словами, как\u00A0коллеге. Агент сам разберется в\u00A0задаче, найдет нужные документы и\u00A0предложит решение. Никаких настроек перед стартом. Поставьте первую задачу прямо сейчас.",
-    ],
-    video: "/video/first-task.mp4",
-  },
-  {
-    id: "agent-skill",
-    tab: "Навыки",
-    number: "03",
-    title: "Как\u00A0создать навык для\u00A0агента",
-    paragraphs: [
-      "Навык\u00A0— это набор правил, по\u00A0которым агент решает задачу. Например, оформлять документы в\u00A0фирменном стиле или\u00A0разбирать предложения поставщиков по\u00A0вашим правилам. Опишите задачу максимально подробно, как\u00A0должностную инструкцию, один раз и\u00A0сохраните как\u00A0навык. Дальше агент применит его сам, когда понадобится.",
-    ],
-    video: "/video/agent-skill.mp4",
-  },
-  {
-    id: "quick-commands",
-    tab: "Команды",
-    number: "04",
-    title: "Быстрые команды",
-    paragraphs: [
-      "Запросы, которые вы повторяете каждый день, сохраните как /команду. Например, если нужно ежедневно формировать отчеты или\u00A0анализировать ТКП, договоры и\u00A0прочие документы. Один символ вместо длинного описания задачи. Команда запускает нужный сценарий за\u00A0секунду.",
-    ],
-    video: "/video/quick-commands.mp4",
-  },
-  {
-    id: "connectors",
-    tab: "Интеграции",
-    number: "05",
-    title: "Как\u00A0подключить корпоративные системы",
-    paragraphs: [
-      "Агент работает с\u00A0вашими сервисами напрямую через открытый стандарт MCP. В\u00A0релизе уже 40+\u00A0готовых интеграций с\u00A0самыми популярными системами. Выберите нужный сервис из\u00A0списка и\u00A0подключите за\u00A0пару кликов. Дальше агент берет данные оттуда сам.",
-    ],
-    video: "/video/connectors.mp4",
-  },
-  {
-    id: "spaces",
-    tab: "Пространства",
-    number: "06",
-    title: "Как\u00A0добавить коллег и\u00A0создать общие документы",
-    paragraphs: [
-      "Пространство хранит знания и\u00A0документы одного проекта отдельно от\u00A0других. Откройте доступ коллегам, и\u00A0вы работаете над\u00A0задачами вместе. Общие документы видны всей команде и\u00A0обновляются для\u00A0всех сразу. Соберите проект в\u00A0одном месте и\u00A0пригласите тех, кому он нужен.",
-    ],
-    video: "/video/spaces.mp4",
-  },
-];
 
 /** Тот же фон, что у финального CTA главной (2572:11130). */
 const HERO_GRADIENT =
@@ -204,7 +130,7 @@ export default function VideoGuidesPage() {
                       у VideoObject поле thumbnailUrl обязательное, и ссылается
                       оно на этот же файл (см. src/content/seo.ts).
                     */
-                    poster={asset(`/img/guides/${guide.id}-poster.webp`)}
+                    poster={asset(guidePoster(guide.id))}
                     muted
                     loop
                     playsInline

@@ -18,6 +18,11 @@ import { Icon } from "@/components/ui/Icon";
 
 type Props = {
   direction: "next" | "previous";
+  /**
+   * Подпись для скринридера, если стрелка листает не карточки. В пагинации
+   * это страницы, и «Следующая карточка» диктор читал бы неправдой.
+   */
+  label?: string;
 } & Omit<ComponentPropsWithoutRef<"button">, "children" | "type">;
 
 const LABEL: Record<Props["direction"], string> = {
@@ -27,13 +32,14 @@ const LABEL: Record<Props["direction"], string> = {
 
 export function CarouselControl({
   direction,
+  label,
   className = "",
   ...rest
 }: Props) {
   return (
     <button
       type="button"
-      aria-label={LABEL[direction]}
+      aria-label={label ?? LABEL[direction]}
       className={
         "group flex h-[44px] w-[56px] shrink-0 cursor-pointer items-center justify-center rounded-full border-[1.5px] " +
         "border-border-default bg-action-secondary-default transition-colors duration-200 " +

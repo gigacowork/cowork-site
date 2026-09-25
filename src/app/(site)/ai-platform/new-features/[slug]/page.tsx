@@ -327,13 +327,17 @@ export default async function ReleasePage({
             >
               Попробовать продукт
             </Button>
+            {/*
+              Раньше кнопка вела на «Обучающие видео»: с 25.09.2026 ролики
+              лежат в «Академии», она же и осталась в навигации.
+            */}
             <Button
-              href="/guides"
+              href="/ai-academy"
               variant="secondary"
               size="lg"
               className="text-body-m!"
             >
-              Обучающие видео
+              Академия
             </Button>
           </div>
         </div>

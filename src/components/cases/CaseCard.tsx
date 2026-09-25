@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { asset } from "@/lib/asset";
 import { Icon } from "@/components/ui/Icon";
 import { Image } from "@/components/ui/Image";
 import type { CaseStudy } from "@/content/cases";
@@ -15,6 +16,9 @@ import type { CaseStudy } from "@/content/cases";
  * выходит 344 px, а внутренняя вёрстка карточки рассчитана на 588 —
  * число 96 px и два чипа в ряд туда не помещаются.
  */
+
+/** Граница кадров широкой карточки — та же, что `lg` в её раскладке. */
+const CARD_PHOTO_MEDIA = "(max-width: 1023.98px)";
 
 /** Заглушка вместо кадра — снимков для карточек пока нет (как на /media). */
 function PhotoPlaceholder({ className = "" }: { className?: string }) {
@@ -121,13 +125,29 @@ export function CaseCard({
         /* Кадр: сверху на телефоне (5132:15323), справа на десктопе (5119:15255) */
         <div className="order-first w-full lg:order-last lg:flex lg:w-[588px] lg:shrink-0 lg:items-center lg:py-24 lg:pr-24">
           {study.photo ? (
-            <Image
-              src={study.photo}
-              alt=""
-              width={564}
-              height={432}
-              className="h-[220px] w-full object-cover lg:h-[432px] lg:w-[564px] lg:rounded-16"
-            />
+            /*
+              <picture>, а не две картинки с `hidden`: скрытая классом всё
+              равно скачивается, и телефон тянул бы ещё и десктопный кадр.
+              Граница — та же, что у `lg` в раскладке карточки: до неё кадр
+              лежит полосой сверху, после — стоит справа.
+            */
+            <picture>
+              <source
+                media={CARD_PHOTO_MEDIA}
+                srcSet={asset(study.photo.mobile)}
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={asset(study.photo.desktop)}
+                alt=""
+                aria-hidden
+                width={564}
+                height={432}
+                loading="lazy"
+                decoding="async"
+                className="h-[220px] w-full object-cover lg:h-[432px] lg:w-[564px] lg:rounded-16"
+              />
+            </picture>
           ) : (
             <PhotoPlaceholder className="h-[220px] w-full rounded-none lg:h-[432px] lg:w-[564px] lg:rounded-16" />
           )}

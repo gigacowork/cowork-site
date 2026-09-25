@@ -48,10 +48,11 @@ const SECURITY_GRADIENT =
 
 type TagItem = { label: string; icon: string };
 
+/** Метрики — About / Metrics 3475:90050, подписи дословно из макета. */
 const METRICS = [
-  { value: 80, caption: "быстрее подготовка отчетов и\u00A0аналитики" },
+  { value: 80, caption: "ускоряется обработка документов" },
   { value: 70, caption: "быстрее подготовка отчетов и\u00A0аналитики" },
-  { value: 93, caption: "быстрее подготовка отчетов и\u00A0аналитики" },
+  { value: 93, caption: "сокращается время на\u00A0поиск информации" },
 ];
 
 /**

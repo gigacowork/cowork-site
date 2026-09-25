@@ -728,6 +728,22 @@ input[type="checkbox"].checkbox-tick:checked {
   }
 }
 
+/*
+  Курсор набора в карточке «кейсы на подходе» (`SoonCard`). Мигает резко, без
+  плавного затухания: так ведёт себя каретка в редакторе, а плавная пульсация
+  читалась бы как подсветка, а не как набор текста.
+*/
+@keyframes type-caret {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @layer utilities {
   .chat-bubble-in {
     animation: chat-bubble-in 260ms ease-out both;
@@ -744,6 +760,21 @@ input[type="checkbox"].checkbox-tick:checked {
 
   .marquee-group {
     gap: var(--marquee-gap);
+  }
+
+  /*
+    Каретка набора: полоска в толщину штриха, по высоте — со строчную букву.
+    `currentColor` — чтобы она была того же цвета, что и слово, которое
+    «печатается».
+  */
+  .type-caret {
+    display: inline-block;
+    width: 0.06em;
+    height: 0.9em;
+    margin-left: 0.06em;
+    translate: 0 0.08em;
+    background: currentColor;
+    animation: type-caret 1.05s steps(1, end) infinite;
   }
 
   /*
@@ -1111,4 +1142,3 @@ input[type="checkbox"].checkbox-tick:checked {
     color: inherit;
   }
 }
-

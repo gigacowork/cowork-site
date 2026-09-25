@@ -5,15 +5,20 @@
  * Figma mobile:  1927:17394 (How_it_works — 390 artboard, py 64 / px 16, gap 40,
  *                            card grid gap 16, cards 358×500, p-40, r-24, no shadow)
  *
- * The three cards are meant to получить a "stacking scroll" effect later: each card
- * becomes sticky and the previous one shrinks behind it. That logic is NOT implemented
- * here — the markup only exposes the hooks for it:
- *   • `<section data-stack-section>`   — the scroll container
- *   • `<ul data-stack-list>`           — the card track
- *   • `<li data-stack-card data-stack-index={i}>` — one card, still in normal flow
- *   • `--stack-scale` / `--stack-offset` CSS custom properties per card, taken from the
- *     Figma proto (settled widths 980 / 1010 / 1040 and tops 214 / 254 / 294)
- *   • the `HOW_IT_WORKS_CARDS` data export
+ * Скролл-стори — та же, что на подстраницах «О платформе» и на страницах ролей:
+ * от lg карточки встают на липкие позиции с шагом 32, каждая следующая наезжает
+ * на предыдущую, а в конце стопка собирается. Наслоение держит CSS (`sticky` +
+ * `--top`), сборку и тени считает `StackingCards`, который оборачивает секцию на
+ * главной. Прежний вариант из прототипа 2006:8925 (уменьшение масштаба и липкий
+ * заголовок) заменён по просьбе — блок приведён к остальным страницам.
+ *
+ * Хуки разметки:
+ *   • `<section data-stack-section>` — секция целиком
+ *   • `<ul data-stack-list>`         — сетка стопки, в ней же лежит распорка
+ *   • `<li data-stack-card>`         — карточка на липкой позиции `--top`
+ *   • `<li data-spacer>`             — пустая строка снизу: по ней считается
+ *     сборка, и без неё последняя карточка уезжает, едва успев сесть
+ *   • `HOW_IT_WORKS_CARDS`           — данные карточек
  */
 
 import Image from "@/components/ui/Image";
@@ -36,11 +41,16 @@ export type HowItWorksCard = {
   fillClassName: string;
   /** desktop text-column width from Figma */
   contentClassName: string;
-  /** settled width of the card in the stack, relative to the front card (980/1010/1040) */
-  stackScale: number;
-  /** vertical offset of the card inside its sticky viewport (214/254/294 → 0/40/80) */
-  stackOffset: number;
 };
+
+/**
+ * Липкие позиции стопки — те же значения, что у скролл-стори на остальных
+ * страницах (`StickyScenarios`): шапка плюс воздух и шаг, на который
+ * выглядывает край предыдущей карточки. Дублируются в `StackingCards`, где по
+ * ним считается сборка.
+ */
+const STICKY_TOP = 140;
+const CARD_STEP = 32;
 
 export const HOW_IT_WORKS_CARDS: HowItWorksCard[] = [
   {
@@ -57,8 +67,6 @@ export const HOW_IT_WORKS_CARDS: HowItWorksCard[] = [
     },
     fillClassName: "md:bg-[#e8f5fd]",
     contentClassName: "md:max-w-[463px]",
-    stackScale: 0.942,
-    stackOffset: 0,
   },
   {
     id: "analyze",
@@ -73,8 +81,6 @@ export const HOW_IT_WORKS_CARDS: HowItWorksCard[] = [
     },
     fillClassName: "md:bg-[#f3fafe]",
     contentClassName: "md:max-w-[418px]",
-    stackScale: 0.971,
-    stackOffset: 40,
   },
   {
     id: "result",
@@ -90,8 +96,6 @@ export const HOW_IT_WORKS_CARDS: HowItWorksCard[] = [
     },
     fillClassName: "md:bg-bg-card",
     contentClassName: "md:max-w-[463px]",
-    stackScale: 1,
-    stackOffset: 80,
   },
 ];
 
@@ -122,10 +126,23 @@ export function HowAgentsWork() {
           GigaCowork
         </h2>
 
-        {/* Card grid (1927:17396) / sticky stack (2006:8926–2006:8931) */}
+        {/*
+          Card grid (1927:17396) / sticky stack (2006:8926–2006:8931).
+
+          От lg — сетка: строка на карточку плюс одна под распорку, как в
+          StickyScenarios. Строки нужны именно сеткой, а не потоком: липкий
+          диапазон карточки ограничен контентной областью родителя, и нижним
+          отступом его не удлинить. Зазор между строками — это и есть путь
+          прокрутки на одну передачу карточки.
+        */}
         <ul
           data-stack-list
-          className="flex w-full max-w-[1040px] flex-col gap-16 md:gap-24"
+          style={
+            {
+              "--rows": String(HOW_IT_WORKS_CARDS.length + 1),
+            } as React.CSSProperties
+          }
+          className="flex w-full max-w-[1040px] flex-col gap-16 md:gap-24 lg:grid lg:grid-rows-[repeat(var(--rows),auto)] lg:gap-y-96"
         >
           {HOW_IT_WORKS_CARDS.map((card, index) => (
             <li
@@ -134,11 +151,12 @@ export function HowAgentsWork() {
               data-stack-index={index}
               style={
                 {
-                  "--stack-scale": card.stackScale,
-                  "--stack-offset": `${card.stackOffset}px`,
+                  "--row": String(index + 1),
+                  "--top": `${STICKY_TOP + index * CARD_STEP}px`,
+                  zIndex: index + 1,
                 } as React.CSSProperties
               }
-              className={`relative h-[500px] overflow-hidden rounded-[24px] p-40 md:shadow-elevation-lg ${CARD_GRADIENT} ${card.fillClassName}`}
+              className={`relative h-[500px] overflow-hidden rounded-[24px] p-40 md:shadow-elevation-lg lg:sticky lg:top-[var(--top)] lg:row-start-[var(--row)] ${CARD_GRADIENT} ${card.fillClassName}`}
             >
               <div
                 className={`relative z-10 flex flex-col gap-16 ${card.contentClassName}`}
@@ -172,6 +190,22 @@ export function HowAgentsWork() {
               />
             </li>
           ))}
+
+          {/*
+            Пустая строка-распорка: на ней стопка стоит прикреплённой, по ней
+            же `StackingCards` считает сборку в конце. Ниже lg стопки нет —
+            и распорки тоже.
+          */}
+          <li
+            aria-hidden
+            data-spacer
+            style={
+              {
+                "--row": String(HOW_IT_WORKS_CARDS.length + 1),
+              } as React.CSSProperties
+            }
+            className="hidden lg:block lg:h-[45vh] lg:row-start-[var(--row)]"
+          />
         </ul>
       </div>
     </section>

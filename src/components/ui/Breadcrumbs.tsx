@@ -39,7 +39,10 @@ function Row({ items }: { items: Crumb[] }) {
   return (
     <>
       {/* Ниже md — только возврат на главную (4939:95002) */}
-      <Link href="/" className={`flex w-fit items-center gap-8 md:hidden ${LINK_CLASS}`}>
+      <Link
+        href="/"
+        className={`flex w-fit items-center gap-8 md:hidden ${LINK_CLASS}`}
+      >
         <Icon
           src="/img/icons/chevron-down.svg"
           className="size-[12px] rotate-90"
@@ -49,7 +52,14 @@ function Row({ items }: { items: Crumb[] }) {
 
       {/* От md — цепочка (4939:94997) */}
       <ol className="hidden items-center gap-8 md:flex">
-        <li>
+        {/*
+          `flex items-center` — как у остальных звеньев. Без него ссылка
+          остаётся строчной, её бокс считается по метрикам шрифта (18), а не
+          по интерлиньяжу (16.8), строка получается на 24 — и «Главная» стоит
+          на 1,4 пикселя ниже соседей. С флексом высота всей строки 16.8, как
+          в макете (4939:15243 — 17).
+        */}
+        <li className="flex items-center">
           <Link href="/" className={LINK_CLASS}>
             Главная
           </Link>
