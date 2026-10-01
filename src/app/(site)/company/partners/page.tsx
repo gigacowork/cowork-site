@@ -7,6 +7,7 @@ import LeadForm from "@/components/sections/LeadForm";
 import Button from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
+import { Icon } from "@/components/ui/Icon";
 import { Kicker } from "@/components/ui/Kicker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PAGE_SEO } from "@/content/seo";
@@ -174,10 +175,22 @@ type IllRow =
 
 type Illustration = { caption: string; rowWidth?: string; rows: IllRow[] };
 
-/** «Как вы зарабатываете» (4345:24794) — сетка 2×2. */
-const REVENUE: { title: string; text: string; ill: Illustration }[] = [
+/**
+ * «Как вы зарабатываете» (4345:24794) — сетка 2×2.
+ *
+ * `tag` — плашка из мобильного макета (4451:90369): там вместо кадра
+ * интерфейса под текстом стоит один тег. Кадр на телефоне не показываем —
+ * он рассчитан на 300+ и на 358 обрезался до нечитаемого.
+ */
+const REVENUE: {
+  title: string;
+  text: string;
+  ill: Illustration;
+  tag: { label: string; icon: string };
+}[] = [
   {
     title: "Продажа платформы",
+    tag: { label: "Лицензия", icon: "/img/icons/key.svg" },
     text: "Получайте вознаграждение с\u00A0продажи лицензий GigaCowork.",
     ill: {
       caption: "Монетизация",
@@ -194,6 +207,7 @@ const REVENUE: { title: string; text: string; ill: Illustration }[] = [
   },
   {
     title: "Внедрение",
+    tag: { label: "Проектная выручка", icon: "/img/icons/chart-no-axes-combined.svg" },
     text: "Проектируйте решение, создавайте AI-агентов, подключайте корпоративные системы и\u00A0запускайте автоматизацию.",
     ill: {
       caption: "Внедрение",
@@ -208,6 +222,7 @@ const REVENUE: { title: string; text: string; ill: Illustration }[] = [
   },
   {
     title: "Развитие решения",
+    tag: { label: "Расширение", icon: "/img/icons/puzzle-pair.svg" },
     text: "Подключайте подразделения, автоматизируйте новые процессы и\u00A0сопровождайте продление лицензий.",
     ill: {
       caption: "Развитие",
@@ -229,6 +244,7 @@ const REVENUE: { title: string; text: string; ill: Illustration }[] = [
   },
   {
     title: "Поддержка и\u00A0консалтинг",
+    tag: { label: "Регулярный доход", icon: "/img/icons/money.svg" },
     text: "Оказывайте поддержку, обучайте пользователей и\u00A0консультируйте клиента после запуска.",
     ill: {
       caption: "Поддержка",
@@ -713,7 +729,7 @@ export default function PartnersPage() {
                     углу и обрезается карточкой — так в макете. Ниже lg он
                     идёт в потоке над текстом, иначе лёг бы на заголовок.
                   */}
-                  <div className="lg:absolute lg:top-[19px] lg:-right-[72px]">
+                  <div className="hidden lg:absolute lg:top-[19px] lg:-right-[72px] lg:block">
                     <CardIllustration ill={card.ill} />
                   </div>
                   <div className="flex flex-col gap-16 lg:mt-auto lg:max-w-[310px]">
@@ -722,6 +738,16 @@ export default function PartnersPage() {
                     </h3>
                     <p className="text-body-m text-text-primary">{card.text}</p>
                   </div>
+                  {/* Плашка — только ниже lg, вместо кадра (4451:90369). */}
+                  <span className="flex w-fit items-center gap-4 self-end rounded-full bg-bg-tag p-8 lg:hidden">
+                    <Icon
+                      src={card.tag.icon}
+                      className="size-[24px] text-icon-primary"
+                    />
+                    <span className="text-caption text-text-primary">
+                      {card.tag.label}
+                    </span>
+                  </span>
                 </article>
               ))}
             </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import MediaFeed, { type Article } from "@/components/interactive/MediaFeed";
 import SubscribeForm from "@/components/interactive/SubscribeForm";
@@ -6,6 +7,7 @@ import { HeroImage } from "@/components/ui/HeroImage";
 import { Kicker } from "@/components/ui/Kicker";
 import { pageMetadata } from "@/lib/site";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { BLOG_ARTICLES } from "@/content/blog-articles";
 
 /**
  * «Медиа» — /media
@@ -17,9 +19,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
  *   Лента     4549:3002  / 4530:93757 — карточки, пагинация, «Читают чаще всего»
  *   Подписка  4579:97921 / 4530:93790
  *
- * Фотографии в карточках — заглушки: исходников для них нет, в макете стоят
- * рамки под снимки. Появятся файлы — меняется только `PhotoPlaceholder`
- * в `MediaFeed`.
+ * В широких карточках вместо заглушек используются абстракции в стиле хиро.
  */
 
 /**
@@ -39,7 +39,13 @@ export const metadata: Metadata = pageMetadata({
 
 /* ──────────────────────────────── данные ───────────────────────────────── */
 
-/** Материалы ленты (4549:3018). Порядок и типы карточек — как в макете. */
+/** Материалы ленты; сетка «широкая + четыре обычных» задаётся в MediaFeed. */
+const BLOG_PREVIEW_IMAGES: Record<string, string> = {
+  "ai-agents-productivity": "/img/media/card-abstract-press.png",
+  "gigacowork-platform-overview": "/img/media/card-abstract-news.png",
+  "revenue-growth-vs-hiring": "/img/media/card-abstract-blog.png",
+};
+
 const ARTICLES: Article[] = [
   {
     tag: "СМИ о нас",
@@ -47,7 +53,6 @@ const ARTICLES: Article[] = [
     title:
       "СберБанк представил GigaCowork\u00A0— корпоративную платформу для\u00A0создания ИИ-агентов",
     text: "СберБанк предоставил доступ к\u00A0корпоративной платформе GigaCowork\u00A0— с\u00A0ней компании могут создавать персонализированных ИИ-агентов.",
-    variant: "featured",
   },
   {
     tag: "Новости",
@@ -55,23 +60,23 @@ const ARTICLES: Article[] = [
     title:
       "В\u00A0России представили корпоративную платформу для\u00A0создания ИИ-агентов",
     text: "Платформа доступна в\u00A0трех конфигурациях",
-    variant: "small",
   },
-  {
+  ...BLOG_ARTICLES.map((article): Article => ({
     tag: "Блог",
-    date: "15 августа 2026",
-    title:
-      "Сбер запустил платформу ГИГАЧАТ БИЗНЕС для\u00A0создания ИИ-агентов",
-    text: "Платформа доступна в\u00A0трех конфигурациях",
-    variant: "small",
-  },
+    date: article.date ?? "",
+    title: article.title,
+    previewTitle: article.slug === "ai-agents-productivity" ? "Как ИИ-агенты помогают ..." : undefined,
+    text: article.description,
+    href: `/media/blog/${article.slug}/`,
+    previewImage: BLOG_PREVIEW_IMAGES[article.slug],
+    previewOnCompact: article.slug === "ai-agents-productivity",
+  })),
   {
     tag: "СМИ о нас",
     date: "15 августа 2026",
     title:
       "«ГигаЧат Бизнес» от\u00A0Сбера возьмёт на\u00A0себя рутинную работу российских компаний",
     text: "Сбер открыл корпоративным клиентам доступ к\u00A0своей внутренней платформе «ГигаЧат Бизнес» (GigaChat Enterprise).",
-    variant: "wide",
   },
   {
     tag: "СМИ о нас",
@@ -79,26 +84,11 @@ const ARTICLES: Article[] = [
     title:
       "Андрей Белевцев: «Перестать развивать ИИ\u00A0— значит выпасть из\u00A0гонки навсегда»",
     text: "Современный искусственный интеллект\u00A0— это сложнейший технологический процесс.",
-    variant: "featured",
   },
 ];
 
-/** Сайдбар «Читают чаще всего» (4550:3063). */
-const MOST_READ = [
-  {
-    title: "ФосАгро: −93% времени на\u00A0скрининг кандидатов",
-    meta: "Блог · 6 мин",
-  },
-  {
-    title: "С\u00A0чего начать внедрение AI: пошаговый план",
-    meta: "Блог · 8 мин",
-  },
-  { title: "RAG для\u00A0корпоративной базы знаний", meta: "Блог · 10 мин" },
-  {
-    title: "Корпоративный AI в\u00A02025: опрос 200 компаний",
-    meta: "Новости · 12 мин",
-  },
-];
+/** Сайдбар ведёт на опубликованные статьи. */
+const MOST_READ = BLOG_ARTICLES.slice(0, 4);
 
 /* ─────────────────────────────── страница ──────────────────────────────── */
 
@@ -148,12 +138,10 @@ export default function MediaPage() {
                         : ""
                     }`}
                   >
-                    <p className="text-body-l text-text-primary">
+                    <Link href={`/media/blog/${item.slug}/`} className="text-body-l text-text-primary hover:underline">
                       {item.title}
-                    </p>
-                    <p className="text-caption text-text-secondary">
-                      {item.meta}
-                    </p>
+                    </Link>
+                    <p className="text-caption text-text-secondary">Блог</p>
                   </li>
                 ))}
               </ul>

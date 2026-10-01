@@ -51,7 +51,7 @@ function Row({ items }: { items: Crumb[] }) {
       </Link>
 
       {/* От md — цепочка (4939:94997) */}
-      <ol className="hidden items-center gap-8 md:flex">
+      <ol className="hidden min-w-0 items-center gap-8 md:flex">
         {/*
           `flex items-center` — как у остальных звеньев. Без него ссылка
           остаётся строчной, её бокс считается по метрикам шрифта (18), а не
@@ -65,7 +65,7 @@ function Row({ items }: { items: Crumb[] }) {
           </Link>
         </li>
         {items.map((item, index) => (
-          <li key={item.label} className="flex items-center gap-8">
+          <li key={item.label} className="flex min-w-0 items-center gap-8">
             <Icon
               src="/img/icons/chevron-down.svg"
               className="size-[12px] -rotate-90 text-text-secondary"
@@ -76,8 +76,9 @@ function Row({ items }: { items: Crumb[] }) {
               </Link>
             ) : (
               <span
-                className="text-body-m text-text-primary"
+                className="max-w-[50vw] truncate text-body-m text-text-primary"
                 aria-current={index === last ? "page" : undefined}
+                title={item.label}
               >
                 {item.label}
               </span>

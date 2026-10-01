@@ -201,7 +201,7 @@ const PHOSAGRO_STORY: CaseStory = {
     },
     {
       type: "image",
-      src: "/img/cases/phosagro-interface.webp",
+      src: "/img/cases/phosagro-interface.png",
       caption: "ПАО «ФосАгро»: цифровизация HR-процессов",
     },
     {

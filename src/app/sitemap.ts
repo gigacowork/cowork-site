@@ -3,6 +3,7 @@ import { SITE_URL } from "@/lib/site";
 import { USE_CASES } from "@/lib/use-cases";
 import { RELEASES } from "@/content/releases";
 import { CASES_WITH_STORY } from "@/content/cases";
+import { BLOG_ARTICLES } from "@/content/blog-articles";
 
 /**
  * Карта сайта.
@@ -94,6 +95,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     { url: url("/media/"), changeFrequency: "weekly", priority: 0.7 },
+    ...BLOG_ARTICLES.map((article) => ({
+      url: url(`/media/blog/${article.slug}/`),
+      changeFrequency: "yearly" as const,
+      priority: 0.6,
+    })),
     { url: url("/success-stories/"), changeFrequency: "monthly", priority: 0.8 },
     ...CASES_WITH_STORY.map((item) => ({
       url: url(`/success-stories/${item.slug}/`),

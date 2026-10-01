@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import type { ReactNode } from "react";
 import {
   CTA_FALLBACK,
   CtaBackground,
@@ -25,7 +26,7 @@ export function FinalCta({
   background,
 }: {
   /** Заголовок. У части страниц он свой — например «Быстрый старт с GigaCowork». */
-  title?: string;
+  title?: ReactNode;
   /** Кадр фона из макета страницы. По умолчанию — первый. */
   background?: CtaVariant;
 }) {

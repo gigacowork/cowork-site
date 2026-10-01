@@ -153,7 +153,15 @@ const AGENT_BLOCKS = [
   },
   {
     title: "Навыки",
-    text: "Превратите лучшие практики компании в\u00A0единый стандарт работы для\u00A0всех сотрудников",
+    text: "Превратите лучшие практики компании в\u00A0единый стандарт работы для\u00A0всех сотрудников.",
+    /* Примеры навыков из макета 1833:7520 — были потеряны при переносе. */
+    bullets: [
+      "Генератор презентаций из\u00A0бизнес-данных",
+      "Суммаризация звонков в\u00A0CRM-запись",
+      "Сравнение коммерческих предложений",
+      "Сверка договора с\u00A0шаблоном",
+      "План-факт анализ",
+    ],
     preview: "/img/platform/agent-skills.webp",
   },
   {
@@ -579,20 +587,21 @@ export default function PlatformPage() {
                 корпоративной безопасности
               </p>
               {/*
-                ВРЕМЕННО СКРЫТО: страницы про безопасность ещё нет, ссылка вела
-                на форму заявки. Вернуть — раскомментировать блок ниже.
-
-                <Link
-                  href="/lead"
-                  className="flex shrink-0 items-center gap-8 text-body-m text-text-primary transition-opacity hover:opacity-70"
-                >
-                  Подробнее о безопасности
-                  <Icon
-                    src="/img/icons/arrow-up-right.svg"
-                    className="size-[9px] text-icon-primary"
-                  />
-                </Link>
+                Ссылка была скрыта, пока страницы про безопасность не было, —
+                она вела на форму заявки. Страница появилась
+                (/trust-and-safety), поэтому 28.09.2026 ссылка возвращена и
+                ведёт туда.
               */}
+              <Link
+                href="/trust-and-safety"
+                className="flex shrink-0 items-center gap-8 text-body-m text-text-primary transition-opacity hover:opacity-70"
+              >
+                Подробнее о&nbsp;безопасности
+                <Icon
+                  src="/img/icons/arrow-up-right.svg"
+                  className="size-[9px] text-icon-primary"
+                />
+              </Link>
             </div>
           </header>
 
@@ -644,9 +653,15 @@ export default function PlatformPage() {
             <h2 className="text-h3 font-medium text-text-primary md:text-h2">
               ИИ-решение для&nbsp;всех подразделений
             </h2>
+            {/*
+              Вторая фраза («Большинство процессов…») была потеряна при
+              переносе из макета 3475:90125 — возвращена 28.09.2026 по
+              замечаниям с тестового стенда.
+            */}
             <p className="text-body-l text-text-secondary">
               GigaCowork помогает облегчить работу руководителей, коммерческих
-              команд и&nbsp;бэк-офиса
+              команд и&nbsp;бэк-офиса. <br className="hidden md:block" />
+              Большинство процессов и&nbsp;задач можно упростить.
             </p>
           </header>
 

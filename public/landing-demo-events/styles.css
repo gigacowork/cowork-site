@@ -272,3 +272,89 @@ h1 { position: absolute; left: 50%; top: 2.083cqw; width: 34.323cqw; margin: 0; 
 }
 
 .theme-lite .selected-agent { color: #fff; }
+
+/* ─────────────────── Кликабельные карточки агентов ──────────────────────────
+   Карточки ведут в готовые пространства GigaCowork. Сама карточка стала
+   ссылкой: тег сменился с <article> на <a>, класс остался прежним, поэтому
+   скрипт демо (он ищет по `.agent-card`, `.tasks`, `.task-count`) работает
+   как работал.
+
+   Цвета состояний взяты из синего градиента тегов светлой версии страницы.
+   При нажатии карточка слегка уменьшается, как кнопка отправки.
+
+   Тень при наведении не трогаем: у `.agent-card` на ней висит переход .6s под
+   плавное разгорание `is-receiving`, и для наведения это слишком медленно.
+   Поэтому наведение работает рамкой через `outline` и лёгким подъёмом — у них
+   свой быстрый переход, который с анимацией демо не пересекается.
+*/
+.agent-card.is-linked {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  /*
+    Ссылку по умолчанию можно потащить мышью, и пока браузер решает, жест это
+    или клик, он придерживает `:active` — нажатие срабатывало с задержкой
+    в треть секунды. Перетаскивание карточки всё равно ни к чему.
+  */
+  -webkit-user-drag: none;
+  outline: 0 solid rgba(14, 159, 242, 0);
+  outline-offset: 0;
+  transition:
+    box-shadow .6s ease-in-out,
+    outline-color .2s ease-out,
+    outline-width .2s ease-out,
+    transform .2s ease-out,
+    background-color .2s ease-out;
+}
+
+/* Наведение — только там, где есть настоящий курсор: на тач-панели «залипший»
+   ховер держался бы на карточке после касания. */
+@media (hover: hover) and (pointer: fine) {
+  .agent-card.is-linked:hover {
+    background: rgba(239,249,255,.94);
+    outline: .10417cqw solid rgba(14,159,242,.6);
+    transform: translateY(-.15625cqw);
+  }
+  .agent-card.is-linked:hover .agent-tag { background: linear-gradient(97.13727deg, #2459dc 0%, #008bdd 39.545%, #32ccd4 117.5%); }
+  /* Стрелка ↗ в пилюле отъезжает наружу — привычный знак внешней ссылки. */
+  .agent-card.is-linked:hover .tag-arrow { transform: translate(.1cqw, -.1cqw); }
+}
+
+.agent-card.is-linked .tag-arrow,
+.agent-card.is-linked .agent-tag { transition: transform .2s ease-out, background-color .2s ease-out; }
+
+/* Нажатие: то же короткое проседание, что у кнопки отправки. */
+.agent-card.is-linked:active {
+  transform: translateY(0) scale(.99);
+  background: rgba(221,240,255,.96);
+  outline: .10417cqw solid rgba(14,159,242,.8);
+  transition-duration: .06s;
+}
+.agent-card.is-linked:active .agent-tag { background: linear-gradient(97.13727deg, #2459dc 0%, #008bdd 39.545%, #32ccd4 117.5%); }
+
+/* Клавиатурный фокус виден и без наведения. */
+.agent-card.is-linked:focus-visible {
+  outline: .15625cqw solid #0e9ff2;
+  outline-offset: .15625cqw;
+}
+
+@media (max-width: 850px) {
+  @media (hover: hover) and (pointer: fine) {
+    .agent-card.is-linked:hover {
+      outline-width: 2px;
+      transform: translateY(-2px);
+    }
+    .agent-card.is-linked:hover .tag-arrow { transform: translate(1.5px, -1.5px); }
+  }
+  .agent-card.is-linked:focus-visible { outline-width: 2px; outline-offset: 2px; }
+  .agent-card.is-linked:active { outline-width: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-card.is-linked,
+  .agent-card.is-linked .agent-tag,
+  .agent-card.is-linked .tag-arrow { transition: none !important; }
+  .agent-card.is-linked:hover,
+  .agent-card.is-linked:active { transform: none; }
+}

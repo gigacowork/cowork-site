@@ -41,6 +41,12 @@ import {
 export type FeatureStackItem = {
   title: string;
   text: string;
+  /**
+   * Список примеров под текстом. Есть не у всех блоков: в макете он показан
+   * только у «Навыков» (1833:7520) — маркеры-точки 8 px в боксе 24 и подписи
+   * Body/L. У остальных под заголовком только абзац.
+   */
+  bullets?: string[];
   preview: string;
 };
 
@@ -289,6 +295,24 @@ export function FeatureStack({ items }: { items: FeatureStackItem[] }) {
                   {item.title}
                 </h3>
                 <p className="text-body-m text-text-secondary">{item.text}</p>
+                {item.bullets ? (
+                  <ul className="flex flex-col gap-12 pt-8">
+                    {item.bullets.map((bullet) => (
+                      <li key={bullet} className="flex items-center gap-8">
+                        {/* Маркер: точка 8 в боксе 24 — как Bullet Icon / Ellipse в макете. */}
+                        <span
+                          aria-hidden
+                          className="flex size-[24px] shrink-0 items-center justify-center"
+                        >
+                          <span className="size-[8px] rounded-full bg-text-primary" />
+                        </span>
+                        <span className="text-body-m text-text-secondary">
+                          {bullet}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
             </div>
           </div>

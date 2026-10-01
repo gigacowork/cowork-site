@@ -58,6 +58,16 @@ const SEO_BY_SLUG: Record<string, (typeof PAGE_SEO)[string] | undefined> = {
 
 export const dynamicParams = false;
 
+/** Порядок секций ниже md и от md — литералами, чтобы их увидел Tailwind. */
+const ORDER = ["order-1", "order-2", "order-3", "order-4", "order-5"];
+const MD_ORDER = [
+  "md:order-1",
+  "md:order-2",
+  "md:order-3",
+  "md:order-4",
+  "md:order-5",
+];
+
 export function generateStaticParams() {
   return USE_CASES.map((item) => ({ slug: item.slug }));
 }
@@ -154,9 +164,32 @@ export default async function UseCasePage({
         imageClassName={useCase.heroImageClassName}
       />
 
-      {(useCase.order ?? DEFAULT_ORDER).map((key) => (
-        <Fragment key={key}>{sections[key]}</Fragment>
-      ))}
+      {/*
+        Порядок секций. Обычно он один на оба размера экрана, но у «Финансов»
+        мобильный макет ставит метрики над «Применением», а десктопный — под
+        ним. Чтобы не выводить секции дважды, порядок задаётся css-свойством
+        `order`: в разметке секции идут как на десктопе, а ниже md флекс
+        переставляет их. Классы перечислены литералами — Tailwind собирает
+        правила, читая исходный текст, и вычисленную строку не увидел бы.
+      */}
+      <div className="flex flex-col">
+        {(useCase.order ?? DEFAULT_ORDER).map((key, index) => {
+          const mobile = useCase.orderMobile?.indexOf(key) ?? -1;
+          return (
+            <Fragment key={key}>
+              {useCase.orderMobile ? (
+                <div
+                  className={`${ORDER[mobile] ?? ""} ${MD_ORDER[index] ?? ""}`}
+                >
+                  {sections[key]}
+                </div>
+              ) : (
+                sections[key]
+              )}
+            </Fragment>
+          );
+        })}
+      </div>
 
       {/*
         Подложка та же, что на главной: в макете CTA страниц «Для кого»

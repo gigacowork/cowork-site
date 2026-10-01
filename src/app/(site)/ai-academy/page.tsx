@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 
 import AcademyLessons from "@/components/academy/AcademyLessons";
 import {
-  ContractReview,
   CourseModules,
-  DealStages,
   GlassPanel,
   ScenarioList,
   TutorialSteps,
@@ -19,6 +17,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { Kicker } from "@/components/ui/Kicker";
 import { PAGE_SEO } from "@/content/seo";
 import { seoMetadata } from "@/lib/site";
+import { asset } from "@/lib/asset";
 
 /**
  * «Академия GigaCowork» — /ai-academy
@@ -95,17 +94,9 @@ const FORMATS: Format[] = [
 type Tutorial = {
   title: React.ReactNode;
   text: string;
-  tags: { label: string; icon: string }[];
 };
 
-/**
- * «Туториалы» — 5272:83062.
- *
- * Иконки на тегах взяты ближайшие из набора проекта: в макете стоят
- * user-check, mail, sliders и Return, а выгрузить их из Figma нечем —
- * доступа к файлу у сборки нет. Когда иконки появятся в public/img/icons,
- * поменять нужно будет только строки ниже.
- */
+/** «Туториалы» — 5272:83062. */
 const TUTORIALS: Tutorial[] = [
   {
     title: (
@@ -116,33 +107,21 @@ const TUTORIALS: Tutorial[] = [
       </>
     ),
     text: "Как автоматически определить наиболее подходящего кандидата и направить приглашение на интервью",
-    tags: [
-      { label: "Оценка кандидатов", icon: "user" },
-      { label: "Приглашение на интервью", icon: "messages-square" },
-    ],
   },
   {
     title: "Анализ клиентской базы",
     text: "Как сегментировать клиентскую базу, выявлять перспективных клиентов и вовремя возвращать неактивных",
-    tags: [
-      { label: "Сегментация клиентов", icon: "sliders" },
-      { label: "Возврат клиентов", icon: "history" },
-    ],
   },
   {
     title: "Автоматизация процесса закупок",
     text: "Как оценивать потребности, сравнивать предложения поставщиков и вовремя планировать закупки",
-    tags: [
-      { label: "Анализ потребностей", icon: "analitics" },
-      { label: "Выбор поставщика", icon: "supplier" },
-    ],
   },
 ];
 
 type Scenario = {
   title: string;
   text: string;
-  illustration: React.ReactNode;
+  preview?: string;
 };
 
 /** «Сценарии» — 5196:54344. */
@@ -150,12 +129,10 @@ const SCENARIOS: Scenario[] = [
   {
     title: "Юристы",
     text: "Как агент проверяет договор, находит рисковые условия и готовит правки",
-    illustration: <ContractReview />,
   },
   {
     title: "Продажи",
     text: "Как агент ведет сделки по стадиям и подсказывает следующий шаг после звонка",
-    illustration: <DealStages />,
   },
 ];
 
@@ -216,19 +193,6 @@ function SectionHeader({
   );
 }
 
-/** Тег с иконкой — Tag 1388:5966, тот же, что на карточках кейсов. */
-function Tag({ label, icon }: { label: string; icon: string }) {
-  return (
-    <li className="flex shrink-0 items-center justify-center gap-4 rounded-full bg-bg-tag p-8">
-      <Icon
-        src={`/img/icons/${icon}.svg`}
-        className="size-[24px] text-icon-primary"
-      />
-      <span className="text-caption text-text-primary">{label}</span>
-    </li>
-  );
-}
-
 /**
  * Превью записи вебинара — Media / Video (5272:86262).
  *
@@ -249,6 +213,26 @@ function VideoPlaceholder() {
   );
 }
 
+/** Обложка видео сценария. Портрет спикера добавляется через `preview`. */
+function ScenarioPreview({ src, title }: { src?: string; title: string }) {
+  return (
+    <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-16 bg-[#d9e9f2] lg:w-[260px] lg:shrink-0">
+      {src ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={asset(src)}
+          alt={`Спикер видео «${title}»`}
+          className="absolute inset-0 size-full object-cover"
+        />
+      ) : (
+        <span className="px-16 text-center text-body-m text-text-secondary">
+          Превью видео со спикером
+        </span>
+      )}
+    </div>
+  );
+}
+
 /* ─────────────────────────────── страница ──────────────────────────────── */
 
 export default function AiAcademyPage() {
@@ -259,8 +243,7 @@ export default function AiAcademyPage() {
       {/* ── Hero (5196:54153 / 5340:37530) ── */}
       {/*
         Высоты из макета: 594 на телефоне и 760 на десктопе. Содержимое
-        центрировано по вертикали — запас высоты иначе собрался бы пустотой
-        под кнопками.
+        центрировано по вертикали.
       */}
       <section className="relative isolate flex min-h-[594px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-80 md:min-h-[760px] md:pt-[272px] md:pb-96">
         <Breadcrumbs items={[{ label: "Академия" }]} />
@@ -269,7 +252,7 @@ export default function AiAcademyPage() {
           mobile="/img/academy/hero-mob.webp"
           className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
         />
-        <div className="container-page flex flex-col items-center gap-32 text-center md:items-start md:text-left">
+        <div className="container-page flex flex-col items-center text-center md:items-start md:text-left">
           <div className="flex flex-col gap-16 md:gap-24">
             {/*
               Кегль H1 (48) и на телефоне: в мобильном макете заголовок такой
@@ -287,29 +270,6 @@ export default function AiAcademyPage() {
                 GigaCowork сотрудниками разных отделов
               </p>
             </div>
-          </div>
-          {/*
-            Обе кнопки ведут внутрь страницы: продукт показывают ролики в
-            блоке ниже, а задачи разобраны в «Туториалах». Внешних адресов
-            для них в макете не задано.
-          */}
-          <div className="flex w-full flex-col items-center gap-24 md:w-auto md:flex-row md:items-start md:gap-16">
-            <Button
-              href="#start"
-              variant="primary"
-              size="lg"
-              className="w-[230px] md:w-auto"
-            >
-              Познакомиться с&nbsp;продуктом
-            </Button>
-            <Button
-              href="#tutorials"
-              variant="secondary"
-              size="lg"
-              className="w-[230px] md:w-auto"
-            >
-              Выбрать задачу
-            </Button>
           </div>
         </div>
       </section>
@@ -358,28 +318,26 @@ export default function AiAcademyPage() {
             }
           />
           {/*
-            Высота карточки фиксирована (391 в макете), а панель-иллюстрация
-            стоит абсолютом и уезжает за правый край — обрезает её карточка.
-            Позиция у панели одна на оба размера экрана: в макете она тоже не
-            меняется, меняется только ширина карточки.
+            Панель-иллюстрация стоит между заголовком и описанием и обрезается
+            по правому краю карточки. Описание всегда остается под ней.
           */}
           <ul className="grid gap-24 lg:grid-cols-4">
             {FORMATS.map((format) => (
               <li
                 key={format.title}
-                className={`relative flex h-[391px] flex-col gap-24 overflow-hidden rounded-24 p-40 shadow-drop-md ${PROCESS_CARD_GRADIENT}`}
+                className={`flex h-[391px] flex-col overflow-hidden rounded-24 p-40 shadow-drop-md ${PROCESS_CARD_GRADIENT}`}
               >
-                <div className="flex flex-col gap-16">
-                  <h3 className="text-h4 font-medium text-text-primary">
-                    {format.title}
-                  </h3>
-                  <p className="text-body-m text-text-secondary">
-                    {format.text}
-                  </p>
+                <h3 className="text-h4 font-medium text-text-primary">
+                  {format.title}
+                </h3>
+                <div className="relative min-h-0 flex-1" aria-hidden>
+                  <GlassPanel className="absolute top-24 left-24 w-[446px]">
+                    {format.illustration}
+                  </GlassPanel>
                 </div>
-                <GlassPanel className="absolute top-[199px] left-[62px] w-[446px]">
-                  {format.illustration}
-                </GlassPanel>
+                <p className="relative z-10 text-body-m text-text-secondary">
+                  {format.text}
+                </p>
               </li>
             ))}
           </ul>
@@ -407,7 +365,7 @@ export default function AiAcademyPage() {
             {TUTORIALS.map((item) => (
               <li
                 key={item.text}
-                className={`flex min-h-[324px] flex-col justify-between gap-24 overflow-hidden rounded-24 px-40 pt-40 pb-24 ${WORKSPACE_CARD_GRADIENT}`}
+                className={`flex min-h-[324px] flex-col overflow-hidden rounded-24 px-40 pt-40 pb-24 ${WORKSPACE_CARD_GRADIENT}`}
               >
                 <div className="flex flex-col gap-16">
                   <h3 className="text-h3 font-medium text-text-primary">
@@ -415,11 +373,6 @@ export default function AiAcademyPage() {
                   </h3>
                   <p className="text-body-l text-text-secondary">{item.text}</p>
                 </div>
-                <ul className="flex flex-wrap gap-8">
-                  {item.tags.map((tag) => (
-                    <Tag key={tag.label} label={tag.label} icon={tag.icon} />
-                  ))}
-                </ul>
               </li>
             ))}
           </ul>
@@ -443,7 +396,7 @@ export default function AiAcademyPage() {
             {SCENARIOS.map((scenario) => (
               <li
                 key={scenario.title}
-                className={`relative flex h-[400px] flex-col gap-16 overflow-hidden rounded-24 p-24 lg:h-[269px] lg:px-40 ${SCENARIO_CARD_GRADIENT}`}
+                className={`flex min-h-[400px] flex-col justify-between gap-24 overflow-hidden rounded-24 p-24 lg:min-h-[269px] lg:flex-row lg:items-center lg:px-40 ${SCENARIO_CARD_GRADIENT}`}
               >
                 <div className="flex flex-col gap-12 lg:max-w-[216px]">
                   <h3 className="text-h3 font-medium text-text-primary">
@@ -453,22 +406,7 @@ export default function AiAcademyPage() {
                     {scenario.text}
                   </p>
                 </div>
-                {/*
-                  Панель увеличена ровно в 1.3 раза (15.6 = 12 × 1.3) — так в
-                  макете: в карточке сценария интерфейс крупнее, чем в
-                  карточках форматов.
-                */}
-                {/*
-                  Панель стоит от левого края на телефоне (48 в макете) и от
-                  правого на десктопе (−48): карточка на телефоне у́же самой
-                  панели, и от правого края она уехала бы за экран целиком.
-                */}
-                <GlassPanel
-                  size={15.6}
-                  className="absolute bottom-[23px] left-48 w-[364px] lg:right-[-48px] lg:bottom-[14px] lg:left-auto"
-                >
-                  {scenario.illustration}
-                </GlassPanel>
+                <ScenarioPreview src={scenario.preview} title={scenario.title} />
               </li>
             ))}
           </ul>
@@ -550,9 +488,9 @@ export default function AiAcademyPage() {
               и&nbsp;находите новые идеи для&nbsp;работы с&nbsp;GigaCowork.
             </p>
           </div>
-          {/* Сообщество — тот же телеграм-канал, что в подвале сайта. */}
+          {/* Сообщество GigaCowork. */}
           <Button
-            href="https://t.me/GenAIeffect"
+            href="https://t.me/+r9RKQYQnJ7JlMTli"
             variant="primary"
             size="lg"
             target="_blank"

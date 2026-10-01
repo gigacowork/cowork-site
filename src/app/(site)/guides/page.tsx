@@ -10,7 +10,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { GUIDES, guidePoster } from "@/content/guides";
 
 /**
- * «Обучающие видео» — /video
+ * «Обучающие видео» — /guides
  *
  * Источник: «Исходники Обучающие видео/index.html». Тексты, порядок роликов,
  * табы и нижний CTA перенесены оттуда дословно; вёрстка переписана на систему

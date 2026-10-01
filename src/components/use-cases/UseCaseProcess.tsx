@@ -16,6 +16,15 @@ import type { UseCaseProcess as UseCaseProcessData } from "@/lib/use-cases";
  * карусель, а последовательность шагов, её читают сверху вниз.
  */
 
+/**
+ * Градиент номера шага (2925:14881): бирюзовый → голубой → сиреневый, залит
+ * в сам текст через background-clip. Цвета из макета, отдельного токена под
+ * них в проекте нет.
+ */
+const STEP_NUMBER =
+  "bg-[linear-gradient(90deg,#00b8ca_0%,#1cbbf3_54%,#9fb6f8_102%)] " +
+  "bg-clip-text text-transparent";
+
 /** Плашка под шагами — та же заливка, что у карточек преимуществ. */
 const CALLOUT_GRADIENT =
   "bg-[linear-gradient(56.4deg,#c5f8e5_0.95%,#dcf9ff_50.8%,#e4f5ff_101.64%)]";
@@ -36,15 +45,22 @@ export function UseCaseProcess({ kicker, title, steps, callout }: UseCaseProcess
 
         <ol className="flex flex-col gap-24 md:flex-row md:items-stretch">
           {steps.map((step) => (
-            <li
-              key={step.number}
-              className="flex flex-1 flex-col gap-12 border-t border-border-subtle pt-16"
-            >
-              <span className="text-body-m text-text-tertiary">{step.number}</span>
-              <h3 className="text-h4 font-medium text-text-primary">
-                <Lines text={step.title} />
-              </h3>
-              <p className="text-body-m text-text-secondary">{step.text}</p>
+            <li key={step.number} className="flex flex-1 flex-col gap-[20px]">
+              {/*
+                Номер шага — Heading/H1 (48) с градиентной заливкой текста
+                (Card / Case Study/Button/Step v3, 2925:14881). Раньше здесь
+                была серая подпись Body/M над линией: линии в макете нет, а
+                номер должен читаться как крупный акцент.
+              */}
+              <span className={`text-h1 font-medium ${STEP_NUMBER}`}>
+                {step.number}
+              </span>
+              <span className="flex flex-col gap-8">
+                <h3 className="text-h4 font-medium text-text-primary md:text-h3">
+                  <Lines text={step.title} />
+                </h3>
+                <p className="text-body-m text-text-secondary">{step.text}</p>
+              </span>
             </li>
           ))}
         </ol>

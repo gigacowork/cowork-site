@@ -96,6 +96,8 @@ export function ComparisonTable({
   groups: ComparisonGroup[];
 }) {
   const [tab, setTab] = useState(0);
+  /** Свёрнутые группы мобильной таблицы — по заголовку. */
+  const [closed, setClosed] = useState<string[]>([]);
 
   /*
     Пока шапка стоит на своём месте, её плашки скруглены только сверху:
@@ -277,33 +279,61 @@ export function ComparisonTable({
           ))}
         </div>
 
+        {/*
+          Группы сворачиваются — так в мобильном макете (4158:77703): у
+          заголовка стоит шеврон, и таблицу можно свернуть до нужного раздела.
+          Открыты по умолчанию все: страницу читают сверху вниз, и пустой
+          список при первом заходе выглядел бы как незагруженный блок.
+        */}
         <div className="overflow-hidden rounded-24 bg-bg-page shadow-[0_12px_48px_-8px_#60738f33]">
-          {groups.map((group) => (
-            <div key={group.title}>
-              <div className="flex items-center gap-8 bg-[#f2fafa] px-16 py-12">
-                <Icon
-                  src={group.icon}
-                  className="size-[24px] shrink-0 text-icon-primary"
-                />
-                <span className="text-body-l font-medium text-text-primary">
-                  {group.title}
-                </span>
-              </div>
-              {group.rows.map((row) => (
-                <div
-                  key={row.label}
-                  className={`flex items-start justify-between gap-16 border-t px-16 py-12 ${BORDER}`}
+          {groups.map((group) => {
+            const open = !closed.includes(group.title);
+            return (
+              <div key={group.title}>
+                <button
+                  type="button"
+                  aria-expanded={open}
+                  onClick={() =>
+                    setClosed((list) =>
+                      list.includes(group.title)
+                        ? list.filter((title) => title !== group.title)
+                        : [...list, group.title],
+                    )
+                  }
+                  className="flex w-full cursor-pointer items-center gap-8 bg-[#f2fafa] px-16 py-12 text-left"
                 >
-                  <span className="text-body-m text-text-secondary">
-                    {row.label}
+                  <Icon
+                    src={group.icon}
+                    className="size-[24px] shrink-0 text-icon-primary"
+                  />
+                  <span className="flex-1 text-body-l font-medium text-text-primary">
+                    {group.title}
                   </span>
-                  <span className="text-right text-body-m text-text-primary">
-                    {row.values[tab]}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ))}
+                  <Icon
+                    src="/img/icons/chevron-down.svg"
+                    className={`size-[16px] shrink-0 text-icon-secondary transition-transform duration-200 ${
+                      open ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {open
+                  ? group.rows.map((row) => (
+                      <div
+                        key={row.label}
+                        className={`flex items-start justify-between gap-16 border-t px-16 py-12 ${BORDER}`}
+                      >
+                        <span className="text-body-m text-text-secondary">
+                          {row.label}
+                        </span>
+                        <span className="text-right text-body-m text-text-primary">
+                          {row.values[tab]}
+                        </span>
+                      </div>
+                    ))
+                  : null}
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

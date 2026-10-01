@@ -201,7 +201,7 @@ const CATEGORIES: Category[] = [
   {
     /* В макете карточка шире — занимает две колонки из трёх (3872:23371). */
     title: <>Собственные интеграции</>,
-    products: [{ label: "MCP-серверы вашей компании", slug: "mcp" }],
+    products: [{ label: "Интеграции через MCP-сервер вашей компании", slug: "mcp" }],
     wide: true,
   },
 ];
@@ -210,7 +210,8 @@ const CATEGORIES: Category[] = [
 
 const BENEFITS: {
   title: ReactNode;
-  text: ReactNode;
+  /** Абзацы текста карточки — в макете их два, с шагом 16. */
+  text: string[];
   illustration: "own" | "control";
 }[] = [
   {
@@ -220,12 +221,10 @@ const BENEFITS: {
         собственные интеграции
       </>
     ),
-    text: (
-      <>
-        Используйте готовые интеграции или&nbsp;подключайте свои MCP-серверы.
-        Работайте с&nbsp;внешними сервисами через платформу.
-      </>
-    ),
+    text: [
+      "Используйте готовые решения или\u00A0создавайте собственные интеграции через MCP-сервер.",
+      "Работайте с\u00A0внешними сервисами через платформу.",
+    ],
     illustration: "own",
   },
   {
@@ -235,18 +234,24 @@ const BENEFITS: {
         действия агентов
       </>
     ),
-    text: (
-      <>
-        Агент работает только с&nbsp;разрешенными системами и&nbsp;в пределах
-        прав вашей учетной записи. Вы определяете доступ, а&nbsp;все действия
-        фиксируются в&nbsp;журнале аудита.
-      </>
-    ),
+    text: [
+      "Агент работает только с\u00A0разрешенными системами и\u00A0в\u00A0пределах прав вашей учетной записи.",
+      "Вы определяете доступ, а\u00A0все действия фиксируются в\u00A0журнале аудита.",
+    ],
     illustration: "control",
   },
 ];
 
-const STEPS: { number: string; title: ReactNode; text: ReactNode }[] = [
+const STEPS: {
+  number: string;
+  title: ReactNode;
+  /**
+   * Абзацы текста шага. В макете (3855:64787) предложения разнесены по
+   * строкам без дополнительного интервала — поэтому это отдельные абзацы
+   * без зазора, а не один сплошной текст и не два блока через 16.
+   */
+  text: string[];
+}[] = [
   {
     number: "01",
     title: (
@@ -255,13 +260,10 @@ const STEPS: { number: string; title: ReactNode; text: ReactNode }[] = [
         систему
       </>
     ),
-    text: (
-      <>
-        Откройте раздел «Интеграции» или&nbsp;выберите нужный сервис
-        в&nbsp;чате. Используйте готовые интеграции или&nbsp;подключайте свой
-        MCP-сервер через администратора вашей компании.
-      </>
-    ),
+    text: [
+      "Откройте раздел «Интеграции» или\u00A0выберите нужный сервис в\u00A0чате.",
+      "Используйте готовые интеграции или\u00A0добавьте собственные через MCP-сервер с\u00A0помощью администратора вашей компании.",
+    ],
   },
   {
     number: "02",
@@ -270,13 +272,10 @@ const STEPS: { number: string; title: ReactNode; text: ReactNode }[] = [
         Авторизуйтесь <br className="hidden lg:inline" />в аккаунте
       </>
     ),
-    text: (
-      <>
-        Войдите в&nbsp;корпоративный аккаунт и&nbsp;подтвердите доступ. После
-        этого GigaCowork сможет работать с&nbsp;системой в&nbsp;рамках
-        назначенных прав.
-      </>
-    ),
+    text: [
+      "Войдите в\u00A0корпоративный аккаунт и\u00A0подтвердите доступ.",
+      "После этого GigaCowork сможет работать с\u00A0системой в\u00A0рамках назначенных прав.",
+    ],
   },
   {
     number: "03",
@@ -285,13 +284,9 @@ const STEPS: { number: string; title: ReactNode; text: ReactNode }[] = [
         Используйте <br className="hidden lg:inline" />в задачах
       </>
     ),
-    text: (
-      <>
-        Опишите логику работы агента или&nbsp;навыка простым языком&nbsp;— ИИ
-        подключится к&nbsp;системе и&nbsp;выполнит действия по&nbsp;заданным
-        правилам.
-      </>
-    ),
+    text: [
+      "Опишите логику работы агента или\u00A0навыка простым языком\u00A0— ИИ подключится к\u00A0системе и\u00A0выполнит действия по\u00A0заданным правилам.",
+    ],
   },
 ];
 
@@ -347,7 +342,7 @@ function OwnIllustration() {
             +
           </span>
           <span className="text-caption text-text-inverse">
-            Свой MCP-сервер
+            Своя интеграция через MCP
           </span>
         </div>
       </div>
@@ -507,7 +502,7 @@ export default function ConnectorsPage() {
                 {/*
                   ВРЕМЕННО СКРЫТО: в макете под списком стоит ссылка
                   «Подробнее» (Text Link, 3875:70077), но страницы про
-                  MCP-серверы в структуре проекта нет, и адрес брать неоткуда.
+                  собственные интеграции через MCP в структуре проекта нет, и адрес брать неоткуда.
                   Появится раздел — раскомментировать и подставить href.
 
                   {category.wide ? (
@@ -558,7 +553,16 @@ export default function ConnectorsPage() {
                   <h2 className="text-h3 font-medium text-text-primary">
                     {card.title}
                   </h2>
-                  <p className="text-body-l text-text-primary">{card.text}</p>
+                  {/*
+                    Текст карточки — два абзаца с шагом 16, как в макете
+                    3947:34636. Раньше он шёл одной строкой: перенос между
+                    предложениями терялся.
+                  */}
+                  <div className="flex flex-col gap-16 text-body-l text-text-primary">
+                    {card.text.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
                 </div>
                 <div
                   data-token-art
@@ -600,7 +604,11 @@ export default function ConnectorsPage() {
                   <h3 className="text-h3 font-medium text-text-primary">
                     {step.title}
                   </h3>
-                  <p className="text-body-l text-text-secondary">{step.text}</p>
+                  <div className="text-body-l text-text-secondary">
+                    {step.text.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}

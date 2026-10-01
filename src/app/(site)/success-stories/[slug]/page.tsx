@@ -195,8 +195,8 @@ function Block({ block }: { block: StoryBlock }) {
             <Image
               src={block.src}
               alt={block.caption}
-              width={1670}
-              height={947}
+              width={835}
+              height={543}
               className="h-auto w-full"
             />
           ) : (

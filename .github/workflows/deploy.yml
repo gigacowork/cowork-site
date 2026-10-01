@@ -9,6 +9,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *"
 
 permissions:
   contents: read
@@ -34,6 +36,9 @@ jobs:
 
       - name: Установка зависимостей
         run: npm ci
+
+      - name: Обновить каталог плагинов из GitVerse
+        run: npm run sync:catalog
 
       - name: next build
         # Pages отдаёт сайт по адресу https://<логин>.github.io/<имя-репозитория>/,
