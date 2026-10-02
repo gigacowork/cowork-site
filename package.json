@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/sync-kommersant-share.mjs",
     "build": "next build",
+    "sync:kommersant": "node scripts/sync-kommersant-share.mjs",
     "sync:catalog": "node scripts/sync-cowork-hub.mjs",
     "start": "next start",
     "lint": "next lint"

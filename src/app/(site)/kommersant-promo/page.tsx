@@ -1,102 +1,160 @@
 import type { Metadata } from "next";
 
-import { FinalCta } from "@/components/sections/FinalCta";
-import { HeroImage } from "@/components/ui/HeroImage";
+import { Button } from "@/components/ui/Button";
 import { asset } from "@/lib/asset";
+import digest from "@/data/kommersant-share.json";
 
-import { DemoFrame } from "./DemoFrame";
+import { ShareButton } from "./ShareButton";
 import styles from "./promo.module.css";
-
-const DEMO_URL =
-  "https://sasha-the-best.muravskiy.com/share/aaaaaaaaaaaaaaaaaaaaaagqae-2hk4x2elgjwtlbd6fgiihap746lo2qaq";
 
 export const metadata: Metadata = {
   title: "GigaCowork для Коммерсанта",
-  description: "Интерактивное демо ИИ-агента GigaCowork для Коммерсанта.",
+  description: "Дайджест инфоповодов из открытой демо-сессии GigaCowork.",
   robots: { index: false, follow: false },
 };
 
-const railIcons = {
-  panel: "/img/kommersant-promo/panel-left.svg",
-  layers: "/img/kommersant-promo/layers.svg",
-  chart: "/img/kommersant-promo/chart.svg",
-  grid: "/img/kommersant-promo/grid.svg",
-  settings: "/img/kommersant-promo/settings.svg",
-};
+const sections = digest.sections;
+const allItems = sections.flatMap((section) =>
+  section.items.map((item) => ({ ...item, category: section.title })),
+);
+const maxCategoryCount = Math.max(...sections.map((section) => section.items.length));
+const syncedAt = new Intl.DateTimeFormat("ru-RU", {
+  timeZone: "Europe/Moscow",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+}).format(new Date(digest.syncedAt));
 
-function RailIcon({ src }: { src: string }) {
-  return (
-    <span className={styles.railItem}>
-      {/* The SVGs are exported directly from the supplied Figma component. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={asset(src)} width={16} height={16} alt="" />
-    </span>
-  );
-}
+const metrics = [
+  { value: allItems.length, label: "инфоповодов" },
+  { value: sections.length, label: "рубрики" },
+  { value: sections[0]?.items.length ?? 0, label: "событий в России" },
+  { value: sections[1]?.items.length ?? 0, label: "событий в мире" },
+];
 
-function NavigationRail() {
-  // The shared demo does not expose routes or a postMessage API for these icons.
-  // Keep the supplied rail visual until the embedded app can own its navigation.
-  return (
-    <div className={styles.rail} aria-hidden="true">
-      <div className={styles.railGroup}>
-        <RailIcon src={railIcons.panel} />
-        <RailIcon src={railIcons.layers} />
-        <RailIcon src={railIcons.chart} />
-      </div>
-      <div className={styles.railGroup}>
-        <RailIcon src={railIcons.grid} />
-        <RailIcon src={railIcons.settings} />
-        <span className={styles.avatar}>O</span>
-      </div>
-    </div>
-  );
-}
+const steps = [
+  { title: "Прочитал открытые источники", detail: "По запросу из демо-сессии" },
+  { title: "Отобрал ключевые события", detail: `${allItems.length} инфоповодов в выпуске` },
+  { title: "Сгруппировал по рубрикам", detail: sections.map((section) => section.title).join(", ") },
+  { title: "Собрал дайджест", detail: "С описаниями и названиями источников" },
+];
 
 export default function KommersantPromoPage() {
   return (
     <>
-      <section className={`${styles.hero} relative isolate flex w-full flex-col justify-center overflow-hidden bg-bg-page`}>
-        <HeroImage
-          desktop="/img/skills/hero.webp"
-          mobile="/img/skills/hero-mob.webp"
-          className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
-        />
-        <div className={`${styles.heroContent} container-page flex flex-col items-center text-center md:items-start md:text-left`}>
-          <div className="flex flex-col gap-16 md:max-w-[720px] md:gap-24">
-            <h1 className="text-h2 font-medium text-text-primary md:text-h1">
-              Дайджест актуальных новостей на kommersant.ru
-            </h1>
-            <p className="text-body-l text-text-secondary">
-              Попробуйте ИИ-агента в действии: задавайте вопросы и получайте
-              ответы в интерактивном демо.
+      <div className={styles.canvas}>
+        <section data-kommersant-promo className={styles.hero}>
+          <div className="container-page">
+            <span className={styles.eyebrow}>GigaCowork × Коммерсантъ</span>
+            <h1>Дайджест актуальных новостей на kommersant.ru</h1>
+            <p>
+              Попробуйте ИИ-агента в действии: задавайте вопросы
+              <br />
+              и получайте ответы в интерактивном демо
             </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="w-full bg-bg-page py-48 md:py-96" aria-label="Интерактивное демо">
-        <div className="container-page">
-          <div className={styles.rotateNotice} role="status">
-            <span className={styles.rotateIcon} aria-hidden="true">↻</span>
-            <h2>Поверните телефон горизонтально</h2>
-            <p>Так вы сможете посмотреть интерактивное демо GigaCowork.</p>
-          </div>
-          <div className={styles.demoShell}>
-            <NavigationRail />
-            <DemoFrame src={DEMO_URL} />
-          </div>
-          <p className={styles.openHint}>
-            Если демо не открылось, {" "}
-            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer">
-              откройте его в новой вкладке
-            </a>
-            .
-          </p>
-        </div>
-      </section>
+        <section className={styles.demoSection} aria-label="Пример работы агента">
+          <div className="container-page">
+            <div className={styles.demoWindow}>
+              <aside className={styles.taskPanel} aria-label="Задача агента">
+                <div className={styles.taskHeader}>
+                  <h2>Задача</h2>
+                  <span className={styles.routineChip}>Рутина · каждый час</span>
+                </div>
+                <p className={styles.prompt}>{digest.prompt}</p>
+                <h3 className={styles.stepHeading}>Как агент выполнил задачу</h3>
+                <ol className={styles.steps}>
+                  {steps.map((step) => (
+                    <li key={step.title} className={styles.step}>
+                      {/* The 28×28 icon is the asset supplied for the Figma step component. */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={asset("/img/kommersant-promo/check-figma.svg")} width={28} height={28} alt="" />
+                      <div>
+                        <strong>{step.title}</strong>
+                        <span>{step.detail}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+                <p className={styles.taskFooter}>Данные из открытой демо-сессии</p>
+              </aside>
 
-      <FinalCta />
+              <div className={styles.artifact}>
+                <div className={styles.artifactHeader}>
+                  <div>
+                    <h2>Дайджест инфоповодов</h2>
+                    <p>{digest.heading}</p>
+                  </div>
+                  <ShareButton className={styles.shareButton} />
+                </div>
+
+                <div className={styles.metrics} aria-label="Показатели выпуска">
+                  {metrics.map((metric) => (
+                    <div key={metric.label} className={styles.metric}>
+                      <strong>{metric.value}</strong>
+                      <span>{metric.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className={styles.artifactBody}>
+                  <div className={styles.news}>
+                    <h3>Главное в выпуске</h3>
+                    <div className={styles.newsList}>
+                      {allItems.map((item) => (
+                        <article key={`${item.category}:${item.title}`} className={styles.newsItem}>
+                          <span className={styles.newsTag}>{item.category}</span>
+                          <h4>{item.title}</h4>
+                          {item.description ? <p>{item.description}</p> : null}
+                          {item.sources ? (
+                            <span className={styles.newsSource}>В демо указаны: {item.sources}</span>
+                          ) : null}
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+
+                  <aside className={styles.agenda} aria-label="Повестка по рубрикам">
+                    <h3>Повестка по рубрикам</h3>
+                    <p>число инфоповодов</p>
+                    <div className={styles.agendaRows}>
+                      {sections.map((section) => (
+                        <div key={section.title} className={styles.agendaRow}>
+                          <div>
+                            <span>{section.title}</span>
+                            <strong>{section.items.length}</strong>
+                          </div>
+                          <div className={styles.agendaTrack}>
+                            <span style={{ width: `${(section.items.length / maxCategoryCount) * 100}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </div>
+
+            <p className={styles.caption}>
+              Данные взяты из{" "}
+              <a href={digest.sourceUrl} target="_blank" rel="noopener noreferrer">
+                открытой демо-сессии
+              </a>
+              . Снимок обновлён {syncedAt} при сборке сайта; первоисточники не
+              проверены независимо.
+            </p>
+            <div className={styles.buttonRow}>
+              <Button href="/lead" variant="primary" size="lg" className={styles.bottomButton}>
+                Поручить задачу агенту
+              </Button>
+            </div>
+          </div>
+        </section>
+      </div>
     </>
   );
 }

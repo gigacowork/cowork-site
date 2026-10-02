@@ -209,20 +209,19 @@ function MarqueeGroup({
 }
 
 /**
- * По умолчанию — клиенты (главная и остальные страницы). На «Партнёрам» тот же
- * ряд показывает логотипы партнёров, поэтому список приходит снаружи, а `id`
- * меняется, чтобы якорь `#clients` не оказался на странице дважды.
+ * По умолчанию — ряд логотипов клиентов. На странице «Партнёрам» тот же набор
+ * элементов выводится неподвижной плиткой.
  */
 export function Clients({
   logos = LOGOS,
   id = "clients",
-  alwaysMarquee = false,
+  tiled = false,
   paddingClassName = "py-64",
 }: {
   logos?: ClientLogo[];
   id?: string;
-  /** Бегущая строка на всех ширинах, а не только ниже md (для «Партнёрам»). */
-  alwaysMarquee?: boolean;
+  /** Неподвижная сетка логотипов на странице партнёров. */
+  tiled?: boolean;
   /**
    * Вертикальные отступы секции. По умолчанию 64 сверху и снизу; на главной
    * снизу больше — там выше стоит блок с прокруткой, он оставляет за собой
@@ -231,7 +230,22 @@ export function Clients({
    */
   paddingClassName?: string;
 } = {}) {
-  const marqueeClassName = alwaysMarquee ? "marquee-wide" : "";
+  if (tiled) {
+    return (
+      <section id={id} className={`bg-bg-page ${paddingClassName}`}>
+        <ul aria-label="Логотипы партнёров" className="container-page grid grid-cols-1 gap-12 min-[360px]:grid-cols-2 md:grid-cols-3 md:gap-16 lg:grid-cols-5">
+          {logos.map((logo) => (
+            <LogoItem
+              key={logo.src}
+              logo={logo}
+              className="h-[96px] min-w-0 rounded-24 bg-[#f7f8fa] md:h-[112px]"
+            />
+          ))}
+        </ul>
+      </section>
+    );
+  }
+
   return (
     <section id={id} className={`bg-bg-page ${paddingClassName}`}>
       {/*
@@ -241,7 +255,7 @@ export function Clients({
         поэтому логотипы не обрубаются на границе.
       */}
       <div
-        className={`overflow-hidden ${alwaysMarquee ? "" : "md:hidden"}`}
+        className="overflow-hidden md:hidden"
         style={{
           maskImage:
             "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
@@ -249,16 +263,14 @@ export function Clients({
             "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
         }}
       >
-        <div className={`marquee flex w-max items-center ${marqueeClassName}`}>
+        <div className="marquee flex w-max items-center">
           <MarqueeGroup logos={logos} />
           <MarqueeGroup logos={logos} clone />
         </div>
       </div>
 
-      {/* md и выше — статичный ряд 84px из макета (если лента не бежит всегда) */}
-      <div
-        className={`container-page hidden ${alwaysMarquee ? "" : "md:block"}`}
-      >
+      {/* md и выше — статичный ряд 84px из макета */}
+      <div className="container-page hidden md:block">
         <ul className="flex h-[84px] items-center justify-between gap-24">
           {logos.map((logo) => (
             <LogoItem key={logo.src} logo={logo} />

@@ -203,6 +203,7 @@ export function Header() {
   const [openMobile, setOpenMobile] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
+  const promoLogo = trimSlash(pathname) === "/kommersant-promo";
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -295,16 +296,21 @@ export function Header() {
         хватает, чтобы пункты читались поверх проезжающего контента, а фон
         под шапкой оставался узнаваемым (на 14 он превращался в ровное пятно).
 
-        Появление — только через прозрачность: геометрия у подложки всегда
-        одна и та же, поэтому в переходе ничего не разъезжается и не прыгает.
-        В самом верху страницы подложки не видно совсем.
+        Подложка ограничена высотой строки навигации: раскрывающаяся панель
+        не должна растягивать таблетку. При открытии мобильного/планшетного
+        меню строка становится белой и сливается с белой панелью ниже.
+        В самом верху страницы закрытую подложку не видно совсем.
       */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-0 -z-10 bg-bg-page/85 backdrop-blur-[6px] transition-opacity duration-300 ${
-          PILL_NAV
-            ? "md:inset-x-[max(10px,calc((100%_-_1280px)/2_+_10px))] md:inset-y-[8px] md:rounded-[98px] md:bg-[rgba(255,255,255,0.78)] md:backdrop-blur-[11px]"
-            : ""
+        className={`pointer-events-none absolute inset-x-0 top-0 -z-10 h-[var(--header-h)] transition-opacity duration-300 ${
+          menuOpen
+            ? "bg-bg-page"
+            : `bg-bg-page/85 backdrop-blur-[6px] ${
+                PILL_NAV
+                  ? "md:inset-x-[max(10px,calc((100%_-_1280px)/2_+_10px))] md:top-[8px] md:h-[calc(var(--header-h)-16px)] md:rounded-[98px] md:bg-[rgba(255,255,255,0.78)] md:backdrop-blur-[11px]"
+                  : ""
+              }`
         } ${surface ? "opacity-100" : "opacity-0"}`}
       />
 
@@ -334,14 +340,35 @@ export function Header() {
             backToTop();
           }}
         >
-          <Image
-            src="/img/logo-gigacowork.svg"
-            alt="GigaCowork"
-            width={155}
-            height={33}
-            priority
-            className="h-[25px] w-[117px] md:h-[33px] md:w-[155px]"
-          />
+          {promoLogo ? (
+            <>
+              <Image
+                src="/img/logo-gigacowork.svg"
+                alt="GigaCowork"
+                width={117}
+                height={25}
+                priority
+                className="h-[25px] w-[117px] md:h-[33px] md:w-[155px] lg:hidden"
+              />
+              <Image
+                src="/img/kommersant-promo/logo-figma.svg"
+                alt=""
+                width={202}
+                height={43}
+                priority
+                className="hidden lg:block"
+              />
+            </>
+          ) : (
+            <Image
+              src="/img/logo-gigacowork.svg"
+              alt="GigaCowork"
+              width={155}
+              height={33}
+              priority
+              className="h-[25px] w-[117px] md:h-[33px] md:w-[155px]"
+            />
+          )}
         </Link>
 
         {/* Desktop nav */}

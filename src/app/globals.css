@@ -777,17 +777,6 @@ input[type="checkbox"].checkbox-tick:checked {
     animation: type-caret 1.05s steps(1, end) infinite;
   }
 
-  /* Десктопный макет партнёров: 64 px между логотипами; на мобильном 32 px. */
-  .marquee-wide {
-    --marquee-gap: 32px;
-  }
-
-  @media (min-width: 768px) {
-    .marquee-wide {
-      --marquee-gap: 64px;
-    }
-  }
-
   /*
     С «уменьшить движение» строка замирает. Логотипы при этом не пропадают:
     первая группа остаётся на своём месте, вторая уходит за край и скрыта
@@ -1132,5 +1121,12 @@ input[type="checkbox"].checkbox-tick:checked {
   .gc-gradient-text {
     background: none;
     color: inherit;
+  }
+}
+
+/* On the Kommersant demo page, the mobile landscape header scrolls away with the page. */
+@media (max-width: 1024px) and (orientation: landscape) {
+  body:has([data-kommersant-promo]) > header {
+    position: absolute;
   }
 }

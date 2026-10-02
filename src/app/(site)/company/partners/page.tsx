@@ -608,7 +608,7 @@ export default function PartnersPage() {
       </section>
 
       {/* ── Логотипы партнёров (4351:41575) ── */}
-      <Clients logos={PARTNER_LOGOS} id="partners-logos" alwaysMarquee />
+      <Clients logos={PARTNER_LOGOS} id="partners-logos" tiled />
 
       {/* ── Рынок (4351:41692) ── */}
       <section className="w-full bg-bg-page py-64 md:py-96">
