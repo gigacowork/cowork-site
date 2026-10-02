@@ -38,6 +38,11 @@ jobs:
         run: npm ci
 
       - name: Обновить каталог плагинов из GitVerse
+        # GitVerse может отвечать медленно; опубликованный снимок каталога уже в репозитории.
+        timeout-minutes: 3
+        continue-on-error: true
+        env:
+          GIT_TERMINAL_PROMPT: 0
         run: npm run sync:catalog
 
       - name: next build
