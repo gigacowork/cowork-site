@@ -64,42 +64,10 @@ const LOGOS: ClientLogo[] = [
 
 /**
  * Логотипы партнёров (страница «Партнёрам»). Макет — All Partners / Logo
- * на десктопном холсте «Partners / Desktop 1440» (4905:26854), исходники —
- * «Исходники партнеры/Partners logo».
- *
- * Порядок и высоты — из макета, слева направо. Высота у каждого своя, и это
- * не произвол: у логотипов разное устройство — чистая надпись (Profit,
- * Napoleon IT, АБАК) занимает высотой всю себя, а надпись со знаком
- * (Astraway, «Простор», «Открытые Решения») отдаёт часть высоты знаку, и при
- * равной высоте её буквы вышли бы мельче соседних.
- *
- * Ряд пересобрали: добавились N3.Tech и «Открытые Решения», а SMART
- * technologies, Nicotech и true.code, которых раньше не хватало файлами,
- * из ряда убрали — так что незакрытых пропусков в списке больше нет.
- *
- * Высоты переписаны целиком и сверены с макетом заново: 22 / 15 / 15 / 30 /
- * 13 / 30 / 17 / 30 / 13. Ряд в макете ещё правят, так что при следующем
- * заходе числа стоит перечитать, а не считать эти окончательными.
- *
- * Ширину считает браузер по пропорции: у всех девяти файлов пропорция
- * сходится с макетом (например, napoleon-it 371×30 при высоте 13 даёт 160.8
- * против 161 в макете).
- *
- * Два новых файла выгружены из Figma через плагинный экспорт (домен ассетов
- * закрыт политикой сети). В «Открытых Решениях» белым залита мелкая подпись
- * под основным начертанием — это вторая, выворотная строка внутри того же
- * файла; в макете она так же не видна на светлом фоне, поэтому файл оставлен
- * как есть. Сам знак — чёрный: если он вдруг рассыпался на отдельные
- * чёрточки, значит подтянулась старая выгрузка, где три дуги были белыми.
+ * All Partners / Logo (5679:29884): 14 логотипов в порядке макета. Размеры
+ * заданы по каждому слоту; новые SVG взяты из векторных слоёв этого узла.
  */
 export const PARTNER_LOGOS: ClientLogo[] = [
-  {
-    name: "ТехноЯрд",
-    src: "/img/partners/logos/technoyard.svg",
-    width: 114,
-    height: 30,
-    sizeClassName: "h-[22px] w-auto",
-  },
   {
     name: "N3.Tech",
     src: "/img/partners/logos/n3tech.svg",
@@ -108,11 +76,60 @@ export const PARTNER_LOGOS: ClientLogo[] = [
     sizeClassName: "h-[15px] w-auto",
   },
   {
+    name: "true.code",
+    src: "/img/partners/logos/true-code.svg",
+    width: 107,
+    height: 26,
+    sizeClassName: "h-[26px] w-auto",
+  },
+  {
+    name: "ZeBrains",
+    src: "/img/partners/logos/zebrains.svg",
+    width: 148,
+    height: 15,
+    sizeClassName: "h-[15px] w-auto",
+  },
+  {
+    name: "Napoleon IT",
+    src: "/img/partners/logos/napoleon-it.svg",
+    width: 161,
+    height: 13,
+    sizeClassName: "h-[13px] w-auto",
+  },
+  {
+    name: "Nicotech",
+    src: "/img/partners/logos/nicotech.svg",
+    width: 114,
+    height: 22,
+    sizeClassName: "h-[22.164px] w-[113.799px] -scale-y-100 translate-y-[4px]",
+  },
+  {
     name: "Profit",
     src: "/img/partners/logos/profit.svg",
-    width: 95,
-    height: 22,
+    width: 67,
+    height: 15,
     sizeClassName: "h-[15px] w-auto",
+  },
+  {
+    name: "Astraway",
+    src: "/img/partners/logos/astraway.svg",
+    width: 101,
+    height: 30,
+    sizeClassName: "h-[30px] w-auto",
+  },
+  {
+    name: "ТехноЯрд",
+    src: "/img/partners/logos/technoyard.svg",
+    width: 83,
+    height: 22,
+    sizeClassName: "h-[22px] w-auto",
+  },
+  {
+    name: "Элрос",
+    src: "/img/partners/logos/elros.svg",
+    width: 65,
+    height: 26,
+    sizeClassName: "h-[26px] w-auto",
   },
   {
     name: "Открытые Решения",
@@ -122,11 +139,11 @@ export const PARTNER_LOGOS: ClientLogo[] = [
     sizeClassName: "h-[30px] w-auto",
   },
   {
-    name: "Napoleon IT",
-    src: "/img/partners/logos/napoleon-it.svg",
-    width: 371,
-    height: 30,
-    sizeClassName: "h-[13px] w-auto",
+    name: "AXBITGROUP",
+    src: "/img/partners/logos/axbitgroup.svg",
+    width: 152,
+    height: 26,
+    sizeClassName: "h-[26px] w-auto",
   },
   {
     name: "Простор",
@@ -138,22 +155,15 @@ export const PARTNER_LOGOS: ClientLogo[] = [
   {
     name: "SWC",
     src: "/img/partners/logos/swc.svg",
-    width: 101,
-    height: 30,
+    width: 56,
+    height: 17,
     sizeClassName: "h-[17px] w-auto",
-  },
-  {
-    name: "Astraway",
-    src: "/img/partners/logos/astraway.svg",
-    width: 168,
-    height: 50,
-    sizeClassName: "h-[30px] w-auto",
   },
   {
     name: "АБАК",
     src: "/img/partners/logos/abak.svg",
-    width: 333,
-    height: 30,
+    width: 148,
+    height: 13,
     sizeClassName: "h-[13px] w-auto",
   },
 ];
@@ -182,11 +192,9 @@ function LogoItem({
 function MarqueeGroup({
   logos,
   clone = false,
-  itemClassName = "",
 }: {
   logos: ClientLogo[];
   clone?: boolean;
-  itemClassName?: string;
 }) {
   return (
     <ul
@@ -194,7 +202,7 @@ function MarqueeGroup({
       className="marquee-group flex shrink-0 items-center"
     >
       {logos.map((logo) => (
-        <LogoItem key={logo.src} logo={logo} className={itemClassName} />
+        <LogoItem key={logo.src} logo={logo} />
       ))}
     </ul>
   );
@@ -223,17 +231,6 @@ export function Clients({
    */
   paddingClassName?: string;
 } = {}) {
-  /*
-    У партнёрских логотипов нет полей внутри файлов, и ряд читался слитно.
-    Отбивка набирается двумя частями: зазор дорожки (переменная в globals,
-    её задаёт `marquee-wide`) плюс отступы внутри элемента. Менять только
-    зазор нельзя — на стыке копий он не удвоится, и шаг «поплывёт».
-
-    Ниже md шаг вдвое меньше: 24 + 40 вместо 48 + 80. На узком экране
-    десктопная отбивка растаскивала ряд так, что в кадр попадали один-два
-    логотипа. Вторая половина шага — в globals.css, у `.marquee-wide`.
-  */
-  const itemClassName = alwaysMarquee ? "px-24 md:px-48" : "";
   const marqueeClassName = alwaysMarquee ? "marquee-wide" : "";
   return (
     <section id={id} className={`bg-bg-page ${paddingClassName}`}>
@@ -253,8 +250,8 @@ export function Clients({
         }}
       >
         <div className={`marquee flex w-max items-center ${marqueeClassName}`}>
-          <MarqueeGroup logos={logos} itemClassName={itemClassName} />
-          <MarqueeGroup logos={logos} clone itemClassName={itemClassName} />
+          <MarqueeGroup logos={logos} />
+          <MarqueeGroup logos={logos} clone />
         </div>
       </div>
 

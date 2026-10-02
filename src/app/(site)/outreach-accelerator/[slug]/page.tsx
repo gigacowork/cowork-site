@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import FinalCta from "@/components/sections/FinalCta";
 import Kicker from "@/components/ui/Kicker";
+import catalog from "@/content/cowork-hub-catalog.json";
 import { categoryName, findPublishedScenario, publishedScenarios } from "@/content/outreach-published";
 import styles from "../outreach.module.css";
 
@@ -54,17 +55,42 @@ export default async function ScenarioPage({ params }: { params: Promise<{ slug:
             </section>
             <section className={styles.scenarioSection} aria-labelledby="composition-title">
               <h2 id="composition-title">Состав плагина</h2>
-              <p>{plugin.description}</p>
-              {plugin.skills.length > 0 && (
-                <ul className={styles.scenarioSkills}>
-                  {plugin.skills.map((skill) => (
-                    <li key={skill.slug}>
-                      <h3>{skill.name}</h3>
-                      {skill.description && <p>{skill.description}</p>}
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <div className={styles.pluginComposition}>
+                <p>{plugin.description}</p>
+                {plugin.agents.length > 0 && (
+                  <div>
+                    <h3>Агент</h3>
+                    <ul className={styles.pluginComponents}>
+                      {plugin.agents.map((agent) => (
+                        <li key={agent.slug}>
+                          <h4>{agent.name}</h4>
+                          <p>{agent.description}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {plugin.skills.length > 0 && (
+                  <div>
+                    <h3>Навыки</h3>
+                    <ul className={styles.pluginComponents}>
+                      {plugin.skills.map((skill) => {
+                        const hasStandalonePage = skill.slug in catalog.skills;
+                        return (
+                          <li key={skill.slug}>
+                            {hasStandalonePage ? (
+                              <Link className={styles.pluginComponentLink} href={`/outreach-accelerator/catalog/skills/${skill.slug}/`}>
+                                {skill.name}<span aria-hidden="true">↗</span>
+                              </Link>
+                            ) : <h4>{skill.name}</h4>}
+                            <p>{skill.description}</p>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </section>
           </div>
         </div>

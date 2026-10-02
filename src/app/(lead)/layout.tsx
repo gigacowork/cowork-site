@@ -1,3 +1,5 @@
+import { CookieNotice } from "@/components/interactive/CookieNotice";
+
 /**
  * Каркас страницы заявки: без общей шапки и подвала — по макету
  * (Registration / Desktop 2397:43434, Registration / Mobile 2397:43447) у неё
@@ -7,5 +9,10 @@
 export default function LeadLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <CookieNotice />
+    </>
+  );
 }

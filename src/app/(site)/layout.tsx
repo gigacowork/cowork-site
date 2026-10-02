@@ -1,5 +1,6 @@
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
+import { CookieNotice } from "@/components/interactive/CookieNotice";
 
 /**
  * Каркас обычных страниц сайта: полная навигация (1927:15642 / 1927:17444) и
@@ -16,6 +17,7 @@ export default function SiteLayout({
       <Header />
       <main>{children}</main>
       <Footer />
+      <CookieNotice />
     </>
   );
 }

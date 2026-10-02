@@ -48,6 +48,7 @@ export default function robots(): MetadataRoute.Robots {
         "/landing-events",
         "/landing-gigaconf",
         "/landing-demo-events",
+        "/kommersant-promo",
       ],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
