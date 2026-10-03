@@ -1,5 +1,6 @@
 # Сборка статики Next.js и публикация на GitHub Pages.
-# Запускается на каждый push в main и вручную (вкладка Actions → Run workflow).
+# Запускается на каждый push в main, вручную, каждые пять минут
+# для дайджеста и ежедневно для каталога расширений.
 #
 # Требует `output: "export"` в next.config.ts — публикуется папка out/,
 # которую создаёт только экспорт.
@@ -10,7 +11,8 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: "0 4 * * *"
+    - cron: "2-59/5 * * * *"
+    - cron: "4 4 * * *"
 
 permissions:
   contents: read
@@ -38,7 +40,8 @@ jobs:
         run: npm ci
 
       - name: Обновить каталог плагинов из GitVerse
-        # GitVerse может отвечать медленно; опубликованный снимок каталога уже в репозитории.
+        if: github.event_name != 'schedule' || github.event.schedule == '4 4 * * *'
+        # GitVerse может отвечать медленно; сохранённый снимок каталога уже в репозитории.
         timeout-minutes: 3
         continue-on-error: true
         env:
@@ -51,6 +54,7 @@ jobs:
         # переименование репо не сломало пути.
         env:
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          KOMMERSANT_SHARE_URL: ${{ vars.KOMMERSANT_SHARE_URL }}
         run: npm run build
 
       - uses: actions/configure-pages@v5

@@ -1,94 +1,83 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
-const shareToken = "aaaaaaaaaaaaaaaaaaaaaagqae-2hk4x2elgjwtlbd6fgiihap746lo2qaq";
-const apiBase = "https://sasha-the-best.muravskiy.com";
-const outputPath = resolve("src/data/kommersant-share.json");
+import { latestDigest } from "./kommersant-digest.mjs";
 
-async function getJson(path, headers = {}) {
-  const response = await fetch(`${apiBase}${path}`, {
-    headers,
-    signal: AbortSignal.timeout(15000),
-  });
-  if (!response.ok) {
-    throw new Error(`${path}: HTTP ${response.status}`);
-  }
+const outputPath = resolve("src/data/kommersant-share.json");
+const publicPath = resolve("public/data/kommersant-share.json");
+
+function sourceFrom(urlText) {
+  const url = new URL(urlText);
+  const match = url.pathname.match(/^\/share\/([^/]+)\/?$/);
+  if (url.protocol !== "https:" || !match) throw new Error("Ожидается HTTPS-ссылка на публичную сессию /share/<token>");
+  return { url: `${url.origin}/share/${match[1]}`, apiBase: url.origin, token: match[1] };
+}
+
+async function getJson(base, path, headers = {}) {
+  const response = await fetch(`${base}${path}`, { headers, signal: AbortSignal.timeout(15000) });
+  if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
   return response.json();
 }
 
-function textOf(message) {
-  return (message.chunks ?? [])
-    .filter((chunk) => chunk.type === "text" && typeof chunk.content === "string")
-    .map((chunk) => chunk.content)
-    .join("\n")
-    .trim();
-}
-
-function parseDigest(markdown) {
-  const sections = [];
-  let activeSection = null;
-  let heading = "";
-
-  for (const rawLine of markdown.split(/\r?\n/)) {
-    const line = rawLine.trim();
-    if (line.startsWith("## ")) {
-      heading = line.slice(3).replace(/^📰\s*/, "");
-      continue;
-    }
-    if (line.startsWith("### ")) {
-      activeSection = { title: line.slice(4).replace(/^[^\p{L}]+/u, ""), items: [] };
-      sections.push(activeSection);
-      continue;
-    }
-    if (!activeSection || !line.startsWith("- **")) continue;
-
-    const match = line.match(/^- \*\*(.+?)\*\*(.*)$/);
-    if (!match) continue;
-    const sourceMatch = match[2].match(/\s+\*\(([^*]+)\)\*\s*$/);
-    const body = sourceMatch ? match[2].slice(0, sourceMatch.index) : match[2];
-    activeSection.items.push({
-      title: match[1],
-      description: body.replace(/^\s*[—;,]\s*/, "").trim(),
-      sources: sourceMatch ? sourceMatch[1] : "",
-    });
-  }
-
-  if (!heading || sections.length === 0 || sections.every((section) => section.items.length === 0)) {
-    throw new Error("В открытой сессии не найдена сводка с рубриками и событиями");
-  }
-  return { heading, sections };
-}
-
-try {
-  const share = await getJson(`/api/share/${encodeURIComponent(shareToken)}`);
-  const history = await getJson(
-    `/api/sessions/${encodeURIComponent(share.session_id)}/messages`,
-    { "X-Share-Token": shareToken },
-  );
-  const messages = history.messages ?? [];
-  const digestMessage = [...messages]
-    .reverse()
-    .find((message) => message.role === "assistant" && textOf(message).includes("Новости за последний час —"));
-  if (!digestMessage) throw new Error("В открытой сессии нет выпуска новостей");
-
-  const prompt = messages.find((message) => message.role === "user");
-  const digest = parseDigest(textOf(digestMessage));
-  const payload = {
-    sourceUrl: `${apiBase}/share/${shareToken}`,
-    sourceExpiresAt: share.expires_at,
-    syncedAt: new Date().toISOString(),
-    prompt: prompt ? textOf(prompt) : "",
-    ...digest,
-  };
-
-  await mkdir(dirname(outputPath), { recursive: true });
-  await writeFile(outputPath, `${JSON.stringify(payload, null, 2)}\n`);
-  console.log(`Kommersant: сохранено ${digest.sections.reduce((sum, section) => sum + section.items.length, 0)} событий`);
-} catch (error) {
+async function previousSnapshot() {
   try {
-    await readFile(outputPath);
-    console.warn(`Kommersant: источник недоступен, использован последний снимок (${error.message})`);
+    return JSON.parse(await readFile(outputPath, "utf8"));
   } catch {
-    throw error;
+    return null;
   }
+}
+
+async function save(payload) {
+  const serialized = `${JSON.stringify(payload, null, 2)}\n`;
+  await mkdir(dirname(outputPath), { recursive: true });
+  await mkdir(dirname(publicPath), { recursive: true });
+  await Promise.all([writeFile(outputPath, serialized), writeFile(publicPath, serialized)]);
+}
+
+const source = process.env.KOMMERSANT_SHARE_URL?.trim()
+  ? sourceFrom(process.env.KOMMERSANT_SHARE_URL.trim())
+  : null;
+const previous = await previousSnapshot();
+const sameSource = previous?.version === 1 && previous.sourceUrl === (source?.url ?? null);
+const baseline = sameSource ? previous : {
+  version: 1,
+  sourceUrl: source?.url ?? null,
+  sourceExpiresAt: null,
+  status: "waiting",
+  digestCheckedAt: null,
+  siteCheckedAt: null,
+  metrics: { newSinceLastRun: null, significant24h: null, highPriority24h: null },
+  items: [],
+};
+
+if (!source) {
+  await save(baseline);
+  console.log("Kommersant: публичная сессия не настроена (KOMMERSANT_SHARE_URL)");
+} else try {
+  const share = await getJson(source.apiBase, `/api/share/${encodeURIComponent(source.token)}`);
+  if (!share.session_id) throw new Error("Публичная ссылка не содержит идентификатор сессии");
+  const history = await getJson(
+    source.apiBase,
+    `/api/sessions/${encodeURIComponent(share.session_id)}/messages`,
+    { "X-Share-Token": source.token },
+  );
+  const digest = latestDigest(history.messages ?? []);
+  const now = new Date().toISOString();
+  if (digest && (!baseline.digestCheckedAt || Date.parse(digest.digestCheckedAt) >= Date.parse(baseline.digestCheckedAt))) {
+    await save({
+      version: 1,
+      sourceUrl: source.url,
+      sourceExpiresAt: share.expires_at ?? null,
+      status: "ok",
+      ...digest,
+      siteCheckedAt: now,
+    });
+    console.log(`Kommersant: принят выпуск из публичной сессии (${digest.items.length} событий)`);
+  } else {
+    await save({ ...baseline, sourceExpiresAt: share.expires_at ?? null, siteCheckedAt: now });
+    console.log("Kommersant: нового корректного выпуска в публичной сессии нет");
+  }
+} catch (error) {
+  await save({ ...baseline, siteCheckedAt: new Date().toISOString() });
+  console.warn(`Kommersant: публичная сессия недоступна, сохранен последний выпуск (${error.message})`);
 }

@@ -203,7 +203,6 @@ export function Header() {
   const [openMobile, setOpenMobile] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
-  const promoLogo = trimSlash(pathname) === "/kommersant-promo";
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -340,35 +339,14 @@ export function Header() {
             backToTop();
           }}
         >
-          {promoLogo ? (
-            <>
-              <Image
-                src="/img/logo-gigacowork.svg"
-                alt="GigaCowork"
-                width={117}
-                height={25}
-                priority
-                className="h-[25px] w-[117px] md:h-[33px] md:w-[155px] lg:hidden"
-              />
-              <Image
-                src="/img/kommersant-promo/logo-figma.svg"
-                alt=""
-                width={202}
-                height={43}
-                priority
-                className="hidden lg:block"
-              />
-            </>
-          ) : (
-            <Image
-              src="/img/logo-gigacowork.svg"
-              alt="GigaCowork"
-              width={155}
-              height={33}
-              priority
-              className="h-[25px] w-[117px] md:h-[33px] md:w-[155px]"
-            />
-          )}
+          <Image
+            src="/img/logo-gigacowork.svg"
+            alt="GigaCowork"
+            width={155}
+            height={33}
+            priority
+            className="h-[25px] w-[117px] md:h-[33px] md:w-[155px]"
+          />
         </Link>
 
         {/* Desktop nav */}
