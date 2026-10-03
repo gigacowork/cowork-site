@@ -63,6 +63,32 @@ function FigmaIcon({ name, size }: { name: string; size?: number }) {
   return <img src={asset(`/img/kommersant-promo-v2/${name}.svg`)} width={size} height={size} alt="" />;
 }
 
+function BrandPair({ inFeed = false }: { inFeed?: boolean }) {
+  return (
+    <div className={`${styles.brandPair} ${inFeed ? styles.feedBrandPair : ""}`} role="img" aria-label="Коммерсантъ и GigaCowork">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={asset("/img/kommersant-promo-v2/logo-kommersant.svg")} alt="" />
+      <span aria-hidden="true">×</span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={asset("/img/kommersant-promo/logo-figma.svg")} alt="" />
+    </div>
+  );
+}
+
+function HeroCopy({ inFeed = false }: { inFeed?: boolean }) {
+  return (
+    <>
+      <h1 className={`${styles.heroTitle} ${inFeed ? styles.feedHeading : ""}`}>
+        Все по-новому,<br />сохраняя главное
+      </h1>
+      <p className={`${styles.heroSubtitle} ${inFeed ? styles.feedSubtitle : ""}`}>
+        Читайте новости в новом удобном формате.<br />
+        А работу делегируйте ИИ-агентам в GigaCowork
+      </p>
+    </>
+  );
+}
+
 export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   const [digest, setDigest] = useState<Digest>(() => isDigest(initialDigest) ? initialDigest : {
     version: 1, source: "", checkedAt: null, status: "waiting", items: [],
@@ -79,8 +105,10 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [headingInHistory, setHeadingInHistory] = useState(false);
   const userEdited = useRef(false);
+  const autoFollow = useRef(true);
   const sendTimer = useRef<number | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const articleListRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
   const dockSlotRef = useRef<HTMLDivElement>(null);
 
@@ -134,6 +162,37 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
     }, 340) : 0;
     return () => { window.clearInterval(interval); window.clearTimeout(dockTimer); };
   }, [submitted, articleCount]);
+
+  useEffect(() => {
+    if (!submitted) return;
+    const stopFollowing = () => { autoFollow.current = false; };
+    window.addEventListener("wheel", stopFollowing, { passive: true });
+    window.addEventListener("touchstart", stopFollowing, { passive: true });
+    window.addEventListener("pointerdown", stopFollowing, { passive: true });
+    return () => {
+      window.removeEventListener("wheel", stopFollowing);
+      window.removeEventListener("touchstart", stopFollowing);
+      window.removeEventListener("pointerdown", stopFollowing);
+    };
+  }, [submitted]);
+
+  useEffect(() => {
+    if (!submitted || !visibleCount || !autoFollow.current) return;
+    const frame = window.requestAnimationFrame(() => {
+      const lastArticle = articleListRef.current?.lastElementChild;
+      const composer = composerRef.current;
+      if (!lastArticle || !composer || !autoFollow.current) return;
+      const bottomLimit = window.innerHeight - composer.offsetHeight - 32;
+      const nextScroll = window.scrollY + lastArticle.getBoundingClientRect().bottom - bottomLimit;
+      if (nextScroll > window.scrollY + 2) {
+        window.scrollTo({
+          top: nextScroll,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        });
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [submitted, visibleCount]);
 
   useEffect(() => {
     if (!submitted || !dockAnimationDone || visibleCount < articleCount) return;
@@ -230,12 +289,14 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   return (
     <section className={`${styles.page} ${submitted ? styles.hasResults : ""} ${dockAnimationDone ? styles.dockReady : ""} ${docked ? styles.docked : ""} ${showHelpers ? styles.helpersVisible : ""} ${emailSubmitted ? styles.emailSubmitted : ""} ${headingInHistory ? styles.headingInHistory : ""}`} aria-label="Демо чата GigaCowork">
       <div className={styles.intro} aria-hidden={submitted}>
-        <h1>А все остальное делегируйте <span className={styles.noWrap}>ИИ-агентам</span> в GigaCowork</h1>
+        <BrandPair />
+        <HeroCopy />
       </div>
 
       {submitted && (
         <div className={styles.feed} aria-live="polite">
-          <h1 className={styles.feedHeading}>А все остальное делегируйте <span className={styles.noWrap}>ИИ-агентам</span> в GigaCowork</h1>
+          <BrandPair inFeed />
+          <HeroCopy inFeed />
           <div className={styles.userMessage}>{sentPrompt}</div>
           <p className={styles.answerIntro}>
             {articles.length
@@ -243,7 +304,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
               : "Пока не удалось загрузить публикации. Попробуйте обновить страницу чуть позже."}
           </p>
           {checkedAt && <p className={styles.updated}>Лента проверена {checkedAt} МСК</p>}
-          <div className={styles.articleList}>
+          <div className={styles.articleList} ref={articleListRef}>
             {articles.slice(0, visibleCount).map((article) => (
               <article className={styles.article} key={article.id}>
                 <span className={styles.articleBody}>
