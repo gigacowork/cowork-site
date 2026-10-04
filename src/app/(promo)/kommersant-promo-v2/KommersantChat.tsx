@@ -112,6 +112,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   const [docked, setDocked] = useState(false);
   const [showHelpers, setShowHelpers] = useState(false);
   const [leadProgress, setLeadProgress] = useState(0);
+  const animatedLeadProgress = useRef(0);
   const [leadRequestId, setLeadRequestId] = useState(0);
   const leadRequested = leadRequestId > 0;
   const [emailSubmitted, setEmailSubmitted] = useState(false);
@@ -318,10 +319,9 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
       const noticeSpace = parseFloat(getComputedStyle(slot).getPropertyValue("--notice-space")) || 88;
       const slotTop = slot.getBoundingClientRect().top + noticeSpace;
       const reachedLastCard = slotTop <= dockTop + 1;
-      const progress = window.scrollY > 24 ? Math.max(0, Math.min(1, (dockTop + 120 - slotTop) / 120)) : 0;
       setDocked(reachedLastCard);
-      setLeadProgress(progress);
-      setShowHelpers((current) => current ? progress > .48 : progress >= .52);
+      // Separate entry/exit thresholds prevent wheel jitter from flipping the form state.
+      setShowHelpers((current) => window.scrollY > 24 && slotTop <= dockTop + (current ? 90 : 45));
     };
     const onScroll = () => { if (!frame) frame = window.requestAnimationFrame(check); };
     check();
@@ -333,6 +333,29 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
       window.removeEventListener("resize", onScroll);
     };
   }, [submitted, dockAnimationDone, visibleCount, articleCount, emailSubmitted, showHelpers]);
+
+  useEffect(() => {
+    const target = showHelpers && !emailSubmitted ? 1 : 0;
+    const origin = animatedLeadProgress.current;
+    if (origin === target) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      animatedLeadProgress.current = target;
+      setLeadProgress(target);
+      return;
+    }
+    let frame = 0;
+    const startedAt = performance.now();
+    const animate = (now: number) => {
+      const elapsed = Math.min(1, (now - startedAt) / 650);
+      const eased = elapsed * elapsed * (3 - 2 * elapsed);
+      const value = origin + (target - origin) * eased;
+      animatedLeadProgress.current = value;
+      setLeadProgress(value);
+      if (elapsed < 1) frame = window.requestAnimationFrame(animate);
+    };
+    frame = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(frame);
+  }, [showHelpers, emailSubmitted]);
 
   useEffect(() => {
     if (leadProgress >= 1) leadRevealed.current = true;
