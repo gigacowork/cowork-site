@@ -109,7 +109,7 @@ export default async function UseCasePage({
 
     /* Применение (2616:11235 / 2787:16163) */
     scenarios: useCase.scenarios.length ? (
-      <section className="w-full bg-bg-page py-64 md:py-120">
+      <section id={slug === "legal-team" ? "application" : undefined} className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-120">
         <div className="container-page flex flex-col gap-48 md:gap-96">
           {/* Ниже md текст по левому краю, пилюля — по центру. */}
           <div className="flex flex-col items-start gap-24 text-left">
@@ -119,7 +119,11 @@ export default async function UseCasePage({
             </h2>
           </div>
 
-          <ScenarioStack items={useCase.scenarios} slug={useCase.slug} />
+          <ScenarioStack
+            items={useCase.scenarios}
+            slug={useCase.slug}
+            anchorId={slug === "ceo" ? "market-overview" : slug === "salesforce" ? "commercial-proposals" : undefined}
+          />
         </div>
       </section>
     ) : null,
@@ -129,6 +133,8 @@ export default async function UseCasePage({
         title={useCase.stepsTitle}
         lead={useCase.stepsLead}
         items={useCase.steps}
+        anchorId={slug === "ceo" ? "solutions" : undefined}
+        rowAnchorIds={slug === "salesforce" ? { 1: "meeting-action-plan" } : slug === "legal-team" ? { 1: "knowledge-base-search" } : undefined}
       />
     ) : null,
 

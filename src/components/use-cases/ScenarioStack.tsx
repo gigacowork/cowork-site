@@ -67,10 +67,12 @@ const IMAGE_SHADOW = "drop-shadow(0 12px 24px #60738f33)";
 export function ScenarioStack({
   items,
   slug,
+  anchorId,
 }: {
   items: UseCaseScenario[];
   /** Роль — по ней берутся готовые кадры из `scenario-previews`. */
   slug: string;
+  anchorId?: string;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -233,6 +235,7 @@ export function ScenarioStack({
   return (
     <div
       ref={rootRef}
+      id={anchorId}
       /*
         Строки задаём явно: без них `grid-row: 1 / -1` у текстовой колонки
         схлопнулось бы в одну неявную строку и текст перестал бы быть липким.
@@ -255,7 +258,7 @@ export function ScenarioStack({
         ехала вбок (на 1024 — на 116px). Теперь обе колонки сжимаются вместе с
         контейнером.
       */
-      className="grid grid-cols-1 gap-32 lg:grid-cols-[30%_1fr] lg:grid-rows-[repeat(var(--rows),auto)] lg:gap-x-[132px] lg:gap-y-96"
+      className="grid scroll-mt-[calc(var(--header-h)+24px)] grid-cols-1 gap-32 lg:grid-cols-[30%_1fr] lg:grid-rows-[repeat(var(--rows),auto)] lg:gap-x-[132px] lg:gap-y-96"
     >
       {items.map((item, i) => (
         <Fragment key={item.title}>

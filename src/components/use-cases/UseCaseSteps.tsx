@@ -62,15 +62,19 @@ export function UseCaseSteps({
   title,
   lead,
   items,
+  anchorId,
+  rowAnchorIds,
 }: {
   /** Заголовок секции. В макете Финансов его нет — остаётся один кикер. */
   title?: string;
   /** Короткая строка-связка под заголовком («Агенты:» и т.п.). */
   lead?: string;
   items: UseCaseStep[];
+  anchorId?: string;
+  rowAnchorIds?: Record<number, string>;
 }) {
   return (
-    <section className={`w-full py-64 md:py-120 ${SECTION_GRADIENT}`}>
+    <section id={anchorId} className={`w-full scroll-mt-[calc(var(--header-h)+24px)] py-64 md:py-120 ${SECTION_GRADIENT}`}>
       <div className="container-page flex flex-col gap-40 md:gap-48">
         {/* Ниже md текст по левому краю, пилюля — по центру. */}
         <div className="flex flex-col items-start gap-24 text-left">
@@ -92,7 +96,8 @@ export function UseCaseSteps({
             return (
               <div
                 key={step.title}
-                className="flex flex-col gap-24 md:flex-row md:items-start md:justify-between md:gap-80"
+                id={rowAnchorIds?.[i]}
+                className="flex scroll-mt-[calc(var(--header-h)+24px)] flex-col gap-24 md:flex-row md:items-start md:justify-between md:gap-80"
               >
                 {/*
                   В макете ниже md этот текст стоял по центру (2656:11587) — по

@@ -1,10 +1,10 @@
 {
   "version": 1,
   "sourceUrl": "https://sasha-the-best.muravskiy.com/share/aaaaaaaaaaaaaaaaaaaaaagqae-2hk4x2elgjwtlbd6fgiihap746lo2qaq",
-  "sourceExpiresAt": "2026-11-01T09:35:33.310724Z",
+  "sourceExpiresAt": null,
   "status": "waiting",
   "digestCheckedAt": null,
-  "siteCheckedAt": "2026-10-03T20:42:14.863Z",
+  "siteCheckedAt": "2026-10-04T14:38:23.551Z",
   "metrics": {
     "newSinceLastRun": null,
     "significant24h": null,
