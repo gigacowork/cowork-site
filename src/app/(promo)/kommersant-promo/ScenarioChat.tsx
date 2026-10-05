@@ -81,7 +81,7 @@ function Composer() {
     <div className={styles.composerFooter}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={asset("/img/kommersant-promo/logo-figma.svg")} width={125} height={27} alt="GigaCowork" />
-      <span>+ 40 коннекторов <Svg name="chevrons-down-up" /></span>
+      <span>+ 40 интеграций <Svg name="chevrons-down-up" /></span>
     </div>
   </div>;
 }
@@ -434,7 +434,7 @@ export function ScenarioChat({ initialDigest, footer }: { initialDigest: unknown
   return <><section className={`${styles.page} ${history.length ? styles.started : styles.landing} ${scrolled ? styles.scrolled : ""}`} aria-label="Демо сценариев GigaCowork">
     <header className={styles.header}>
       <div ref={brandBar} className={styles.brandBar}><Brands /></div>
-      <div ref={heroCopy} className={styles.heroCopy}><h1>Читайте главное,<br /><span>делегируйте остальное.</span></h1><p>ИИ-агенты GigaCowork возьмут рабочие задачи на себя.</p></div>
+      <div ref={heroCopy} className={styles.heroCopy}><h1>Читайте главное,<br /><span>делегируйте остальное</span></h1><p>ИИ-агенты GigaCowork возьмут рабочие задачи на себя</p></div>
     </header>
     {!history.length ? <div className={styles.start}><Choices remaining={scenarios} onChoose={begin} hintRef={hintLayer} /><Composer /></div> : <>
       <div ref={historyElement} className={styles.history} aria-label="История чата" aria-busy={Boolean(active)}>
