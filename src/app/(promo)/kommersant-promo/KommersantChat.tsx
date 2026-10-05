@@ -100,7 +100,45 @@ function HeroCopy({ inFeed = false }: { inFeed?: boolean }) {
   );
 }
 
-export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
+function AgentDemo({ kind }: { kind: "document" | "offer" }) {
+  const documentDemo = kind === "document";
+  return (
+    <section className={`${styles.demoCard} ${documentDemo ? styles.documentDemo : styles.offerDemo}`} aria-label={documentDemo ? "Пример проверки документа" : "Пример подготовки коммерческого предложения"}>
+      <h3>{documentDemo ? "Подготовить и проверить документ" : "Подготовить коммерческое предложение"}</h3>
+      {documentDemo ? (
+        <div className={styles.documentScene} aria-hidden="true">
+          <div className={styles.demoAgent}><span><Icon src="/img/icons/bot.svg" /></span><span>Агент</span></div>
+          <div className={styles.checklist}><i /><i /><i /></div>
+          <div className={styles.scanDocument}>
+            <Icon src="/img/icons/document.svg" />
+            <span className={styles.scanBeam} />
+            <span className={styles.documentCheck}><Icon src="/img/icons/check.svg" /></span>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.offerScene} aria-hidden="true">
+          <svg className={styles.demoConnections} viewBox="0 0 400 120" preserveAspectRatio="none" fill="none">
+            <path d="M64 60 C120 60 118 18 180 18 M64 60 H180 M64 60 C120 60 118 102 180 102" />
+            <path d="M220 18 C282 18 280 60 336 60 M220 60 H336 M220 102 C282 102 280 60 336 60" />
+          </svg>
+          <div className={styles.demoAgent}><span><Icon src="/img/icons/bot.svg" /></span><span>Агент</span></div>
+          <div className={styles.demoSystems}>
+            <span><Icon src="/img/icons/crm.svg" />CRM</span>
+            <span><Icon src="/img/icons/budget.svg" />1С</span>
+            <span><Icon src="/img/icons/table.svg" />БД</span>
+          </div>
+          <div className={styles.offerDocument}><Icon src="/img/icons/document.svg" /><b>КП</b></div>
+        </div>
+      )}
+      <div className={styles.demoResult} role="status">
+        <Icon src="/img/icons/bot.svg" />
+        <p>{documentDemo ? "Документ проверен, рисков не обнаружено" : "Сформировано оптимальное КП на основе анализа клиента"}</p>
+      </div>
+    </section>
+  );
+}
+
+export function KommersantChat({ initialDigest, hideChatAfterSubmit = false }: { initialDigest: unknown; hideChatAfterSubmit?: boolean }) {
   const [digest, setDigest] = useState<Digest>(() => isDigest(initialDigest) ? initialDigest : {
     version: 1, source: "", checkedAt: null, status: "waiting", items: [],
   });
@@ -109,6 +147,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   const [pressing, setPressing] = useState(false);
   const [submittedAt, setSubmittedAt] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(0);
+  const [continuationCount, setContinuationCount] = useState(0);
   const [dockAnimationDone, setDockAnimationDone] = useState(false);
   const [docked, setDocked] = useState(false);
   const [showHelpers, setShowHelpers] = useState(false);
@@ -127,7 +166,8 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   const sendTimer = useRef<number | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
-  const articleListRef = useRef<HTMLDivElement>(null);
+  const articleListRef = useRef<HTMLTableSectionElement>(null);
+  const continuationRef = useRef<HTMLDivElement>(null);
   const updatedRef = useRef<HTMLParagraphElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
   const dockSlotRef = useRef<HTMLDivElement>(null);
@@ -248,6 +288,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   }, []);
 
   const articleCount = Math.min(digest.items.length, 6);
+  const responseComplete = visibleCount >= articleCount && (articleCount === 0 || continuationCount === 4);
 
   useEffect(() => {
     if (!submitted) return;
@@ -274,6 +315,14 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   }, [submitted, articleCount, leadRequested]);
 
   useEffect(() => {
+    if (!submitted || !articleCount || visibleCount < articleCount) return;
+    // Let each demonstration finish before the next response or lead form appears.
+    const timers = [700, 1500, 4500, 8100].map((delay, index) =>
+      window.setTimeout(() => setContinuationCount(index + 1), delay));
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, [submitted, articleCount, visibleCount]);
+
+  useEffect(() => {
     if (!submitted) return;
     const stopFollowing = () => { autoFollow.current = false; };
     const updateHeader = () => setHeaderScrolled(window.scrollY > 4);
@@ -297,7 +346,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
       const composer = composerRef.current;
       if (!lastArticle || !composer || !autoFollow.current) return;
       const bottomLimit = window.innerHeight - composer.offsetHeight - 32;
-      const lastContent = updatedRef.current ?? lastArticle;
+      const lastContent = continuationRef.current?.lastElementChild ?? updatedRef.current ?? lastArticle;
       const nextScroll = window.scrollY + lastContent.getBoundingClientRect().bottom - bottomLimit;
       if (nextScroll > window.scrollY + 2) {
         window.scrollTo({
@@ -307,10 +356,10 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
       }
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [submitted, visibleCount]);
+  }, [submitted, visibleCount, continuationCount]);
 
   useEffect(() => {
-    if (!submitted || !dockAnimationDone || visibleCount < articleCount) return;
+    if (!submitted || !dockAnimationDone || !responseComplete) return;
     let frame = 0;
     const check = () => {
       frame = 0;
@@ -356,7 +405,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [submitted, dockAnimationDone, visibleCount, articleCount, emailSubmitted, showHelpers]);
+  }, [submitted, dockAnimationDone, responseComplete, emailSubmitted, showHelpers]);
 
   useEffect(() => {
     const target = showHelpers && !emailSubmitted ? 1 : 0;
@@ -386,16 +435,16 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   }, [leadProgress]);
 
   useEffect(() => {
-    if (!leadRequested || !dockAnimationDone || visibleCount < articleCount || handledLeadRequest.current === leadRequestId) return;
+    if (!leadRequested || !dockAnimationDone || !responseComplete || handledLeadRequest.current === leadRequestId) return;
     const timer = window.setTimeout(() => {
       handledLeadRequest.current = leadRequestId;
       scrollToLead();
     }, 280);
     return () => window.clearTimeout(timer);
-  }, [leadRequested, leadRequestId, dockAnimationDone, visibleCount, articleCount, scrollToLead]);
+  }, [leadRequested, leadRequestId, dockAnimationDone, responseComplete, scrollToLead]);
 
   useEffect(() => {
-    if (!submitted || !articleCount || visibleCount < articleCount || emailSubmitted || leadRequested || leadRevealed.current) return;
+    if (!submitted || !articleCount || !responseComplete || emailSubmitted || leadRequested || leadRevealed.current) return;
     let timer = 0;
     const revealLead = () => {
       if (leadRevealed.current || document.visibilityState !== "visible") return;
@@ -408,12 +457,14 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
       if (!leadRevealed.current) timer = window.setTimeout(revealLead, 5000);
     };
     timer = window.setTimeout(revealLead, 5280);
-    window.addEventListener("scroll", resetTimer, { passive: true });
+    // In the version without a composer, reveal the form on a fixed timer.
+    // Reading or scrolling through the digest must not postpone the transition.
+    if (!hideChatAfterSubmit) window.addEventListener("scroll", resetTimer, { passive: true });
     return () => {
       window.clearTimeout(timer);
-      window.removeEventListener("scroll", resetTimer);
+      if (!hideChatAfterSubmit) window.removeEventListener("scroll", resetTimer);
     };
-  }, [submitted, articleCount, visibleCount, emailSubmitted, leadRequested, scrollToLead]);
+  }, [submitted, articleCount, responseComplete, emailSubmitted, leadRequested, hideChatAfterSubmit, scrollToLead]);
 
   useEffect(() => {
     let active = true;
@@ -470,7 +521,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   const canSend = false;
 
   return (
-    <section style={{ "--lead-progress": emailSubmitted ? 0 : leadProgress, "--chat-height": `${formHeights.chat}px`, "--lead-height": `${formHeights.lead}px` } as CSSProperties} className={`${styles.page} ${styles.fullLeadForm} ${submitted ? styles.hasResults : ""} ${dockAnimationDone ? styles.dockReady : ""} ${docked ? styles.docked : ""} ${showHelpers ? styles.helpersVisible : ""} ${leadProgress > 0 ? styles.leadTransition : ""} ${emailSubmitted ? styles.emailSubmitted : ""} ${headerScrolled ? styles.headerScrolled : ""}`} aria-label="Демо чата GigaCowork">
+    <section style={{ "--lead-progress": emailSubmitted ? 0 : leadProgress, "--chat-height": `${formHeights.chat}px`, "--lead-height": `${formHeights.lead}px` } as CSSProperties} className={`${styles.page} ${styles.fullLeadForm} ${hideChatAfterSubmit ? styles.noReturnChat : ""} ${submitted ? styles.hasResults : ""} ${dockAnimationDone ? styles.dockReady : ""} ${docked ? styles.docked : ""} ${showHelpers ? styles.helpersVisible : ""} ${leadProgress > 0 ? styles.leadTransition : ""} ${emailSubmitted ? styles.emailSubmitted : ""} ${headerScrolled ? styles.headerScrolled : ""}`} aria-label="Демо чата GigaCowork">
       <div className={styles.intro} ref={introRef} aria-hidden={submitted}>
         <BrandPair />
         <HeroCopy />
@@ -491,25 +542,34 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
               ? "Вот самое актуальное для бизнеса — события, которые стоит держать в фокусе."
               : "Пока не удалось загрузить публикации. Попробуйте обновить страницу чуть позже."}
           </p>
-          <div className={styles.articleList} ref={articleListRef}>
+          {visibleCount > 0 && <table className={styles.newsTable}>
+            <caption className={styles.tableCaption}>Обзор бизнес-новостей Коммерсанта</caption>
+            <thead><tr><th scope="col">Время</th><th scope="col">Новость</th></tr></thead>
+            <tbody ref={articleListRef}>
             {articles.slice(0, visibleCount).map((article) => (
-              <article className={styles.article} key={article.id}>
-                <span className={styles.articleBody}>
-                  <span className={styles.articleMeta}>Коммерсантъ · {shortTimeFormatter.format(new Date(article.publishedAt))} МСК</span>
-                  <strong>{article.title}</strong>
-                  <span className={styles.articleSummary}>
-                    {article.summary}{" "}
+              <tr key={article.id} className={styles.newsRow}>
+                <td>
+                  <time dateTime={article.publishedAt} className={styles.articleMeta}>{shortTimeFormatter.format(new Date(article.publishedAt))} МСК</time>
+                </td>
+                <th scope="row">
+                    <strong>{article.title.split(" // ")[0]}</strong>{" "}
                     <a className={styles.articleLink} href={article.url} target="_blank" rel="noopener noreferrer" aria-label={`Подробнее: ${article.title}`}>
                       Подробнее
                     </a>
-                  </span>
-                </span>
-              </article>
+                </th>
+              </tr>
             ))}
-          </div>
+            </tbody>
+          </table>}
           {checkedAt && visibleCount >= articles.length && (
             <p className={styles.updated} ref={updatedRef}>Лента проверена {checkedAt} МСК</p>
           )}
+          {continuationCount > 0 && <div className={styles.agentContinuation} ref={continuationRef}>
+            <h2>GigaCowork возьмет на себя вашу рутину</h2>
+            <p>Обзор готов. А рабочую рутину можно делегировать GigaCowork:</p>
+            {continuationCount >= 2 && <AgentDemo kind="document" />}
+            {continuationCount >= 3 && <AgentDemo kind="offer" />}
+          </div>}
           </div>
         </div>
       )}
@@ -530,11 +590,11 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
         ) : (
         <>
         <div className={styles.systemNotice} role="status" aria-hidden={!docked || !showHelpers}>
-          <strong>1 месяц – за наш счёт</strong>
+          <strong>Проверьте на своих задачах — месяц бесплатного доступа к платформе</strong>
           <p>Оставьте контакты и делегируйте рабочие задачи ИИ-агентам в GigaCowork бесплатно в течение месяца</p>
         </div>
         <div className={styles.formMorph}>
-        <div className={styles.chatLayer} ref={chatLayerRef} aria-hidden={showHelpers} inert={showHelpers}>
+        <div className={styles.chatLayer} ref={chatLayerRef} aria-hidden={showHelpers || (hideChatAfterSubmit && submitted)} inert={showHelpers || (hideChatAfterSubmit && submitted)}>
         <form className={`${styles.chatInput} ${showHelpers ? styles.emailInput : ""}`} onSubmit={(event) => { event.preventDefault(); send(); }}>
           <div className={styles.inputMain}>
             <textarea

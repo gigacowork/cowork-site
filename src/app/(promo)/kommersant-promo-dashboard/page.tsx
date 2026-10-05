@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import digest from "@/data/kommersant-share.json";
 
-import { Dashboard } from "../kommersant-promo/Dashboard";
+import { DashboardChat } from "./DashboardChat";
 
 export const metadata: Metadata = {
   title: "Что нового на kommersant.ru?",
@@ -11,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function KommersantPromoDashboardPage() {
-  return <Dashboard initialDigest={digest} />;
+  return <DashboardChat initialDigest={digest} />;
 }
