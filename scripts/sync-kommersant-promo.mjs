@@ -1,8 +1,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import { FEED_URL, parseBusinessFeed } from "./kommersant-promo-v2.mjs";
+import { FEED_URL, parseBusinessFeed } from "./kommersant-promo.mjs";
 
-const paths = [resolve("src/data/kommersant-promo-v2.json"), resolve("public/data/kommersant-promo-v2.json")];
+const paths = [resolve("src/data/kommersant-promo.json"), resolve("public/data/kommersant-promo.json")];
 
 try {
   const response = await fetch(FEED_URL, {

@@ -40,7 +40,7 @@
     && (value.sourceUrl === null || typeof value.sourceUrl === "string")
     && value.metrics && Array.isArray(value.items);
   const page = location.protocol === "file:"
-    ? new URL("https://gigacowork.github.io/cowork-site/kommersant-promo.html")
+    ? new URL("https://gigacowork.github.io/cowork-site/kommersant-promo-dashboard.html")
     : new URL(location.href);
   page.search = "";
   page.hash = "";

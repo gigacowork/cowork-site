@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { parseBusinessFeed } from "./kommersant-promo-v2.mjs";
+import { parseBusinessFeed } from "./kommersant-promo.mjs";
 
 const item = (id, title, description = "Компания сообщает об изменениях на рынке") => `
   <item>

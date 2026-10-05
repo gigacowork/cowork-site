@@ -110,6 +110,17 @@ const html = `<!doctype html>
 </html>
 `;
 
-const output = resolve(root, "public/kommersant-promo.html");
+const output = resolve(root, "public/kommersant-promo-dashboard.html");
 await writeFile(output, html);
+await writeFile(resolve(root, "public/kommersant-promo.html"), `<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="refresh" content="0;url=./kommersant-promo-dashboard.html">
+  <title>Дашборд Коммерсанта переехал</title>
+</head>
+<body><p>Дашборд переехал на <a href="./kommersant-promo-dashboard.html">новый адрес</a>.</p></body>
+</html>
+`);
 console.log(`Kommersant: создан отдельный HTML-файл ${output}`);

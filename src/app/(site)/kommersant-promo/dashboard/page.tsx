@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 
-import digest from "@/data/kommersant-share.json";
-
-import { Dashboard } from "../Dashboard";
+import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
-  title: "Бизнес-дайджест Ъ — GigaCowork",
-  description: "Дайджест из публичной сессии агента GigaCowork.",
+  title: "Дашборд Коммерсанта переехал",
   robots: { index: false, follow: false },
 };
 
-export default function KommersantDashboardPage() {
-  return <Dashboard initialDigest={digest} />;
+export default function KommersantDashboardRedirectPage() {
+  const href = asset("/kommersant-promo-dashboard/");
+  return (
+    <main className="container-page" style={{ paddingBlock: "calc(var(--header-h) + 48px) 80px" }}>
+      <meta httpEquiv="refresh" content={`0;url=${href}`} />
+      <p>Дашборд переехал на <a href={href}>новый адрес</a>.</p>
+    </main>
+  );
 }

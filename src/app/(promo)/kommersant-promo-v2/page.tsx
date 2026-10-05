@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import digest from "@/data/kommersant-promo-v2.json";
-import { KommersantChat } from "./KommersantChat";
+import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
-  title: "Что нового на kommersant.ru? — GigaCowork",
-  description: "Свежие материалы раздела «Бизнес» Коммерсанта в чате GigaCowork.",
+  title: "Промостраница Коммерсанта — GigaCowork",
   robots: { index: false, follow: false },
 };
 
-export default function KommersantPromoV2Page() {
-  return <KommersantChat initialDigest={digest} />;
+export default function KommersantPromoRedirectPage() {
+  const href = asset("/kommersant-promo/");
+  return (
+    <>
+      <meta httpEquiv="refresh" content={`0;url=${href}`} />
+      <p>Промостраница переехала на <a href={href}>новый адрес</a>.</p>
+    </>
+  );
 }

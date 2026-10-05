@@ -4,12 +4,13 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import type { CSSProperties } from "react";
 import { asset } from "@/lib/asset";
 import { Icon } from "@/components/ui/Icon";
+import LeadForm from "@/components/sections/LeadForm";
 import styles from "./promo-v2.module.css";
 
 type Article = { id: string; title: string; summary: string; url: string; publishedAt: string };
 type Digest = { version: number; source: string; checkedAt: string | null; status: "ok" | "waiting"; items: Article[] };
 
-const PROMPT = "Что нового на kommersant.ru";
+const PROMPT = "Собери обзор главных бизнес-новостей на kommersant.ru";
 
 function nextArticleDelay(previousDelay: number | null): number {
   const delay = 1500 + Math.round(Math.random() * 1000);
@@ -112,15 +113,13 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   const [docked, setDocked] = useState(false);
   const [showHelpers, setShowHelpers] = useState(false);
   const [leadProgress, setLeadProgress] = useState(0);
+  const [formHeights, setFormHeights] = useState({ chat: 148, lead: 650 });
   const animatedLeadProgress = useRef(0);
   const [leadRequestId, setLeadRequestId] = useState(0);
   const leadRequested = leadRequestId > 0;
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const heroOrigin = useRef<DOMRect[]>([]);
-  const previousEmailMode = useRef(false);
-  const emailDraft = useRef("");
-  const chatDraft = useRef("");
   const userEdited = useRef(false);
   const autoFollow = useRef(true);
   const leadRevealed = useRef(false);
@@ -135,6 +134,22 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   const feedHeroRef = useRef<HTMLDivElement>(null);
   const mobileBrandRef = useRef<HTMLDivElement>(null);
   const feedResponseRef = useRef<HTMLDivElement>(null);
+  const chatLayerRef = useRef<HTMLDivElement>(null);
+  const leadLayerRef = useRef<HTMLDivElement>(null);
+  const leadScrollPosition = useRef(0);
+  const leadScrollDirection = useRef(1);
+
+  useLayoutEffect(() => {
+    const chat = chatLayerRef.current;
+    const lead = leadLayerRef.current;
+    if (!chat || !lead) return;
+    const measure = () => setFormHeights({ chat: chat.offsetHeight, lead: lead.offsetHeight });
+    const observer = new ResizeObserver(measure);
+    observer.observe(chat);
+    observer.observe(lead);
+    measure();
+    return () => observer.disconnect();
+  }, [emailSubmitted]);
 
   const scrollToLead = useCallback(() => {
     const slot = dockSlotRef.current;
@@ -144,10 +159,10 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
     const noticeSpace = parseFloat(style.getPropertyValue("--notice-space")) || 160;
     const panelHeight = parseFloat(style.getPropertyValue("--notice-panel-height")) || 128;
     const panelPadding = parseFloat(style.getPropertyValue("--glass-vertical-pad")) || 24;
-    const consentSpace = parseFloat(style.getPropertyValue("--consent-space-target")) || 56;
+    const consentSpace = 0;
     const header = window.innerWidth <= 700 ? mobileBrandRef.current : feedHeroRef.current;
     const headerBottom = Math.max(0, header?.getBoundingClientRect().bottom ?? 0);
-    const chatHeight = composer.querySelector<HTMLElement>("form")?.offsetHeight ?? 148;
+    const chatHeight = chatLayerRef.current?.offsetHeight ?? 148;
     const composerTop = Math.min(headerBottom + 24 + panelHeight + panelPadding,
       window.innerHeight - chatHeight - consentSpace - 40);
     const target = window.scrollY + slot.getBoundingClientRect().top + noticeSpace - composerTop;
@@ -162,18 +177,8 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
   };
 
   useEffect(() => {
-    if (previousEmailMode.current === showHelpers || emailSubmitted) return;
-    previousEmailMode.current = showHelpers;
-    setText((current) => {
-      if (showHelpers) {
-        chatDraft.current = current;
-        return emailDraft.current;
-      }
-      emailDraft.current = current;
-      return chatDraft.current;
-    });
-    inputRef.current?.blur();
-  }, [showHelpers, emailSubmitted]);
+    if (showHelpers) inputRef.current?.blur();
+  }, [showHelpers]);
 
   useLayoutEffect(() => {
     if (!submitted || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -313,15 +318,34 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
       const composer = composerRef.current;
       if (!slot || !composer) return;
       const safeBottom = 16;
-      const consentSpace = emailSubmitted ? 0 : (parseFloat(getComputedStyle(slot).getPropertyValue("--consent-space-target")) || 56);
-      const chatHeight = composer.querySelector<HTMLElement>('form')?.offsetHeight ?? 148;
+      const consentSpace = 0;
+      const chatHeight = chatLayerRef.current?.offsetHeight ?? 148;
       const dockTop = window.innerHeight - chatHeight - safeBottom - consentSpace;
-      const noticeSpace = parseFloat(getComputedStyle(slot).getPropertyValue("--notice-space")) || 88;
+      const style = getComputedStyle(slot);
+      const noticeSpace = parseFloat(style.getPropertyValue("--notice-space")) || 128;
       const slotTop = slot.getBoundingClientRect().top + noticeSpace;
       const reachedLastCard = slotTop <= dockTop + 1;
       setDocked(reachedLastCard);
-      // Separate entry/exit thresholds prevent wheel jitter from flipping the form state.
-      setShowHelpers((current) => window.scrollY > 24 && slotTop <= dockTop + (current ? 90 : 45));
+      const header = window.innerWidth <= 700 ? mobileBrandRef.current : feedHeroRef.current;
+      const headerBottom = Math.max(0, header?.getBoundingClientRect().bottom ?? 0);
+      const noticeHeight = parseFloat(style.getPropertyValue("--notice-panel-height")) || 96;
+      const glassPadding = parseFloat(style.getPropertyValue("--glass-vertical-pad")) || 24;
+      const leadTop = headerBottom + noticeHeight + glassPadding + 24;
+      const delta = window.scrollY - leadScrollPosition.current;
+      if (Math.abs(delta) > 2) {
+        leadScrollDirection.current = delta > 0 ? 1 : -1;
+        leadScrollPosition.current = window.scrollY;
+      }
+      // Reveal near the end of the feed; reverse scrolling restores the chat earlier.
+      setShowHelpers((current) => {
+        if (window.scrollY <= 24) return false;
+        if (current) {
+          return leadScrollDirection.current < 0
+            ? slotTop <= leadTop + 64
+            : slotTop <= dockTop + 90;
+        }
+        return leadScrollDirection.current > 0 && slotTop <= dockTop + 45;
+      });
     };
     const onScroll = () => { if (!frame) frame = window.requestAnimationFrame(check); };
     check();
@@ -346,7 +370,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
     let frame = 0;
     const startedAt = performance.now();
     const animate = (now: number) => {
-      const elapsed = Math.min(1, (now - startedAt) / 650);
+      const elapsed = Math.min(1, (now - startedAt) / 300);
       const eased = elapsed * elapsed * (3 - 2 * elapsed);
       const value = origin + (target - origin) * eased;
       animatedLeadProgress.current = value;
@@ -395,7 +419,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
     let active = true;
     const refresh = async () => {
       try {
-        const response = await fetch(`${asset("/data/kommersant-promo-v2.json")}?v=${Date.now()}`, { cache: "no-store" });
+        const response = await fetch(`${asset("/data/kommersant-promo.json")}?v=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) return;
         const latest: unknown = await response.json();
         if (active && isDigest(latest)) setDigest((current) =>
@@ -423,19 +447,11 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
     if (!submitted) return;
     const prompt = text.trim();
     if (!prompt) return;
-    if (showHelpers) {
-      if (workEmailError(prompt) || emailSubmitted) return;
-      // Prototype state only: connect a dedicated lead endpoint before collecting addresses.
-      setEmailSubmitted(true);
-      setText("");
-      inputRef.current?.blur();
-      return;
-    }
+    if (showHelpers) return;
     userEdited.current = true;
     autoFollow.current = false;
     setPressing(true);
     setText("");
-    chatDraft.current = "";
     if (sendTimer.current !== null) window.clearTimeout(sendTimer.current);
     sendTimer.current = window.setTimeout(() => {
       if (!submitted) {
@@ -451,11 +467,10 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
 
   const articles = digest.items.slice(0, 6);
   const checkedAt = submittedAt === null ? null : timeFormatter.format(new Date(submittedAt));
-  const emailError = showHelpers && text.trim() ? workEmailError(text) : "";
-  const canSend = submitted && !pressing && Boolean(text.trim()) && (!showHelpers || !emailError);
+  const canSend = false;
 
   return (
-    <section style={{ "--lead-progress": emailSubmitted ? 0 : leadProgress } as CSSProperties} className={`${styles.page} ${submitted ? styles.hasResults : ""} ${dockAnimationDone ? styles.dockReady : ""} ${docked ? styles.docked : ""} ${showHelpers ? styles.helpersVisible : ""} ${leadProgress > 0 ? styles.leadTransition : ""} ${emailSubmitted ? styles.emailSubmitted : ""} ${headerScrolled ? styles.headerScrolled : ""}`} aria-label="Демо чата GigaCowork">
+    <section style={{ "--lead-progress": emailSubmitted ? 0 : leadProgress, "--chat-height": `${formHeights.chat}px`, "--lead-height": `${formHeights.lead}px` } as CSSProperties} className={`${styles.page} ${styles.fullLeadForm} ${submitted ? styles.hasResults : ""} ${dockAnimationDone ? styles.dockReady : ""} ${docked ? styles.docked : ""} ${showHelpers ? styles.helpersVisible : ""} ${leadProgress > 0 ? styles.leadTransition : ""} ${emailSubmitted ? styles.emailSubmitted : ""} ${headerScrolled ? styles.headerScrolled : ""}`} aria-label="Демо чата GigaCowork">
       <div className={styles.intro} ref={introRef} aria-hidden={submitted}>
         <BrandPair />
         <HeroCopy />
@@ -516,25 +531,26 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
         <>
         <div className={styles.systemNotice} role="status" aria-hidden={!docked || !showHelpers}>
           <strong>1 месяц – за наш счёт</strong>
-          <p>Оставьте email и делегируйте рабочие задачи ИИ-агентам в GigaCowork бесплатно в течение месяца</p>
-          {emailError && <span className={styles.noticeError}>{emailError}</span>}
+          <p>Оставьте контакты и делегируйте рабочие задачи ИИ-агентам в GigaCowork бесплатно в течение месяца</p>
         </div>
+        <div className={styles.formMorph}>
+        <div className={styles.chatLayer} ref={chatLayerRef} aria-hidden={showHelpers} inert={showHelpers}>
         <form className={`${styles.chatInput} ${showHelpers ? styles.emailInput : ""}`} onSubmit={(event) => { event.preventDefault(); send(); }}>
           <div className={styles.inputMain}>
             <textarea
               ref={inputRef}
-              rows={1}
+              rows={submitted ? 1 : 2}
               value={text}
-              disabled={!submitted}
+              disabled
               onFocus={interruptAuto}
               onChange={(event) => { interruptAuto(); setText(event.target.value); }}
               onKeyDown={(event) => {
                 if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); send(); }
               }}
-              placeholder={showHelpers ? "Введите рабочий email" : "Чем я могу помочь?"}
-              aria-label={showHelpers ? "Рабочий email" : "Сообщение чату"}
-              inputMode={showHelpers ? "email" : "text"}
-              autoComplete={showHelpers ? "email" : "off"}
+              placeholder="Чем я могу помочь?"
+              aria-label="Сообщение чату"
+              inputMode="text"
+              autoComplete="off"
             />
             <div className={styles.actions}>
               <div className={styles.startActions} aria-hidden="true">
@@ -557,11 +573,12 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
             <span className={styles.connectorCount}><span>+ 40 коннекторов</span><FigmaIcon name="chevrons-down-up" size={20} /></span>
           </div>
         </form>
-        {submitted && (
-          <p className={styles.consentText} aria-hidden={!docked}>
-            Нажимая на&nbsp;кнопку, <a href="https://cowork.ru/legal/soglasie_na_obrabotku_personalnykh_dannykh.pdf" target="_blank" rel="noopener noreferrer">я соглашаюсь</a> на&nbsp;обработку моих персональных данных в&nbsp;соответствии с <a href="https://cowork.ru/legal/politika_konfidentsialnosti.pdf" target="_blank" rel="noopener noreferrer">Политикой конфиденциальности</a>.
-          </p>
-        )}
+        </div>
+        <div className={styles.leadLayer} ref={leadLayerRef} aria-hidden={!showHelpers} inert={!showHelpers}>
+          <LeadForm embedded fields={["name", "email", "phone"]} idPrefix="kommersant-promo" submitLabel="Забрать бесплатный месяц"
+            validateEmail={workEmailError} onSuccess={() => setEmailSubmitted(true)} />
+        </div>
+        </div>
         </>
         )}
       </div>

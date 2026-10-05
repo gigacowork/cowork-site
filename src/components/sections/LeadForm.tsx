@@ -226,6 +226,10 @@ type LeadFormProps = {
   /** Префикс id полей — на случай двух форм на одной странице. */
   idPrefix?: string;
   className?: string;
+  /** Встроенная форма внутри собственной промо-плашки. */
+  embedded?: boolean;
+  validateEmail?: (value: string) => string;
+  onSuccess?: () => void;
 };
 
 export function LeadForm({
@@ -238,6 +242,9 @@ export function LeadForm({
   successIcon = false,
   idPrefix = "lead",
   className = "",
+  embedded = false,
+  validateEmail,
+  onSuccess,
 }: LeadFormProps = {}) {
   /*
     Показанные поля в заданном порядке, с подменёнными подписями. Неизвестные
@@ -280,7 +287,8 @@ export function LeadForm({
   ) => {
     const value = raw.trim();
     if (!value) return isRequired(field.name) ? field.empty : "";
-    return field.error(value);
+    const error = field.error(value);
+    return error || (field.name === "email" ? validateEmail?.(value) ?? "" : "");
   };
 
   /** Ошибки всей формы по текущим значениям полей. Скрытые не проверяем. */
@@ -328,6 +336,7 @@ export function LeadForm({
     // Ручки нет — прежнее поведение: показываем «принято», никуда не идём.
     if (!target) {
       setStatus("sent");
+      onSuccess?.();
       return;
     }
 
@@ -346,6 +355,7 @@ export function LeadForm({
     try {
       await sendLead(fields, target);
       setStatus("sent");
+      onSuccess?.();
     } catch {
       setStatus("error");
     }
@@ -374,7 +384,9 @@ export function LeadForm({
         числами: по умолчанию там прежние 24/24, так что /lead не меняется,
         а страница GigaConf ужимает их, чтобы поместиться в один экран.
       */
-      className={`flex w-full max-w-[840px] flex-col items-center gap-[var(--lead-m-form-gap,24px)] rounded-[16px] border border-[#e6e6e6] py-[var(--lead-m-form-py,24px)] md:w-[588px] md:gap-[var(--lead-form-gap,24px)] md:px-12 md:py-[var(--lead-form-py,48px)] ${FORM_GRADIENT} ${className}`}
+      className={embedded
+        ? `flex w-full flex-col items-center gap-16 rounded-[16px] border border-[#e6e6e6] bg-white py-24 ${className}`
+        : `flex w-full max-w-[840px] flex-col items-center gap-[var(--lead-m-form-gap,24px)] rounded-[16px] border border-[#e6e6e6] py-[var(--lead-m-form-py,24px)] md:w-[588px] md:gap-[var(--lead-form-gap,24px)] md:px-12 md:py-[var(--lead-form-py,48px)] ${FORM_GRADIENT} ${className}`}
     >
       {status === "sent" ? (
         <div className="flex flex-col items-center gap-12 px-16 py-40 text-center md:px-48">

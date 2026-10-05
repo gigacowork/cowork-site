@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "npm run sync:kommersant && npm run sync:kommersant-promo-v2",
+    "prebuild": "npm run sync:kommersant && npm run sync:kommersant-promo",
     "build": "next build",
     "sync:kommersant": "node scripts/sync-kommersant-share.mjs && node scripts/generate-kommersant-html.mjs",
-    "sync:kommersant-promo-v2": "node scripts/sync-kommersant-promo-v2.mjs",
+    "sync:kommersant-promo": "node scripts/sync-kommersant-promo.mjs",
     "sync:catalog": "node scripts/sync-cowork-hub.mjs",
     "start": "next start",
     "lint": "next lint"
