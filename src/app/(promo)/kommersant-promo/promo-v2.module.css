@@ -151,7 +151,7 @@
 }
 
 .hasResults .composerDock {
-  top: calc(100dvh - 164px - var(--consent-space) - env(safe-area-inset-bottom));
+  top: calc(100dvh - var(--chat-height, 148px) - 16px - var(--consent-space) - env(safe-area-inset-bottom));
 }
 
 .hasResults:not(.docked) .composerDock::after {
@@ -471,8 +471,10 @@
 .suggestionList > a:focus-visible { outline: 2px solid #0dace0; outline-offset: 2px; }
 
 .hasResults .intro {
+  opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  transition: opacity 180ms ease-out, visibility 0s linear 180ms;
 }
 
 .hasResults .helpers {
@@ -611,6 +613,51 @@
 @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes successIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
+/* Compact laptop viewports, including Windows display scaling. */
+@media (min-width: 701px) and (max-width: 1600px) and (max-height: 820px) {
+  .page {
+    --hero-title-size: clamp(42px, 4.1vw, 58px);
+    --hero-subtitle-size: 18px;
+    --feed-title-size: clamp(28px, 2.733vw, 38.667px);
+    --feed-subtitle-size: 12px;
+    --brand-height: 22px;
+    --brand-gap-to-title: 22px;
+    --hero-composer-top: calc(50svh + 32px);
+    --notice-space: 108px;
+    --notice-panel-height: 80px;
+    --glass-gutter: 24px;
+    --glass-vertical-pad: 20px;
+    min-height: 100svh;
+  }
+  .composerDock, .feed, .hasResults .dockSlot, .hasResults .helpers {
+    width: min(720px, calc(100% - 48px));
+  }
+  .docked .composerDock { width: 100%; }
+  .intro { bottom: calc(100svh - var(--hero-composer-top) + 28px); }
+  .heroSubtitle { margin-top: 18px; }
+  .feedHero { padding: 24px 0 20px; }
+  .inputMain { min-height: 84px; gap: 8px; padding: 10px; }
+  .inputMain textarea { font-size: 14px; line-height: 21px; min-height: 32px; }
+  .userMessage { font-size: 14px; line-height: 21px; padding: 10px 14px; margin-bottom: 20px; }
+  .answerIntro { font-size: 14px; line-height: 21px; }
+  .answerDivider { margin-bottom: 20px; }
+  .article { padding-block: 18px; }
+  .articleBody { gap: 6px; }
+  .articleBody strong { font-size: 17px; line-height: 23px; }
+  .articleMeta, .updated { font-size: 12px; line-height: 18px; }
+  .articleSummary { font-size: 13px; line-height: 20px; }
+  .fullLeadForm .systemNotice { padding-inline: 33px; }
+  .systemNotice strong { font-size: 20px; line-height: 26px; }
+  .systemNotice p { font-size: 13px; line-height: 19px; }
+  .leadLayer form { --lead-field-h: 48px; gap: 12px; padding-bottom: 16px; }
+  .leadLayer form > div, .leadLayer form > p:last-child { padding-inline: 32px; }
+  .leadLayer input:not([type="checkbox"]) { font-size: 13px; padding: 12px; border-radius: 12px; }
+  .leadLayer button[type="submit"] { min-height: 36px; height: 36px; font-size: 13px; }
+  .hasResults .helpers { margin-top: 56px; }
+  .helpers p { font-size: 23px; line-height: 30px; margin-bottom: 16px; }
+  .suggestionList > a { min-height: 34px; font-size: 12px; line-height: 20px; }
+}
+
 @media (max-width: 700px) {
   .page:not(.hasResults) .inputMain textarea { min-height: 76px; }
   .page {
@@ -645,7 +692,7 @@
   .heroSubtitle { max-width: 600px; margin-top: 16px; line-height: 1.3; }
   .feedHeading, .feedSubtitle { width: 100%; }
   .composerDock { width: calc(100% - 32px); }
-  .hasResults .composerDock { top: calc(100dvh - 164px - var(--consent-space) - env(safe-area-inset-bottom)); }
+  .hasResults .composerDock { top: calc(100dvh - var(--chat-height, 148px) - 16px - var(--consent-space) - env(safe-area-inset-bottom)); }
   .hasResults .dockSlot { width: calc(100% - 32px); }
   .docked .composerDock { top: var(--notice-space); }
   .docked.helpersVisible .composerDock { left: 0; }

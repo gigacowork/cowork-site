@@ -193,7 +193,7 @@ export function KommersantChat({ initialDigest }: { initialDigest: unknown }) {
       const target = node.getBoundingClientRect();
       const x = origin.left + origin.width / 2 - target.left - target.width / 2;
       const y = origin.top - target.top;
-      const scale = index === 0 || window.innerWidth <= 700 ? 1 : 1.5;
+      const scale = index === 0 || target.width === 0 ? 1 : origin.width / target.width;
       return node.animate([
         { transform: `translate(${x}px, ${y}px) scale(${scale})` },
         { transform: 'translate(0, 0) scale(1)' },
