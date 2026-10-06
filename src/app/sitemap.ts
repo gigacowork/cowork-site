@@ -99,7 +99,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     { url: url("/guides/"), changeFrequency: "monthly", priority: 0.7 },
-    { url: url("/ai-academy/"), changeFrequency: "monthly", priority: 0.7 },
     { url: url("/support/"), changeFrequency: "monthly", priority: 0.6 },
     ...USE_CASES.map((useCase) => ({
       url: url(`/use_cases/${useCase.slug}/`),
