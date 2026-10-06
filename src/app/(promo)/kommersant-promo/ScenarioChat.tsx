@@ -51,7 +51,10 @@ function workEmailError(value: string) {
 function LeadContent({ idPrefix }: { idPrefix: string }) {
   const [sent, setSent] = useState(false);
   return <>
-    {!sent && <div className={styles.leadCopy}><h2>Делегируйте задачи агентам<br />Месяц бесплатного доступа к GigaCowork</h2></div>}
+    {!sent && <div className={styles.leadCopy}>
+      <h2>Делегируйте задачи агентам</h2>
+      <p>Месяц бесплатного доступа к GigaCowork</p>
+    </div>}
     <LeadForm embedded fields={["name", "email", "phone"]} idPrefix={idPrefix} submitLabel="Получить доступ" validateEmail={workEmailError} onSuccess={() => setSent(true)} />
   </>;
 }

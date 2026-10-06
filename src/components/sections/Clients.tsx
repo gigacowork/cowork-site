@@ -64,7 +64,7 @@ const LOGOS: ClientLogo[] = [
 
 /**
  * Логотипы партнёров (страница «Партнёрам»). Макет — All Partners / Logo
- * All Partners / Logo (5679:29884): 15 логотипов в порядке макета. Размеры
+ * All Partners / Logo (5679:29884): 16 логотипов в порядке макета. Размеры
  * заданы по каждому слоту; новые SVG взяты из векторных слоёв этого узла.
  */
 export const PARTNER_LOGOS: ClientLogo[] = [
@@ -95,6 +95,13 @@ export const PARTNER_LOGOS: ClientLogo[] = [
     width: 161,
     height: 13,
     sizeClassName: "h-[13px] w-auto",
+  },
+  {
+    name: "Платформикс",
+    src: "/img/partners/logos/platformix.svg",
+    width: 109,
+    height: 24,
+    sizeClassName: "h-[24px] w-auto",
   },
   {
     name: "Nicotech",
