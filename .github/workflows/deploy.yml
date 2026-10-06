@@ -54,7 +54,6 @@ jobs:
         # переименование репо не сломало пути.
         env:
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
-          KOMMERSANT_SHARE_URL: ${{ vars.KOMMERSANT_SHARE_URL }}
         run: npm run build
 
       - uses: actions/configure-pages@v5

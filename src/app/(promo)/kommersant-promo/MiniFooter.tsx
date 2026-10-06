@@ -20,14 +20,17 @@ export function MiniFooter({ children, enabled }: { children: ReactNode; enabled
       }
     };
     const intend = () => { intentUntil = performance.now() + 1200; checkEnd(); };
-    const onWheel = (event: WheelEvent) => { if (event.deltaY > 0) intend(); };
+    const inDialog = (target: EventTarget | null) => target instanceof Element && Boolean(target.closest('[role="dialog"]'));
+    const onWheel = (event: WheelEvent) => { if (!inDialog(event.target) && event.deltaY > 0) intend(); };
     const onTouchStart = (event: TouchEvent) => { touchY = event.touches[0]?.clientY ?? 0; };
     const onTouchMove = (event: TouchEvent) => {
+      if (inDialog(event.target)) return;
       const y = event.touches[0]?.clientY ?? touchY;
       if (touchY - y > 8) { intend(); touchY = y; }
       else if (y > touchY) touchY = y;
     };
     const onKey = (event: KeyboardEvent) => {
+      if (inDialog(event.target)) return;
       if (event.target instanceof Element && event.target.closest("input, textarea, select, button, a, [contenteditable='true']")) return;
       if (["ArrowDown", "PageDown", "End", " "].includes(event.key)) intend();
     };

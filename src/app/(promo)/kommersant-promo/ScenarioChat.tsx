@@ -10,14 +10,14 @@ import styles from "./scenarios.module.css";
 type Kind = "news" | "contract" | "offers" | "report";
 type Article = { id: string; title: string; summary: string; url: string; publishedAt: string };
 type Attachment = { name: string; size: string };
-type Scenario = { kind: Kind; label: string; icon: string; prompt: string; status: string; files: Attachment[] };
+type Scenario = { kind: Kind; label: string; initialLabel: string; icon: string; prompt: string; status: string; files: Attachment[] };
 type Exchange = { kind: Kind; startedAt: number; phase: number; count: number; complete: boolean; articles: Article[] };
 
 const scenarios: Scenario[] = [
-  { kind: "news", label: "Новости Коммерсанта", icon: "newspaper", prompt: "Собери обзор главных бизнес-новостей на kommersant.ru", status: "Собираю обзор бизнес-новостей", files: [] },
-  { kind: "contract", label: "Проверить договор", icon: "file-check", prompt: "Проверь договор по чек-листу компании и выдели спорные условия", status: "Проверяю условия договора", files: [{ name: "Договор.pdf", size: "128 КБ" }, { name: "Чек-лист компании.pdf", size: "32 КБ" }] },
-  { kind: "offers", label: "Сравнить КП", icon: "files-compare", prompt: "Сравни предложения поставщиков по стоимости, комплектации и срокам", status: "Сравниваю условия предложений", files: [{ name: "КП поставщика А.pdf", size: "84 КБ" }, { name: "КП поставщика Б.pdf", size: "96 КБ" }, { name: "КП поставщика В.pdf", size: "72 КБ" }] },
-  { kind: "report", label: "Подготовить отчет", icon: "file-chart", prompt: "Подготовь отчет для руководителя по данным amoCRM и 1С в формате XLSX", status: "Подключаюсь к amoCRM и 1С", files: [] },
+  { kind: "news", initialLabel: "Дайджест новостей", label: "Собрать дайджест новостей", icon: "newspaper", prompt: "Собери обзор главных бизнес-новостей на kommersant.ru", status: "Собираю обзор бизнес-новостей", files: [] },
+  { kind: "contract", initialLabel: "Проверка договора", label: "Проверить договор", icon: "file-check", prompt: "Проверь договор по чек-листу компании и выдели спорные условия", status: "Проверяю условия договора", files: [{ name: "Договор.pdf", size: "128 КБ" }, { name: "Чек-лист компании.pdf", size: "32 КБ" }] },
+  { kind: "offers", initialLabel: "Анализ КП", label: "Проанализировать КП", icon: "files-compare", prompt: "Сравни предложения поставщиков по стоимости, комплектации и срокам", status: "Сравниваю условия предложений", files: [{ name: "КП поставщика А.pdf", size: "84 КБ" }, { name: "КП поставщика Б.pdf", size: "96 КБ" }, { name: "КП поставщика В.pdf", size: "72 КБ" }] },
+  { kind: "report", initialLabel: "Подготовка отчета", label: "Подготовить отчет", icon: "file-chart", prompt: "Подготовь отчет для руководителя по данным amoCRM и 1С в формате XLSX", status: "Подключаюсь к amoCRM и 1С", files: [] },
 ];
 
 const publishedTime = new Intl.DateTimeFormat("ru-RU", { timeZone: "Europe/Moscow", hour: "2-digit", minute: "2-digit" });
@@ -48,6 +48,14 @@ function workEmailError(value: string) {
   return personalDomains.has(domain) ? "Укажите почту на домене компании" : "";
 }
 
+function LeadContent({ idPrefix }: { idPrefix: string }) {
+  const [sent, setSent] = useState(false);
+  return <>
+    {!sent && <div className={styles.leadCopy}><h2>Делегируйте задачи агентам<br />Месяц бесплатного доступа к GigaCowork</h2></div>}
+    <LeadForm embedded fields={["name", "email", "phone"]} idPrefix={idPrefix} submitLabel="Получить доступ" validateEmail={workEmailError} onSuccess={() => setSent(true)} />
+  </>;
+}
+
 function Svg({ name, size = 20 }: { name: string; size?: number }) {
   // eslint-disable-next-line @next/next/no-img-element
   return <img src={asset(`/img/kommersant-promo-v2/${name}.svg`)} width={size} height={size} alt="" />;
@@ -61,11 +69,11 @@ function Brands() {
     <img src={asset("/img/kommersant-promo/logo-figma.svg")} alt="" />
   </div>;
 }
-function Choices({ remaining, onChoose, hintRef }: { remaining: Scenario[]; onChoose: (kind: Kind) => void; hintRef?: RefObject<HTMLSpanElement | null> }) {
-  return <div className={styles.choices} aria-label="Выберите сценарий">
+function Choices({ remaining, onChoose, hintRef, initial = false, containerRef }: { remaining: Scenario[]; onChoose: (kind: Kind) => void; hintRef?: RefObject<HTMLSpanElement | null>; initial?: boolean; containerRef?: RefObject<HTMLDivElement | null> }) {
+  return <div ref={containerRef} className={styles.choices} aria-label="Выберите сценарий">
     {remaining.map((scenario, index) => <button type="button" key={scenario.kind} onClick={() => onChoose(scenario.kind)} className={styles.chip}>
       {index === 0 && hintRef && <span ref={hintRef} className={styles.chipHintLayer} aria-hidden="true" />}
-      <Svg name={scenario.icon} /><span>{scenario.label}</span>
+      <Svg name={scenario.icon} /><span>{initial ? scenario.initialLabel : scenario.label}</span>
     </button>)}
   </div>;
 }
@@ -148,7 +156,7 @@ function Comparison({ highlighted = true }: { highlighted?: boolean }) {
 }
 function Contract({ highlighted = true }: { highlighted?: boolean }) {
   return <div className={styles.document}>
-    <p className={styles.documentLabel}>Договор поставки · фрагмент</p>
+    <p className={styles.documentLabel}>Договор поставки</p>
     <div className={highlighted ? styles.clauseFlagged : styles.clause}><p><b>3.1. Порядок оплаты</b><br />Оплата производится после подписания акта приемки. Срок оплаты определяется поставщиком дополнительно.</p>{highlighted && <aside><mark>Нет предельного срока оплаты</mark></aside>}</div>
     <div className={highlighted ? styles.clauseFlagged : styles.clause}><p><b>4.2. Изменение стоимости</b><br />Поставщик вправе изменить цену товара в одностороннем порядке, уведомив покупателя.</p>{highlighted && <aside><mark>Поставщик может менять цену в одностороннем порядке</mark></aside>}</div>
   </div>;
@@ -177,7 +185,7 @@ function Report({ phase, complete }: { phase: number; complete: boolean }) {
 function Answer({ exchange }: { exchange: Exchange }) {
   const scenario = scenarios.find((item) => item.kind === exchange.kind)!;
   const { phase, kind, complete } = exchange;
-  const status = kind === "report" ? [scenario.status, "Собираю данные из amoCRM и 1С", "Готовлю отчет в XLSX"][Math.min(phase - 1, 2)] : scenario.status;
+  const status = kind === "report" ? [scenario.status, "Подключаю навык «Анализ данных»", "Собираю данные из amoCRM и 1С", "Готовлю отчет в XLSX"][Math.min(phase - 1, 3)] : scenario.status;
   if (phase === 0) return null;
   return <div className={styles.answer}>
     <p className={styles.status} role="status"><Icon src={complete ? "/img/icons/check.svg" : "/img/icons/bot.svg"} className="size-[20px]" />{complete ? "Готово" : status}{!complete && <span className={styles.dots} aria-hidden="true"><i /><i /><i /></span>}</p>
@@ -187,7 +195,7 @@ function Answer({ exchange }: { exchange: Exchange }) {
         <caption>Обзор бизнес-новостей Коммерсанта</caption>
         <tbody>{exchange.articles.slice(0, exchange.count).map((article) => <tr className={styles.newsRow} key={article.id}>
           <td><time className={styles.meta} dateTime={article.publishedAt}>{publishedTime.format(new Date(article.publishedAt))} МСК</time></td>
-          <th scope="row"><strong>{article.title.split(" // ")[0]}</strong>{" "}<a href={article.url} target="_blank" rel="noopener noreferrer" aria-label={`Подробнее: ${article.title}`}>Подробнее</a></th>
+          <th scope="row"><strong>{article.title.split(" // ")[0]}</strong><p className={styles.newsSummary}>{article.summary}{article.summary && " "}<a href={article.url} target="_blank" rel="noopener noreferrer" aria-label={`Подробнее: ${article.title}`}>Подробнее</a></p></th>
         </tr>)}</tbody>
       </table>}
       {complete && <p className={styles.meta}>{exchange.articles.length ? checkedLabel(exchange.startedAt) : "Не удалось загрузить новости. Попробуйте другие сценарии."}</p>}
@@ -209,13 +217,20 @@ function Answer({ exchange }: { exchange: Exchange }) {
 export function ScenarioChat({ initialDigest, footer }: { initialDigest: unknown; footer: ReactNode }) {
   const [articles, setArticles] = useState(() => articlesFrom(initialDigest) ?? []);
   const [history, setHistory] = useState<Exchange[]>([]);
-  const [leadSent, setLeadSent] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [idleLeadOpen, setIdleLeadOpen] = useState(false);
+  const idleLeadOffered = useRef(false);
+  const initialChoices = useRef<HTMLDivElement>(null);
+  const idleOrigin = useRef<{ brand: number; copy: number; choices: number } | null>(null);
+  const [leadScrollReady, setLeadScrollReady] = useState(false);
   const [completionStage, setCompletionStage] = useState<0 | 1 | 2>(0);
   const suggestionsVisible = completionStage > 0;
   const hintLayer = useRef<HTMLSpanElement>(null);
   const tail = useRef<HTMLDivElement>(null);
   const next = useRef<HTMLDivElement>(null);
+  const more = useRef<HTMLElement>(null);
+  const lead = useRef<HTMLElement>(null);
+  const header = useRef<HTMLElement>(null);
   const follow = useRef(true);
   const pendingFollow = useRef(false);
   const [followRevision, setFollowRevision] = useState(0);
@@ -228,6 +243,52 @@ export function ScenarioChat({ initialDigest, footer }: { initialDigest: unknown
   const latest = history.at(-1);
   const active = latest && !latest.complete;
   const remaining = scenarios.filter((scenario) => !history.some((exchange) => exchange.kind === scenario.kind));
+
+  function transitionIdle(open: boolean) {
+    if (brandBar.current && heroCopy.current && initialChoices.current) {
+      idleOrigin.current = {
+        brand: brandBar.current.getBoundingClientRect().top,
+        copy: heroCopy.current.getBoundingClientRect().top,
+        choices: initialChoices.current.getBoundingClientRect().top,
+      };
+    }
+    setIdleLeadOpen(open);
+  }
+
+  useLayoutEffect(() => {
+    const origin = idleOrigin.current;
+    if (!origin || history.length) return;
+    idleOrigin.current = null;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const motion = { duration: 600, easing: "cubic-bezier(.22, 1, .36, 1)" };
+    for (const [element, top] of [[brandBar.current, origin.brand], [heroCopy.current, origin.copy], [initialChoices.current, origin.choices]] as const) {
+      if (!element) continue;
+      const distance = top - element.getBoundingClientRect().top;
+      element.animate([{ transform: `translateY(${distance}px)` }, { transform: "translateY(0)" }], motion);
+    }
+  }, [idleLeadOpen, history.length]);
+
+  useEffect(() => {
+    if (history.length || idleLeadOffered.current) return;
+    let timer: ReturnType<typeof setTimeout>;
+    const arm = () => {
+      clearTimeout(timer);
+      if (document.visibilityState !== "visible") return;
+      timer = setTimeout(() => {
+        idleLeadOffered.current = true;
+        transitionIdle(true);
+      }, 4500);
+    };
+    const events = ["pointermove", "pointerdown", "click", "keydown", "scroll", "touchstart"] as const;
+    events.forEach((event) => window.addEventListener(event, arm, { passive: true }));
+    document.addEventListener("visibilitychange", arm);
+    arm();
+    return () => {
+      clearTimeout(timer);
+      events.forEach((event) => window.removeEventListener(event, arm));
+      document.removeEventListener("visibilitychange", arm);
+    };
+  }, [history.length, idleLeadOpen]);
 
   useEffect(() => {
     if (history.length) return;
@@ -368,7 +429,13 @@ export function ScenarioChat({ initialDigest, footer }: { initialDigest: unknown
         if (!follow.current) { pendingFollow.current = true; return; }
         pendingFollow.current = false;
         const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
-        if (history.at(-1)?.complete && suggestionsVisible && next.current) {
+        if (lead.current?.contains(document.activeElement)) return;
+        if (history.at(-1)?.complete && leadScrollReady && lead.current) {
+          const anchor = more.current ?? lead.current;
+          const pinned = window.matchMedia("(max-width: 700px)").matches ? brandBar.current : header.current;
+          const top = anchor.getBoundingClientRect().top + window.scrollY - (pinned?.offsetHeight ?? 0) - 56;
+          window.scrollTo({ top: Math.max(0, top), behavior });
+        } else if (history.at(-1)?.complete && suggestionsVisible && next.current) {
           // Leave the conclusion above the suggestions, with the lead heading below them.
           window.scrollTo({ top: Math.max(0, next.current.getBoundingClientRect().top + window.scrollY - window.innerHeight * .5), behavior });
         } else tail.current?.scrollIntoView({ behavior, block: "end" });
@@ -384,12 +451,14 @@ export function ScenarioChat({ initialDigest, footer }: { initialDigest: unknown
     });
     if (content) observer.observe(content);
     return () => { cancelAnimationFrame(frame); observer.disconnect(); };
-  }, [history, followRevision, suggestionsVisible]);
+  }, [history, followRevision, suggestionsVisible, leadScrollReady]);
 
 
   function begin(kind: Kind) {
     if (running.current || history.some((exchange) => exchange.kind === kind)) return;
     running.current = true;
+    setIdleLeadOpen(false);
+    setLeadScrollReady(false);
     if (!history.length && brandBar.current && heroCopy.current) {
       const copy = heroCopy.current.getBoundingClientRect();
       heroOrigin.current = { brand: brandBar.current.getBoundingClientRect().top, copy: copy.top, bottom: copy.bottom };
@@ -408,21 +477,30 @@ export function ScenarioChat({ initialDigest, footer }: { initialDigest: unknown
       update({ phase: 4, complete: true });
       after(600, () => setCompletionStage(1));
       after(1250, () => setCompletionStage(2));
+      after(3000 + Math.round(Math.random() * 500), () => {
+        if (!lead.current?.contains(document.activeElement)) setLeadScrollReady(true);
+      });
     };
     const scenario = scenarios.find((item) => item.kind === kind)!;
     const requestDuration = requestTiming(scenario, window.matchMedia("(prefers-reduced-motion: reduce)").matches).total;
     if (kind === "news") {
-      after(requestDuration + 300, () => update({ phase: 1 }));
-      let elapsed = requestDuration + 300;
+      after(requestDuration + 150, () => update({ phase: 1 }));
+      let elapsed = requestDuration + 150;
       let previous = 0;
       entry.articles.forEach((_, index) => {
-        let delay = 1500 + Math.round(Math.random() * 1000);
-        if (Math.abs(delay - previous) < 150) delay = previous < 2000 ? 2400 : 1600;
+        let delay = 750 + Math.round(Math.random() * 500);
+        if (Math.abs(delay - previous) < 75) delay = previous < 1000 ? 1200 : 800;
         previous = delay;
         elapsed += delay;
         after(elapsed, () => update({ count: index + 1 }));
       });
-      after(elapsed + 350, finish);
+      after(elapsed + 175, finish);
+    } else if (kind === "report") {
+      after(requestDuration + 250, () => update({ phase: 1 }));
+      after(requestDuration + 1750, () => update({ phase: 2 }));
+      after(requestDuration + 3250, () => update({ phase: 3 }));
+      after(requestDuration + 5250, () => update({ phase: 4 }));
+      after(requestDuration + 7250, finish);
     } else {
       after(requestDuration + 250, () => update({ phase: 1 }));
       after(requestDuration + 2250, () => update({ phase: 2 }));
@@ -431,12 +509,15 @@ export function ScenarioChat({ initialDigest, footer }: { initialDigest: unknown
     }
   }
 
-  return <><section className={`${styles.page} ${history.length ? styles.started : styles.landing} ${scrolled ? styles.scrolled : ""}`} aria-label="Демо сценариев GigaCowork">
-    <header className={styles.header}>
+  return <><section className={`${styles.page} ${history.length ? styles.started : styles.landing} ${!history.length && idleLeadOpen ? styles.idleLanding : ""} ${leadScrollReady ? styles.outroFocused : ""} ${scrolled ? styles.scrolled : ""}`} aria-label="Демо сценариев GigaCowork">
+    <header ref={header} className={styles.header}>
       <div ref={brandBar} className={styles.brandBar}><Brands /></div>
       <div ref={heroCopy} className={styles.heroCopy}><h1>Читайте главное,<br /><span>делегируйте остальное</span></h1><p>ИИ-агенты GigaCowork возьмут рабочие задачи на себя</p></div>
     </header>
-    {!history.length ? <div className={styles.start}><Choices remaining={scenarios} onChoose={begin} hintRef={hintLayer} /><Composer /></div> : <>
+    {!history.length ? <div className={styles.start}>
+      <Choices remaining={scenarios} onChoose={begin} hintRef={hintLayer} containerRef={initialChoices} initial />
+      {idleLeadOpen ? <section className={`${styles.lead} ${styles.landingLead}`} aria-label="Бесплатный месяц GigaCowork"><LeadContent idPrefix="kommersant-idle" /></section> : <Composer />}
+    </div> : <>
       <div ref={historyElement} className={styles.history} aria-label="История чата" aria-busy={Boolean(active)}>
         {history.map((exchange, index) => {
           const scenario = scenarios.find((item) => item.kind === exchange.kind)!;
@@ -449,12 +530,12 @@ export function ScenarioChat({ initialDigest, footer }: { initialDigest: unknown
       </div>
       <div ref={tail} className={styles.tail} />
       <div ref={next} className={styles.next} hidden={Boolean(active) || completionStage === 0}>
-        {remaining.length > 0 && <section className={styles.more}><p className={styles.status}>Что еще делегируем ИИ-агентам?</p><Choices remaining={remaining} onChoose={begin} /></section>}
-        <section className={styles.lead} hidden={completionStage < 2} aria-label="Бесплатный месяц GigaCowork">
-          {!leadSent && <div className={styles.leadCopy}><h2><span>Делегируйте задачи ИИ-агентам.</span>{" "}<span>Первый месяц бесплатно</span></h2></div>}
-          <LeadForm embedded fields={["name", "email", "phone"]} idPrefix="kommersant-scenarios" submitLabel="Забрать бесплатный месяц" validateEmail={workEmailError} onSuccess={() => setLeadSent(true)} />
+        {remaining.length > 0 && <section ref={more} className={styles.more}><p className={styles.status}>Что еще могут ИИ-агенты?</p><Choices remaining={remaining} onChoose={begin} /></section>}
+        <section ref={lead} className={styles.lead} hidden={completionStage < 2} aria-label="Бесплатный месяц GigaCowork">
+          <LeadContent idPrefix="kommersant-scenarios" />
         </section>
       </div>
     </>}
-  </section><MiniFooter key={history.length} enabled={!history.length || (!active && completionStage === 2)}>{footer}</MiniFooter></>;
+  </section>
+    <MiniFooter key={history.length} enabled={!history.length || (!active && completionStage === 2)}>{footer}</MiniFooter></>;
 }

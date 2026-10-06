@@ -64,7 +64,7 @@ const LOGOS: ClientLogo[] = [
 
 /**
  * Логотипы партнёров (страница «Партнёрам»). Макет — All Partners / Logo
- * All Partners / Logo (5679:29884): 14 логотипов в порядке макета. Размеры
+ * All Partners / Logo (5679:29884): 15 логотипов в порядке макета. Размеры
  * заданы по каждому слоту; новые SVG взяты из векторных слоёв этого узла.
  */
 export const PARTNER_LOGOS: ClientLogo[] = [
@@ -109,6 +109,13 @@ export const PARTNER_LOGOS: ClientLogo[] = [
     width: 67,
     height: 15,
     sizeClassName: "h-[15px] w-auto",
+  },
+  {
+    name: "Ametist",
+    src: "/img/partners/logos/ametist.svg",
+    width: 130,
+    height: 30,
+    sizeClassName: "h-[30px] w-auto",
   },
   {
     name: "Astraway",
