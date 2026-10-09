@@ -17,11 +17,13 @@
  *    главной стоял ещё не существующий /og/home.jpg, у «О платформе» —
  *    незаполненная заглушка.
  *
- * 3. В роликах «Обучающих видео» заглушки заменены настоящими значениями:
- *    contentUrl — файлы из public/video, thumbnailUrl — постеры первых
- *    кадров (public/img/guides), uploadDate — дата появления роликов в
- *    проекте. Её стоит заменить на настоящую дату публикации.
+ * 3. Для «Обучающих видео» микроразметка берёт названия, описания и адреса
+ *    из общего списка уроков. uploadDate — дата подготовки текущих роликов
+ *    в проекте; её стоит заменить на настоящую дату публикации.
  */
+
+import { GUIDES, guidePoster } from "@/content/guides";
+import { SMB_COURSE_TITLE } from "@/content/ai-for-smb";
 
 export type PageSeo = {
   /** Адрес страницы от корня сайта. */
@@ -291,66 +293,14 @@ export const PAGE_SEO: Record<string, PageSeo> = {
           "@type": "CollectionPage",
           "@id": "https://cowork.ru/guides#collection",
           name: "Видеоинструкции по работе с GigaCowork",
-          hasPart: [
-            {
-              "@type": "VideoObject",
-              name: "Обзор возможностей платформы",
-              description:
-                "Первый релиз GigaCowork: анализ документов, автоматизация рутинных задач, навыки, подключение систем и совместная работа с коллегами.",
-              thumbnailUrl: "https://cowork.ru/img/guides/overview-poster.webp",
-              uploadDate: "2026-08-14",
-              contentUrl: "https://cowork.ru/video/overview.mp4",
-            },
-            {
-              "@type": "VideoObject",
-              name: "Первый запуск: как поставить задачу",
-              description:
-                "Как сформулировать задачу агенту своими словами без предварительных настроек.",
-              thumbnailUrl:
-                "https://cowork.ru/img/guides/first-task-poster.webp",
-              uploadDate: "2026-08-14",
-              contentUrl: "https://cowork.ru/video/first-task.mp4",
-            },
-            {
-              "@type": "VideoObject",
-              name: "Как создать навык для агента",
-              description:
-                "Как описать набор правил для решения задачи и сохранить его как навык агента.",
-              thumbnailUrl:
-                "https://cowork.ru/img/guides/agent-skill-poster.webp",
-              uploadDate: "2026-08-14",
-              contentUrl: "https://cowork.ru/video/agent-skill.mp4",
-            },
-            {
-              "@type": "VideoObject",
-              name: "Быстрые команды",
-              description:
-                "Как сохранить повторяющийся запрос как /команду для запуска сценария за секунду.",
-              thumbnailUrl:
-                "https://cowork.ru/img/guides/quick-commands-poster.webp",
-              uploadDate: "2026-08-14",
-              contentUrl: "https://cowork.ru/video/quick-commands.mp4",
-            },
-            {
-              "@type": "VideoObject",
-              name: "Как подключить корпоративные системы",
-              description:
-                "Подключение корпоративных систем к агенту через открытый стандарт MCP и готовые интеграции.",
-              thumbnailUrl:
-                "https://cowork.ru/img/guides/connectors-poster.webp",
-              uploadDate: "2026-08-14",
-              contentUrl: "https://cowork.ru/video/connectors.mp4",
-            },
-            {
-              "@type": "VideoObject",
-              name: "Как добавить коллег и создать общие документы",
-              description:
-                "Совместные пространства: общий доступ к документам и знаниям проекта для всей команды.",
-              thumbnailUrl: "https://cowork.ru/img/guides/spaces-poster.webp",
-              uploadDate: "2026-08-14",
-              contentUrl: "https://cowork.ru/video/spaces.mp4",
-            },
-          ],
+          hasPart: GUIDES.map((guide) => ({
+            "@type": "VideoObject",
+            name: guide.title,
+            description: guide.paragraphs.join(" "),
+            thumbnailUrl: `https://cowork.ru${guidePoster(guide.id)}`,
+            uploadDate: "2026-10-09",
+            contentUrl: `https://cowork.ru${guide.video}`,
+          })),
         },
         {
           "@type": "BreadcrumbList",
@@ -444,7 +394,7 @@ export const PAGE_SEO: Record<string, PageSeo> = {
         {
           "@type": "ItemList",
           "@id": "https://cowork.ru/ai-academy#formats",
-          name: "Форматы обучения GigaCowork",
+          name: "Материалы Академии GigaCowork",
           itemListElement: [
             {
               "@type": "ListItem",
@@ -463,16 +413,9 @@ export const PAGE_SEO: Record<string, PageSeo> = {
             {
               "@type": "ListItem",
               position: 3,
-              name: "Вебинары",
+              name: SMB_COURSE_TITLE,
               description:
-                "Разборы отдельных тем и возможностей продукта с ответами экспертов.",
-            },
-            {
-              "@type": "ListItem",
-              position: 4,
-              name: "Курсы",
-              description:
-                "Последовательное освоение GigaCowork: от базовых возможностей до комплексных рабочих процессов.",
+                "Уроки по работе с GigaCowork для малого бизнеса.",
             },
           ],
         },

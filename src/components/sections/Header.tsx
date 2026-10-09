@@ -8,6 +8,11 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { requestHeroReset } from "@/lib/hero-reset";
 import { USE_CASES } from "@/lib/use-cases";
+import {
+  SMB_TARIFF_PATH,
+  SMB_USE_CASES,
+  smbUseCasePath,
+} from "@/lib/smb-use-cases";
 
 /**
  * Header
@@ -49,8 +54,7 @@ const BLANK_PROPS = { target: "_blank", rel: "noopener noreferrer" } as const;
 type NavItem = { label: string; href?: string; children?: NavLeaf[] };
 
 /*
-  Ссылки абсолютные, а не «#anchor»: шапка общая для всех страниц, и с
-  «Обучающих видео» якорь без слэша вёл бы в никуда.
+  Ссылки абсолютные, а не «#anchor»: шапка общая для всех страниц.
 */
 const NAV_ITEMS: NavItem[] = [
   {
@@ -72,7 +76,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    label: "Для\u00A0кого",
+    label: "Сценарии",
     /*
       Пункты собираются из того же списка, что и сами страницы (src/lib/
       use-cases.ts) и что кнопки «Подробнее» в блоке «Не тратьте часы…».
@@ -80,25 +84,23 @@ const NAV_ITEMS: NavItem[] = [
       правке адреса.
     */
     children: USE_CASES.map((item) => ({
-      label: item.navLabel,
+      label: item.slug === "ceo" ? "Для\u00A0руководителей" : item.navLabel,
       href: `/use_cases/${item.slug}`,
     })),
+  },
+  {
+    label: "Малому бизнесу",
+    children: [
+      ...[...SMB_USE_CASES].sort((a, b) => a.navOrder - b.navOrder).map((item) => ({
+        label: item.navLabel,
+        href: smbUseCasePath(item.slug),
+      })),
+      { label: "Специальные тарифы", href: SMB_TARIFF_PATH },
+    ],
   },
   { label: "Безопасность", href: "/trust-and-safety" },
   { label: "Поставки", href: "/pricing" },
   { label: "Обучающие видео", href: "/guides" },
-  {
-    label: "Компания",
-    /*
-      Адреса из ПРОЕКТ_COWORK_RU.md. Обеих страниц пока нет, поэтому пункты
-      приглушены: раздел в меню виден, но никуда не ведёт. Соберутся страницы —
-      снять `soon`, больше ничего менять не нужно.
-    */
-    children: [
-      { label: "О\u00A0компании", href: "/company/about" },
-      { label: "Партнёрам", href: "/company/partners" },
-    ],
-  },
 ];
 
 /**
@@ -335,12 +337,11 @@ export function Header() {
 
         {/* Desktop nav */}
         {/*
-          Настольное меню включается с lg, а не с md: после того как в нём
-          появились «Безопасность» и «Компания», на 768 шесть пунктов
-          с кнопкой перестали помещаться и распирали страницу вбок.
-          До lg работает бургер.
+          Настольное меню включается с xl: после добавления «Малому бизнесу»
+          пункты и кнопка не помещаются на узком десктопе. До xl работает
+          бургер.
         */}
-        <nav ref={navRef} className="hidden items-center lg:flex">
+        <nav ref={navRef} className="hidden items-center xl:flex">
           <ul className="flex items-center gap-8 p-8">
             {NAV_ITEMS.map((item) => {
               if (!item.children) {
@@ -473,7 +474,11 @@ export function Header() {
                       плашки 4, значит её угол — 24. Он же у панели, и все три
                       кривые ложатся друг на друга вместо трёх разных.
                     */}
-                    <div className="w-[304px] rounded-24 border border-border-subtle bg-bg-page p-12 shadow-drop-sm">
+                    <div
+                      className={`w-[304px] rounded-24 border border-border-subtle bg-bg-page p-12 shadow-drop-sm ${
+                        item.children.length === 0 ? "min-h-[96px]" : ""
+                      }`}
+                    >
                       <ul className="flex flex-col gap-4">
                         {main.map((leaf) => (
                           <li key={leaf.href}>{renderLeaf(leaf)}</li>
@@ -506,7 +511,7 @@ export function Header() {
         </nav>
 
         {/* Mobile actions */}
-        <div className="flex items-center gap-8 lg:hidden">
+        <div className="flex items-center gap-8 xl:hidden">
           {/*
             Header/Mobile/Open (2567:9427): в открытом меню в полосе остаются
             только логотип и крестик — кнопка действия уезжает в блок под
@@ -558,7 +563,7 @@ export function Header() {
         сверху и 64 снизу, шаг 24 между навигацией и блоком действий.
       */}
       <div
-        className={`overflow-hidden bg-bg-page transition-[max-height,opacity] duration-300 lg:hidden ${
+        className={`overflow-hidden bg-bg-page transition-[max-height,opacity] duration-300 xl:hidden ${
           menuOpen
             ? "max-h-[calc(100dvh-var(--header-h))] overflow-y-auto opacity-100"
             : "max-h-0 opacity-0"
@@ -594,7 +599,7 @@ export function Header() {
                     onClick={() => setOpenMobile(open ? null : item.label)}
                     /*
                     Шеврон в макете этого экрана не нарисован, но оставлен
-                    намеренно: за «О платформе» и «Для кого» стоят вложенные
+                    намеренно: за «О платформе» и «Сценарии» стоят вложенные
                     страницы, и с телефона они открываются только отсюда — без
                     шеврона пункт выглядит обычной ссылкой. Это штатное
                     состояние Navigation Item (Show Chevron), а не отсебятина.
@@ -617,13 +622,19 @@ export function Header() {
                   <div
                     /*
                     Потолок раскрывашки считается от самого длинного списка —
-                    «Для кого» с восемью ролями (8 × 41 + 7 × 4 + 8 снизу).
+                    «Сценарии» с восемью ролями (8 × 41 + 7 × 4 + 8 снизу).
                     С прежними 240 половина пунктов оказывалась срезанной.
                   */
                     className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
                       open ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >
+                    {item.children.length === 0 ? (
+                      <div
+                        aria-hidden
+                        className="mx-auto min-h-[72px] max-w-[304px] rounded-24 border border-border-subtle bg-bg-page"
+                      />
+                    ) : null}
                     {/*
                       Тот же Dropdown Item (3432:15088), что и на десктопе.
                       Вспомогательные страницы отбиты отдельным блоком, как и

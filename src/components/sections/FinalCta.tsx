@@ -24,11 +24,16 @@ import {
 export function FinalCta({
   title,
   background,
+  buttonLabel = "Попробовать бесплатно",
+  buttonHref = "/lead",
 }: {
   /** Заголовок. У части страниц он свой — например «Быстрый старт с GigaCowork». */
   title?: ReactNode;
   /** Кадр фона из макета страницы. По умолчанию — первый. */
   background?: CtaVariant;
+  /** Переопределяется для сценариев с отдельным тарифным предложением. */
+  buttonLabel?: string;
+  buttonHref?: string;
 }) {
   return (
     <section
@@ -57,12 +62,12 @@ export function FinalCta({
           </div>
 
           <Button
-            href="/lead"
+            href={buttonHref}
             variant="primary"
             size="lg"
             className="text-body-m!"
           >
-            Попробовать бесплатно
+            {buttonLabel}
           </Button>
         </div>
       </div>

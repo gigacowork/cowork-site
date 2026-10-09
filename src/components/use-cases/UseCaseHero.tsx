@@ -26,6 +26,8 @@ export function UseCaseHero({
   title,
   breadcrumb,
   intro,
+  ctaLabel = "Попробовать бесплатно",
+  ctaHref = "/lead",
   introWidth = "calc(var(--container-page) / 2)",
   image,
   imageMobile,
@@ -35,6 +37,9 @@ export function UseCaseHero({
   /** Подпись текущей страницы в крошках — короткая, как в меню «Для кого». */
   breadcrumb?: string;
   intro: string[];
+  /** Текст и адрес кнопки для страниц с собственным следующим шагом. */
+  ctaLabel?: string;
+  ctaHref?: string;
   /** Ширина колонки подзаголовка от md и выше. */
   introWidth?: string;
   image?: string;
@@ -109,12 +114,12 @@ export function UseCaseHero({
 
         <div className="flex">
           <Button
-            href="/lead"
+            href={ctaHref}
             variant="primary"
             size="lg"
             className="text-body-m!"
           >
-            Попробовать бесплатно
+            {ctaLabel}
           </Button>
         </div>
       </div>

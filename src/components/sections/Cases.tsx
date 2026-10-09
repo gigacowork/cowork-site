@@ -108,7 +108,6 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
           {study.description}
         </p>
 
-
         {/*
           Tags — I1927:15620;515:1152, прижаты к нижнему полю карточки.
 

@@ -418,6 +418,29 @@
     scroll-padding-inline: 16px;
   }
 
+  /* Лента Академии идёт до краёв окна, первая карточка — по сетке страницы. */
+  .academy-smb-track {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    scroll-padding-left: 16px;
+    scroll-padding-right: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .academy-smb-track {
+      padding-left: 40px;
+      scroll-padding-left: 40px;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .academy-smb-track {
+      padding-left: max(120px, calc((100vw - 1200px) / 2));
+      scroll-padding-left: max(120px, calc((100vw - 1200px) / 2));
+    }
+  }
+
   @media (min-width: 768px) {
     .container-page {
       max-width: calc(1200px + 2 * 40px);

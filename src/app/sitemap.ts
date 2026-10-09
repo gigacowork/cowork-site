@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { USE_CASES } from "@/lib/use-cases";
 import { RELEASES } from "@/content/releases";
+import { SMB_TARIFF_PATH, SMB_USE_CASES, smbUseCasePath } from "@/lib/smb-use-cases";
 
 /**
  * Карта сайта.
@@ -105,6 +106,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
+    ...SMB_USE_CASES.map((useCase) => ({
+      url: url(`${smbUseCasePath(useCase.slug)}/`),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    {
+      url: url(`${SMB_TARIFF_PATH}/`),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     { url: url("/lead/"), changeFrequency: "yearly", priority: 0.4 },
   ];
 }

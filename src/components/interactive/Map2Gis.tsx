@@ -23,7 +23,7 @@ const SRC_DOC = `<!doctype html>
 .dg-widget-link{display:none}
 #map,#map iframe{width:100%!important;height:100%!important;border:0!important}</style>
 </head><body><div id="map">
-<a class="dg-widget-link" href="http://2gis.ru/moscow/firm/${ORG_ID}/center/${LON},${LAT}/zoom/16">Посмотреть на карте Москвы</a>
+<a class="dg-widget-link" href="https://2gis.ru/moscow/firm/${ORG_ID}/center/${LON},${LAT}/zoom/16" target="_blank" rel="noopener noreferrer">Посмотреть на карте Москвы</a>
 <script charset="utf-8" src="https://widgets.2gis.com/js/DGWidgetLoader.js"><\/script>
 <script charset="utf-8">new DGWidgetLoader({"width":"100%","height":"100%","borderColor":"#e6e9ed","pos":{"lat":${LAT},"lon":${LON},"zoom":16},"opt":{"city":"moscow"},"org":[{"id":"${ORG_ID}"}]});<\/script>
 </div></body></html>`;

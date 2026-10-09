@@ -68,11 +68,14 @@ export function ScenarioStack({
   items,
   slug,
   anchorId,
+  placeholderLabel,
 }: {
   items: UseCaseScenario[];
   /** Роль — по ней берутся готовые кадры из `scenario-previews`. */
   slug: string;
   anchorId?: string;
+  /** Подпись для будущих скриншотов; у существующих страниц заглушка без текста. */
+  placeholderLabel?: string;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -349,10 +352,16 @@ export function ScenarioStack({
                 />
               ) : (
                 <div
-                  aria-hidden
+                  aria-hidden={placeholderLabel ? undefined : true}
                   data-surface
-                  className={`aspect-[588/400] w-full rounded-[20px] border border-border-subtle shadow-drop-lg ${PREVIEW_GRADIENT}`}
-                />
+                  className={`flex aspect-[588/400] w-full items-center justify-center rounded-[20px] border border-border-subtle p-32 shadow-drop-lg ${PREVIEW_GRADIENT}`}
+                >
+                  {placeholderLabel ? (
+                    <span className="text-center text-body-m text-text-secondary">
+                      {placeholderLabel}
+                    </span>
+                  ) : null}
+                </div>
               );
             })()}
           </div>
