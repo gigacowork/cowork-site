@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 import Image from "@/components/ui/Image";
 import { Icon } from "@/components/ui/Icon";
@@ -51,7 +52,7 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
       <article
         aria-label={`Кейс — ${study.company}`}
         className={[
-          "relative flex h-full flex-col items-start overflow-hidden rounded-[24px] p-40",
+          "card-interactive relative flex h-full flex-col items-start overflow-hidden rounded-[24px] p-40",
           "bg-[image:linear-gradient(67deg,#DAFDE4_0.95%,#E4FAFF_50.8%,#F4FBFF_101.64%)]",
           study.gradientClassName,
           /*
@@ -109,6 +110,19 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
         </p>
 
         {/*
+          Карточка кликабельна целиком (Card / Info 1312:4755). В макете у кейса
+          нет видимой ссылки, поэтому зона клика — невидимая растянутая ссылка.
+          Ведёт на страницу кейса; у кейсов без своей страницы её нет.
+        */}
+        {study.slug ? (
+          <Link
+            href={`/success-stories/${study.slug}`}
+            aria-label={`Открыть кейс — ${study.company}`}
+            className="absolute inset-0 z-10 focus-visible:outline-none"
+          />
+        ) : null}
+
+        {/*
           Tags — I1927:15620;515:1152, прижаты к нижнему полю карточки.
 
           Ряд шире текстовой колонки на 20px: в макете рамка тегов — 272 при
@@ -135,10 +149,27 @@ export function Cases() {
     <section id="cases" className="bg-bg-page py-64 md:py-80">
       <div className="container-page flex flex-col items-center gap-32 md:gap-48">
         {/* Clients / Header Row — 1927:15615 / 1927:17418 */}
+        {/*
+          На десктопе заголовок стоит по центру всей ширины секции, поэтому
+          ссылка «Все кейсы» вынута из потока и прижата к правому краю: останься
+          она обычной колонкой ряда, её ширина сместила бы заголовок влево от
+          настоящего центра. Ниже md порядок обычный — заголовок, под ним ссылка.
+          Сейчас ссылка скрыта (см. ниже), но обвязка оставлена под возврат.
+        */}
         <div className="flex w-full flex-col items-start md:relative">
           <h2 className="text-h3 font-medium text-text-primary md:w-full md:text-center md:text-h2">
             Опыт клиентов
           </h2>
+          {/* Ссылка на раздел кейсов (иконка — Icon / arrow up-right 418:4735, 9×9). */}
+          <div className="flex pt-8 md:absolute md:top-0 md:right-0 md:pt-0">
+            <Link
+              href="/success-stories"
+              className="flex items-center justify-center gap-8 rounded-full py-12 text-body-m text-text-primary transition-colors hover:bg-neutral-100 md:px-24"
+            >
+              <span className="whitespace-nowrap">Все кейсы</span>
+              <Icon src="/img/icons/arrow-up-right.svg" className="size-[9px] text-icon-primary" />
+            </Link>
+          </div>
         </div>
 
         {/*

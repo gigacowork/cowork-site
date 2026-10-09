@@ -71,24 +71,19 @@ export default function LeadPage() {
         стояли свои фиксированные поля (20 и 120), из-за чего на широких экранах
         контент растягивался шире, чем на всех прочих страницах.
       */}
-      <main className="container-page flex flex-1 flex-col items-center gap-40 py-40 md:flex-row md:items-start md:gap-24 md:pt-[var(--lead-main-pt,70px)] md:pb-[var(--lead-main-pb,80px)]">
+      <main className="container-page flex flex-1 flex-col items-center gap-40 py-40 md:pt-[var(--lead-main-pt,70px)] md:pb-[var(--lead-main-pb,80px)] lg:flex-row lg:items-start lg:gap-24">
         {/* CTA / Left Column 2397:43436 — Hero / Intro 2397:43450 на мобильном */}
-        <div className="flex w-full flex-col items-center gap-24 text-text-primary md:min-w-0 md:flex-1 md:items-start md:gap-64">
-          <div className="flex w-full flex-col items-center gap-24 md:items-start md:gap-32">
-            <h1 className="w-full text-center text-h2 font-medium md:w-[522px] md:text-left">
+        <div className="flex w-full flex-col items-center gap-24 text-text-primary lg:min-w-0 lg:flex-1 lg:items-start lg:gap-64">
+          <div className="flex w-full flex-col items-center gap-24 lg:items-start lg:gap-32">
+            <h1 className="w-full max-w-[522px] text-center text-h2 font-medium lg:text-left">
               Готовы делегировать работу ИИ-агентам?
             </h1>
             {/*
-              Жёсткий перенос стоит только ниже md — на десктопе колонка 304 и
-              строка ломается сама.
-
-              `text-balance` там же: со сроком фраза перестала помещаться в две
-              строки, а третья набиралась одним «на 7 дней» — висячий обрывок
-              под двумя полными строками. Балансировка раскладывает те же три
-              строки поровну. Браузер без поддержки просто переносит как
-              обычно, и хуже, чем было, не становится.
+              Текст занимает доступную ширину левой колонки до 522 px.
+              На узких экранах форма переходит под текст, чтобы обе колонки
+              не сжимались до нескольких слов в строке.
             */}
-            <p className="w-full text-center text-body-l md:w-[304px] md:text-left md:text-balance">
+            <p className="w-full max-w-[522px] text-center text-body-l lg:text-left lg:text-pretty">
               Оставьте заявку, чтобы получить <br className="md:hidden" />
               пробный доступ к&nbsp;GigaCowork на&nbsp;7&nbsp;дней
             </p>

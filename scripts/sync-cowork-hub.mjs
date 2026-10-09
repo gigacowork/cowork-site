@@ -14,6 +14,15 @@ const temporary = suppliedSource ? null : mkdtempSync(join(tmpdir(), "cowork-hub
 const source = suppliedSource ? resolve(suppliedSource) : join(temporary, "repo");
 const skillDocuments = new Map();
 
+function filesIn(directory) {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    if (entry.name.startsWith(".")) return [];
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return filesIn(path).map((file) => `${entry.name}/${file}`);
+    return entry.isFile() ? [entry.name] : [];
+  }).sort((a, b) => a.localeCompare(b, "ru"));
+}
+
 function readYaml(path) {
   return YAML.parse(readFileSync(path, "utf8"));
 }
@@ -39,13 +48,18 @@ function skillSections(markdown) {
   return sections;
 }
 
-function entries(directory, fileForDirectory) {
+function entries(directory, fileForDirectory, includeContent = false) {
   if (!existsSync(directory)) return [];
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const path = join(directory, entry.name, ...(fileForDirectory ? [fileForDirectory] : []));
     if (fileForDirectory ? !entry.isDirectory() || !existsSync(path) : !entry.isFile() || !entry.name.endsWith(".md")) return [];
     const meta = readMarkdownMeta(path);
-    return [{ slug: fileForDirectory ? entry.name : entry.name.replace(/\.md$/, ""), name: meta.name || entry.name, description: meta.description || "" }];
+    return [{
+      slug: fileForDirectory ? entry.name : entry.name.replace(/\.md$/, ""),
+      name: meta.name || entry.name,
+      description: meta.description || "",
+      ...(includeContent ? { content: readFileSync(path, "utf8") } : {}),
+    }];
   }).sort((a, b) => a.slug.localeCompare(b.slug));
 }
 
@@ -65,6 +79,7 @@ function standaloneSkills(source) {
       version: meta.version || 1,
       tags: meta.tags || [],
       sections: skillSections(markdown),
+      files: filesIn(join(directory, entry.name)),
     }]];
   }));
 }
@@ -82,6 +97,7 @@ function integrations(source) {
       description: meta.description,
       category: meta.category,
       version: meta.version || 1,
+      files: filesIn(join(directory, entry.name)),
     }]];
   }));
 }
@@ -103,8 +119,10 @@ try {
       category: manifest.category,
       version: manifest.version,
       tags: manifest.tags || [],
-      skills: entries(join(directory, "skills"), "SKILL.md"),
-      commands: entries(join(directory, "commands")),
+      readme: existsSync(join(directory, "README.md")) ? readFileSync(join(directory, "README.md"), "utf8") : null,
+      files: filesIn(directory),
+      skills: entries(join(directory, "skills"), "SKILL.md", true),
+      commands: entries(join(directory, "commands"), null, true),
       agents: entries(join(directory, "agents")),
     }]];
   }));

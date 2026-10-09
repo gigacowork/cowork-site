@@ -7,6 +7,7 @@ import { Lines } from "@/components/use-cases/Lines";
 import { ScenarioStack } from "@/components/use-cases/ScenarioStack";
 import { UseCaseHero } from "@/components/use-cases/UseCaseHero";
 import { UseCaseSteps } from "@/components/use-cases/UseCaseSteps";
+import { SMB_COURSE_TITLE } from "@/content/ai-for-smb";
 import { pageMetadata } from "@/lib/site";
 import {
   getSmbUseCase,
@@ -81,14 +82,14 @@ export default async function SmbUseCasePage({
         <div className="container-page flex flex-col items-start gap-24 text-left">
           <Kicker className="self-center md:self-start">Обучение</Kicker>
           <h2 className="text-h3 font-medium text-text-primary md:text-h2">
-            Обучающие видео GigaCowork
+            {SMB_COURSE_TITLE}
           </h2>
           <p className="max-w-[620px] text-body-l text-text-secondary">
-            Короткие видео покажут, как поставить первую задачу, создать агента
-            и настроить работу команды в GigaCowork.
+            Освойте GigaCowork на задачах малого бизнеса: от первого запроса
+            до собственного агента и рабочего процесса для команды.
           </p>
-          <Button href="/guides" variant="primary" size="lg">
-            Смотреть видео
+          <Button href="/ai-academy/ai-for-smb" variant="primary" size="lg">
+            Перейти к курсу
           </Button>
         </div>
       </section>

@@ -23,6 +23,7 @@
  */
 
 import { GUIDES, guidePoster } from "@/content/guides";
+import { SMB_COURSE_TITLE } from "@/content/ai-for-smb";
 
 export type PageSeo = {
   /** Адрес страницы от корня сайта. */
@@ -316,6 +317,123 @@ export const PAGE_SEO: Record<string, PageSeo> = {
               position: 2,
               name: "Обучающие видео",
               item: "https://cowork.ru/guides/",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  /*
+    «Академия» — /ai-academy.
+
+    Документа от SEO-специалиста на эту страницу ещё нет: тексты ниже
+    написаны по макету (5196:54152) в той же манере, что у соседних страниц.
+
+    Роликов в графе нет намеренно, хотя на странице они те же: VideoObject
+    для них уже объявлен на /guides, и второй такой же набор на другом адресе
+    поисковику пришлось бы считать дублем. Здесь вместо него ItemList
+    форматов обучения — то, чего на /guides нет.
+  */
+  aiAcademy: {
+    path: "/ai-academy/",
+    title: "Академия GigaCowork — обучение работе с ИИ-агентами",
+    description:
+      "Видеоинструкции, туториалы, сценарии отделов, вебинары и курсы: как освоить GigaCowork от первых шагов до рабочих процессов.",
+    keywords:
+      "академия gigacowork, обучение gigacowork, туториалы gigacowork, сценарии использования ии агентов, вебинары по ии агентам, курсы gigacowork, GigaCowork, ГигаКоворк, Коворк, Cowork",
+    ogTitle: "Академия GigaCowork",
+    ogDescription:
+      "От первых шагов к уверенной работе с ИИ: короткие инструкции, практические видео и реальные сценарии использования GigaCowork сотрудниками разных отделов.",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://cowork.ru/#organization",
+          name: "Салют для Бизнеса",
+          legalName: "ООО «Салют для Бизнеса»",
+          url: "https://cowork.ru/",
+        },
+        {
+          "@type": "Brand",
+          "@id": "https://cowork.ru/#brand",
+          name: "GigaCowork",
+          url: "https://cowork.ru/",
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://cowork.ru/#website",
+          url: "https://cowork.ru/",
+          name: "GigaCowork",
+          inLanguage: "ru-RU",
+          publisher: {
+            "@id": "https://cowork.ru/#organization",
+          },
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://cowork.ru/ai-academy#webpage",
+          url: "https://cowork.ru/ai-academy/",
+          name: "Академия GigaCowork — обучение работе с ИИ-агентами",
+          description:
+            "Видеоинструкции, туториалы, сценарии отделов, вебинары и курсы: как освоить GigaCowork от первых шагов до рабочих процессов.",
+          inLanguage: "ru-RU",
+          isPartOf: {
+            "@id": "https://cowork.ru/#website",
+          },
+          about: {
+            "@id": "https://cowork.ru/#brand",
+          },
+          mainEntity: {
+            "@id": "https://cowork.ru/ai-academy#formats",
+          },
+          breadcrumb: {
+            "@id": "https://cowork.ru/ai-academy#breadcrumb",
+          },
+        },
+        {
+          "@type": "ItemList",
+          "@id": "https://cowork.ru/ai-academy#formats",
+          name: "Материалы Академии GigaCowork",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Туториалы",
+              description:
+                "Пошаговые разборы простых действий: как повторить их у себя и познакомиться с возможностями GigaCowork.",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Сценарии",
+              description:
+                "Как сотрудники разных отделов решают повседневные задачи с помощью GigaCowork.",
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: SMB_COURSE_TITLE,
+              description:
+                "Уроки по работе с GigaCowork для малого бизнеса.",
+            },
+          ],
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://cowork.ru/ai-academy#breadcrumb",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Главная",
+              item: "https://cowork.ru/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Академия",
+              item: "https://cowork.ru/ai-academy/",
             },
           ],
         },

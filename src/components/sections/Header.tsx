@@ -96,11 +96,20 @@ const NAV_ITEMS: NavItem[] = [
         href: smbUseCasePath(item.slug),
       })),
       { label: "Специальные тарифы", href: SMB_TARIFF_PATH },
+      { label: "Курс для малого бизнеса", href: "/ai-academy/ai-for-smb" },
     ],
   },
   { label: "Безопасность", href: "/trust-and-safety" },
   { label: "Поставки", href: "/pricing" },
-  { label: "Обучающие видео", href: "/guides" },
+  {
+    label: "Центр знаний",
+    children: [
+      { label: "Академия", href: "/ai-academy" },
+      { label: "Кейсы", href: "/success-stories" },
+      { label: "Каталог решений", href: "/marketplace-plugin" },
+      { label: "Медиа", href: "/media" },
+    ],
+  },
 ];
 
 /**
