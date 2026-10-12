@@ -1,8 +1,6 @@
 import type { UseCaseScenario, UseCaseStep } from "@/lib/use-cases";
 
 /** Короткие сценарии для меню «Малому бизнесу». */
-export const SMB_TARIFF_PATH = "/small-business/tariffs";
-
 export function smbUseCasePath(slug: string) {
   return `/small-business/${slug}`;
 }

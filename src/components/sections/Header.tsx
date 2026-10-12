@@ -9,7 +9,6 @@ import { Icon } from "@/components/ui/Icon";
 import { requestHeroReset } from "@/lib/hero-reset";
 import { USE_CASES } from "@/lib/use-cases";
 import {
-  SMB_TARIFF_PATH,
   SMB_USE_CASES,
   smbUseCasePath,
 } from "@/lib/smb-use-cases";
@@ -95,7 +94,6 @@ const NAV_ITEMS: NavItem[] = [
         label: item.navLabel,
         href: smbUseCasePath(item.slug),
       })),
-      { label: "Специальные тарифы", href: SMB_TARIFF_PATH },
       { label: "Курс для малого бизнеса", href: "/ai-academy/ai-for-smb" },
     ],
   },
@@ -106,7 +104,7 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       { label: "Академия", href: "/ai-academy" },
       { label: "Кейсы", href: "/success-stories" },
-      { label: "Каталог решений", href: "/marketplace-plugin" },
+      { label: "Плагины и навыки", href: "/marketplace-plugin" },
       { label: "Медиа", href: "/media" },
     ],
   },

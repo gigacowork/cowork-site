@@ -60,6 +60,13 @@ const LOGOS: ClientLogo[] = [
     height: 26,
     sizeClassName: "h-[26px] w-[134px]",
   },
+  {
+    name: "АПРИ",
+    src: "/img/clients/apri.svg",
+    width: 88,
+    height: 28,
+    sizeClassName: "h-[28px] w-[88px]",
+  },
 ];
 
 /**
@@ -283,9 +290,9 @@ export function Clients({
         </div>
       </div>
 
-      {/* md и выше — статичный ряд 84px из макета */}
+      {/* На планшете шесть логотипов занимают два ряда; на десктопе — один. */}
       <div className="container-page hidden md:block">
-        <ul className="flex h-[84px] items-center justify-between gap-24">
+        <ul className="grid grid-cols-3 items-center justify-items-center gap-24 lg:flex lg:h-[84px] lg:justify-between">
           {logos.map((logo) => (
             <LogoItem key={logo.src} logo={logo} />
           ))}

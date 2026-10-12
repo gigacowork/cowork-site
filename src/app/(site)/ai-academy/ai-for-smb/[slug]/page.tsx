@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import FirstTaskDemo, { FIRST_TASK_PROMPT, FIRST_TASK_PROMPT_NO_FILES } from "@/components/academy/FirstTaskDemo";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Icon } from "@/components/ui/Icon";
 import { Kicker } from "@/components/ui/Kicker";
@@ -15,6 +16,7 @@ import {
 import { GUIDES, guidePoster } from "@/content/guides";
 import { asset } from "@/lib/asset";
 import { pageMetadata } from "@/lib/site";
+import SourceTextBlock from "../../../marketplace-plugin/SourceTextBlock";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -193,13 +195,27 @@ export default async function SmbLessonPage({ params }: PageProps) {
             </ul>
           </section>
 
-          <section className="flex flex-col gap-16 rounded-24 bg-[linear-gradient(54.73deg,#c5f8e5_0.952%,#dcf9ff_50.802%,#e4f5ff_101.64%)] p-24 md:p-40">
+          <section id={index === 0 ? "first-task" : undefined} className="flex scroll-mt-[calc(var(--header-h)+24px)] flex-col gap-16 rounded-24 border border-border-subtle bg-bg-card p-24 md:p-40">
             <h2 className="text-h3 font-medium text-text-primary">
               Практика
             </h2>
-            <p className="text-body-l text-text-secondary">
-              {lesson.practice}
-            </p>
+            {lesson.practice && (
+              <p className="text-body-l text-text-secondary">
+                {lesson.practice}
+              </p>
+            )}
+            {index === 0 && (
+              <div className="flex min-w-0 flex-col gap-32 md:gap-40">
+                <FirstTaskDemo showSteps stableHeight />
+                <div className="flex flex-col gap-24">
+                  <p className="text-body-l text-text-secondary">Откройте GigaCowork, скопируйте промпт, приложите свои файлы и проверьте ответ.</p>
+                  <div className="grid min-w-0 gap-16 xl:grid-cols-2">
+                    <SourceTextBlock label="Если есть файлы" text={FIRST_TASK_PROMPT} />
+                    <SourceTextBlock label="Если файлов пока нет" text={FIRST_TASK_PROMPT_NO_FILES} />
+                  </div>
+                </div>
+              </div>
+            )}
           </section>
 
           <section className="flex flex-col gap-16 rounded-24 border border-border-subtle bg-bg-card p-24 shadow-elevation-xs md:p-40">

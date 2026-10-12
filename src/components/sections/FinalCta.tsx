@@ -31,9 +31,10 @@ export function FinalCta({
   title?: ReactNode;
   /** Кадр фона из макета страницы. По умолчанию — первый. */
   background?: CtaVariant;
-  /** Переопределяется для сценариев с отдельным тарифным предложением. */
+  /** Переопределяется для сценариев с отдельным предложением. */
   buttonLabel?: string;
-  buttonHref?: string;
+  /** null оставляет кнопку без перехода. */
+  buttonHref?: string | null;
 }) {
   return (
     <section
@@ -61,14 +62,20 @@ export function FinalCta({
             </h2>
           </div>
 
-          <Button
-            href={buttonHref}
-            variant="primary"
-            size="lg"
-            className="text-body-m!"
-          >
-            {buttonLabel}
-          </Button>
+          {buttonHref === null ? (
+            <Button variant="primary" size="lg" className="text-body-m!">
+              {buttonLabel}
+            </Button>
+          ) : (
+            <Button
+              href={buttonHref}
+              variant="primary"
+              size="lg"
+              className="text-body-m!"
+            >
+              {buttonLabel}
+            </Button>
+          )}
         </div>
       </div>
     </section>

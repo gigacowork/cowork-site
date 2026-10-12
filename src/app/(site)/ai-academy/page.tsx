@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import AcademyLessons from "@/components/academy/AcademyLessons";
+import FirstTaskTeaser from "@/components/academy/FirstTaskTeaser";
 import SmbLessonCard from "@/components/academy/SmbLessonCard";
 import {
   CourseModules,
@@ -28,7 +29,7 @@ import { asset } from "@/lib/asset";
  *
  * Figma: десктоп 5196:54152 (1440×6200), мобильный 5340:37529 (390×9940).
  *
- * Первый блок «Начните работать с GigaCowork» показывает актуальные ролики
+ * Блок «Знакомство с GigaCowork» показывает актуальные ролики
  * из «Исходники Академия/Onboarding»; те же записи доступны на /guides, но
  * здесь они переключаются кнопками тем,
  * а не идут лентой. Список роликов вынесен в общий справочник
@@ -279,7 +280,9 @@ export default function AiAcademyPage() {
         </div>
       </section>
 
-      {/* ── Начните работать с GigaCowork (5196:54292) ── */}
+      <FirstTaskTeaser />
+
+      {/* ── Знакомство с GigaCowork (5196:54292) ── */}
       <section
         id="start"
         className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-120"
@@ -287,7 +290,7 @@ export default function AiAcademyPage() {
         <div className="container-page">
           <SectionHeader
             kicker="Обучение"
-            title={<>Начните работать с&nbsp;GigaCowork</>}
+            title={<>Знакомство с&nbsp;GigaCowork</>}
             text={
               <>
                 Короткие видео помогут разобраться в&nbsp;основных возможностях
@@ -322,7 +325,7 @@ export default function AiAcademyPage() {
           <ol
             data-cards-track
             aria-label={`Уроки курса «${SMB_COURSE_TITLE}»`}
-            className="academy-smb-track no-scrollbar mt-32 flex snap-x snap-mandatory gap-24 overflow-x-auto scroll-smooth py-12 md:mt-48"
+            className="academy-smb-track no-scrollbar mt-4 flex snap-x snap-mandatory gap-24 overflow-x-auto scroll-smooth pt-40 pb-64 md:mt-20"
           >
             {SMB_LESSONS.map((lesson, index) => (
               <li
@@ -333,7 +336,7 @@ export default function AiAcademyPage() {
               </li>
             ))}
           </ol>
-          <div className="container-page mt-32 flex items-center justify-center">
+          <div className="container-page flex items-center justify-center">
             <CarouselNavigation />
           </div>
         </section>

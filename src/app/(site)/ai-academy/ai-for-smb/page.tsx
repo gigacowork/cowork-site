@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import AcademyLessons from "@/components/academy/AcademyLessons";
 import SmbLessonCard from "@/components/academy/SmbLessonCard";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import Button from "@/components/ui/Button";
@@ -36,30 +35,11 @@ export default function SmbCoursePage() {
           </h1>
           <p className="max-w-[620px] text-body-l text-text-secondary">
             Освойте GigaCowork на задачах малого бизнеса: от первого запроса
-            до собственного агента и рабочего процесса для команды.
+            до&nbsp;собственного агента и рабочего процесса для команды.
           </p>
           <Button href="#lessons" size="lg" className="mt-8">
             Перейти к урокам
           </Button>
-        </div>
-      </section>
-
-      <section
-        id="start"
-        className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-120"
-      >
-        <div className="container-page flex flex-col gap-16">
-          <Kicker>Обучение</Kicker>
-          <h2 className="text-h3 font-medium text-text-primary md:text-h2">
-            Начните работать с GigaCowork
-          </h2>
-          <p className="text-body-l text-text-primary">
-            Короткие видео помогут освоить основные возможности платформы
-            перед уроками курса.
-          </p>
-        </div>
-        <div className="mt-32 md:mt-64">
-          <AcademyLessons />
         </div>
       </section>
 

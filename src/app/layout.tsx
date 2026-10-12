@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { YandexMetrika } from "@/components/analytics/YandexMetrika";
+import { PostHogPixel } from "@/components/analytics/PostHogPixel";
+import { UtmAttribution } from "@/components/analytics/UtmAttribution";
 import { pageMetadata, SITE_URL } from "@/lib/site";
 
 /**
@@ -44,6 +46,8 @@ export default function RootLayout({
     <html lang="ru">
       <body>
         {children}
+        <PostHogPixel />
+        <UtmAttribution />
         {/* Счётчик стоит в корневом каркасе — он общий для всех страниц. */}
         <YandexMetrika />
       </body>

@@ -11,7 +11,6 @@ import { SMB_COURSE_TITLE } from "@/content/ai-for-smb";
 import { pageMetadata } from "@/lib/site";
 import {
   getSmbUseCase,
-  SMB_TARIFF_PATH,
   SMB_USE_CASES,
   smbUseCasePath,
 } from "@/lib/smb-use-cases";
@@ -76,7 +75,7 @@ export default async function SmbUseCasePage({
         </div>
       </section>
 
-      <UseCaseSteps title={item.stepsTitle} items={[item.step]} />
+      <UseCaseSteps title={item.stepsTitle} items={[item.step]} alignTitleToVideo />
 
       <section className="w-full bg-bg-page py-64 md:py-120">
         <div className="container-page flex flex-col items-start gap-24 text-left">
@@ -97,7 +96,7 @@ export default async function SmbUseCasePage({
       <FinalCta
         title="Специальные тарифы для малого бизнеса"
         buttonLabel="Узнать подробнее"
-        buttonHref={SMB_TARIFF_PATH}
+        buttonHref={null}
       />
     </>
   );

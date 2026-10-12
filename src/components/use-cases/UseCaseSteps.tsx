@@ -64,6 +64,7 @@ export function UseCaseSteps({
   items,
   anchorId,
   rowAnchorIds,
+  alignTitleToVideo = false,
 }: {
   /** Заголовок секции. В макете Финансов его нет — остаётся один кикер. */
   title?: string;
@@ -72,6 +73,8 @@ export function UseCaseSteps({
   items: UseCaseStep[];
   anchorId?: string;
   rowAnchorIds?: Record<number, string>;
+  /** На страницах малого бизнеса заголовок заканчивается перед колонкой видео. */
+  alignTitleToVideo?: boolean;
 }) {
   return (
     <section id={anchorId} className={`w-full scroll-mt-[calc(var(--header-h)+24px)] py-64 md:py-120 ${SECTION_GRADIENT}`}>
@@ -80,7 +83,13 @@ export function UseCaseSteps({
         <div className="flex flex-col items-start gap-24 text-left">
           <Kicker className="self-center md:self-start">Решения</Kicker>
           {title ? (
-            <h2 className="text-h3 font-medium text-text-primary md:max-w-[800px] md:text-h2">
+            <h2
+              className={`text-h3 font-medium text-text-primary md:text-h2 ${
+                alignTitleToVideo
+                  ? "md:max-w-[calc(50%-16px)]"
+                  : "md:max-w-[800px]"
+              }`}
+            >
               <Lines text={title} />
             </h2>
           ) : null}

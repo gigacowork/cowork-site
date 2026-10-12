@@ -1,0 +1,104 @@
+.demo { width: 100%; min-width: 0; color: #1f2020; }
+.workspace { position: relative; display: flex; align-items: flex-start; justify-content: center; min-height: 300px; padding: 0 0 24px; background: transparent; }
+.startScreen { position: relative; width: min(100%, 735px); margin: 0 auto; }
+.composer { position: relative; border: 1px solid #e6e6e6; border-radius: 16px; background: #fafafa; }
+.inputBox { position: relative; display: flex; flex-direction: column; gap: 10px; min-height: 130px; padding: 14px 12px 10px; border: 1px solid #e6e6e6; border-radius: 16px; background: #fff; }
+.prompt { min-height: 56px; padding: 2px 6px; font-size: 14px; line-height: 21px; letter-spacing: -.2px; }
+.attachments { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 6px 4px; }
+.fileCard { display: flex; align-items: center; gap: 8px; min-height: 52px; max-width: 100%; padding: 6px 10px 6px 6px; border-radius: 12px; background: #f0f0f0; animation: appear .22s cubic-bezier(.22, 1, .36, 1) both; }
+.fileIcon { position: relative; display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 8px; background: #fff; }
+.fileText { min-width: 0; }
+.fileText b { display: block; font-size: 12px; line-height: 17px; font-weight: 400; overflow-wrap: anywhere; }
+.fileText small { display: block; margin-top: 2px; color: #777; font-size: 11px; line-height: 15px; }
+.uploadSpinner { position: absolute; inset: 4px; border: 2.5px solid #dde3ed; border-top-color: #737c99; border-right-color: #737c99; border-radius: 50%; animation: spin .7s linear infinite; }
+.caret { display: inline-block; width: 1px; height: 16px; margin-left: 2px; background: #1f2020; vertical-align: -.2em; animation: blink .7s steps(1, end) infinite; }
+.toolbar, .toolbarLeft, .toolbarRight { display: flex; align-items: center; }
+.toolbar { justify-content: space-between; gap: 8px; margin-top: auto; }
+.toolbarLeft { min-width: 0; gap: 2px; }
+.toolbarRight { gap: 12px; padding-right: 1px; }
+.toolButton { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; }
+.agentPill { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 4px 7px; background: #f0f0f0; font-size: 12px; line-height: 16px; white-space: nowrap; }
+.activeTool { background: #e9e9e9; box-shadow: 0 0 0 2px rgba(90, 115, 255, .25); }
+.send { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #1f2020; }
+.sendDisabled { opacity: .5; }
+.connectorsRow { display: flex; justify-content: flex-end; align-items: center; gap: 7px; min-height: 38px; padding: 8px 15px; color: #929292; font-size: 12px; line-height: 17px; }
+.connectorAvatars { display: inline-flex; padding-left: 6px; }
+.connectorAvatars i { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; margin-left: -5px; border: 1px solid #fff; border-radius: 50%; background: #1548f5; color: #fff; font-size: 8px; font-style: normal; line-height: 1; }
+.connectorAvatars i:nth-child(2) { background: #3761dd; }
+.connectorAvatars i:nth-child(3) { background: #ed8b0d; }
+.fileMenuImage { position: absolute; z-index: 2; top: 105px; left: 0; width: 239px; height: 130px; max-width: none; pointer-events: none; animation: pop .22s ease both; }
+.result { width: min(100%, 690px); min-height: 300px; margin: 0 auto; animation: appear .4s ease both; }
+.resultScrolled { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 28px, #000); mask-image: linear-gradient(to bottom, transparent, #000 28px, #000); }
+.result p { margin: 0 0 12px; font-size: 13px; line-height: 19px; }
+.result .resultStatus { display: flex; align-items: center; gap: 8px; min-height: 24px; margin-bottom: 14px; color: #6b7584; }
+.resultStatus img { flex: none; }
+.statusDots { display: inline-flex; gap: 4px; margin-left: 2px; }
+.statusDots i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; animation: pulse 1100ms ease-in-out infinite; }
+.statusDots i:nth-child(2) { animation-delay: 140ms; }
+.statusDots i:nth-child(3) { animation-delay: 280ms; }
+.result .resultReasoning { color: #6b7584; animation: appear .3s ease both; }
+.resultTable { overflow: hidden; border: 1px solid #e6e6e6; border-radius: 9px; font-size: 11px; line-height: 17px; animation: appear .3s ease both; }
+.resultTable > div { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding: 8px 10px; }
+.resultTable > div:first-child { background: #f6f6f6; }
+.resultTable > div + div { border-top: 1px solid #efefef; }
+.resultPositive { border-radius: 4px; background: #def4e9; }
+.resultMissing { border-radius: 4px; background: #fff1cf; }
+.resultSummary { margin-top: 13px; animation: appear .3s ease both; }
+.resultSummary b { font-size: 13px; line-height: 19px; font-weight: 600; }
+.resultSummary p { margin-top: 4px; color: #59616e; }
+.stepCards { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.stepCard { position: relative; display: flex; flex-direction: column; align-items: flex-start; min-height: 230px; overflow: hidden; padding: 24px 24px 32px; border: 1px solid #e6e6e6; border-radius: 20px; background: #fff; color: #1f2020; text-align: left; cursor: pointer; transition: border-color .2s ease, box-shadow .2s ease; }
+.stepCard:hover { border-color: #9a9a9a; }
+.stepCard:focus-visible { outline: 2px solid #345bdf; outline-offset: 3px; }
+.stepCardActive { border-color: #1f2020; box-shadow: 0 8px 24px rgba(31, 32, 32, .06); }
+.stepNumber { color: #777; font-size: 12px; line-height: 16px; }
+.stepTitle { margin-top: 12px; font-size: 20px; line-height: 26px; font-weight: 500; }
+.stepText { margin-top: 12px; color: #555; font-size: 14px; line-height: 21px; }
+.progressTrack { position: absolute; right: 0; bottom: 0; left: 0; height: 4px; background: #ededed; }
+.progressFill { display: block; width: 0; height: 100%; background: #1f2020; animation: stepProgress 4600ms linear forwards; }
+.progressPaused { animation-play-state: paused; }
+.compact .workspace { min-height: 280px; }
+.stableHeight .workspace { height: 240px; min-height: 0; padding-bottom: 0; overflow: hidden; }
+.stableHeight .result { height: 205px; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+.stableHeight .result::-webkit-scrollbar { display: none; }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes appear { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pop { from { opacity: 0; transform: translateY(-5px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 50% { opacity: .25; transform: translateY(-2px); } }
+@keyframes stepProgress { to { width: 100%; } }
+@media (max-width: 899px) {
+  .stepCards { display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding-inline: 0; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .stepCards::-webkit-scrollbar { display: none; }
+  .stepCard { flex: 0 0 min(82vw, 360px); min-height: 0; padding: 20px 20px 28px; scroll-snap-align: center; }
+}
+@media (max-width: 650px) {
+  .workspace { height: 268px; min-height: 0; padding: 0 0 12px; overflow: hidden; }
+  .compact .workspace { min-height: 0; }
+  .stableHeight .workspace { height: 240px; }
+  .inputBox { min-height: 0; padding: 10px 9px 8px; gap: 6px; }
+  .prompt { min-height: 72px; padding: 0 3px; font-size: 12px; line-height: 17px; }
+  .attachments { flex-wrap: nowrap; gap: 5px; padding: 0 2px 2px; }
+  .fileCard { flex: 1 1 0; min-width: 0; min-height: 46px; gap: 5px; padding: 4px; }
+  .fileIcon { width: 30px; height: 30px; }
+  .fileText b { font-size: 10px; line-height: 13px; }
+  .fileText small { font-size: 10px; line-height: 12px; }
+  .connectorsRow { min-height: 30px; padding-block: 5px; }
+  .fileMenuImage { top: 103px; }
+  .result { min-height: 0; }
+  .result .resultStatus { min-height: 20px; margin-bottom: 6px; }
+  .result .resultReasoning { margin-bottom: 6px; font-size: 12px; line-height: 16px; }
+  .resultTable > div { padding: 5px 7px; }
+  .resultSummary { margin-top: 7px; }
+  .resultSummary b, .resultSummary p { font-size: 11px; line-height: 15px; }
+  .resultSummary p { margin-top: 2px; }
+  .stepCards { gap: 10px; }
+  .stepCard { flex-basis: min(100%, 320px); padding: 14px 14px 21px; border-radius: 16px; }
+  .stepNumber { font-size: 10px; line-height: 13px; }
+  .stepTitle { margin-top: 6px; font-size: 17px; line-height: 21px; }
+  .stepText { margin-top: 6px; font-size: 12px; line-height: 17px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .caret, .fileMenuImage, .fileCard, .uploadSpinner, .result, .resultReasoning, .resultTable, .resultSummary, .statusDots i { animation: none; }
+  .progressFill { width: 100%; animation: none; }
+}

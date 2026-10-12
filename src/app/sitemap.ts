@@ -5,7 +5,7 @@ import { RELEASES } from "@/content/releases";
 import { CASES_WITH_STORY } from "@/content/cases";
 import { BLOG_ARTICLES } from "@/content/blog-articles";
 import { SMB_LESSONS, smbLessonPath } from "@/content/ai-for-smb";
-import { SMB_TARIFF_PATH, SMB_USE_CASES, smbUseCasePath } from "@/lib/smb-use-cases";
+import { SMB_USE_CASES, smbUseCasePath } from "@/lib/smb-use-cases";
 
 /**
  * Карта сайта.
@@ -138,11 +138,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    {
-      url: url(`${SMB_TARIFF_PATH}/`),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
     { url: url("/lead/"), changeFrequency: "yearly", priority: 0.4 },
   ];
 }

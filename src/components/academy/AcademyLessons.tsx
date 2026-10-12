@@ -8,7 +8,7 @@ import VideoGuides from "@/components/interactive/VideoGuides";
 import { GUIDES, guidePoster } from "@/content/guides";
 
 /**
- * Блок «Начните работать с GigaCowork» на странице «Академия»
+ * Блок «Знакомство с GigaCowork» на странице «Академия»
  * (5196:54292 / мобильный 5340:37561).
  *
  * Те же ролики, что на /guides, но показаны иначе: там лента — ролик за
