@@ -288,7 +288,7 @@ const IT_SUPPORT: ScenarioPreview[] = [
 ];
 
 /**
- * Ключ — slug роли из `USE_CASES`. Роли без превью просто отсутствуют:
+ * Ключ — slug страницы сценариев. Страницы без превью просто отсутствуют:
  * `ScenarioStack` в этом случае рисует градиент-заглушку, как сейчас.
  */
 export const SCENARIO_PREVIEWS: Record<string, ScenarioPreview[]> = {
@@ -300,6 +300,16 @@ export const SCENARIO_PREVIEWS: Record<string, ScenarioPreview[]> = {
   "hr-team": HR_TEAM,
   accounting: ACCOUNTING,
   "it-support": IT_SUPPORT,
+  "commercial-offers": [
+    {
+      asset: "/img/small-business/commercial-offer.png",
+      alt: "Черновик коммерческого предложения с расчётом стоимости в GigaCowork",
+    },
+    {
+      asset: "/img/small-business/business-letter.png",
+      alt: "Шаблон делового письма с контекстом заказа в GigaCowork",
+    },
+  ],
 };
 
 /** Превью конкретного сценария; `undefined` — заглушка. */

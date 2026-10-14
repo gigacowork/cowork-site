@@ -75,17 +75,22 @@ export function StepVideoCard({
   label,
   /** Пропорция кадра «ширина/высота» — из самого файла. */
   ratio = "1164/648",
+  scenario = false,
 }: {
   src: string;
   poster?: string;
   label?: string;
   ratio?: string;
+  /** Видео в стопке сценариев использует скругление её карточек. */
+  scenario?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const modalVideoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [open, setOpen] = useState(false);
+  const [ratioWidth, ratioHeight] = ratio.split("/").map(Number);
+  const modalWidthPerHeight = ratioWidth / ratioHeight;
 
   /*
     Автозапуска нет — ролик ждёт нажатия. Наблюдатель нужен для обратного:
@@ -144,7 +149,8 @@ export function StepVideoCard({
   return (
     <>
       <div
-        className="group relative isolate overflow-hidden rounded-[12px] bg-bg-page shadow-drop-lg"
+        data-surface={scenario ? "" : undefined}
+        className={`group relative isolate overflow-hidden bg-bg-page shadow-drop-lg ${scenario ? "rounded-[20px]" : "rounded-[12px]"}`}
         style={{ aspectRatio: ratio }}
       >
         <video
@@ -212,7 +218,16 @@ export function StepVideoCard({
         }}
         className="m-auto max-h-[100dvh] w-[100vw] max-w-[100vw] overflow-visible border-0 bg-transparent p-16 backdrop:bg-[rgba(23,31,45,0.72)] backdrop:backdrop-blur-[4px] md:p-40"
       >
-        <div className="relative mx-auto flex w-full max-w-[1400px] flex-col items-end gap-12">
+        <div
+          className="relative mx-auto flex w-full max-w-[1400px] flex-col items-end gap-12"
+          style={
+            scenario
+              ? {
+                  maxWidth: `min(1400px, calc((100dvh - 140px) * ${modalWidthPerHeight}))`,
+                }
+              : undefined
+          }
+        >
           <button
             type="button"
             onClick={closeModal}
@@ -235,7 +250,8 @@ export function StepVideoCard({
               loop
               playsInline
               aria-label={label}
-              className="max-h-[calc(100dvh-140px)] w-full rounded-[12px] bg-neutral-0 object-contain"
+              style={scenario ? { aspectRatio: ratio } : undefined}
+              className={`max-h-[calc(100dvh-140px)] w-full bg-neutral-0 ${scenario ? "rounded-[20px] object-cover" : "rounded-[12px] object-contain"}`}
             />
           ) : null}
         </div>

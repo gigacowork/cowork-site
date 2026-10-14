@@ -104,7 +104,7 @@ function CompanyCard({ study }: { study: CaseStudy }) {
   const company = study.story!.company;
 
   return (
-    <div className="flex flex-col gap-32 rounded-24 border border-border-subtle bg-bg-card-lavender p-24 shadow-drop-md">
+    <div className="flex flex-col gap-32 rounded-24 border border-border-subtle bg-[linear-gradient(60.08deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)] p-24 shadow-drop-md">
       {/*
         Слот логотипа — только когда файл есть: без него `LogoSlot` вывел бы
         название компании, а оно тут же стоит строкой ниже, и получалось два

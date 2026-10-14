@@ -296,7 +296,7 @@ const COMPARISON: ComparisonGroup[] = [
       },
       {
         label: "Шифрование канала",
-        values: ["TLS", "mTLS", "Внутренний контур"],
+        values: ["TLS", "TLS", "Внутренний контур"],
       },
       {
         label: "Данные для обучения",

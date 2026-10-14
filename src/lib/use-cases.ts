@@ -38,6 +38,10 @@ export type UseCaseScenario = {
   paragraphs: string[];
   /** «эффекты» — маркированный список под описанием */
   effects: string[];
+  /** Видео в карточке сценария вместо изображения или заглушки. */
+  video?: string;
+  videoPoster?: string;
+  videoRatio?: string;
 };
 
 export type UseCaseStep = {
@@ -45,6 +49,9 @@ export type UseCaseStep = {
   paragraphs: string[];
   /** маркированный список под абзацами (перечень отчётов в бухгалтерии) */
   bullets?: string[];
+  /** Готовый скриншот результата вместо видеокарточки. */
+  image?: string;
+  imageAlt?: string;
   /** подпись под кнопкой воспроизведения; в части макетов её нет */
   videoLabel?: string;
   /**

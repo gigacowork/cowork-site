@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useRef } from "react";
 import Image from "@/components/ui/Image";
 import { Lines, Paragraphs } from "@/components/use-cases/Lines";
+import { StepVideoCard } from "@/components/use-cases/StepVideoCard";
 import { getScenarioPreview } from "@/lib/scenario-previews";
 import { createStackCollapse } from "@/lib/stack-collapse";
 import {
@@ -340,7 +341,15 @@ export function ScenarioStack({
                 по контуру альфа-канала и повторяет скругление на любой ширине.
                 Так же сделано в FeatureStack на «О платформе».
               */
-              return preview?.asset ? (
+              return item.video ? (
+                <StepVideoCard
+                  src={item.video}
+                  poster={item.videoPoster}
+                  label={`Видео: ${item.title.toLowerCase()}`}
+                  ratio={item.videoRatio}
+                  scenario
+                />
+              ) : preview?.asset ? (
                 <Image
                   data-surface
                   src={preview.asset}

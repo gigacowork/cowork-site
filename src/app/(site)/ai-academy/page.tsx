@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import AcademyLessons from "@/components/academy/AcademyLessons";
-import FirstTaskTeaser from "@/components/academy/FirstTaskTeaser";
 import SmbLessonCard from "@/components/academy/SmbLessonCard";
 import {
   CourseModules,
@@ -279,8 +278,6 @@ export default function AiAcademyPage() {
           </div>
         </div>
       </section>
-
-      <FirstTaskTeaser />
 
       {/* ── Знакомство с GigaCowork (5196:54292) ── */}
       <section

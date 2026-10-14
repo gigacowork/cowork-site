@@ -63,7 +63,7 @@ export function FinalCta({
           </div>
 
           {buttonHref === null ? (
-            <Button variant="primary" size="lg" className="text-body-m!">
+            <Button variant="primary" size="lg" className="text-body-m!" disabled>
               {buttonLabel}
             </Button>
           ) : (

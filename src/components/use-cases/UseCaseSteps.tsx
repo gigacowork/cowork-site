@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
 import { Kicker } from "@/components/ui/Kicker";
 import { Lines } from "@/components/use-cases/Lines";
@@ -157,7 +158,15 @@ export function UseCaseSteps({
                 </div>
 
                 <div className={`md:w-[588px] ${mirrored ? "md:order-1" : ""}`}>
-                  {step.video ? (
+                  {step.image ? (
+                    <Image
+                      src={step.image}
+                      alt={step.imageAlt ?? step.title}
+                      width={588}
+                      height={400}
+                      className="h-auto w-full drop-shadow-[0_12px_24px_#60738f33]"
+                    />
+                  ) : step.video ? (
                     <StepVideoCard
                       src={step.video}
                       poster={step.videoPoster}

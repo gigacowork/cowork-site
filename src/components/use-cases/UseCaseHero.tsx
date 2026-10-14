@@ -28,6 +28,7 @@ export function UseCaseHero({
   intro,
   ctaLabel = "Попробовать бесплатно",
   ctaHref = "/lead",
+  titleWidth = "720px",
   introWidth = "calc(var(--container-page) / 2)",
   image,
   imageMobile,
@@ -39,7 +40,9 @@ export function UseCaseHero({
   intro: string[];
   /** Текст и адрес кнопки для страниц с собственным следующим шагом. */
   ctaLabel?: string;
-  ctaHref?: string;
+  ctaHref?: string | null;
+  /** Ширина заголовка от md и выше. */
+  titleWidth?: string;
   /** Ширина колонки подзаголовка от md и выше. */
   introWidth?: string;
   image?: string;
@@ -84,7 +87,10 @@ export function UseCaseHero({
       */}
       <div className="container-page flex flex-col items-start gap-32 text-left md:gap-40">
         <div className="flex flex-col gap-48 md:gap-24">
-          <h1 className="text-h2 font-medium text-text-primary md:max-w-[720px] md:text-h1">
+          <h1
+            style={{ "--title-w": titleWidth } as React.CSSProperties}
+            className="text-h2 font-medium text-text-primary md:max-w-[var(--title-w)] md:text-h1"
+          >
             <Lines text={title} />
           </h1>
           {/*
@@ -113,14 +119,20 @@ export function UseCaseHero({
         </div>
 
         <div className="flex">
-          <Button
-            href={ctaHref}
-            variant="primary"
-            size="lg"
-            className="text-body-m!"
-          >
-            {ctaLabel}
-          </Button>
+          {ctaHref === null ? (
+            <Button variant="primary" size="lg" className="text-body-m!" disabled>
+              {ctaLabel}
+            </Button>
+          ) : (
+            <Button
+              href={ctaHref}
+              variant="primary"
+              size="lg"
+              className="text-body-m!"
+            >
+              {ctaLabel}
+            </Button>
+          )}
         </div>
       </div>
     </section>

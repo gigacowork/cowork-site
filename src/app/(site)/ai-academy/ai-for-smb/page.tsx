@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AcademyLessons from "@/components/academy/AcademyLessons";
 import SmbLessonCard from "@/components/academy/SmbLessonCard";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import Button from "@/components/ui/Button";
@@ -40,6 +41,26 @@ export default function SmbCoursePage() {
           <Button href="#lessons" size="lg" className="mt-8">
             Перейти к урокам
           </Button>
+        </div>
+      </section>
+
+      <section
+        id="start"
+        className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-120"
+      >
+        <div className="container-page flex flex-col gap-16">
+          <Kicker>Обучение</Kicker>
+          <h2 className="text-h3 font-medium text-text-primary md:text-h2">
+            Знакомство с&nbsp;GigaCowork
+          </h2>
+          <p className="text-body-l text-text-primary">
+            Короткие видео помогут разобраться в&nbsp;основных возможностях
+            платформы <br className="hidden md:block" />и&nbsp;покажут, как
+            делегировать задачи ИИ-агентам
+          </p>
+        </div>
+        <div className="mt-32 md:mt-64">
+          <AcademyLessons />
         </div>
       </section>
 
