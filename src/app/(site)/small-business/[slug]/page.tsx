@@ -5,7 +5,7 @@ import { smbUseCasePath } from "@/lib/smb-use-cases";
 const legacySlugs: Record<string, string> = {
   leads: "customer-requests",
   proposals: "commercial-offers",
-  analytics: "analytics",
+  analytics: "financial_analysis",
 };
 
 export const dynamicParams = false;

@@ -66,6 +66,7 @@ export function UseCaseSteps({
   anchorId,
   rowAnchorIds,
   alignTitleToVideo = false,
+  largerMedia = false,
 }: {
   /** Заголовок секции. В макете Финансов его нет — остаётся один кикер. */
   title?: string;
@@ -76,6 +77,8 @@ export function UseCaseSteps({
   rowAnchorIds?: Record<number, string>;
   /** На страницах малого бизнеса заголовок заканчивается перед колонкой видео. */
   alignTitleToVideo?: boolean;
+  /** На страницах малого бизнеса медиа занимает оставшуюся ширину ряда. */
+  largerMedia?: boolean;
 }) {
   return (
     <section id={anchorId} className={`w-full scroll-mt-[calc(var(--header-h)+24px)] py-64 md:py-120 ${SECTION_GRADIENT}`}>
@@ -87,7 +90,9 @@ export function UseCaseSteps({
             <h2
               className={`text-h3 font-medium text-text-primary md:text-h2 ${
                 alignTitleToVideo
-                  ? "md:max-w-[calc(50%-16px)]"
+                  ? largerMedia
+                    ? "md:max-w-[calc(50%-16px)] xl:max-w-[calc(38%+32px)]"
+                    : "md:max-w-[calc(50%-16px)]"
                   : "md:max-w-[800px]"
               }`}
             >
@@ -107,7 +112,7 @@ export function UseCaseSteps({
               <div
                 key={step.title}
                 id={rowAnchorIds?.[i]}
-                className="flex scroll-mt-[calc(var(--header-h)+24px)] flex-col gap-24 md:flex-row md:items-start md:justify-between md:gap-80"
+                className={`flex scroll-mt-[calc(var(--header-h)+24px)] flex-col gap-24 md:flex-row md:items-start ${largerMedia ? "md:gap-32" : "md:justify-between md:gap-80"}`}
               >
                 {/*
                   В макете ниже md этот текст стоял по центру (2656:11587) — по
@@ -115,7 +120,7 @@ export function UseCaseSteps({
                   текста вне карточек на страницах «Для кого».
                 */}
                 <div
-                  className={`flex flex-col items-start gap-16 text-left md:w-[480px] md:gap-[20px] ${
+                  className={`flex flex-col items-start gap-16 text-left md:gap-[20px] ${largerMedia ? "md:w-[38%] md:shrink-0" : "md:w-[480px]"} ${
                     mirrored ? "md:order-2" : ""
                   }`}
                 >
@@ -157,13 +162,14 @@ export function UseCaseSteps({
                   </div>
                 </div>
 
-                <div className={`md:w-[588px] ${mirrored ? "md:order-1" : ""}`}>
+                <div className={`${largerMedia ? "md:min-w-0 md:flex-1" : "md:w-[588px]"} ${mirrored ? "md:order-1" : ""}`}>
                   {step.image ? (
                     <Image
                       src={step.image}
                       alt={step.imageAlt ?? step.title}
-                      width={588}
-                      height={400}
+                      width={largerMedia ? 1176 : 588}
+                      height={largerMedia ? 800 : 400}
+                      sizes={largerMedia ? "(min-width: 1280px) 712px, (min-width: 768px) 60vw, 100vw" : undefined}
                       className="h-auto w-full drop-shadow-[0_12px_24px_#60738f33]"
                     />
                   ) : step.video ? (

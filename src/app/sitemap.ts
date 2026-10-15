@@ -4,7 +4,7 @@ import { USE_CASES } from "@/lib/use-cases";
 import { RELEASES } from "@/content/releases";
 import { CASES_WITH_STORY } from "@/content/cases";
 import { BLOG_ARTICLES } from "@/content/blog-articles";
-import { SMB_LESSONS, smbLessonPath } from "@/content/ai-for-smb";
+import { SMB_COURSE_PATH, SMB_LESSONS, smbLessonPath } from "@/content/ai-for-smb";
 import { SMB_USE_CASES, smbUseCasePath } from "@/lib/smb-use-cases";
 
 /**
@@ -117,7 +117,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: url("/guides/"), changeFrequency: "monthly", priority: 0.7 },
     { url: url("/ai-academy/"), changeFrequency: "monthly", priority: 0.7 },
     {
-      url: url("/ai-academy/ai-for-smb/"),
+      url: url(`${SMB_COURSE_PATH}/`),
       changeFrequency: "monthly",
       priority: 0.7,
     },

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { SMB_COURSE_PATH } from "@/content/ai-for-smb";
 import { requestHeroReset } from "@/lib/hero-reset";
 import { USE_CASES } from "@/lib/use-cases";
 import {
@@ -94,7 +95,10 @@ const NAV_ITEMS: NavItem[] = [
         label: item.navLabel,
         href: smbUseCasePath(item.slug),
       })),
-      { label: "Курс для малого бизнеса", href: "/ai-academy/ai-for-smb" },
+      ...(process.env.NEXT_PUBLIC_SMB_PROMO_READY === "true"
+        ? [{ label: "ИИ-команда в подарок", href: "/ai-for-smb/promo", support: true }]
+        : []),
+      { label: "Курс для малого бизнеса", href: SMB_COURSE_PATH, support: true },
     ],
   },
   { label: "Безопасность", href: "/trust-and-safety" },
@@ -102,10 +106,8 @@ const NAV_ITEMS: NavItem[] = [
   {
     label: "Центр знаний",
     children: [
-      { label: "Академия", href: "/ai-academy" },
+      { label: "Обучающие видео", href: "/guides" },
       { label: "Кейсы", href: "/success-stories" },
-      { label: "Плагины и навыки", href: "/marketplace-plugin" },
-      { label: "Медиа", href: "/media" },
     ],
   },
 ];

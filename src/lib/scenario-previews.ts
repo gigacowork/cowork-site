@@ -310,6 +310,16 @@ export const SCENARIO_PREVIEWS: Record<string, ScenarioPreview[]> = {
       alt: "Шаблон делового письма с контекстом заказа в GigaCowork",
     },
   ],
+  financial_analysis: [
+    {
+      asset: "/img/use-cases/smb-analytics-plan-fact.webp",
+      alt: "Интерфейс GigaCowork: план и факт расходов по категориям с отклонениями и ссылками на операции",
+    },
+    {
+      asset: "/img/use-cases/smb-analytics-cashflow.webp",
+      alt: "Интерфейс GigaCowork: прогноз остатка денег по датам и сумма возможной нехватки на ближайшие платежи",
+    },
+  ],
 };
 
 /** Превью конкретного сценария; `undefined` — заглушка. */

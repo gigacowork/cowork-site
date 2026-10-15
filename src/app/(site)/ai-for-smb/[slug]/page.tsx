@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { Button } from "@/components/ui/Button";
@@ -7,7 +8,8 @@ import { Lines } from "@/components/use-cases/Lines";
 import { ScenarioStack } from "@/components/use-cases/ScenarioStack";
 import { UseCaseHero } from "@/components/use-cases/UseCaseHero";
 import { UseCaseSteps } from "@/components/use-cases/UseCaseSteps";
-import { SMB_COURSE_TITLE_LINES } from "@/content/ai-for-smb";
+import { SMB_COURSE_PATH, SMB_COURSE_TITLE_LINES, SMB_LESSONS, smbLessonPath } from "@/content/ai-for-smb";
+import { asset } from "@/lib/asset";
 import { pageMetadata } from "@/lib/site";
 import {
   getSmbUseCase,
@@ -18,7 +20,7 @@ import {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return SMB_USE_CASES.map(({ slug }) => ({ slug }));
+  return [...SMB_USE_CASES, ...SMB_LESSONS].map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -27,6 +29,10 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const lesson = SMB_LESSONS.find((item) => item.slug === slug);
+  if (lesson) {
+    return { title: "Урок переехал — GigaCowork", robots: { index: false, follow: true } };
+  }
   const item = getSmbUseCase(slug);
   if (!item) return {};
 
@@ -43,6 +49,18 @@ export default async function SmbUseCasePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const lessonIndex = SMB_LESSONS.findIndex((item) => item.slug === slug);
+  if (lessonIndex >= 0) {
+    const href = smbLessonPath(slug);
+    return (
+      <main className="container-page py-120">
+        <meta httpEquiv="refresh" content={`0;url=${asset(`${href}/`)}`} />
+        <p className="text-body-l text-text-primary">
+          Урок переехал. <Link href={href} className="underline underline-offset-4">Открыть урок</Link>
+        </p>
+      </main>
+    );
+  }
   const item = getSmbUseCase(slug);
   if (!item) notFound();
   const offerHref = process.env.NEXT_PUBLIC_SMB_OFFER_URL || null;
@@ -79,7 +97,7 @@ export default async function SmbUseCasePage({
         </div>
       </section>
 
-      <UseCaseSteps title={item.stepsTitle} items={[item.step]} alignTitleToVideo />
+      <UseCaseSteps title={item.stepsTitle} items={[item.step]} alignTitleToVideo largerMedia />
 
       <section className="w-full bg-bg-page py-64 md:py-120">
         <div className="container-page flex flex-col items-start gap-24 text-left">
@@ -93,7 +111,7 @@ export default async function SmbUseCasePage({
             Освойте GigaCowork на задачах малого бизнеса: от первого запроса
             до собственного агента и рабочего процесса для команды.
           </p>
-          <Button href="/ai-academy/ai-for-smb" variant="primary" size="lg">
+          <Button href={SMB_COURSE_PATH} variant="primary" size="lg">
             Перейти к курсу
           </Button>
         </div>

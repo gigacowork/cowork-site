@@ -18,7 +18,7 @@ import { Icon } from "@/components/ui/Icon";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Kicker } from "@/components/ui/Kicker";
 import { PAGE_SEO } from "@/content/seo";
-import { SMB_COURSE_TITLE, SMB_LESSONS } from "@/content/ai-for-smb";
+import { SMB_COURSE_PATH, SMB_COURSE_TITLE, SMB_LESSONS } from "@/content/ai-for-smb";
 import { NativeScrollCards } from "@/components/interactive/NativeScrollCards";
 import { seoMetadata } from "@/lib/site";
 import { asset } from "@/lib/asset";
@@ -500,7 +500,7 @@ export default function AiAcademyPage() {
               Изучайте материалы, собранные экспертами, поэтапно, практикуйтесь
               и&nbsp;развивайте навыки работы с&nbsp;продуктом.
             </p>
-            <Button href="/ai-academy/ai-for-smb" variant="primary" size="lg">
+            <Button href={SMB_COURSE_PATH} variant="primary" size="lg">
               Открыть курс для малого бизнеса
             </Button>
           </div>

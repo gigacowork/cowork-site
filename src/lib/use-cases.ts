@@ -1068,8 +1068,8 @@ export const USE_CASES: UseCase[] = [
           "Настройте задачу по\u00A0расписанию: в\u00A0нужный момент ИИ-агент проверит наличие документов, отметит недостающие файлы и\u00A0подготовит таблицу со\u00A0статусами.",
         ],
         tags: [
-          { label: "Файлы", icon: "/img/icons/document.svg" },
-          { label: "Статусы", icon: "/img/icons/reports.svg" },
+          { label: "Файлы", icon: "/img/icons/accounting-files.svg" },
+          { label: "Статусы", icon: "/img/icons/accounting-status.svg" },
         ],
       },
       {
@@ -1078,8 +1078,8 @@ export const USE_CASES: UseCase[] = [
           "ИИ-агент подготовит и\u00A0отправит контрагентам письма о\u00A0недостающих документах, отследит ответы и\u00A0сообщит сотруднику об\u00A0изменениях.",
         ],
         tags: [
-          { label: "Письма", icon: "/img/icons/messages-square.svg" },
-          { label: "Ответы", icon: "/img/icons/thumbs-up.svg" },
+          { label: "Письма", icon: "/img/icons/accounting-mail.svg" },
+          { label: "Ответы", icon: "/img/icons/accounting-reply.svg" },
         ],
       },
       {
@@ -1088,8 +1088,8 @@ export const USE_CASES: UseCase[] = [
           "ИИ-помощник сравнит данные в\u00A0документах с\u00A0реестром контрагентов и\u00A0подготовит отчет об\u00A0ошибках и\u00A0расхождениях, включая связанные проводки.",
         ],
         tags: [
-          { label: "Сверка", icon: "/img/icons/analitics.svg" },
-          { label: "Ошибки", icon: "/img/icons/shield.svg" },
+          { label: "Сверка", icon: "/img/icons/accounting-reconciliation.svg" },
+          { label: "Ошибки", icon: "/img/icons/accounting-alert.svg" },
         ],
       },
       {
@@ -1098,8 +1098,8 @@ export const USE_CASES: UseCase[] = [
           "Сотрудник получает комплект документов с\u00A0комментариями и\u00A0статусами, исправляет критичные пункты и\u00A0готовит итоговую отчетность без\u00A0спешки.",
         ],
         tags: [
-          { label: "Комплект", icon: "/img/icons/spec.svg" },
-          { label: "Отчет", icon: "/img/icons/reports.svg" },
+          { label: "Комплект", icon: "/img/icons/accounting-document-set.svg" },
+          { label: "Отчет", icon: "/img/icons/accounting-report.svg" },
         ],
       },
     ],
