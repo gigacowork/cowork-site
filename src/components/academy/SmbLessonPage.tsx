@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import FirstTaskDemo, { FIRST_TASK_PROMPT, FIRST_TASK_PROMPT_NO_FILES } from "@/components/academy/FirstTaskDemo";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Image } from "@/components/ui/Image";
 import { Kicker } from "@/components/ui/Kicker";
@@ -122,6 +123,21 @@ function LessonVideo({ src, poster, title }: { src: string; poster?: string; tit
   );
 }
 
+function EmbeddedLessonVideo({ src, title }: { src: string; title: string }) {
+  return (
+    <div className="aspect-video overflow-hidden rounded-24 border border-border-subtle bg-neutral-50 shadow-drop-sm">
+      <iframe
+        src={src}
+        title={title}
+        loading="lazy"
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock"
+        allowFullScreen
+        className="size-full border-0"
+      />
+    </div>
+  );
+}
+
 export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; index: number }) {
   const previous = SMB_LESSONS[index - 1];
   const next = SMB_LESSONS[index + 1];
@@ -199,7 +215,9 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
               <h2 id="lesson-video" className="text-h3 font-medium text-text-primary">
                 Видео и материалы урока
               </h2>
-              {lesson.videoSrc ? (
+              {lesson.videoEmbedSrc ? (
+                <EmbeddedLessonVideo src={lesson.videoEmbedSrc} title={lesson.title} />
+              ) : lesson.videoSrc ? (
                 <LessonVideo src={lesson.videoSrc} poster={lesson.videoPoster} title={lesson.title} />
               ) : lessonGuide ? (
                 <div className="flex flex-col gap-16">
@@ -494,6 +512,15 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
               </Link>
             )}
           </nav>
+
+          <section className="flex flex-col items-start gap-24 rounded-24 bg-[linear-gradient(125deg,#f0f8ff_0%,#e9f9f6_100%)] p-24 md:p-40">
+            <div className="flex flex-col gap-12">
+              <h2 className="text-h3 font-medium text-text-primary">Специальные тарифы для малого бизнеса</h2>
+            </div>
+            <Button href="/ai-for-smb/promo" variant="primary" size="lg">
+              Узнать подробнее
+            </Button>
+          </section>
         </article>
 
         <aside className="self-start lg:sticky lg:top-[calc(var(--header-h)+24px)]">

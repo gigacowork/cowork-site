@@ -20,6 +20,7 @@ export type SmbLesson = {
   videoPlanBullets?: string[];
   videoPlanClosing?: string;
   videoGuideId?: string;
+  videoEmbedSrc?: string;
   videoSrc?: string;
   videoPoster?: string;
   textSections?: SmbLessonTextSection[];
@@ -173,6 +174,7 @@ export const SMB_LESSONS: SmbLesson[] = [
       "В этом уроке разберём, из чего состоит понятный запрос и как улучшать первый ответ с помощью уточнений.",
     ],
     goal: "Научиться ставить ИИ понятные рабочие задачи без специальных знаний в промпт-инжиниринге.",
+    videoEmbedSrc: "https://kinescope.io/embed/d52c71b5-6ea6-4404-8b58-f7c44abaf805",
     videoSrc: "/video/academy/smb-lesson-2.mp4",
     videoPlan: [
       "На примере компании «Ритм» сравним два запроса: короткий вопрос без подробностей и полноценную задачу с контекстом, данными и ограничениями.",
@@ -322,6 +324,7 @@ export const SMB_LESSONS: SmbLesson[] = [
     ],
     goal: "Научиться организовывать материалы компании так, чтобы ИИ мог использовать их в рабочих задачах без повторной загрузки и долгих объяснений.",
     hidePdf: true,
+    videoEmbedSrc: "https://kinescope.io/embed/176e3fa7-fc96-4aee-810b-ac5d0740677c",
     videoSrc: "/video/academy/smb-lesson-4.m4v",
     videoPoster: "/img/academy/smb-lesson-4-poster.webp",
     videoPlan: [
@@ -369,6 +372,7 @@ export const SMB_LESSONS: SmbLesson[] = [
       "Отдельные этапы процесса можно оформить как навыки и использовать в разных задачах всей командой.",
     ],
     goal: "Научиться создавать агента под рабочий сценарий, настраивать его инструкции и использовать навыки для типовых задач.",
+    videoEmbedSrc: "https://kinescope.io/embed/32fcad41-ea63-44f4-9e5d-a1a074efce90",
     videoSrc: "/video/academy/smb-lesson-5.m4v",
     videoPlan: [
       "Создадим агента «Менеджер по закупкам»: определим его роль, добавим инструкцию и проверим на предложениях поставщиков.",
@@ -457,6 +461,7 @@ export const SMB_LESSONS: SmbLesson[] = [
       "Также разберём, как перейти от личного эксперимента к сценарию, которым сможет пользоваться вся команда.",
     ],
     goal: "Подготовить ИИ-сценарий, который можно протестировать, улучшить и затем масштабировать на команду.",
+    videoEmbedSrc: "https://kinescope.io/embed/d6fde8a1-fdf3-4371-8eb2-55022a5c4096",
     videoSrc: "/video/academy/smb-lesson-7.m4v",
     videoPlan: [
       "На примере кофейни «Зерно и точка» пройдём весь путь от исходной задачи до готового решения.",
