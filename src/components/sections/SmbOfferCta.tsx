@@ -9,12 +9,11 @@ export function SmbOfferCta() {
       wideContent
       title={
         <>
-          {keepSmbShortWords("ИИ-команда в подарок:")}
+          {keepSmbShortWords("Акция: ИИ-команда в подарок")}
           <br />
-          {keepSmbShortWords("185 дней GigaCowork со скидкой 100%")}
+          {keepSmbShortWords("GigaCowork 185 дней бесплатно")}
         </>
       }
-      description={keepSmbShortWords("Для юрлиц и ИП с платным РКО Сбера от 1 000 ₽ в месяц")}
       detailsHref={PROMO_TERMS_URL}
       detailsLabel="Правила акции"
       buttonLabel="Перейти"

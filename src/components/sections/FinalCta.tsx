@@ -76,6 +76,23 @@ export function FinalCta({
                 {description}
               </p>
             ) : null}
+          </div>
+
+          <div className="flex flex-col items-center gap-16">
+            {buttonHref === null ? (
+              <Button variant="primary" size="lg" className="text-body-m!" disabled>
+                {buttonLabel}
+              </Button>
+            ) : (
+              <Button
+                href={buttonHref}
+                variant="primary"
+                size="lg"
+                className="text-body-m!"
+              >
+                {buttonLabel}
+              </Button>
+            )}
             {detailsHref ? (
               <a
                 href={detailsHref}
@@ -87,21 +104,6 @@ export function FinalCta({
               </a>
             ) : null}
           </div>
-
-          {buttonHref === null ? (
-            <Button variant="primary" size="lg" className="text-body-m!" disabled>
-              {buttonLabel}
-            </Button>
-          ) : (
-            <Button
-              href={buttonHref}
-              variant="primary"
-              size="lg"
-              className="text-body-m!"
-            >
-              {buttonLabel}
-            </Button>
-          )}
         </div>
       </div>
     </section>
