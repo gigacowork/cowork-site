@@ -20,9 +20,10 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
  *              border border-strong, disabled border-subtle + label text-tertiary
  *   Ghost      bg action-secondary-default (white, NOT transparent)
  *              hover action-secondary-hover, disabled label text-tertiary
+ *   AccentSubtle  translucent brand-blue fill for the homepage promo banner
  */
 
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "primary" | "secondary" | "ghost" | "accentSubtle";
 type Size = "sm" | "md" | "lg";
 
 const variantClasses: Record<Variant, string> = {
@@ -44,6 +45,10 @@ const variantClasses: Record<Variant, string> = {
   ghost:
     "bg-action-secondary-default text-text-primary " +
     "not-disabled:hover:bg-action-secondary-hover " +
+    "disabled:text-text-tertiary",
+  accentSubtle:
+    "bg-brand-blue/16 text-text-primary " +
+    "not-disabled:hover:bg-brand-blue/24 " +
     "disabled:text-text-tertiary",
 };
 

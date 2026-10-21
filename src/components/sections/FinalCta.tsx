@@ -24,6 +24,10 @@ import {
 export function FinalCta({
   title,
   background,
+  description,
+  detailsHref,
+  detailsLabel = "Подробнее",
+  wideContent = false,
   buttonLabel = "Попробовать бесплатно",
   buttonHref = "/lead",
 }: {
@@ -31,6 +35,13 @@ export function FinalCta({
   title?: ReactNode;
   /** Кадр фона из макета страницы. По умолчанию — первый. */
   background?: CtaVariant;
+  /** Дополнительное условие предложения под заголовком. */
+  description?: ReactNode;
+  /** Ссылка на подробные условия предложения. */
+  detailsHref?: string;
+  detailsLabel?: string;
+  /** Более широкая колонка для длинного заголовка акции. */
+  wideContent?: boolean;
   /** Переопределяется для сценариев с отдельным предложением. */
   buttonLabel?: string;
   /** null оставляет кнопку без перехода. */
@@ -45,12 +56,12 @@ export function FinalCta({
 
       <div className="container-page flex items-center justify-center gap-24 md:items-start">
         {/* CTA / Left Column — 2546:41683 */}
-        <div className="flex w-full flex-col items-center gap-40 md:w-[588px]">
+        <div className={`flex w-full flex-col items-center gap-40 ${wideContent ? "md:max-w-[720px]" : "md:w-[588px]"}`}>
           {/* CTA / Intro — 2546:41684 */}
           <div className="flex w-full flex-col items-center gap-32">
             <h2
               id="final-cta-title"
-              className="w-full text-center text-h3 font-medium text-text-primary md:w-[522px] md:text-h2"
+              className={`w-full text-center text-h3 font-medium text-text-primary md:text-h2 ${wideContent ? "" : "md:w-[522px]"}`}
             >
               {title ?? (
                 <>
@@ -60,6 +71,21 @@ export function FinalCta({
                 </>
               )}
             </h2>
+            {description ? (
+              <p className="w-full text-center text-body-l text-text-secondary">
+                {description}
+              </p>
+            ) : null}
+            {detailsHref ? (
+              <a
+                href={detailsHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-body-m text-text-primary underline underline-offset-4 hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
+              >
+                {detailsLabel}
+              </a>
+            ) : null}
           </div>
 
           {buttonHref === null ? (

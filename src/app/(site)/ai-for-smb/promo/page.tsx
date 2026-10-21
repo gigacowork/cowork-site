@@ -4,12 +4,13 @@ import FaqAccordion, { type FaqItem } from "@/components/interactive/FaqAccordio
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import Button from "@/components/ui/Button";
 import { Kicker } from "@/components/ui/Kicker";
+import { PROMO_TERMS_URL } from "@/lib/legal";
 import { pageMetadata } from "@/lib/site";
 
 /**
  * Предложение для малого бизнеса по предварительной редакции правил акции
- * «ИИ-команда в подарок» от 09.10.2026. До публикации нужны утверждённые
- * правила по /ai-for-smb/promo-terms/ и ссылка на правила Банка.
+ * «ИИ-команда в подарок» от 09.10.2026. Опубликованные правила акции доступны
+ * по PROMO_TERMS_URL; ссылка на правила Банка пока не указана.
  */
 export const metadata: Metadata = {
   ...pageMetadata({
@@ -142,8 +143,14 @@ export default function SmbPromoPage() {
             </p>
             <div className="flex flex-wrap gap-12">
               <Button href="#how-to-join" size="lg">Как участвовать</Button>
-              <Button href="#conditions" variant="secondary" size="lg">
-                Условия акции
+              <Button
+                href={PROMO_TERMS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="secondary"
+                size="lg"
+              >
+                Правила акции
               </Button>
             </div>
             <p className="max-w-[640px] text-body-m text-text-secondary">
@@ -226,7 +233,16 @@ export default function SmbPromoPage() {
             </ul>
             <p className="mt-24 text-body-m text-text-secondary">
               Соответствие условию по РКО проверяется на дату активации.
-              Полный перечень ограничений указан в правилах акции.
+              Полный перечень ограничений указан в{" "}
+              <a
+                href={PROMO_TERMS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-status-accent underline-offset-2 hover:underline"
+              >
+                правилах акции
+              </a>
+              .
             </p>
           </div>
         </div>

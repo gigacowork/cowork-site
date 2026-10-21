@@ -108,6 +108,7 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       { label: "Обучающие видео", href: "/guides" },
       { label: "Кейсы", href: "/success-stories" },
+      { label: "Медиа", href: "/media" },
     ],
   },
 ];

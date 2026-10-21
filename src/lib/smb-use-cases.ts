@@ -25,47 +25,47 @@ export const SMB_USE_CASES: SmbUseCase[] = [
     slug: "customer-requests",
     navLabel: "Заявки и клиенты",
     navOrder: 1,
-    title: "Не теряйте клиентов,\nавтоматизируйте приём заявок",
+    title: "Не теряйте клиентов –\nавтоматизируйте обработку заявок",
     intro: [
-      "ИИ-агенты GigaCowork разбирают заявки с учётом истории клиента в CRM и 1С, помогая продавать больше.",
+      "ИИ-агенты GigaCowork разберут заявки с учётом истории клиента и помогут увеличить продажи.",
     ],
     heroImage: "/img/use-cases/smb-customer-hero.webp",
     heroImageMobile: "/img/use-cases/smb-customer-hero.webp",
-    scenariosTitle: "Быстрее разбирайте заказы\nи запускайте в работу",
+    scenariosTitle: "Быстрее обрабатывайте и забирайте в работу входящие заказы",
     scenarios: [
       {
-        title: "Разбирайте входящие сообщения",
+        title: "Передайте агенту работу с заявками",
         paragraphs: [
-          "Агент анализирует входящие сообщения, сверяет новые заявки с существующими сделками в CRM и предлагает дальнейшие действия. После проверки менеджером внесёт согласованные данные в CRM.",
+          "Цифровой помощник проанализирует обращения, сверит новые заявки с текущими сделками в базе и внесёт согласованные данные в CRM.",
         ],
         effects: [
           "Краткая сводка по обращению",
-          "Сверка с историей клиента",
-          "Следующий шаг и данные для CRM",
+          "Проверка истории клиента",
+          "Создание сделок в CRM",
         ],
         video: "/video/smb-customer-request.mp4",
         // В исходном кадре 16:9 по краям есть чёрные поля; 5:3 скрывает их без потери интерфейса.
         videoRatio: "5/3",
       },
       {
-        title: "Не теряйте клиентов",
+        title: "Не теряйте информацию о клиентах",
         paragraphs: [
-          "Агент сверяет сделки и задачи в CRM, учитывает историю общения. Подсказывает, кто ждёт ответа и что делать дальше. Если подключены данные о заказах и оплатах, покажет, кто ждёт выполнения заказа и где задержался платёж.",
+          "Агент проверит полную историю клиента: сделки, текущие статусы, историю обращений. Подскажет, кто ждёт ответа, где задержался платёж и на каком этапе находится выполнение заказа.",
         ],
         effects: [
-          "Актуализирует зависшие сделки",
-          "Предлагает следующий шаг",
-          "Учитывает историю клиента и договорённости",
+          "Подсветит зависшие сделки",
+          "Предложит план действий",
+          "Учтёт историю клиента и договорённости",
         ],
         video: "/video/smb-customer-followup.mp4",
         videoRatio: "5/3",
       },
     ],
-    stepsTitle: "От заявки к расчёту проекта",
+    stepsTitle: "",
     step: {
-      title: "Подготовьте расчёт проекта",
+      title: "Делегируйте ИИ расчёт проектов",
       paragraphs: [
-        "Агент соберёт предварительный расчёт по запросу и прайсу: покажет стоимость позиций, общий итог и условия, которые ещё нужно уточнить. Менеджер проверит результат перед согласованием с клиентом.",
+        "Цифровой помощник подготовит смету проекта по запросу: покажет цену позиций, условия и недостающую информацию, которую нужно уточнить. Сформирует документ и отправит финальный вариант на согласование клиенту.",
       ],
       image: "/img/small-business/project-estimate.webp",
       imageAlt: "Расчёт проекта в GigaCowork: стоимость позиций, общий итог и условия",
@@ -107,7 +107,7 @@ export const SMB_USE_CASES: SmbUseCase[] = [
         ],
       },
     ],
-    stepsTitle: "От расчёта до оформленного КП",
+    stepsTitle: "",
     step: {
       title: "Получите PDF и зафиксируйте результат",
       paragraphs: [
@@ -153,7 +153,7 @@ export const SMB_USE_CASES: SmbUseCase[] = [
         ],
       },
     ],
-    stepsTitle: "Расходы и платежи\nна одном экране",
+    stepsTitle: "",
     step: {
       title: "Соберите дашборд для решения",
       paragraphs: [
@@ -165,6 +165,38 @@ export const SMB_USE_CASES: SmbUseCase[] = [
     },
   },
 ];
+
+/** Привязывает короткие предлоги и союзы к следующему слову без изменения текста. */
+export function keepSmbShortWords(text: string) {
+  return text.replace(
+    /(?<![\p{L}\p{N}])(?:а|без|в|во|для|до|за|и|из|или|к|ко|на|не|но|о|об|от|по|под|при|про|с|со|у)[ \t]+/giu,
+    (match) => `${match.trimEnd()}\u00a0`,
+  );
+}
+
+/** Тот же контент с корректными переносами только для отображения страницы. */
+export function formatSmbUseCase(item: SmbUseCase): SmbUseCase {
+  const fix = keepSmbShortWords;
+  return {
+    ...item,
+    title: fix(item.title),
+    intro: item.intro.map(fix),
+    scenariosTitle: fix(item.scenariosTitle),
+    scenarios: item.scenarios.map((scenario) => ({
+      ...scenario,
+      title: fix(scenario.title),
+      paragraphs: scenario.paragraphs.map(fix),
+      effects: scenario.effects?.map(fix),
+    })),
+    stepsTitle: fix(item.stepsTitle),
+    step: {
+      ...item.step,
+      title: fix(item.step.title),
+      paragraphs: item.step.paragraphs.map(fix),
+      bullets: item.step.bullets?.map(fix),
+    },
+  };
+}
 
 export function getSmbUseCase(slug: string) {
   return SMB_USE_CASES.find((item) => item.slug === slug);

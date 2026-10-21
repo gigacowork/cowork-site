@@ -38,3 +38,7 @@ export const LEGAL_PDF = {
   /** Политика обработки персональных данных */
   dataPolicy: asset("/legal/politika_obrabotki_personalnykh_dannykh.pdf"),
 } as const;
+
+/** Опубликованные правила акции «ИИ-команда в подарок» на cowork.ru. */
+export const PROMO_TERMS_URL =
+  "https://cowork.ru/legal/ai_komanda_v_podarok_terms.pdf";

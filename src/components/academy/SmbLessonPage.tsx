@@ -2,10 +2,10 @@ import Link from "next/link";
 
 import FirstTaskDemo, { FIRST_TASK_PROMPT, FIRST_TASK_PROMPT_NO_FILES } from "@/components/academy/FirstTaskDemo";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Image } from "@/components/ui/Image";
 import { Kicker } from "@/components/ui/Kicker";
+import { SmbOfferCta } from "@/components/sections/SmbOfferCta";
 import {
   SMB_COURSE_PATH,
   SMB_COURSE_SHORT_TITLE,
@@ -512,15 +512,6 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
               </Link>
             )}
           </nav>
-
-          <section className="flex flex-col items-start gap-24 rounded-24 bg-[linear-gradient(125deg,#f0f8ff_0%,#e9f9f6_100%)] p-24 md:p-40">
-            <div className="flex flex-col gap-12">
-              <h2 className="text-h3 font-medium text-text-primary">Специальные тарифы для малого бизнеса</h2>
-            </div>
-            <Button href="/ai-for-smb/promo" variant="primary" size="lg">
-              Узнать подробнее
-            </Button>
-          </section>
         </article>
 
         <aside className="self-start lg:sticky lg:top-[calc(var(--header-h)+24px)]">
@@ -552,6 +543,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
           </div>
         </aside>
       </div>
+      <SmbOfferCta />
     </>
   );
 }

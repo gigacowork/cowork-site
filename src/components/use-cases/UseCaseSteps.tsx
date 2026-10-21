@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
+import { Image } from "@/components/ui/Image";
 import { Kicker } from "@/components/ui/Kicker";
 import { Lines } from "@/components/use-cases/Lines";
 import { StepVideoCard } from "@/components/use-cases/StepVideoCard";
@@ -67,6 +67,7 @@ export function UseCaseSteps({
   rowAnchorIds,
   alignTitleToVideo = false,
   largerMedia = false,
+  showKicker = true,
 }: {
   /** Заголовок секции. В макете Финансов его нет — остаётся один кикер. */
   title?: string;
@@ -79,34 +80,37 @@ export function UseCaseSteps({
   alignTitleToVideo?: boolean;
   /** На страницах малого бизнеса медиа занимает оставшуюся ширину ряда. */
   largerMedia?: boolean;
+  /** Скрыть плашку «Решения» на страницах малого бизнеса. */
+  showKicker?: boolean;
 }) {
   return (
     <section id={anchorId} className={`w-full scroll-mt-[calc(var(--header-h)+24px)] py-64 md:py-120 ${SECTION_GRADIENT}`}>
       <div className="container-page flex flex-col gap-40 md:gap-48">
         {/* Ниже md текст по левому краю, пилюля — по центру. */}
-        <div className="flex flex-col items-start gap-24 text-left">
-          <Kicker className="self-center md:self-start">Решения</Kicker>
-          {title ? (
-            <h2
-              className={`text-h3 font-medium text-text-primary md:text-h2 ${
-                alignTitleToVideo
-                  ? largerMedia
-                    ? "md:max-w-[calc(50%-16px)] xl:max-w-[calc(38%+32px)]"
-                    : "md:max-w-[calc(50%-16px)]"
-                  : "md:max-w-[800px]"
-              }`}
-            >
-              <Lines text={title} />
-            </h2>
-          ) : null}
-          {lead ? (
-            <p className="text-body-l text-text-secondary">{lead}</p>
-          ) : null}
-        </div>
+        {showKicker || title || lead ? (
+          <div className="flex flex-col items-start gap-24 text-left">
+            {showKicker ? <Kicker className="self-center md:self-start">Решения</Kicker> : null}
+            {title ? (
+              <h2
+                className={`text-h3 font-medium text-text-primary md:text-h2 ${
+                  alignTitleToVideo
+                    ? largerMedia
+                      ? "md:max-w-[calc(50%-16px)] xl:max-w-[calc(38%+32px)]"
+                      : "md:max-w-[calc(50%-16px)]"
+                    : "md:max-w-[800px]"
+                }`}
+              >
+                <Lines text={title} />
+              </h2>
+            ) : null}
+            {lead ? <p className="text-body-l text-text-secondary">{lead}</p> : null}
+          </div>
+        ) : null}
 
         <div className="flex flex-col gap-64 md:gap-96">
           {items.map((step, i) => {
             const mirrored = i % 2 === 1;
+            const StepHeading = title ? "h3" : "h2";
 
             return (
               <div
@@ -124,9 +128,9 @@ export function UseCaseSteps({
                     mirrored ? "md:order-2" : ""
                   }`}
                 >
-                  <h3 className="text-h4 font-medium text-text-primary md:text-h3">
+                  <StepHeading className="text-h4 font-medium text-text-primary md:text-h3">
                     <Lines text={step.title} />
-                  </h3>
+                  </StepHeading>
                   {/*
                     В этом блоке абзацы разделены отступом 16 (2616:11267), а не
                     пустой строкой, как в hero и сценариях, — поэтому здесь

@@ -1,23 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FinalCta } from "@/components/sections/FinalCta";
+import { SmbOfferCta } from "@/components/sections/SmbOfferCta";
 import { Button } from "@/components/ui/Button";
 import { Kicker } from "@/components/ui/Kicker";
 import { Lines } from "@/components/use-cases/Lines";
 import { ScenarioStack } from "@/components/use-cases/ScenarioStack";
 import { UseCaseHero } from "@/components/use-cases/UseCaseHero";
 import { UseCaseSteps } from "@/components/use-cases/UseCaseSteps";
-import { SMB_COURSE_PATH, SMB_COURSE_TITLE_LINES, SMB_LESSONS, smbLessonPath } from "@/content/ai-for-smb";
+import { SMB_LESSONS, smbLessonPath } from "@/content/ai-for-smb";
 import { asset } from "@/lib/asset";
 import { pageMetadata } from "@/lib/site";
 import {
+  formatSmbUseCase,
   getSmbUseCase,
+  keepSmbShortWords,
   SMB_USE_CASES,
   smbUseCasePath,
 } from "@/lib/smb-use-cases";
 
 export const dynamicParams = false;
+
+const SMB_TRAINING_TITLE = "Создайте свою ИИ-команду";
+const SMB_TRAINING_DESCRIPTION =
+  "Попробуйте GigaCowork на задачах малого бизнеса. В бесплатных уроках вы узнаете, как правильно ставить задачи агентам, создавать собственных агентов и делегировать свои процессы ИИ.";
 
 export function generateStaticParams() {
   return [...SMB_USE_CASES, ...SMB_LESSONS].map(({ slug }) => ({ slug }));
@@ -61,9 +67,11 @@ export default async function SmbUseCasePage({
       </main>
     );
   }
-  const item = getSmbUseCase(slug);
-  if (!item) notFound();
+  const sourceItem = getSmbUseCase(slug);
+  if (!sourceItem) notFound();
+  const item = formatSmbUseCase(sourceItem);
   const offerHref = process.env.NEXT_PUBLIC_SMB_OFFER_URL || null;
+  const firstLessonHref = smbLessonPath(SMB_LESSONS[0].slug);
 
   return (
     <>
@@ -97,31 +105,24 @@ export default async function SmbUseCasePage({
         </div>
       </section>
 
-      <UseCaseSteps title={item.stepsTitle} items={[item.step]} alignTitleToVideo largerMedia />
+      <UseCaseSteps title={item.stepsTitle} items={[item.step]} alignTitleToVideo largerMedia showKicker={false} />
 
       <section className="w-full bg-bg-page py-64 md:py-120">
         <div className="container-page flex flex-col items-start gap-24 text-left">
           <Kicker className="self-center md:self-start">Обучение</Kicker>
           <h2 className="text-h3 font-medium text-text-primary md:text-h2">
-            {SMB_COURSE_TITLE_LINES[0]}{" "}
-            <br className="hidden lg:inline" />
-            {SMB_COURSE_TITLE_LINES[1]}
+            <Lines text={keepSmbShortWords(SMB_TRAINING_TITLE)} />
           </h2>
           <p className="max-w-[620px] text-body-l text-text-secondary">
-            Освойте GigaCowork на задачах малого бизнеса: от первого запроса
-            до собственного агента и рабочего процесса для команды.
+            {keepSmbShortWords(SMB_TRAINING_DESCRIPTION)}
           </p>
-          <Button href={SMB_COURSE_PATH} variant="primary" size="lg">
+          <Button href={firstLessonHref} variant="primary" size="lg">
             Перейти к курсу
           </Button>
         </div>
       </section>
 
-      <FinalCta
-        title="Специальные тарифы для малого бизнеса"
-        buttonLabel="Узнать подробнее"
-        buttonHref={offerHref}
-      />
+      <SmbOfferCta />
     </>
   );
 }

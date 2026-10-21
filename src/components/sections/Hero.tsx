@@ -2,6 +2,7 @@ import { HeroImage } from "@/components/ui/HeroImage";
 /* Icon вернётся вместе с кнопкой «Войти» — см. закомментированный блок ниже. */
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
+import PromoBanner from "@/components/sections/PromoBanner";
 
 /**
  * Hero
@@ -82,11 +83,13 @@ export function Hero({ chat }: HeroProps) {
       </div>
 
       {/*
-        The header is fixed on top of this section so that the background image
-        runs behind the navigation. Figma's pt-120 / pt-160 is measured from the
-        hero frame, which starts below the header — hence the offset.
+        The header is fixed over the background. The banner sits just below it;
+        the existing hero content follows in the same flex flow, so the mobile
+        layout grows without overlapping the headline.
       */}
-      <div className="container-page flex flex-col items-center gap-32 pb-64 pt-[calc(120px+var(--header-h))] md:gap-40 md:pb-80 md:pt-[calc(160px+var(--header-h))]">
+      <div className="container-page flex flex-col items-center gap-32 pb-64 pt-[calc(16px+var(--header-h))] md:gap-40 md:pb-80 md:pt-[calc(24px+var(--header-h))]">
+        <PromoBanner />
+
         {/* Hero / Content */}
         <div className="flex flex-col items-center gap-16 text-center text-text-primary md:gap-24">
           <h1
