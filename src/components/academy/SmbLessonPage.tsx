@@ -7,6 +7,7 @@ import { Image } from "@/components/ui/Image";
 import { Kicker } from "@/components/ui/Kicker";
 import { SmbOfferCta } from "@/components/sections/SmbOfferCta";
 import {
+  SMB_COURSE_BREADCRUMB_TITLE,
   SMB_COURSE_PATH,
   SMB_COURSE_SHORT_TITLE,
   SMB_LESSONS,
@@ -160,7 +161,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
           <Breadcrumbs
             variant="inline"
             items={[
-              { label: SMB_COURSE_SHORT_TITLE, href: SMB_COURSE_PATH },
+              { label: SMB_COURSE_BREADCRUMB_TITLE, href: SMB_COURSE_PATH },
               { label: `Урок ${index + 1}` },
             ]}
           />
@@ -172,7 +173,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
             <h1 className={`${index === 0 ? "text-[clamp(24px,7.5vw,30px)] leading-[1.2] text-balance" : "text-h2"} font-medium text-text-primary md:text-h1`}>
               {index === 0 ? (
                 <>
-                  <span>ИИ в малом бизнесе:</span>{" "}
+                  <span>ИИ в бизнесе:</span>{" "}
                   <span className="md:block">
                     где он <span className="whitespace-nowrap">действительно полезен</span>
                   </span>

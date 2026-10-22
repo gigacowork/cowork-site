@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import SmbLessonPage from "@/components/academy/SmbLessonPage";
-import { SMB_COURSE_SHORT_TITLE, SMB_LESSONS, smbLessonPath } from "@/content/ai-for-smb";
-import { pageMetadata } from "@/lib/site";
+import { SMB_LESSONS, smbLessonPath } from "@/content/ai-for-smb";
+import { asset } from "@/lib/asset";
 
 type PageProps = { params: Promise<{ lessonId: string }> };
 
 export const dynamicParams = false;
+
+export const metadata: Metadata = {
+  title: "Урок переехал — GigaCowork",
+  robots: { index: false, follow: true },
+};
 
 function lessonIndexFromId(lessonId: string) {
   return SMB_LESSONS.findIndex((_, index) => lessonId === `lesson-${index + 1}`);
@@ -17,23 +22,19 @@ export function generateStaticParams() {
   return SMB_LESSONS.map((_, index) => ({ lessonId: `lesson-${index + 1}` }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { lessonId } = await params;
-  const index = lessonIndexFromId(lessonId);
-  if (index < 0) return {};
-
-  const lesson = SMB_LESSONS[index];
-  return pageMetadata({
-    title: `${lesson.title} — ${SMB_COURSE_SHORT_TITLE} — GigaCowork`,
-    description: lesson.summary,
-    path: `${smbLessonPath(lesson.slug)}/`,
-  });
-}
-
-export default async function SmbLessonRoute({ params }: PageProps) {
+export default async function SmbLessonOldAddressPage({ params }: PageProps) {
   const { lessonId } = await params;
   const index = lessonIndexFromId(lessonId);
   if (index < 0) notFound();
 
-  return <SmbLessonPage lesson={SMB_LESSONS[index]} index={index} />;
+  const href = smbLessonPath(SMB_LESSONS[index].slug);
+
+  return (
+    <main className="container-page py-120">
+      <meta httpEquiv="refresh" content={`0;url=${asset(`${href}/`)}`} />
+      <p className="text-body-l text-text-primary">
+        Урок переехал. <Link href={href} className="underline underline-offset-4">Открыть урок</Link>
+      </p>
+    </main>
+  );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Icon } from "@/components/ui/Icon";
+import { keepLegalFormWithName } from "@/lib/typography";
 
 /**
  * Breadcrumbs — Figma 4939:94996 (пример на странице «Партнёрам»:
@@ -72,7 +73,7 @@ function Row({ items }: { items: Crumb[] }) {
             />
             {item.href && index !== last ? (
               <Link href={item.href} className={LINK_CLASS}>
-                {item.label}
+                {keepLegalFormWithName(item.label)}
               </Link>
             ) : (
               <span
@@ -80,7 +81,7 @@ function Row({ items }: { items: Crumb[] }) {
                 aria-current={index === last ? "page" : undefined}
                 title={item.label}
               >
-                {item.label}
+                {keepLegalFormWithName(item.label)}
               </span>
             )}
           </li>

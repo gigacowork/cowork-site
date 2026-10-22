@@ -8,6 +8,8 @@ import { Kicker } from "@/components/ui/Kicker";
 import { pageMetadata } from "@/lib/site";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { BLOG_ARTICLES } from "@/content/blog-articles";
+import { NEWS_ARTICLES, newsDateLabel } from "@/content/news-articles";
+import { keepLegalFormWithName } from "@/lib/typography";
 
 /**
  * «Медиа» — /media
@@ -19,7 +21,6 @@ import { BLOG_ARTICLES } from "@/content/blog-articles";
  *   Лента     4549:3002  / 4530:93757 — карточки, пагинация, «Читают чаще всего»
  *   Подписка  4579:97921 / 4530:93790
  *
- * В широких карточках вместо заглушек используются абстракции в стиле хиро.
  */
 
 /**
@@ -39,27 +40,44 @@ export const metadata: Metadata = pageMetadata({
 
 /* ──────────────────────────────── данные ───────────────────────────────── */
 
-/** Материалы ленты; сетка «широкая + четыре обычных» задаётся в MediaFeed. */
-const BLOG_PREVIEW_IMAGES: Record<string, string> = {
-  "ai-agents-productivity": "/img/media/card-abstract-press.png",
-  "gigacowork-platform-overview": "/img/media/card-abstract-news.png",
-  "revenue-growth-vs-hiring": "/img/media/card-abstract-blog.png",
-};
-
-const ARTICLES: Article[] = [
+/** Материалы ленты; сетка «две обычные + одна широкая» задаётся в MediaFeed. */
+const ARTICLES: Article[] = ([
   {
     tag: "СМИ о нас",
-    date: "07 августа 2026",
-    title:
-      "СберБанк представил GigaCowork\u00A0— корпоративную платформу для\u00A0создания ИИ-агентов",
-    text: "СберБанк предоставил доступ к\u00A0корпоративной платформе GigaCowork\u00A0— с\u00A0ней компании могут создавать персонализированных ИИ-агентов.",
+    date: "02 сентября 2026",
+    publishedAt: "2026-09-02",
+    title: "Что умеет российская платформа ИИ‑агентов GigaCowork",
+    text: "В мае 2026 года «Сбер» представил GigaCowork — платформу для создания и управления ИИ‑агентами в компаниях.",
+    source: "РБК",
+    sourceLogo: { src: "/img/media/logos/rbc.svg", width: 60, height: 16 },
+    href: "https://trends.rbc.ru/trends/industry/cmrm/6a959944d2218d13ecc35dae",
+    external: true,
   },
   {
+    tag: "СМИ о нас",
+    date: "01 сентября 2026",
+    publishedAt: "2026-09-01",
+    title: "Агенты нашли работу",
+    text: "Российский ИИ-рынок за 2025 год вырос на 29,7%, до 316,1 млрд руб., а за два года его объем удвоился.",
+    source: "Коммерсант",
+    sourceLogo: { src: "/img/media/logos/kommersant.svg", width: 500, height: 70 },
+    href: "https://www.kommersant.ru/doc/8922932",
+    external: true,
+  },
+  ...NEWS_ARTICLES.map((article): Article => ({
     tag: "Новости",
-    date: "09 августа 2026",
-    title:
-      "В\u00A0России представили корпоративную платформу для\u00A0создания ИИ-агентов",
-    text: "Платформа доступна в\u00A0трех конфигурациях",
+    date: newsDateLabel(article.date),
+    publishedAt: article.date,
+    title: article.title,
+    text: article.blocks.find((block) => block.kind === "paragraph")?.text ?? "",
+    href: `/media/news/${article.slug}/`,
+  })),
+  {
+    tag: "Новости",
+    date: "17 сентября 2026",
+    publishedAt: "2026-09-17",
+    title: "«Апри» и Napoleon IT запустили ИИ-агента на платформе GigaCowork для строительной документации",
+    text: "",
   },
   ...BLOG_ARTICLES.map((article): Article => ({
     tag: "Блог",
@@ -68,27 +86,22 @@ const ARTICLES: Article[] = [
     previewTitle: article.slug === "ai-agents-productivity" ? "Как ИИ-агенты помогают ..." : undefined,
     text: article.description,
     href: `/media/blog/${article.slug}/`,
-    previewImage: BLOG_PREVIEW_IMAGES[article.slug],
-    previewOnCompact: article.slug === "ai-agents-productivity",
   })),
-  {
-    tag: "СМИ о нас",
-    date: "15 августа 2026",
-    title:
-      "«ГигаЧат Бизнес» от\u00A0Сбера возьмёт на\u00A0себя рутинную работу российских компаний",
-    text: "Сбер открыл корпоративным клиентам доступ к\u00A0своей внутренней платформе «ГигаЧат Бизнес» (GigaChat Enterprise).",
-  },
-  {
-    tag: "СМИ о нас",
-    date: "07 августа 2026",
-    title:
-      "Андрей Белевцев: «Перестать развивать ИИ\u00A0— значит выпасть из\u00A0гонки навсегда»",
-    text: "Современный искусственный интеллект\u00A0— это сложнейший технологический процесс.",
-  },
-];
+] satisfies Article[]).sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""));
 
-/** Сайдбар ведёт на опубликованные статьи. */
-const MOST_READ = BLOG_ARTICLES.slice(0, 4);
+/** Сайдбар ведёт на статью блога и последние опубликованные новости. */
+const MOST_READ = [
+  ...BLOG_ARTICLES.slice(0, 1).map((article) => ({
+    title: article.title,
+    href: `/media/blog/${article.slug}/`,
+    tag: "Блог",
+  })),
+  ...[...NEWS_ARTICLES].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3).map((article) => ({
+    title: article.title,
+    href: `/media/news/${article.slug}/`,
+    tag: "Новости",
+  })),
+];
 
 /* ─────────────────────────────── страница ──────────────────────────────── */
 
@@ -138,10 +151,10 @@ export default function MediaPage() {
                         : ""
                     }`}
                   >
-                    <Link href={`/media/blog/${item.slug}/`} className="text-body-l text-text-primary hover:underline">
-                      {item.title}
+                    <Link href={item.href} className="text-body-l text-text-primary hover:underline">
+                      {keepLegalFormWithName(item.title)}
                     </Link>
-                    <p className="text-caption text-text-secondary">Блог</p>
+                    <p className="text-caption text-text-secondary">{item.tag}</p>
                   </li>
                 ))}
               </ul>

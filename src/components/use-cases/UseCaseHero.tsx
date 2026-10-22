@@ -2,6 +2,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Button } from "@/components/ui/Button";
 import { Lines, Paragraphs } from "@/components/use-cases/Lines";
+import type { ReactNode } from "react";
 
 /**
  * Hero страниц «Для кого».
@@ -28,6 +29,7 @@ export function UseCaseHero({
   intro,
   ctaLabel = "Попробовать бесплатно",
   ctaHref = "/lead",
+  ctaNewTab = false,
   titleWidth = "720px",
   introWidth = "calc(var(--container-page) / 2)",
   image,
@@ -39,8 +41,9 @@ export function UseCaseHero({
   breadcrumb?: string;
   intro: string[];
   /** Текст и адрес кнопки для страниц с собственным следующим шагом. */
-  ctaLabel?: string;
+  ctaLabel?: ReactNode;
   ctaHref?: string | null;
+  ctaNewTab?: boolean;
   /** Ширина заголовка от md и выше. */
   titleWidth?: string;
   /** Ширина колонки подзаголовка от md и выше. */
@@ -126,6 +129,8 @@ export function UseCaseHero({
           ) : (
             <Button
               href={ctaHref}
+              target={ctaNewTab ? "_blank" : undefined}
+              rel={ctaNewTab ? "noopener noreferrer" : undefined}
               variant="primary"
               size="lg"
               className="text-body-m!"

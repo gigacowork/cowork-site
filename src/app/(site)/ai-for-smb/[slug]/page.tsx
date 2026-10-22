@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SmbOfferCta } from "@/components/sections/SmbOfferCta";
+import { SMB_CTA_URL, SmbCtaButtonLabel, SmbOfferCta } from "@/components/sections/SmbOfferCta";
 import { Button } from "@/components/ui/Button";
 import { Kicker } from "@/components/ui/Kicker";
 import { Lines } from "@/components/use-cases/Lines";
@@ -70,7 +70,6 @@ export default async function SmbUseCasePage({
   const sourceItem = getSmbUseCase(slug);
   if (!sourceItem) notFound();
   const item = formatSmbUseCase(sourceItem);
-  const offerHref = process.env.NEXT_PUBLIC_SMB_OFFER_URL || null;
   const firstLessonHref = smbLessonPath(SMB_LESSONS[0].slug);
 
   return (
@@ -80,8 +79,9 @@ export default async function SmbUseCasePage({
         breadcrumb={item.navLabel}
         intro={item.intro}
         titleWidth={item.heroTitleWidth}
-        ctaLabel="Попробовать"
-        ctaHref={offerHref}
+        ctaLabel={<SmbCtaButtonLabel />}
+        ctaHref={SMB_CTA_URL}
+        ctaNewTab
         image={item.heroImage}
         imageMobile={item.heroImageMobile}
       />

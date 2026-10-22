@@ -1,23 +1,32 @@
 import { FinalCta } from "@/components/sections/FinalCta";
-import { PROMO_TERMS_URL } from "@/lib/legal";
-import { keepSmbShortWords } from "@/lib/smb-use-cases";
+import { Icon } from "@/components/ui/Icon";
 
-/** Общее акционное предложение для сценариев и уроков малого бизнеса. */
+export const SMB_CTA_URL = "https://cowork.ru/lead/?loginDCB=true&userType=WEB";
+
+export function SmbCtaButtonLabel() {
+  return (
+    <>
+      Узнать подробнее
+      <Icon src="/img/icons/arrow-up-right.svg" className="size-[9px]" />
+    </>
+  );
+}
+
+/** Общее предложение для сценариев и уроков малого бизнеса. */
 export function SmbOfferCta() {
   return (
     <FinalCta
       wideContent
       title={
         <>
-          {keepSmbShortWords("Акция: ИИ-команда в подарок")}
+          Специальные тарифы
           <br />
-          {keepSmbShortWords("GigaCowork 185 дней бесплатно")}
+          для&nbsp;малого бизнеса
         </>
       }
-      detailsHref={PROMO_TERMS_URL}
-      detailsLabel="Правила акции"
-      buttonLabel="Перейти"
-      buttonHref="/ai-for-smb/promo/"
+      buttonLabel={<SmbCtaButtonLabel />}
+      buttonHref={SMB_CTA_URL}
+      buttonNewTab
     />
   );
 }

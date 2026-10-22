@@ -386,8 +386,9 @@ export default function AiAcademyPage() {
         </div>
       </section>
 
-      {/* ── Туториалы (5196:54326) ── */}
+      {/* Временно скрыто: Туториалы (5196:54326). */}
       <section
+        hidden
         id="tutorials"
         className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-96"
       >
@@ -421,8 +422,8 @@ export default function AiAcademyPage() {
         </div>
       </section>
 
-      {/* ── Сценарии (5196:54338) ── */}
-      <section className="w-full bg-bg-page py-64 md:py-96">
+      {/* Временно скрыто: Сценарии (5196:54338). */}
+      <section hidden className="w-full bg-bg-page py-64 md:py-96">
         <div className="container-page flex flex-col gap-32 md:gap-48">
           <SectionHeader
             title="Сценарии"

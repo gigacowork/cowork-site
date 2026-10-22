@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { keepLegalFormWithName } from "@/lib/typography";
 
 import { Button } from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
@@ -113,7 +114,7 @@ function CompanyCard({ study }: { study: CaseStudy }) {
       {study.logo ? <LogoSlot study={study} /> : null}
 
       <div className="flex flex-col gap-12">
-        <p className="text-h3 font-medium text-text-primary">{company.name}</p>
+        <p className="text-h3 font-medium text-text-primary">{keepLegalFormWithName(company.name)}</p>
         <p className="text-body-m text-text-secondary">{company.description}</p>
       </div>
 

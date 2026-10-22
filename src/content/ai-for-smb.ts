@@ -53,7 +53,7 @@ export type SmbLesson = {
   supplementalAfterKeyPoints?: boolean;
 };
 
-export const SMB_COURSE_PATH = "/ai-for-smb/course";
+export const SMB_COURSE_PATH = "/ai-academy/course-smb";
 const SMB_LESSONS_PATH = SMB_COURSE_PATH;
 export const SMB_COURSE_TITLE_LINES = [
   "ИИ в малом бизнесе: от первой задачи",
@@ -61,11 +61,12 @@ export const SMB_COURSE_TITLE_LINES = [
 ] as const;
 export const SMB_COURSE_TITLE = SMB_COURSE_TITLE_LINES.join(" ");
 export const SMB_COURSE_SHORT_TITLE = "Курс для малого бизнеса";
+export const SMB_COURSE_BREADCRUMB_TITLE = "Курс для бизнеса";
 
 export const SMB_LESSONS: SmbLesson[] = [
   {
     slug: "ii-v-malom-biznese-gde-on-deystvitelno-polezen",
-    title: "ИИ в малом бизнесе: где он действительно полезен",
+    title: "ИИ в бизнесе: где он действительно полезен",
     summary: "Разберитесь, какие рабочие задачи стоит делегировать ИИ, где он экономит время и какие решения остаются за человеком.",
     estimatedMinutes: 15,
     durationLabel: "15–20 минут",

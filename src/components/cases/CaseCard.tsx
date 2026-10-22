@@ -4,6 +4,7 @@ import { asset } from "@/lib/asset";
 import { Icon } from "@/components/ui/Icon";
 import { Image } from "@/components/ui/Image";
 import type { CaseStudy } from "@/content/cases";
+import { keepLegalFormWithName } from "@/lib/typography";
 
 /**
  * Карточка кейса в ленте `/success-stories`.
@@ -74,7 +75,7 @@ export function LogoSlot({ study }: { study: CaseStudy }) {
         />
       ) : (
         <span className="text-h4 font-medium text-text-primary">
-          {study.company}
+          {keepLegalFormWithName(study.company)}
         </span>
       )}
     </div>

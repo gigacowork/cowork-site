@@ -30,6 +30,7 @@ export function FinalCta({
   wideContent = false,
   buttonLabel = "Попробовать бесплатно",
   buttonHref = "/lead",
+  buttonNewTab = false,
 }: {
   /** Заголовок. У части страниц он свой — например «Быстрый старт с GigaCowork». */
   title?: ReactNode;
@@ -43,9 +44,11 @@ export function FinalCta({
   /** Более широкая колонка для длинного заголовка акции. */
   wideContent?: boolean;
   /** Переопределяется для сценариев с отдельным предложением. */
-  buttonLabel?: string;
+  buttonLabel?: ReactNode;
   /** null оставляет кнопку без перехода. */
   buttonHref?: string | null;
+  /** Открыть ссылку кнопки в новой вкладке. */
+  buttonNewTab?: boolean;
 }) {
   return (
     <section
@@ -86,6 +89,8 @@ export function FinalCta({
             ) : (
               <Button
                 href={buttonHref}
+                target={buttonNewTab ? "_blank" : undefined}
+                rel={buttonNewTab ? "noopener noreferrer" : undefined}
                 variant="primary"
                 size="lg"
                 className="text-body-m!"

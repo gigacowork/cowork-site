@@ -57,7 +57,7 @@ function Toc({ article }: { article: BlogArticle }) {
 
 function ArticleBlock({ block, index }: { block: BlogBlock; index: number }) {
   if (block.kind === "heading") {
-    return <h2 id={headingId(index)} className="scroll-mt-112 pt-24 text-[25px] leading-[1.2] font-medium tracking-[-0.02em] text-text-primary md:pt-0 md:text-[36px]">{block.text}</h2>;
+    return <h2 id={headingId(index)} className="scroll-mt-112 pt-24 text-[25px] leading-[1.2] font-medium tracking-[-0.02em] text-text-primary md:pt-0 md:text-[36px]">{block.text.replace("5 готовых сценариев", "5\u00a0готовых сценариев")}</h2>;
   }
   if (block.kind === "subheading") {
     return <h3 className="text-[20px] leading-[1.25] font-medium text-text-primary md:text-[24px]">{block.text}</h3>;
@@ -154,6 +154,7 @@ function PlatformOverviewBlocks({ article }: { article: BlogArticle }) {
 }
 
 function Related({ article }: { article: BlogArticle }) {
+  if (BLOG_ARTICLES.length < 2) return null;
   const currentIndex = BLOG_ARTICLES.findIndex((item) => item.slug === article.slug);
   const related = [1, 2, 3].map((offset) => BLOG_ARTICLES[(currentIndex + offset) % BLOG_ARTICLES.length]);
   return (
