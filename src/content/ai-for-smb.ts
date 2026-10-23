@@ -56,10 +56,11 @@ export type SmbLesson = {
 export const SMB_COURSE_PATH = "/ai-academy/course-smb";
 const SMB_LESSONS_PATH = SMB_COURSE_PATH;
 export const SMB_COURSE_TITLE_LINES = [
-  "ИИ в малом бизнесе: от первой задачи",
-  "до\u00A0команды, которая успевает больше",
+  "ИИ для малого бизнеса:",
+  "практический курс GigaCowork",
 ] as const;
 export const SMB_COURSE_TITLE = SMB_COURSE_TITLE_LINES.join(" ");
+export const SMB_COURSE_SUBTITLE = "Вы научитесь решать рабочие задачи с\u00A0помощью ИИ, создавать собственных агентов и выстраивать процессы, которые экономят время вашей команде";
 export const SMB_COURSE_SHORT_TITLE = "Курс для малого бизнеса";
 export const SMB_COURSE_BREADCRUMB_TITLE = "Курс для бизнеса";
 

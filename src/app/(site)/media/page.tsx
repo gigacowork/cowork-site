@@ -83,13 +83,6 @@ const ARTICLES: Article[] = ([
     text: article.blocks.find((block) => block.kind === "paragraph")?.text ?? "",
     href: `/media/news/${article.slug}/`,
   })),
-  {
-    tag: "Новости",
-    date: "17 сентября 2026",
-    publishedAt: "2026-09-17",
-    title: "«Апри» и Napoleon IT запустили ИИ-агента на платформе GigaCowork для строительной документации",
-    text: "",
-  },
   ...BLOG_ARTICLES.map((article): Article => ({
     tag: "Блог",
     date: article.date ?? "",

@@ -98,7 +98,7 @@ export default async function NewsPage({ params }: Props) {
         </article>
       </div>
       <RelatedNews currentSlug={slug} />
-      <FinalCta title={<>Проверьте эффект<br />за 7 дней</>} />
+      <FinalCta />
     </>
   );
 }

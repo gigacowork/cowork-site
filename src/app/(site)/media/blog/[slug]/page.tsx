@@ -154,9 +154,8 @@ function PlatformOverviewBlocks({ article }: { article: BlogArticle }) {
 }
 
 function Related({ article }: { article: BlogArticle }) {
-  if (BLOG_ARTICLES.length < 2) return null;
-  const currentIndex = BLOG_ARTICLES.findIndex((item) => item.slug === article.slug);
-  const related = [1, 2, 3].map((offset) => BLOG_ARTICLES[(currentIndex + offset) % BLOG_ARTICLES.length]);
+  const related = BLOG_ARTICLES.filter((item) => item.slug !== article.slug).slice(0, 3);
+  if (related.length === 0) return null;
   return (
     <section className="container-page py-64 md:py-80" aria-labelledby="related-heading">
       <div className="mb-24 flex flex-col gap-16 md:mb-32 md:flex-row md:items-center md:justify-between">
@@ -211,7 +210,7 @@ export default async function BlogArticlePage({ params }: Props) {
             <p className="text-[12px] text-text-secondary">{article.date ? `${article.date} · ` : ""}{readingLabel(readingMinutes)}</p>
             <Toc article={article} />
             <div className="flex flex-col gap-12 rounded-24 bg-[linear-gradient(135deg,#eaf8f3,#e5f1ff)] p-24">
-              <h2 className="text-[20px] leading-[1.2] font-medium">Проверьте эффект за 7 дней</h2>
+              <h2 className="text-[20px] leading-[1.2] font-medium">Готовы делегировать<br />работу ИИ-агентам?</h2>
               <Link href="/lead/" className="w-fit rounded-full bg-action-primary-default px-24 py-12 text-[14px] text-white hover:opacity-80">Попробовать бесплатно</Link>
             </div>
           </div>
@@ -219,7 +218,7 @@ export default async function BlogArticlePage({ params }: Props) {
       </div>
 
       <Related article={article} />
-      <FinalCta title={<>Проверьте эффект<br />за 7 дней</>} />
+      <FinalCta />
     </>
   );
 }

@@ -5,13 +5,12 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import Button from "@/components/ui/Button";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Kicker } from "@/components/ui/Kicker";
-import { SMB_COURSE_BREADCRUMB_TITLE, SMB_COURSE_PATH, SMB_COURSE_TITLE, SMB_LESSONS } from "@/content/ai-for-smb";
+import { SMB_COURSE_BREADCRUMB_TITLE, SMB_COURSE_PATH, SMB_COURSE_SUBTITLE, SMB_COURSE_TITLE, SMB_COURSE_TITLE_LINES, SMB_LESSONS } from "@/content/ai-for-smb";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   title: `${SMB_COURSE_TITLE} — Академия GigaCowork`,
-  description:
-    "Семь уроков о работе с ИИ в малом бизнесе: от первой задачи до агента, навыков и командного процесса.",
+  description: SMB_COURSE_SUBTITLE,
   path: `${SMB_COURSE_PATH}/`,
 });
 
@@ -25,12 +24,13 @@ export default function SmbCoursePage() {
           className="pointer-events-none absolute inset-0 -z-10 size-full object-cover object-[35%_center] md:object-center"
         />
         <div className="container-page flex flex-col items-center gap-24 text-center md:items-start md:text-left">
-          <h1 className="max-w-[900px] text-h2 font-medium text-text-primary md:text-h1">
-            {SMB_COURSE_TITLE}
+          <h1 aria-label={SMB_COURSE_TITLE} className="max-w-[900px] text-h2 font-medium text-text-primary md:text-h1">
+            {SMB_COURSE_TITLE_LINES.map((line) => (
+              <span key={line} className="block lg:whitespace-nowrap">{line}</span>
+            ))}
           </h1>
           <p className="max-w-[620px] text-body-l text-text-secondary">
-            Освойте GigaCowork на задачах малого бизнеса: от первого запроса
-            до&nbsp;собственного агента и рабочего процесса для команды.
+            {SMB_COURSE_SUBTITLE}
           </p>
           <Button href="#lessons" size="lg" className="mt-8">
             Перейти к урокам
