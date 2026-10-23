@@ -2,6 +2,7 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
+import { BASE_PATH } from "@/lib/asset";
 
 const STORAGE_KEY = "gigacowork_utm";
 const UTM_KEYS = [
@@ -42,7 +43,9 @@ function UtmAttributionTracker() {
         return;
       }
 
-      if (pathname !== "/lead" && pathname !== "/lead/") return;
+      // На GitHub Pages фактический URL включает basePath: /cowork-site/lead/.
+      const leadPath = `${BASE_PATH}/lead`;
+      if (url.pathname !== leadPath && url.pathname !== `${leadPath}/`) return;
 
       const stored = window.sessionStorage.getItem(STORAGE_KEY);
       if (!stored) return;
