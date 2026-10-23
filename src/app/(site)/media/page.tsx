@@ -44,6 +44,17 @@ export const metadata: Metadata = pageMetadata({
 const ARTICLES: Article[] = ([
   {
     tag: "СМИ о нас",
+    date: "18 октября 2026",
+    publishedAt: "2026-10-18",
+    title: "Бойтесь открытых ИИ, дары приносящих",
+    text: "Открытые ИИ-сервисы могут раскрыть коммерческую тайну: из запросов сотрудников складывается подробная картина бизнеса.",
+    source: "Ведомости",
+    sourceLogo: { src: "/img/media/logos/vedomosti.svg", width: 516, height: 98 },
+    href: "https://www.vedomosti.ru/opinion/columns/2026/10/19/1238004-boites-otkritih-ii",
+    external: true,
+  },
+  {
+    tag: "СМИ о нас",
     date: "02 сентября 2026",
     publishedAt: "2026-09-02",
     title: "Что умеет российская платформа ИИ‑агентов GigaCowork",

@@ -267,14 +267,11 @@ export default function AiAcademyPage() {
             <h1 className="text-h1 font-medium text-text-primary">
               Академия GigaCowork
             </h1>
-            <div className="flex flex-col gap-16 text-body-l text-text-secondary">
-              <p>От&nbsp;первых шагов к&nbsp;уверенной работе с&nbsp;ИИ</p>
-              <p>
-                Короткие инструкции, практические видео и&nbsp;реальные сценарии
-                использования <br className="hidden md:block" />
-                GigaCowork сотрудниками разных отделов
-              </p>
-            </div>
+            <p className="text-body-l text-text-secondary">
+              Короткие инструкции, практические курсы и&nbsp;реальные сценарии
+              использования <br className="hidden md:block" />
+              GigaCowork сотрудниками разных отделов.
+            </p>
           </div>
         </div>
       </section>

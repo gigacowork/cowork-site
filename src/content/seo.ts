@@ -343,7 +343,7 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       "академия gigacowork, обучение gigacowork, туториалы gigacowork, сценарии использования ии агентов, вебинары по ии агентам, курсы gigacowork, GigaCowork, ГигаКоворк, Коворк, Cowork",
     ogTitle: "Академия GigaCowork",
     ogDescription:
-      "От первых шагов к уверенной работе с ИИ: короткие инструкции, практические видео и реальные сценарии использования GigaCowork сотрудниками разных отделов.",
+      "Короткие инструкции, практические курсы и реальные сценарии использования GigaCowork сотрудниками разных отделов.",
     jsonLd: {
       "@context": "https://schema.org",
       "@graph": [

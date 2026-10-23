@@ -29,6 +29,10 @@ yarn-error.log*
 # deploy
 .vercel
 
+# Documentation is published separately from this GitHub Pages release.
+public/docs/
+public/ai-platform/docs/
+
 # editors
 .idea
 .vscode
