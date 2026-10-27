@@ -48,7 +48,7 @@ const nextConfig: NextConfig = {
   ...(process.env.NODE_ENV === "development"
     ? {
         async rewrites() {
-          return ["/docs", "/landing-gigaconf", "/landing-demo-events"].map(
+          return ["/docs", "/landing-gigaconf", "/landing-demo-events", "/game_agents"].map(
             (dir) => ({
               source: dir,
               destination: `${dir}/index.html`,
