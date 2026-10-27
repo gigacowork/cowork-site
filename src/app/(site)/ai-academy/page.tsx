@@ -123,7 +123,7 @@ const TUTORIALS: Tutorial[] = [
 ];
 
 type Scenario = {
-  speaker: string;
+  role: string;
   duration: string;
   videoId: string;
 };
@@ -131,17 +131,17 @@ type Scenario = {
 /** Три видеосценария из подборки Kinescope «Академия». */
 const SCENARIOS: Scenario[] = [
   {
-    speaker: "Мария Цигановская",
+    role: "Юристы",
     duration: "4:00",
     videoId: "d5fa0401-e8bf-4835-a33f-33f61898213c",
   },
   {
-    speaker: "Николай Романенко",
+    role: "Руководитель проектов",
     duration: "3:50",
     videoId: "d1b41721-b91f-4bd9-8a3b-78266afe70b1",
   },
   {
-    speaker: "Артём Макин",
+    role: "Консультанты",
     duration: "3:54",
     videoId: "56501710-d312-4c35-8c08-b408bc0aa8cb",
   },
@@ -230,7 +230,7 @@ function ScenarioVideo({ scenario }: { scenario: Scenario }) {
     <div className="aspect-video w-full overflow-hidden rounded-16 bg-[#d9e9f2]">
       <iframe
         src={`https://kinescope.io/embed/${scenario.videoId}`}
-        title={`Сценарий GigaCowork — ${scenario.speaker}`}
+        title={`Сценарий GigaCowork — ${scenario.role}`}
         loading="lazy"
         allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock"
         allowFullScreen
@@ -446,7 +446,7 @@ export default function AiAcademyPage() {
                 <ScenarioVideo scenario={scenario} />
                 <div className="flex flex-col gap-12">
                   <h3 className="text-h4 font-medium text-text-primary">
-                    {scenario.speaker}
+                    {scenario.role}
                   </h3>
                   <p className="text-body-l text-text-secondary">
                     Видео · {scenario.duration}
@@ -455,7 +455,7 @@ export default function AiAcademyPage() {
                     href={`https://kinescope.io/sh/uvVjZLF3ErXhvRKLJRz1Nk/v/${scenario.videoId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Смотреть сценарий с ${scenario.speaker} в Kinescope`}
+                    aria-label={`Смотреть сценарий «${scenario.role}» в Kinescope`}
                     className="text-body-m text-link"
                   >
                     Смотреть в Kinescope ↗
