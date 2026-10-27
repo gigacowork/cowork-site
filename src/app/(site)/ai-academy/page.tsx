@@ -300,12 +300,12 @@ export default function AiAcademyPage() {
             aria-label={`Уроки курса «${SMB_COURSE_TITLE}»`}
             className="academy-smb-track no-scrollbar mt-4 flex snap-x snap-mandatory gap-24 overflow-x-auto scroll-smooth pt-40 pb-64 md:mt-20"
           >
-            {SMB_LESSONS.map((lesson, index) => (
+            {SMB_LESSONS.map((lesson) => (
               <li
                 key={lesson.slug}
                 className="w-[calc(100vw-72px)] max-w-[320px] shrink-0 snap-start md:w-[380px] md:max-w-none"
               >
-                <SmbLessonCard lesson={lesson} index={index} className="min-h-[360px]" />
+                <SmbLessonCard lesson={lesson} className="min-h-[360px]" />
               </li>
             ))}
           </ol>

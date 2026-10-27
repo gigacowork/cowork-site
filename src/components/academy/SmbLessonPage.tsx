@@ -1,6 +1,10 @@
 import Link from "next/link";
 
 import FirstTaskDemo, { FIRST_TASK_PROMPT, FIRST_TASK_PROMPT_NO_FILES } from "@/components/academy/FirstTaskDemo";
+import AiBasicsPractice from "@/components/academy/AiBasicsPractice";
+import AiBasicsQuiz from "@/components/academy/AiBasicsQuiz";
+import AiPrinciplesDiagram from "@/components/academy/AiPrinciplesDiagram";
+import AiTokensDiagram from "@/components/academy/AiTokensDiagram";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Icon } from "@/components/ui/Icon";
 import { Image } from "@/components/ui/Image";
@@ -83,6 +87,8 @@ function LessonTextContent({
               ))}
             </ul>
           ) : null}
+          {section.diagram ? <AiPrinciplesDiagram kind={section.diagram} /> : null}
+          {section.tokenVisualization ? <AiTokensDiagram /> : null}
           {section.closing?.map((paragraph) => (
             <p key={paragraph} className="text-body-l text-text-secondary">{paragraph}</p>
           ))}
@@ -162,16 +168,16 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
             variant="inline"
             items={[
               { label: SMB_COURSE_BREADCRUMB_TITLE, href: SMB_COURSE_PATH },
-              { label: `Урок ${index + 1}` },
+              { label: `Урок ${lesson.number}` },
             ]}
           />
           <div className="mt-40 flex max-w-[900px] flex-col items-start gap-24 md:mt-64">
             <div className="flex flex-wrap gap-8">
-              <Kicker>Урок {index + 1}</Kicker>
+              <Kicker>Урок {lesson.number}</Kicker>
               <Kicker>{lesson.durationLabel ?? `≈ ${lesson.estimatedMinutes} мин`}</Kicker>
             </div>
-            <h1 className={`${index === 0 ? "text-[clamp(24px,7.5vw,30px)] leading-[1.2] text-balance" : "text-h2"} font-medium text-text-primary md:text-h1`}>
-              {index === 0 ? (
+            <h1 className={`${lesson.number === 1 ? "text-[clamp(24px,7.5vw,30px)] leading-[1.2] text-balance" : "text-h2"} font-medium text-text-primary md:text-h1`}>
+              {lesson.number === 1 ? (
                 <>
                   <span>ИИ в бизнесе:</span>{" "}
                   <span className="md:block">
@@ -378,7 +384,8 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
             <SupplementalLessonVideo guide={supplemental} />
           ) : null}
 
-          <section id={index === 0 ? "first-task" : undefined} className={`flex scroll-mt-[calc(var(--header-h)+24px)] flex-col gap-16 ${LESSON_HIGHLIGHT_CLASS}`}>
+          <div className="flex min-w-0 flex-col gap-24 md:gap-32">
+          <section id={lesson.number === 1 ? "first-task" : undefined} className={`flex scroll-mt-[calc(var(--header-h)+24px)] flex-col gap-16 ${LESSON_HIGHLIGHT_CLASS}`}>
             <h2 className="text-h3 font-medium text-text-primary">
               {lesson.practiceTitle ?? "Практика"}
             </h2>
@@ -408,6 +415,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
             {lesson.practiceExample ? (
               <SourceTextBlock label={lesson.practiceExample.label} text={lesson.practiceExample.text} />
             ) : null}
+            {lesson.number === 0 ? <AiBasicsPractice /> : null}
             {lesson.practiceClosing ? (
               <p className="text-body-l text-text-secondary">{lesson.practiceClosing}</p>
             ) : null}
@@ -460,7 +468,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
                 <p className="text-body-l text-text-secondary">{lesson.practiceWorkflow.closing}</p>
               </div>
             ) : null}
-            {index === 0 && (
+            {lesson.number === 1 && (
               <div className="flex min-w-0 flex-col gap-32 md:gap-40">
                 <FirstTaskDemo showSteps stableHeight />
                 <div className="flex flex-col gap-24">
@@ -473,6 +481,8 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
               </div>
             )}
           </section>
+          {lesson.number === 0 ? <AiBasicsQuiz /> : null}
+          </div>
 
           <section className="flex flex-col gap-16 rounded-24 border border-border-subtle p-24 md:p-40">
             <h2 className="text-h3 font-medium text-text-primary">
@@ -528,7 +538,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
                     aria-current={itemIndex === index ? "page" : undefined}
                     className={`flex gap-12 rounded-12 px-12 py-12 text-body-m transition-colors hover:bg-action-secondary-hover ${itemIndex === index ? "bg-[linear-gradient(227.17deg,#edf6ff_10.474%,#d4eeef_94.872%)] font-medium text-text-primary" : "text-text-secondary"}`}
                   >
-                    <span className="shrink-0">{String(itemIndex + 1).padStart(2, "0")}</span>
+                    <span className="shrink-0">{String(item.number).padStart(2, "0")}</span>
                     <span>{item.title}</span>
                   </Link>
                 </li>

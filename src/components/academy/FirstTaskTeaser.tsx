@@ -10,7 +10,7 @@ export default function FirstTaskTeaser({ stableHeight = false }: { stableHeight
         <div className="flex flex-col items-start gap-16">
           <h2 className="text-h3 font-medium text-text-primary md:text-h2">Первая задача</h2>
           <p className="text-body-l text-text-secondary">Не нужно придумывать идеальный запрос. Пройдите три шага — промпт, контекст из файлов и результат. Настроить агента, навык и команду можно позже.</p>
-          <Button href={`${smbLessonPath(SMB_LESSONS[0].slug)}#first-task`} size="lg" className="mt-4">Пройти за 3 шага</Button>
+          <Button href={`${smbLessonPath(SMB_LESSONS[1].slug)}#first-task`} size="lg" className="mt-4">Пройти за 3 шага</Button>
         </div>
         <FirstTaskDemo compact stableHeight={stableHeight} />
       </div>

@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 };
 
 function lessonIndexFromId(lessonId: string) {
-  return SMB_LESSONS.findIndex((_, index) => lessonId === `lesson-${index + 1}`);
+  return SMB_LESSONS.findIndex((lesson) => lessonId === `lesson-${lesson.number}`);
 }
 
 export function generateStaticParams() {
-  return SMB_LESSONS.map((_, index) => ({ lessonId: `lesson-${index + 1}` }));
+  return SMB_LESSONS.map((lesson) => ({ lessonId: `lesson-${lesson.number}` }));
 }
 
 export default async function SmbLessonOldAddressPage({ params }: PageProps) {

@@ -10,11 +10,11 @@ type PageProps = { params: Promise<{ lessonId: string }> };
 export const dynamicParams = false;
 
 function lessonIndexFromId(lessonId: string) {
-  return SMB_LESSONS.findIndex((_, index) => lessonId === `lesson-${index + 1}`);
+  return SMB_LESSONS.findIndex((lesson) => lessonId === `lesson-${lesson.number}`);
 }
 
 export function generateStaticParams() {
-  return SMB_LESSONS.map((_, index) => ({ lessonId: `lesson-${index + 1}` }));
+  return SMB_LESSONS.map((lesson) => ({ lessonId: `lesson-${lesson.number}` }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

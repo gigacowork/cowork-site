@@ -76,9 +76,9 @@ export default function SmbCoursePage() {
           </div>
 
           <ol className="grid gap-24 lg:grid-cols-2">
-            {SMB_LESSONS.map((lesson, index) => (
+            {SMB_LESSONS.map((lesson) => (
               <li key={lesson.slug} className="min-w-0">
-                <SmbLessonCard lesson={lesson} index={index} className="min-h-[300px]" />
+                <SmbLessonCard lesson={lesson} className="min-h-[300px]" />
               </li>
             ))}
           </ol>

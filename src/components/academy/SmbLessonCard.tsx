@@ -8,11 +8,9 @@ const CARD_GRADIENT =
 
 export function SmbLessonCard({
   lesson,
-  index,
   className = "",
 }: {
   lesson: SmbLesson;
-  index: number;
   className?: string;
 }) {
   return (
@@ -26,7 +24,7 @@ export function SmbLessonCard({
       />
       <div className="relative z-10 flex flex-col gap-16">
         <span className="text-body-m text-text-secondary">
-          Урок {String(index + 1).padStart(2, "0")}
+          Урок {String(lesson.number).padStart(2, "0")}
         </span>
         <h3 className="text-h4 font-medium text-text-primary md:text-h3">
           {lesson.title}
