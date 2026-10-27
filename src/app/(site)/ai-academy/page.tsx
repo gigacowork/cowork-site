@@ -21,7 +21,6 @@ import { PAGE_SEO } from "@/content/seo";
 import { SMB_COURSE_PATH, SMB_COURSE_TITLE, SMB_LESSONS } from "@/content/ai-for-smb";
 import { NativeScrollCards } from "@/components/interactive/NativeScrollCards";
 import { seoMetadata } from "@/lib/site";
-import { asset } from "@/lib/asset";
 
 /**
  * «Академия GigaCowork» — /ai-academy
@@ -124,20 +123,27 @@ const TUTORIALS: Tutorial[] = [
 ];
 
 type Scenario = {
-  title: string;
-  text: string;
-  preview?: string;
+  speaker: string;
+  duration: string;
+  videoId: string;
 };
 
-/** «Сценарии» — 5196:54344. */
+/** Три видеосценария из подборки Kinescope «Академия». */
 const SCENARIOS: Scenario[] = [
   {
-    title: "Юристы",
-    text: "Как агент проверяет договор, находит рисковые условия и готовит правки",
+    speaker: "Мария Цигановская",
+    duration: "4:00",
+    videoId: "d5fa0401-e8bf-4835-a33f-33f61898213c",
   },
   {
-    title: "Продажи",
-    text: "Как агент ведет сделки по стадиям и подсказывает следующий шаг после звонка",
+    speaker: "Николай Романенко",
+    duration: "3:50",
+    videoId: "d1b41721-b91f-4bd9-8a3b-78266afe70b1",
+  },
+  {
+    speaker: "Артём Макин",
+    duration: "3:54",
+    videoId: "56501710-d312-4c35-8c08-b408bc0aa8cb",
   },
 ];
 
@@ -218,22 +224,18 @@ function VideoPlaceholder() {
   );
 }
 
-/** Обложка видео сценария. Портрет спикера добавляется через `preview`. */
-function ScenarioPreview({ src, title }: { src?: string; title: string }) {
+/** Встроенный плеер сценария, по той же схеме, что в уроках Академии. */
+function ScenarioVideo({ scenario }: { scenario: Scenario }) {
   return (
-    <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-16 bg-[#d9e9f2] lg:w-[260px] lg:shrink-0">
-      {src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={asset(src)}
-          alt={`Спикер видео «${title}»`}
-          className="absolute inset-0 size-full object-cover"
-        />
-      ) : (
-        <span className="px-16 text-center text-body-m text-text-secondary">
-          Превью видео со спикером
-        </span>
-      )}
+    <div className="aspect-video w-full overflow-hidden rounded-16 bg-[#d9e9f2]">
+      <iframe
+        src={`https://kinescope.io/embed/${scenario.videoId}`}
+        title={`Сценарий GigaCowork — ${scenario.speaker}`}
+        loading="lazy"
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock"
+        allowFullScreen
+        className="size-full border-0"
+      />
     </div>
   );
 }
@@ -419,8 +421,11 @@ export default function AiAcademyPage() {
         </div>
       </section>
 
-      {/* Временно скрыто: Сценарии (5196:54338). */}
-      <section hidden className="w-full bg-bg-page py-64 md:py-96">
+      {/* Сценарии (5196:54338). */}
+      <section
+        id="scenarios"
+        className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-96"
+      >
         <div className="container-page flex flex-col gap-32 md:gap-48">
           <SectionHeader
             title="Сценарии"
@@ -432,21 +437,30 @@ export default function AiAcademyPage() {
               </>
             }
           />
-          <ul className="grid gap-24 lg:grid-cols-2">
+          <ul className="grid gap-24 lg:grid-cols-3">
             {SCENARIOS.map((scenario) => (
               <li
-                key={scenario.title}
-                className={`flex min-h-[400px] flex-col justify-between gap-24 overflow-hidden rounded-24 p-24 lg:min-h-[269px] lg:flex-row lg:items-center lg:px-40 ${SCENARIO_CARD_GRADIENT}`}
+                key={scenario.videoId}
+                className={`flex flex-col gap-24 overflow-hidden rounded-24 p-24 lg:p-32 ${SCENARIO_CARD_GRADIENT}`}
               >
-                <div className="flex flex-col gap-12 lg:max-w-[216px]">
-                  <h3 className="text-h3 font-medium text-text-primary">
-                    {scenario.title}
+                <ScenarioVideo scenario={scenario} />
+                <div className="flex flex-col gap-12">
+                  <h3 className="text-h4 font-medium text-text-primary">
+                    {scenario.speaker}
                   </h3>
                   <p className="text-body-l text-text-secondary">
-                    {scenario.text}
+                    Видео · {scenario.duration}
                   </p>
+                  <a
+                    href={`https://kinescope.io/sh/uvVjZLF3ErXhvRKLJRz1Nk/v/${scenario.videoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Смотреть сценарий с ${scenario.speaker} в Kinescope`}
+                    className="text-body-m text-link"
+                  >
+                    Смотреть в Kinescope ↗
+                  </a>
                 </div>
-                <ScenarioPreview src={scenario.preview} title={scenario.title} />
               </li>
             ))}
           </ul>
