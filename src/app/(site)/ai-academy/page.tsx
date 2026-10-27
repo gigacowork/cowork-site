@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import AcademyLessons from "@/components/academy/AcademyLessons";
+import ScenarioVideos from "@/components/academy/ScenarioVideos";
 import SmbLessonCard from "@/components/academy/SmbLessonCard";
 import {
   CourseModules,
@@ -59,9 +60,6 @@ const PROCESS_CARD_GRADIENT =
 /** Карточка туториала — Gradient/Omni/Neuton_Light_3 (5272:83063). */
 const WORKSPACE_CARD_GRADIENT =
   "bg-[linear-gradient(54.73deg,#c5f8e5_0.952%,#dcf9ff_50.802%,#e4f5ff_101.64%)]";
-/** Карточка сценария — тот же Blue_light под другим углом (5196:54345). */
-const SCENARIO_CARD_GRADIENT =
-  "bg-[linear-gradient(199.59deg,#edf6ff_10.474%,#d4eeef_94.872%)]";
 
 /* ──────────────────────────────── данные ───────────────────────────────── */
 
@@ -119,27 +117,6 @@ const TUTORIALS: Tutorial[] = [
   {
     title: "Автоматизация процесса закупок",
     text: "Как оценивать потребности, сравнивать предложения поставщиков и вовремя планировать закупки",
-  },
-];
-
-type Scenario = {
-  role: string;
-  videoId: string;
-};
-
-/** Три видеосценария из подборки Kinescope «Академия». */
-const SCENARIOS: Scenario[] = [
-  {
-    role: "Юристы",
-    videoId: "d5fa0401-e8bf-4835-a33f-33f61898213c",
-  },
-  {
-    role: "Руководитель проектов",
-    videoId: "d1b41721-b91f-4bd9-8a3b-78266afe70b1",
-  },
-  {
-    role: "Консультанты",
-    videoId: "56501710-d312-4c35-8c08-b408bc0aa8cb",
   },
 ];
 
@@ -216,22 +193,6 @@ function VideoPlaceholder() {
           className="size-[48px] text-icon-primary"
         />
       </span>
-    </div>
-  );
-}
-
-/** Встроенный плеер сценария, по той же схеме, что в уроках Академии. */
-function ScenarioVideo({ scenario }: { scenario: Scenario }) {
-  return (
-    <div className="aspect-video w-full overflow-hidden rounded-16 bg-[#d9e9f2]">
-      <iframe
-        src={`https://kinescope.io/embed/${scenario.videoId}`}
-        title={`Сценарий GigaCowork — ${scenario.role}`}
-        loading="lazy"
-        allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock"
-        allowFullScreen
-        className="size-full border-0"
-      />
     </div>
   );
 }
@@ -433,19 +394,7 @@ export default function AiAcademyPage() {
               </>
             }
           />
-          <ul className="grid gap-24 lg:grid-cols-3">
-            {SCENARIOS.map((scenario) => (
-              <li
-                key={scenario.videoId}
-                className={`flex flex-col gap-24 overflow-hidden rounded-24 p-24 lg:p-32 ${SCENARIO_CARD_GRADIENT}`}
-              >
-                <ScenarioVideo scenario={scenario} />
-                <h3 className="text-h4 font-medium text-text-primary">
-                  {scenario.role}
-                </h3>
-              </li>
-            ))}
-          </ul>
+          <ScenarioVideos />
         </div>
       </section>
 
