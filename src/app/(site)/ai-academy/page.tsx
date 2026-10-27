@@ -258,6 +258,26 @@ export default function AiAcademyPage() {
         </div>
       </section>
 
+      {/* Сценарии (5196:54338). */}
+      <section
+        id="scenarios"
+        className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-96"
+      >
+        <div className="container-page flex flex-col gap-32 md:gap-48">
+          <SectionHeader
+            title="Сценарии"
+            text={
+              <>
+                Разбирайте реальные рабочие ситуации{" "}
+                <br className="hidden md:block" />
+                и&nbsp;применяйте готовые подходы в&nbsp;повседневных задачах
+              </>
+            }
+          />
+          <ScenarioVideos />
+        </div>
+      </section>
+
       {/* ── Курс для малого бизнеса: горизонтальная лента уроков ── */}
       <NativeScrollCards>
         <section
@@ -375,26 +395,6 @@ export default function AiAcademyPage() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      {/* Сценарии (5196:54338). */}
-      <section
-        id="scenarios"
-        className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-96"
-      >
-        <div className="container-page flex flex-col gap-32 md:gap-48">
-          <SectionHeader
-            title="Сценарии"
-            text={
-              <>
-                Разбирайте реальные рабочие ситуации{" "}
-                <br className="hidden md:block" />
-                и&nbsp;применяйте готовые подходы в&nbsp;повседневных задачах
-              </>
-            }
-          />
-          <ScenarioVideos />
         </div>
       </section>
 
