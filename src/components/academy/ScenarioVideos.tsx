@@ -45,7 +45,7 @@ export default function ScenarioVideos() {
         {SCENARIOS.map((scenario) => (
           <li
             key={scenario.videoId}
-            className={`relative flex h-full flex-col gap-24 overflow-hidden rounded-24 p-24 shadow-drop-sm transition-shadow duration-300 hover:shadow-drop-md focus-within:shadow-drop-md motion-reduce:transition-none lg:p-32 ${CARD_GRADIENT}`}
+            className={`group relative flex h-full flex-col gap-24 overflow-hidden rounded-24 p-24 shadow-drop-sm transition-shadow duration-300 hover:shadow-drop-lg focus-within:shadow-drop-lg motion-reduce:transition-none lg:p-32 ${CARD_GRADIENT}`}
           >
             <div className="relative aspect-video w-full overflow-hidden rounded-16 bg-[#d9e9f2]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -53,13 +53,13 @@ export default function ScenarioVideos() {
                 src={`https://kinescope.io/${scenario.videoId}/poster/lg.jpg`}
                 alt=""
                 loading="lazy"
-                className="size-full object-cover"
+                className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none"
               />
               <span
                 aria-hidden
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <span className="flex size-[64px] items-center justify-center rounded-full bg-[#6258f6] text-white shadow-drop-sm">
+                <span className="flex size-[64px] items-center justify-center rounded-full bg-[#6258f6] text-white shadow-drop-sm transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none">
                   <Icon src="/img/icons/play.svg" className="size-[32px] text-white" />
                 </span>
               </span>
