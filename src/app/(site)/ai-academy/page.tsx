@@ -124,7 +124,6 @@ const TUTORIALS: Tutorial[] = [
 
 type Scenario = {
   role: string;
-  duration: string;
   videoId: string;
 };
 
@@ -132,17 +131,14 @@ type Scenario = {
 const SCENARIOS: Scenario[] = [
   {
     role: "Юристы",
-    duration: "4:00",
     videoId: "d5fa0401-e8bf-4835-a33f-33f61898213c",
   },
   {
     role: "Руководитель проектов",
-    duration: "3:50",
     videoId: "d1b41721-b91f-4bd9-8a3b-78266afe70b1",
   },
   {
     role: "Консультанты",
-    duration: "3:54",
     videoId: "56501710-d312-4c35-8c08-b408bc0aa8cb",
   },
 ];
@@ -444,23 +440,9 @@ export default function AiAcademyPage() {
                 className={`flex flex-col gap-24 overflow-hidden rounded-24 p-24 lg:p-32 ${SCENARIO_CARD_GRADIENT}`}
               >
                 <ScenarioVideo scenario={scenario} />
-                <div className="flex flex-col gap-12">
-                  <h3 className="text-h4 font-medium text-text-primary">
-                    {scenario.role}
-                  </h3>
-                  <p className="text-body-l text-text-secondary">
-                    Видео · {scenario.duration}
-                  </p>
-                  <a
-                    href={`https://kinescope.io/sh/uvVjZLF3ErXhvRKLJRz1Nk/v/${scenario.videoId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Смотреть сценарий «${scenario.role}» в Kinescope`}
-                    className="text-body-m text-link"
-                  >
-                    Смотреть в Kinescope ↗
-                  </a>
-                </div>
+                <h3 className="text-h4 font-medium text-text-primary">
+                  {scenario.role}
+                </h3>
               </li>
             ))}
           </ul>
