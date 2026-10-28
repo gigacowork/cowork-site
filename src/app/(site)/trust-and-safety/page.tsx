@@ -52,6 +52,7 @@ type TagCard = {
   tag: { label: string; icon: string };
   title: string;
   text: string;
+  href?: string;
 };
 
 /**
@@ -65,6 +66,12 @@ const FOUNDATION: TagCard[] = [
     tag: { label: "Реестр ПО", icon: "/img/icons/double-headed-eagle.svg" },
     title: "Модели ГигаЧат в\u00A0реестре ПО Минцифры",
     text: "№20407 от\u00A014.12.2023",
+  },
+  {
+    tag: { label: "Реестр ПО", icon: "/img/icons/double-headed-eagle.svg" },
+    title: "ПО GigaCowork в\u00A0реестре ПО Минцифры",
+    text: "№35471 от\u00A005.10.2026",
+    href: "https://reestr.digital.gov.ru/reestr/16354591/?sphrase_id=29519271",
   },
   {
     tag: { label: "Совместимость", icon: "/img/icons/component.svg" },
@@ -182,12 +189,25 @@ const FAQ: FaqItem[] = [
 /** Карточка с тегом-пилюлей — как в блоке безопасности на «Обзоре платформы». */
 function Card({ card }: { card: TagCard }) {
   return (
-    <article className="flex flex-col gap-16 rounded-[16px] bg-bg-page p-24 shadow-[0_12px_24px_rgba(96,115,143,0.2)] md:p-32">
+    <article className="relative flex flex-col gap-16 rounded-[16px] bg-bg-page p-24 shadow-[0_12px_24px_rgba(96,115,143,0.2)] md:p-32">
       <span className="flex w-fit items-center gap-4 rounded-full bg-bg-card-lavender py-8 pr-[10px] pl-8 text-caption text-text-primary">
         <Icon src={card.tag.icon} className="size-[24px] text-icon-primary" />
         {card.tag.label}
       </span>
-      <h3 className="text-h4 font-medium text-text-primary">{card.title}</h3>
+      <h3 className="text-h4 font-medium text-text-primary">
+        {card.href ? (
+          <a
+            href={card.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="after:absolute after:inset-0 after:rounded-[16px] focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-text-primary"
+          >
+            {card.title}
+          </a>
+        ) : (
+          card.title
+        )}
+      </h3>
       <p className="text-body-m text-text-primary">{card.text}</p>
     </article>
   );
@@ -245,7 +265,7 @@ export default function TrustAndSafetyPage() {
           </header>
           {/* Карточки выезжают по очереди при входе блока в кадр. */}
           <RevealCards selector="article">
-            <div className="grid gap-24 md:grid-cols-3">
+            <div className="grid gap-24 sm:grid-cols-2 xl:grid-cols-4">
               {FOUNDATION.map((card) => (
                 <Card key={card.title} card={card} />
               ))}
