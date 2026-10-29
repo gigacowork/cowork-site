@@ -56,9 +56,9 @@ const MOCK_CELL_SHADOW = "shadow-[0_3px_10px_0_#173d6314]";
 
 /**
  * Логотипы сервисов лежат в `public/img/connectors/logos/<slug>.{svg,png,webp}`.
- * Взяты из выгрузки макета `Connectors / Catalog` (3856:64808): векторные —
- * как есть, растровые — уменьшены до 96px по длинной стороне и переведены в
- * webp (в слоте они рисуются 32×32, 96 — запас под 3×).
+ * Исходные логотипы взяты из выгрузки макета `Connectors / Catalog`
+ * (3856:64808). Для новых сервисов добавлены их фирменные иконки.
+ * В слоте все изображения рисуются размером 32×32.
  *
  * Файла нет — на месте логотипа остаётся нейтральный квадрат того же размера,
  * и строка не разъезжается. Добавить сервис можно, положив файл рядом: код
@@ -89,8 +89,8 @@ const CATEGORIES: Category[] = [
     title: <>Почтовые сервисы</>,
     products: [
       { label: "Gmail", slug: "gmail" },
-      { label: "Mail.ru", slug: "mail-ru" },
-      { label: "Microsoft Outlook", slug: "outlook" },
+      { label: "Exchange", slug: "exchange" },
+      { label: "Mail Почта", slug: "mail-pochta" },
       { label: "Яндекс Почта", slug: "yandex-mail" },
       { label: "IMAP", slug: "imap" },
     ],
@@ -103,6 +103,7 @@ const CATEGORIES: Category[] = [
     ),
     products: [
       { label: "Google Calendar", slug: "google-calendar" },
+      { label: "Яндекс Календарь", slug: "yandex-calendar" },
       { label: "Calendly", slug: "calendly" },
       { label: "Zoom", slug: "zoom" },
     ],
@@ -143,6 +144,8 @@ const CATEGORIES: Category[] = [
     ),
     products: [
       { label: "Asana", slug: "asana" },
+      { label: "Jira", slug: "jira" },
+      { label: "Яндекс Трекер", slug: "yandex-tracker" },
       { label: "Кайтен", slug: "kaiten" },
       { label: "Miro", slug: "miro" },
     ],
@@ -170,7 +173,6 @@ const CATEGORIES: Category[] = [
     title: <>Маркетинг и&nbsp;аналитика</>,
     products: [
       { label: "MPSTATS", slug: "mpstats" },
-      { label: "Roistat", slug: "roistat" },
       { label: "Mindbox", slug: "mindbox" },
       { label: "Unisender", slug: "unisender" },
       { label: "BotHelp", slug: "bothelp" },
@@ -185,7 +187,10 @@ const CATEGORIES: Category[] = [
   },
   {
     title: <>Базы знаний</>,
-    products: [{ label: "Confluence", slug: "confluence" }],
+    products: [
+      { label: "Confluence", slug: "confluence" },
+      { label: "Яндекс Wiki", slug: "yandex-wiki" },
+    ],
   },
   {
     title: <>Рестораны и&nbsp;логистика</>,
@@ -196,7 +201,10 @@ const CATEGORIES: Category[] = [
   },
   {
     title: <>Вебинары и&nbsp;мероприятия</>,
-    products: [{ label: "MTS Link", slug: "mts-link" }],
+    products: [
+      { label: "MTS Link", slug: "mts-link" },
+      { label: "Яндекс Телемост", slug: "yandex-telemost" },
+    ],
   },
   {
     /* В макете карточка шире — занимает две колонки из трёх (3872:23371). */
