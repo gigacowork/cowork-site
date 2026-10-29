@@ -74,6 +74,12 @@ function LessonTextContent({
               ))}
             </ul>
           ) : null}
+          {section.highlight ? (
+            <div className="flex flex-col gap-8 rounded-16 border border-border-subtle bg-[linear-gradient(232.657deg,rgb(240,248,255)_20.714%,rgb(235,251,248)_94.867%)] p-20 md:p-24">
+              <strong className="text-body-l font-medium text-text-primary">{section.highlight.label}</strong>
+              <p className="text-body-l text-text-secondary">{section.highlight.text}</p>
+            </div>
+          ) : null}
           {section.steps ? (
             <ul className="flex flex-col gap-24">
               {section.steps.map((step) => (
@@ -146,6 +152,7 @@ function EmbeddedLessonVideo({ src, title }: { src: string; title: string }) {
 }
 
 export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; index: number }) {
+  const lessonNumber = String(lesson.number).padStart(2, "0");
   const previous = SMB_LESSONS[index - 1];
   const next = SMB_LESSONS[index + 1];
   const supplemental = GUIDES.find(
@@ -168,16 +175,16 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
             variant="inline"
             items={[
               { label: SMB_COURSE_BREADCRUMB_TITLE, href: SMB_COURSE_PATH },
-              { label: `Урок ${lesson.number}` },
+              { label: `Урок ${lessonNumber}` },
             ]}
           />
           <div className="mt-40 flex max-w-[900px] flex-col items-start gap-24 md:mt-64">
             <div className="flex flex-wrap gap-8">
-              <Kicker>Урок {lesson.number}</Kicker>
+              <Kicker>Урок {lessonNumber}</Kicker>
               <Kicker>{lesson.durationLabel ?? `≈ ${lesson.estimatedMinutes} мин`}</Kicker>
             </div>
-            <h1 className={`${lesson.number === 1 ? "text-[clamp(24px,7.5vw,30px)] leading-[1.2] text-balance" : "text-h2"} font-medium text-text-primary md:text-h1`}>
-              {lesson.number === 1 ? (
+            <h1 className={`${lesson.number === 2 ? "text-[clamp(24px,7.5vw,30px)] leading-[1.2] text-balance" : "text-h2"} font-medium text-text-primary md:text-h1`}>
+              {lesson.number === 2 ? (
                 <>
                   <span>ИИ в бизнесе:</span>{" "}
                   <span className="md:block">
@@ -252,6 +259,20 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
               ) : null}
             </section>
           )}
+
+          {lesson.glossary ? (
+            <section className="rounded-24 border border-border-subtle bg-bg-card p-24 md:p-40">
+              <h2 className="text-h3 font-medium text-text-primary">Словарь урока</h2>
+              <dl className="mt-24 grid gap-x-32 gap-y-16 sm:grid-cols-2">
+                {lesson.glossary.map(({ term, definition }) => (
+                  <div key={term} className="flex flex-col gap-8 border-t border-border-subtle pt-16">
+                    <dt className="text-body-l font-medium text-text-primary">{term}</dt>
+                    <dd className="text-body-m text-text-secondary">{definition}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          ) : null}
 
           {lesson.lessonResources ? (
             <section className="flex flex-col gap-16">
@@ -385,7 +406,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
           ) : null}
 
           <div className="flex min-w-0 flex-col gap-24 md:gap-32">
-          <section id={lesson.number === 1 ? "first-task" : undefined} className={`flex scroll-mt-[calc(var(--header-h)+24px)] flex-col gap-16 ${LESSON_HIGHLIGHT_CLASS}`}>
+          <section id={lesson.number === 2 ? "first-task" : undefined} className={`flex scroll-mt-[calc(var(--header-h)+24px)] flex-col gap-16 ${LESSON_HIGHLIGHT_CLASS}`}>
             <h2 className="text-h3 font-medium text-text-primary">
               {lesson.practiceTitle ?? "Практика"}
             </h2>
@@ -415,7 +436,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
             {lesson.practiceExample ? (
               <SourceTextBlock label={lesson.practiceExample.label} text={lesson.practiceExample.text} />
             ) : null}
-            {lesson.number === 0 ? <AiBasicsPractice /> : null}
+            {lesson.number === 1 ? <AiBasicsPractice /> : null}
             {lesson.practiceClosing ? (
               <p className="text-body-l text-text-secondary">{lesson.practiceClosing}</p>
             ) : null}
@@ -468,7 +489,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
                 <p className="text-body-l text-text-secondary">{lesson.practiceWorkflow.closing}</p>
               </div>
             ) : null}
-            {lesson.number === 1 && (
+            {lesson.number === 2 && (
               <div className="flex min-w-0 flex-col gap-32 md:gap-40">
                 <FirstTaskDemo showSteps stableHeight />
                 <div className="flex flex-col gap-24">
@@ -481,7 +502,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
               </div>
             )}
           </section>
-          {lesson.number === 0 ? <AiBasicsQuiz /> : null}
+          {lesson.number === 1 ? <AiBasicsQuiz /> : null}
           </div>
 
           <section className="flex flex-col gap-16 rounded-24 border border-border-subtle p-24 md:p-40">

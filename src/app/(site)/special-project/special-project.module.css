@@ -1,0 +1,213 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 720px;
+  overflow: hidden;
+  background: #cbd9fa;
+}
+
+.hero::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: linear-gradient(90deg, #edf0ffb8 0%, #edf0ff88 25%, transparent 57%);
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 68%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 68%);
+  content: "";
+  pointer-events: none;
+}
+
+.heroVisual {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.heroVisual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 720px;
+  align-items: center;
+  padding-top: calc(var(--header-h) + 78px);
+  padding-bottom: 72px;
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 1;
+  width: min(53%, 635px);
+}
+
+.heroDisclaimerWrap {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: 12px;
+  left: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.heroDisclaimerWrap::-webkit-scrollbar {
+  display: none;
+}
+
+.heroDisclaimer {
+  display: block;
+  width: max-content;
+  margin-left: auto;
+  color: #f8fbff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.heroTitle {
+  max-width: 475px;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-h1);
+  font-weight: var(--text-h1--font-weight);
+  line-height: var(--text-h1--line-height);
+  letter-spacing: var(--text-h1--letter-spacing);
+}
+
+.heroSubtitle {
+  max-width: 615px;
+  margin-top: 24px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-l);
+  font-weight: 400;
+  line-height: var(--text-body-l--line-height);
+  letter-spacing: var(--text-body-l--letter-spacing);
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px 28px;
+  margin-top: 34px;
+}
+
+.primaryAction {
+  min-height: 54px;
+  gap: 22px;
+  border-radius: 14px;
+  padding: 13px 24px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.primaryAction span {
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 0;
+}
+
+@media (max-width: 1199px) {
+  .hero::after {
+    background: linear-gradient(90deg, #edf0fff0 0%, #edf0ffcb 34%, transparent 76%);
+  }
+
+  .heroVisual img {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    mask-image: linear-gradient(to bottom, transparent, #000 28%);
+  }
+
+  .heroCopy {
+    width: min(58%, 575px);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    min-height: 740px;
+    background: #c5d3fa;
+  }
+
+  .hero::after {
+    background: linear-gradient(180deg, #eef0ff9c 0%, #eef0ff36 46%, transparent 72%);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .heroVisual img {
+    right: 0;
+    bottom: -64px;
+    width: min(100%, 430px);
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  .heroInner {
+    display: block;
+    min-height: 740px;
+    padding-top: calc(var(--header-h) + 44px);
+    padding-bottom: 220px;
+  }
+
+  .heroCopy {
+    width: 100%;
+    max-width: 580px;
+  }
+
+  .heroDisclaimerWrap {
+    bottom: 10px;
+  }
+
+  .heroTitle {
+    font-size: var(--text-h2);
+    font-weight: var(--text-h2--font-weight);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+  }
+
+  .heroSubtitle {
+    margin-top: 16px;
+  }
+
+  .heroActions {
+    gap: 12px 20px;
+    margin-top: 26px;
+  }
+
+  .primaryAction {
+    min-height: 50px;
+    padding: 12px 17px;
+    font-size: 13px;
+  }
+
+}
+
+@media (max-width: 390px) {
+  .hero {
+    min-height: 740px;
+  }
+
+  .heroInner {
+    min-height: 740px;
+  }
+}

@@ -4,19 +4,19 @@ type DiagramKind = "network" | "training" | "inference";
 
 const networkVariants = [
   {
-    title: "Фото",
+    title: "Скан документа",
     steps: [
-      { eyebrow: "01 · что получает", title: "Фото посылки", detail: "На коробке видна вмятина" },
-      { eyebrow: "02 · что делает", title: "Признаки повреждения", detail: "Сопоставляет детали с примерами" },
-      { eyebrow: "03 · что выдаёт", title: "Нужна проверка", detail: "Помечает посылку для осмотра" },
+      { eyebrow: "01 · что получает", title: "Скан КП", detail: "Предложение поставщика" },
+      { eyebrow: "02 · что делает", title: "Находит условия", detail: "Распознаёт текст и таблицу" },
+      { eyebrow: "03 · что выдаёт", title: "Цена и срок", detail: "Данные для сравнения" },
     ],
   },
   {
     title: "Текст",
     steps: [
-      { eyebrow: "01 · что получает", title: "Сообщение клиента", detail: "«Когда привезут заказ?»" },
-      { eyebrow: "02 · что делает", title: "Слова и их связь", detail: "Учитывает, о чём говорится в сообщении" },
-      { eyebrow: "03 · что выдаёт", title: "Тема: доставка", detail: "Определяет тему сообщения" },
+      { eyebrow: "01 · что получает", title: "Письмо поставщика", detail: "«Гарантия — 24 месяца»" },
+      { eyebrow: "02 · что делает", title: "Выделяет условие", detail: "Учитывает смысл фразы" },
+      { eyebrow: "03 · что выдаёт", title: "Условие: гарантия", detail: "Помечает для сравнения" },
     ],
   },
 ] as const;
@@ -29,8 +29,8 @@ const diagrams: Record<Exclude<DiagramKind, "network">, {
   training: {
     label: "Упрощённая схема обучения модели",
     steps: [
-      { eyebrow: "01 · вход", title: "Примеры", detail: "Сообщение и известная тема" },
-      { eyebrow: "02 · попытка", title: "Предположение", detail: "Модель предлагает тему" },
+      { eyebrow: "01 · вход", title: "Примеры", detail: "Фраза и тип условия" },
+      { eyebrow: "02 · попытка", title: "Предположение", detail: "Модель определяет тип" },
       { eyebrow: "03 · сравнение", title: "Разница", detail: "Ответ сравнивают с примером" },
       { eyebrow: "04 · настройка", title: "Параметры", detail: "Их изменяют и повторяют цикл" },
     ],
@@ -50,8 +50,8 @@ const diagrams: Record<Exclude<DiagramKind, "network">, {
 export default function AiPrinciplesDiagram({ kind }: { kind: DiagramKind }) {
   if (kind === "network") {
     return (
-      <figure className="rounded-24 border border-border-subtle bg-[linear-gradient(232.657deg,rgb(240,248,255)_20.714%,rgb(247,247,248)_94.867%)] p-16 md:p-24" aria-label="Как модель обрабатывает фото и текст">
-        <figcaption className="mb-16 text-body-m font-medium text-text-primary">Как модель работает с фото и текстом</figcaption>
+      <figure className="rounded-24 border border-border-subtle bg-[linear-gradient(232.657deg,rgb(240,248,255)_20.714%,rgb(247,247,248)_94.867%)] p-16 md:p-24" aria-label="Как модель обрабатывает скан документа и текст">
+        <figcaption className="mb-16 text-body-m font-medium text-text-primary">Как модель работает со сканом и текстом</figcaption>
         <div className={styles.networkVariants}>
           {networkVariants.map((variant) => (
             <section key={variant.title} className={styles.networkVariant} aria-label={variant.title}>
