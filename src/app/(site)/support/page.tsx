@@ -15,6 +15,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
  * Секции сверху вниз:
  *   Hero                   5025:27403 / 5025:27453 — короткий, 500 против обычных 760
  *   Направления поддержки  5093:37709 / 5093:37871 — три карточки Card / Feature
+ *   Статьи базы знаний     — ссылки на разделы документации GigaCowork
  *   CTA                    5025:27450 / 5025:27494 — кадр «диск», как на главной
  * Шапка и подвал — общие из src/app/(site)/layout.tsx.
  *
@@ -94,6 +95,54 @@ const AREAS: SupportArea[] = [
   },
 ];
 
+const KNOWLEDGE_BASE = [
+  {
+    title: "FAQ по агентам",
+    description: "Как настроить агента под задачу, добавить навыки и использовать его в пространстве.",
+    href: "/docs/GigaCowork/26.7.3/agents.html",
+  },
+  {
+    title: "FAQ по задачам",
+    description: "Как поставить задачу, уточнить запрос и работать с файлами в чате.",
+    href: "/docs/GigaCowork/26.7.3/chat.html",
+  },
+  {
+    title: "FAQ по коннектору 1С",
+    description: "Какие операции доступны через коннектор 1С и как использовать их в задачах.",
+    href: "/docs/GigaCowork/26.7.3/connector_1C.html",
+  },
+  {
+    title: "FAQ по администрированию",
+    description: "Как пригласить пользователей и управлять их доступом к платформе.",
+    href: "/docs/GigaCowork/26.7.3/admin_users.html",
+  },
+  {
+    title: "FAQ по командам",
+    description: "Как сохранить повторяющийся запрос и запускать команду без новой настройки.",
+    href: "/docs/GigaCowork/26.7.3/commands.html",
+  },
+  {
+    title: "FAQ по навыкам",
+    description: "Как создать навык и подключить его к работе ИИ-агента.",
+    href: "/docs/GigaCowork/26.7.3/skills.html",
+  },
+  {
+    title: "FAQ по входу в Cowork",
+    description: "Как войти в систему и настроить двухфакторную аутентификацию.",
+    href: "/docs/GigaCowork/26.7.3/login.html",
+  },
+  {
+    title: "FAQ по коннекторам",
+    description: "Как подключить внешние системы и авторизоваться в коннекторе.",
+    href: "/docs/GigaCowork/26.7.3/connectors.html",
+  },
+  {
+    title: "FAQ по пространствам",
+    description: "Как организовать совместную работу и использовать общие документы пространства.",
+    href: "/docs/GigaCowork/26.7.3/spaces.html",
+  },
+] as const;
+
 /* ─────────────────────────────── страница ──────────────────────────────── */
 
 export default function SupportPage() {
@@ -168,6 +217,50 @@ export default function SupportPage() {
                   </h3>
                   <p className="text-body-l text-text-secondary">{area.text}</p>
                 </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ── Статьи базы знаний ── */}
+      <section
+        id="knowledge-base"
+        className="w-full bg-white py-64 md:py-96"
+        aria-labelledby="knowledge-base-title"
+      >
+        <div className="container-page flex flex-col gap-32 md:gap-48">
+          <div className="flex flex-col gap-20 md:flex-row md:items-end md:justify-between">
+            <div className="flex flex-col gap-16 md:gap-24">
+              <Kicker>Самостоятельная помощь</Kicker>
+              <h2 id="knowledge-base-title" className="text-h2 font-medium text-text-primary">
+                Статьи базы знаний
+              </h2>
+            </div>
+            <a href="/docs/" className="w-fit text-body-m text-text-primary hover:underline">
+              Все статьи ↗
+            </a>
+          </div>
+
+          <ul className="grid gap-16 md:grid-cols-2 lg:grid-cols-3 lg:gap-24">
+            {KNOWLEDGE_BASE.map((article) => (
+              <li key={article.href} className="min-w-0">
+                <a
+                  href={article.href}
+                  className="group flex h-full min-h-[210px] flex-col justify-between gap-24 rounded-24 bg-[#f5f5f5] p-24 transition-colors hover:bg-[#ebf3f7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary md:p-32"
+                >
+                  <span className="flex flex-col gap-12">
+                    <span className="text-[20px] leading-[1.2] font-medium text-text-primary">
+                      {article.title}
+                    </span>
+                    <span className="text-body-m text-text-secondary">
+                      {article.description}
+                    </span>
+                  </span>
+                  <span aria-hidden className="flex size-40 shrink-0 self-end items-center justify-center rounded-full bg-white transition-transform group-hover:translate-x-1">
+                    ↗
+                  </span>
+                </a>
               </li>
             ))}
           </ul>
