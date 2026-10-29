@@ -3,7 +3,8 @@
  * Figma desktop: 1927:15604 (1440 artboard, p-80, gap-64, content 1200 = 690 + 24 + 486)
  * Figma mobile:  1927:17410 (390 artboard, py-64 / px-16, gap-32, single column, gap-16)
  *
- * Все тексты взяты дословно из get_design_context обоих фреймов.
+ * За основу взяты тексты из get_design_context обоих фреймов; карточка
+ * реестра ПО обновлена по сведениям Минцифры.
  * Мобильный и десктопный макеты расходятся в двух местах:
  *  - в левой карточке моб. версия показывает лого GigaCowork вместо заголовка
  *    «GigaCowork — единая среда» и не содержит стопку скриншотов приложения;
@@ -46,10 +47,9 @@ const INFO_CARD_DESKTOP =
   (Default без тени → Hover Drop/Lg → Pressed Drop/Sm) и несут ссылку
   «Подробнее».
 
-  Ссылки ведут на существующие разделы: «Три варианта поставки» — на страницу
-  поставок, «Обучение и сопровождение» — на обучающие видео. Пока этих страниц
-  не было, ссылка и наведение были сняты; теперь карточки снова кликабельны
-  целиком — зону клика растягивает `stretched-target` внутри `card-interactive`.
+  Ссылки ведут на страницу поставок и запись GigaCowork в реестре ПО.
+  Карточки кликабельны целиком — зону клика растягивает `stretched-target`
+  внутри `card-interactive`.
 */
 const INFO_CARD_BASE =
   "card-interactive relative flex min-h-[254px] flex-col justify-between gap-40 overflow-hidden rounded-[24px] " +
@@ -129,6 +129,8 @@ function MoreLink({ href, label }: { href: string; label: string }) {
     <Link
       href={href}
       aria-label={label}
+      target={href.startsWith("https://") ? "_blank" : undefined}
+      rel={href.startsWith("https://") ? "noopener noreferrer" : undefined}
       className="text-link stretched-target flex w-fit cursor-pointer items-center justify-center py-4 text-caption focus-visible:outline-none"
     >
       Подробнее
@@ -300,32 +302,22 @@ export function PartOfTeam() {
               />
             </article>
 
-            {/* Card / Info · Обучение и сопровождение — 1927:15613 / 1927:17416 */}
+            {/* Card / Info · GigaCowork в реестре ПО */}
             <article
               className={`${INFO_CARD_BASE} bg-[linear-gradient(250.394deg,rgb(240,248,255)_20.714%,rgb(247,247,248)_94.867%)]`}
             >
               <div className="flex flex-col gap-16">
                 <h3 className="text-h3 font-medium text-text-primary">
-                  Обучение
-                  <br />
-                  и&nbsp;сопровождение
+                  ПО GigaCowork в&nbsp;реестре ПО Минцифры
                 </h3>
-                <p className="text-body-l text-text-secondary md:hidden">
-                  Онлайн база знаний.
-                  <br />
-                  Консалтинг и&nbsp;экспертное сопровождение на&nbsp;всех этапах
-                  внедрения. Корпоративные курсы по&nbsp;ГенИИ.
-                </p>
-                <p className="hidden text-body-l text-text-secondary md:block">
-                  База знаний, консалтинг и&nbsp;сопровождение внедрения.
-                  Корпоративные курсы по&nbsp;ГенИИ.
+                <p className="text-body-l text-text-secondary">
+                  №35471 от&nbsp;05.10.2026
                 </p>
               </div>
 
-              {/* Пока «Академия» скрыта, ведём к обучающим роликам. */}
               <MoreLink
-                href="/guides"
-                label="Подробнее об обучении и сопровождении"
+                href="https://reestr.digital.gov.ru/reestr/16354591/?sphrase_id=29519271"
+                label="Открыть запись GigaCowork в реестре ПО Минцифры"
               />
             </article>
           </div>
