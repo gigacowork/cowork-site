@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
 import { HeroImage } from "@/components/ui/HeroImage";
 import { Kicker } from "@/components/ui/Kicker";
+import { KNOWLEDGE_BASE, knowledgeBasePath } from "@/content/support-knowledge-base";
+import { asset } from "@/lib/asset";
 import { pageMetadata } from "@/lib/site";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
@@ -94,54 +97,6 @@ const AREAS: SupportArea[] = [
     text: "Диагностика, замена компонентов, выезд специалиста",
   },
 ];
-
-const KNOWLEDGE_BASE = [
-  {
-    title: "FAQ по агентам",
-    description: "Как настроить агента под задачу, добавить навыки и использовать его в пространстве.",
-    href: "/docs/GigaCowork/26.7.3/agents.html",
-  },
-  {
-    title: "FAQ по задачам",
-    description: "Как поставить задачу, уточнить запрос и работать с файлами в чате.",
-    href: "/docs/GigaCowork/26.7.3/chat.html",
-  },
-  {
-    title: "FAQ по коннектору 1С",
-    description: "Какие операции доступны через коннектор 1С и как использовать их в задачах.",
-    href: "/docs/GigaCowork/26.7.3/connector_1C.html",
-  },
-  {
-    title: "FAQ по администрированию",
-    description: "Как пригласить пользователей и управлять их доступом к платформе.",
-    href: "/docs/GigaCowork/26.7.3/admin_users.html",
-  },
-  {
-    title: "FAQ по командам",
-    description: "Как сохранить повторяющийся запрос и запускать команду без новой настройки.",
-    href: "/docs/GigaCowork/26.7.3/commands.html",
-  },
-  {
-    title: "FAQ по навыкам",
-    description: "Как создать навык и подключить его к работе ИИ-агента.",
-    href: "/docs/GigaCowork/26.7.3/skills.html",
-  },
-  {
-    title: "FAQ по входу в Cowork",
-    description: "Как войти в систему и настроить двухфакторную аутентификацию.",
-    href: "/docs/GigaCowork/26.7.3/login.html",
-  },
-  {
-    title: "FAQ по коннекторам",
-    description: "Как подключить внешние системы и авторизоваться в коннекторе.",
-    href: "/docs/GigaCowork/26.7.3/connectors.html",
-  },
-  {
-    title: "FAQ по пространствам",
-    description: "Как организовать совместную работу и использовать общие документы пространства.",
-    href: "/docs/GigaCowork/26.7.3/spaces.html",
-  },
-] as const;
 
 /* ─────────────────────────────── страница ──────────────────────────────── */
 
@@ -237,16 +192,16 @@ export default function SupportPage() {
                 Статьи базы знаний
               </h2>
             </div>
-            <a href="/docs/" className="w-fit text-body-m text-text-primary hover:underline">
-              Все статьи ↗
+            <a href={asset("/docs/")} className="w-fit text-body-m text-text-primary hover:underline">
+              Документация
             </a>
           </div>
 
           <ul className="grid gap-16 md:grid-cols-2 lg:grid-cols-3 lg:gap-24">
             {KNOWLEDGE_BASE.map((article) => (
-              <li key={article.href} className="min-w-0">
-                <a
-                  href={article.href}
+              <li key={article.slug} className="min-w-0">
+                <Link
+                  href={knowledgeBasePath(article.slug)}
                   className="group flex h-full min-h-[210px] flex-col justify-between gap-24 rounded-24 bg-[#f5f5f5] p-24 transition-colors hover:bg-[#ebf3f7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary md:p-32"
                 >
                   <span className="flex flex-col gap-12">
@@ -260,7 +215,7 @@ export default function SupportPage() {
                   <span aria-hidden className="flex size-40 shrink-0 self-end items-center justify-center rounded-full bg-white transition-transform group-hover:translate-x-1">
                     ↗
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
