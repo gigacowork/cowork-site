@@ -308,7 +308,7 @@ export function PartOfTeam() {
             >
               <div className="flex flex-col gap-16">
                 <h3 className="text-h3 font-medium text-text-primary">
-                  ПО GigaCowork в&nbsp;реестре ПО Минцифры
+                  GigaCowork в&nbsp;реестре ПО Минцифры
                 </h3>
                 <p className="text-body-l text-text-secondary">
                   №35471 от&nbsp;05.10.2026
