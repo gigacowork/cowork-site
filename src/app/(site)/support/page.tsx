@@ -213,7 +213,7 @@ export default function SupportPage() {
                     </span>
                   </span>
                   <span aria-hidden className="flex size-40 shrink-0 self-end items-center justify-center rounded-full bg-white transition-transform group-hover:translate-x-1">
-                    ↗
+                    →
                   </span>
                 </Link>
               </li>
