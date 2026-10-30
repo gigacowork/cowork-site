@@ -303,10 +303,11 @@
 
 .caseFilters {
   display: flex;
-  gap: 26px;
+  flex-wrap: wrap;
+  gap: 10px;
   overflow-x: auto;
   margin-bottom: 32px;
-  border-bottom: 1px solid #dfe5ed;
+  padding: 2px 2px 8px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -316,44 +317,39 @@
 }
 
 .caseFilter {
-  position: relative;
   display: inline-flex;
-  min-height: 62px;
+  min-height: 42px;
   flex: 0 0 auto;
   align-items: center;
-  gap: 9px;
-  padding: 0 0 16px;
-  border: 0;
-  background: none;
-  color: #657588;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-text-primary);
   font: inherit;
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
-  transition: color 180ms ease;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
 }
 
-.caseFilter:hover,
-.caseFilterActive {
-  color: #171f2d;
+.caseFilter:hover {
+  border-color: var(--color-text-primary);
 }
 
-.caseFilterActive::after {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  border-radius: 3px 3px 0 0;
-  background: #171f2d;
-  content: "";
+.caseFilterActive,
+.caseFilterActive:hover {
+  border-color: var(--color-action-primary-default);
+  background: var(--color-action-primary-default);
+  color: #fff;
 }
 
 .caseFilterIcon {
   display: block;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   flex: 0 0 auto;
   background: currentColor;
   mask-position: center;
@@ -615,7 +611,8 @@
   }
 
   .caseFilters {
-    gap: 22px;
+    flex-wrap: nowrap;
+    gap: 8px;
     margin-right: -16px;
     margin-bottom: 24px;
     padding-right: 16px;
