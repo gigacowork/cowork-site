@@ -141,7 +141,7 @@ export type CaseStudy = {
    * Изображение широкой карточки. Мобильный вариант необязателен: если его
    * нет, изображение появляется только при широкой раскладке от lg.
    */
-  photo?: { desktop: string; mobile?: string };
+  photo?: { desktop: string; mobile?: string; fit?: "cover" | "contain" };
   /** Градиент карточки на главной — свой угол из макета. */
   gradientClassName: string;
   /** Ждёт материалов: не выводится ни на главной, ни в ленте кейсов. */
@@ -607,6 +607,7 @@ export const CASES: CaseStudy[] = [
     role: "Клиентский сервис",
     gradientClassName:
       "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
+    photo: { desktop: "/img/cases/bi-group-wide.jpg" },
     story: BI_GROUP_STORY,
   },
   {
@@ -625,6 +626,7 @@ export const CASES: CaseStudy[] = [
     role: "Клиентский сервис",
     gradientClassName:
       "md:bg-[image:linear-gradient(60.08deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
+    photo: { desktop: "/img/cases/versta-io-wide.webp", fit: "contain" },
     story: VERSTA_STORY,
   },
   {
