@@ -583,7 +583,7 @@ export const CASES: CaseStudy[] = [
     role: "Документооборот",
     gradientClassName:
       "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
-    photo: { desktop: "/img/cases/directum-wide.png" },
+    photo: { desktop: "/img/cases/directum-wide.webp" },
     story: DIRECTUM_STORY,
   },
   {
@@ -607,7 +607,7 @@ export const CASES: CaseStudy[] = [
     role: "Клиентский сервис",
     gradientClassName:
       "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
-    photo: { desktop: "/img/cases/bi-group-wide.jpg" },
+    photo: { desktop: "/img/cases/bi-group-wide.webp" },
     story: BI_GROUP_STORY,
   },
   {
