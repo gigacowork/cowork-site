@@ -123,20 +123,21 @@ export function CaseCard({
       ].join(" ")}
     >
       {featured ? (
-        /* Кадр: сверху на телефоне (5132:15323), справа на десктопе (5119:15255) */
-        <div className="order-first w-full lg:order-last lg:flex lg:w-[588px] lg:shrink-0 lg:items-center lg:py-24 lg:pr-24">
+        /* Без мобильного варианта кадр показывается только в широкой раскладке. */
+        <div className={`order-first w-full lg:order-last lg:flex lg:w-[588px] lg:shrink-0 lg:items-center lg:py-24 lg:pr-24 ${study.photo && !study.photo.mobile ? "hidden" : ""}`}>
           {study.photo ? (
             /*
-              <picture>, а не две картинки с `hidden`: скрытая классом всё
-              равно скачивается, и телефон тянул бы ещё и десктопный кадр.
-              Граница — та же, что у `lg` в раскладке карточки: до неё кадр
-              лежит полосой сверху, после — стоит справа.
+              <picture> выбирает отдельный мобильный файл, если он есть.
+              Для АПРИ и Directum мобильный кадр не задан: ниже lg весь слот
+              скрыт.
             */
             <picture>
-              <source
-                media={CARD_PHOTO_MEDIA}
-                srcSet={asset(study.photo.mobile)}
-              />
+              {study.photo.mobile ? (
+                <source
+                  media={CARD_PHOTO_MEDIA}
+                  srcSet={asset(study.photo.mobile)}
+                />
+              ) : null}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={asset(study.photo.desktop)}

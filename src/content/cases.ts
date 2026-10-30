@@ -138,12 +138,10 @@ export type CaseStudy = {
   industry: Industry;
   role: Role;
   /**
-   * Кадр в широкой карточке — два файла: на телефоне он лежит сверху полосой
-   * 358×220, на десктопе стоит справа 564×432. Это разная обрезка, а не один
-   * файл в двух размерах, поэтому пара, а не srcset по плотности.
-   * Нет — рисуется заглушка.
+   * Изображение широкой карточки. Мобильный вариант необязателен: если его
+   * нет, изображение появляется только при широкой раскладке от lg.
    */
-  photo?: { desktop: string; mobile: string };
+  photo?: { desktop: string; mobile?: string };
   /** Градиент карточки на главной — свой угол из макета. */
   gradientClassName: string;
   /** Ждёт материалов: не выводится ни на главной, ни в ленте кейсов. */
@@ -561,6 +559,7 @@ export const CASES: CaseStudy[] = [
     role: "Документооборот",
     gradientClassName:
       "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
+    photo: { desktop: "/img/cases/apri-wide.webp" },
     story: APRI_STORY,
   },
   {
@@ -584,6 +583,7 @@ export const CASES: CaseStudy[] = [
     role: "Документооборот",
     gradientClassName:
       "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
+    photo: { desktop: "/img/cases/directum-wide.png" },
     story: DIRECTUM_STORY,
   },
   {
