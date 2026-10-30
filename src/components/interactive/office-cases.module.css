@@ -28,7 +28,6 @@
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
 }
 
 .heading {
@@ -38,6 +37,7 @@
   font-weight: 500;
   line-height: 1.13;
   letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
 .officeScroller {
@@ -297,8 +297,9 @@
 }
 
 .casesHeading p {
-  max-width: none;
+  max-width: 820px;
   margin-top: 16px;
+  text-wrap: pretty;
 }
 
 .caseFilters {
@@ -479,6 +480,7 @@
   color: #596371;
   font-size: 14px;
   line-height: 1.45;
+  text-wrap: pretty;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }

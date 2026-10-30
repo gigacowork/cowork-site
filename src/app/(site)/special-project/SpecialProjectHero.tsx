@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { asset } from "@/lib/asset";
+import { keepRussianShortWords } from "@/lib/typography";
 import styles from "./special-project.module.css";
 
 // Control points match the land visible in the orbital illustration.
@@ -171,6 +172,7 @@ export function SpecialProjectHero() {
   const journeyRef = useRef<HTMLElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
+  const cueRef = useRef<HTMLDivElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -178,9 +180,10 @@ export function SpecialProjectHero() {
     const journey = journeyRef.current;
     const map = mapRef.current;
     const copy = copyRef.current;
+    const cue = cueRef.current;
     const end = endRef.current;
     const track = trackRef.current;
-    if (!journey || !map || !copy || !end || !track) return;
+    if (!journey || !map || !copy || !cue || !end || !track) return;
 
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (motion.matches) return;
@@ -216,6 +219,7 @@ export function SpecialProjectHero() {
       copy.style.opacity = String(1 - introExit);
       copy.style.transform = `translateY(${-24 * introExit}px)`;
       copy.style.pointerEvents = progress < 0.23 ? "auto" : "none";
+      cue.style.opacity = String(1 - introExit);
       const endVisibility = smooth(0.84, 0.96, progress);
       end.style.opacity = String(endVisibility);
       end.style.transform = `translateY(${20 * (1 - endVisibility)}px)`;
@@ -388,20 +392,23 @@ export function SpecialProjectHero() {
 
         <div className={`container-page ${styles.copyWrap}`}>
           <div ref={copyRef} className={styles.copy}>
-            <h1 id="special-project-title" className={styles.title}>От Калининграда до Владивостока</h1>
-            <p className={styles.subtitle}>как ИИ-агенты GigaCowork меняют российский бизнес</p>
+            <h1 id="special-project-title" className={styles.title}>{keepRussianShortWords("От Калининграда до Владивостока")}</h1>
+            <p className={styles.subtitle}>{keepRussianShortWords("как ИИ-агенты GigaCowork меняют российский бизнес")}</p>
             <div className={styles.actions}>
-              <Button href="#special-project-cases" variant="secondary" size="lg" className={styles.primaryAction}>
-                Смотреть кейсы <span aria-hidden="true">↓</span>
-              </Button>
-              <span className={styles.scrollHint}>Прокрутите вниз — маршрут начнётся</span>
+              <Button href="#about-project" variant="secondary" size="lg" className={styles.primaryAction}>{keepRussianShortWords("О проекте")}</Button>
             </div>
+          </div>
+          <div ref={cueRef} className={styles.scrollCue} aria-hidden="true">
+            <span className={styles.scrollMouse} />
           </div>
         </div>
 
         <div ref={endRef} className={styles.endCaption} aria-hidden="true">
           <strong>Владивосток</strong>
-          <span>Вниз — реальные кейсы, вверх — обратный маршрут</span>
+          <div className={styles.endPrompt}>
+            <span className={styles.scrollMouse} />
+            <span>Кейсы</span>
+          </div>
         </div>
 
         <div className={styles.journeyBar} aria-hidden="true">
@@ -411,7 +418,7 @@ export function SpecialProjectHero() {
         </div>
 
         <div className={`container-page ${styles.disclaimerWrap}`}>
-          <small className={styles.disclaimer}>Представленное изображение является художественной 3D-иллюстрацией и не является точной географической картой</small>
+          <small className={styles.disclaimer}>{keepRussianShortWords("Представленное изображение является художественной 3D-иллюстрацией и не является точной географической картой")}</small>
         </div>
       </div>
     </section>

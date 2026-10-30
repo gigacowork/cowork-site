@@ -5,6 +5,7 @@ import { useMemo, useState, type CSSProperties } from "react";
 
 import { Image } from "@/components/ui/Image";
 import { asset } from "@/lib/asset";
+import { keepRussianShortWords } from "@/lib/typography";
 import type { CaseStudy } from "@/content/cases";
 import styles from "./office-cases.module.css";
 
@@ -61,7 +62,7 @@ function ProjectCaseCard({ study }: { study: CaseStudy }) {
           alt=""
           loading="lazy"
         />
-        <span className={styles.cardCategory}>{study.tags[1].label}</span>
+        <span className={styles.cardCategory}>{keepRussianShortWords(study.tags[1].label)}</span>
         {href ? <span className={styles.cardArrow} aria-hidden="true">↗</span> : null}
       </div>
       <div className={styles.cardBody}>
@@ -78,11 +79,11 @@ function ProjectCaseCard({ study }: { study: CaseStudy }) {
             <span>{study.company}</span>
           )}
         </div>
-        <h3 className={styles.cardTitle}>{caseTitles[study.company] ?? study.company}</h3>
-        <p className={styles.cardDescription}>{study.cardDescription ?? study.description}</p>
+        <h3 className={styles.cardTitle}>{keepRussianShortWords(caseTitles[study.company] ?? study.company)}</h3>
+        <p className={styles.cardDescription}>{keepRussianShortWords(study.cardDescription ?? study.description)}</p>
         <div className={styles.cardMetric}>
-          <strong>{study.metric}</strong>
-          <span>{study.metricCaption}</span>
+          <strong>{keepRussianShortWords(study.metric)}</strong>
+          <span>{keepRussianShortWords(study.metricCaption)}</span>
         </div>
       </div>
       {href ? (
@@ -135,14 +136,13 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
 
   return (
     <>
-      <section id="about-project" className={styles.officeSection} aria-labelledby="office-title">
+      <section id="special-project-office" className={styles.officeSection} aria-labelledby="office-title">
         <div className="container-page">
           <div className={styles.sectionHeading}>
             <div>
-              <span className={styles.eyebrow}>Направления проекта</span>
-              <h2 id="office-title" className={styles.heading}>Где уже работают ИИ-агенты</h2>
+              <span className={styles.eyebrow}>{keepRussianShortWords("За кулисами бизнеса")}</span>
+              <h2 id="office-title" className={styles.heading}>{keepRussianShortWords("Выберите отдел и узнайте, как ИИ-агенты меняют его повседневную работу")}</h2>
             </div>
-            <p>Выберите отдел на схеме офиса — ниже покажем связанные с ним кейсы.</p>
           </div>
 
           <div
@@ -217,13 +217,13 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
                       }}
                       aria-hidden="true"
                     />
-                    {department.label}
+                    {keepRussianShortWords(department.label)}
                   </button>
                 ))}
               </div>
             </div>
           </div>
-          <p className={styles.officeScrollHint}>Листайте схему по горизонтали, чтобы увидеть все отделы <span aria-hidden="true">→</span></p>
+          <p className={styles.officeScrollHint}>{keepRussianShortWords("Листайте схему по горизонтали, чтобы увидеть все отделы")} <span aria-hidden="true">→</span></p>
         </div>
       </section>
 
@@ -231,8 +231,8 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
         <div className="container-page">
           <div className={styles.casesHeading}>
             <div>
-              <h2 id="project-cases-title" className={styles.heading}>Реальные кейсы</h2>
-              <p>Результаты компаний, которые уже применяют ИИ в работе.</p>
+              <h2 id="project-cases-title" className={styles.heading}>Опыт компаний</h2>
+              <p>{keepRussianShortWords("Познакомьтесь с лучшими практиками использования ИИ-агентов и узнайте, каких результатов уже добились ведущие игроки.")}</p>
               <span className="sr-only" aria-live="polite">
                 {selected === "all" ? "Показаны все кейсы." : `Выбран фильтр «${caseFilters.find((item) => item.id === selected)?.label}». Кейсов: ${shownCases.length}.`}
               </span>
@@ -258,7 +258,7 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
                   }}
                   aria-hidden="true"
                 />
-                {filter.label}
+                {keepRussianShortWords(filter.label)}
               </button>
             ))}
           </div>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { OfficeCases } from "@/components/interactive/OfficeCases";
 import { VISIBLE_CASES } from "@/content/cases";
 import { pageMetadata } from "@/lib/site";
+import { AboutSpecialProject } from "./AboutSpecialProject";
 import { SpecialProjectHero } from "./SpecialProjectHero";
 
 export const metadata: Metadata = pageMetadata({
@@ -16,6 +17,8 @@ export default function SpecialProjectPage() {
   return (
     <>
       <SpecialProjectHero />
+
+      <AboutSpecialProject />
 
       <OfficeCases cases={VISIBLE_CASES} />
     </>
