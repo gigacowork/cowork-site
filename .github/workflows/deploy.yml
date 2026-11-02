@@ -44,6 +44,7 @@ jobs:
         # переименование репо не сломало пути.
         env:
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_DADATA_API_KEY: ${{ secrets.DADATA_API_KEY }}
         run: npm run build
 
       - uses: actions/configure-pages@v5

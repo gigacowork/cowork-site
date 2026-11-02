@@ -926,6 +926,7 @@ export default function PartnersPage() {
             }}
             requireAll
             corporateEmailOnly
+            companySuggestions
             idPrefix="partner"
             submitLabel="Стать партнером"
             successText={

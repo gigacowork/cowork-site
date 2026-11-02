@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import Button from "@/components/ui/Button";
 import { LegalLink } from "@/components/ui/LegalLink";
 import { LEGAL_PDF } from "@/lib/legal";
 import { sendLead, type LeadFields, type LeadTarget } from "@/lib/crm";
+import { DADATA_API_KEY, suggestCompanies, type CompanySuggestion } from "@/lib/dadata";
 import { workEmailError } from "@/lib/work-email";
 
 /**
@@ -193,6 +194,7 @@ function SuccessIcon({ idPrefix }: { idPrefix: string }) {
 }
 
 type FieldName = (typeof FIELDS)[number]["name"];
+type SuggestionField = "company" | "inn";
 
 type LeadFormProps = {
   /** Куда уходит заявка. Не передан — форма не отправляется никуда. */
@@ -231,6 +233,8 @@ type LeadFormProps = {
   embedded?: boolean;
   /** Отклонять адреса общедоступных почтовых сервисов до отправки заявки. */
   corporateEmailOnly?: boolean;
+  /** Подсказки организации и ИНН через DaData. */
+  companySuggestions?: boolean;
   validateEmail?: (value: string) => string;
   onSuccess?: () => void;
 };
@@ -247,6 +251,7 @@ export function LeadForm({
   className = "",
   embedded = false,
   corporateEmailOnly = false,
+  companySuggestions = false,
   validateEmail,
   onSuccess,
 }: LeadFormProps = {}) {
@@ -277,6 +282,46 @@ export function LeadForm({
   */
   const submitted = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const suggestionsEnabled = companySuggestions && Boolean(DADATA_API_KEY);
+  const [suggestQuery, setSuggestQuery] = useState<{
+    field: SuggestionField;
+    value: string;
+  } | null>(null);
+  const [suggestions, setSuggestions] = useState<CompanySuggestion[]>([]);
+  const [suggestStatus, setSuggestStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [suggestIndex, setSuggestIndex] = useState(-1);
+
+  useEffect(() => {
+    if (!suggestionsEnabled || !suggestQuery) return;
+    const query = suggestQuery.value.trim();
+    const minLength = suggestQuery.field === "inn" ? 4 : 3;
+    if (query.length < minLength || (suggestQuery.field === "inn" && !/^\d+$/.test(query))) {
+      setSuggestions([]);
+      setSuggestStatus("idle");
+      return;
+    }
+
+    const controller = new AbortController();
+    setSuggestStatus("loading");
+    const timeout = window.setTimeout(async () => {
+      try {
+        const found = await suggestCompanies(query, controller.signal);
+        if (controller.signal.aborted) return;
+        setSuggestions(found);
+        setSuggestIndex(-1);
+        setSuggestStatus("ready");
+      } catch {
+        if (controller.signal.aborted) return;
+        setSuggestions([]);
+        setSuggestStatus("error");
+      }
+    }, 300);
+
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [suggestionsEnabled, suggestQuery]);
 
   const isRequired = (name: string) => requireAll || BASE_REQUIRED.has(name);
 
@@ -307,8 +352,50 @@ export function LeadForm({
     return next;
   };
 
+  const selectSuggestion = (item: CompanySuggestion) => {
+    const form = formRef.current;
+    if (!form) return;
+    const company = form.elements.namedItem("company");
+    const inn = form.elements.namedItem("inn");
+    if (company instanceof HTMLInputElement) company.value = item.name;
+    if (inn instanceof HTMLInputElement) inn.value = item.inn;
+    setSuggestQuery(null);
+    setSuggestions([]);
+    setSuggestStatus("idle");
+    if (submitted.current) setErrors(checkAll(form));
+  };
+
+  const handleSuggestionKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (suggestQuery?.field !== event.currentTarget.name) return;
+    if (event.key === "Escape") {
+      setSuggestQuery(null);
+      return;
+    }
+    if (!suggestions.length) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setSuggestIndex((index) => Math.min(index + 1, suggestions.length - 1));
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setSuggestIndex((index) => Math.max(index - 1, 0));
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      selectSuggestion(suggestions[suggestIndex < 0 ? 0 : suggestIndex]);
+    }
+  };
+
   /* Пересчёт по ходу ввода — только после первой попытки отправить. */
-  const handleInput = () => {
+  const handleInput = (event: FormEvent<HTMLFormElement>) => {
+    const input = event.target;
+    if (
+      suggestionsEnabled &&
+      input instanceof HTMLInputElement &&
+      (input.name === "company" || input.name === "inn")
+    ) {
+      setSuggestQuery({ field: input.name, value: input.value });
+      setSuggestions([]);
+      setSuggestIndex(-1);
+    }
     if (!submitted.current || !formRef.current) return;
     setErrors(checkAll(formRef.current));
   };
@@ -413,6 +500,14 @@ export function LeadForm({
           {shown.map((field) => {
             const message = errors[field.name];
             const errorId = `${idPrefix}-${field.name}-error`;
+            const suggestible = suggestionsEnabled && (field.name === "company" || field.name === "inn");
+            const panelId = `${idPrefix}-${field.name}-suggestions`;
+            const queryLength = suggestQuery?.value.trim().length ?? 0;
+            const showSuggestions =
+              suggestible &&
+              suggestQuery?.field === field.name &&
+              queryLength >= (field.name === "inn" ? 4 : 3) &&
+              suggestStatus !== "idle";
             return (
               /*
                 Подпись ошибки лежит в потоке под полем, а не поверх него: шаг
@@ -422,7 +517,7 @@ export function LeadForm({
               */
               <div
                 key={field.name}
-                className="flex w-full flex-col gap-8 px-16 md:px-48"
+                className="relative flex w-full flex-col gap-8 px-16 md:px-48"
               >
                 <label
                   className="sr-only"
@@ -440,8 +535,56 @@ export function LeadForm({
                   required={isRequired(field.name)}
                   aria-invalid={message ? true : undefined}
                   aria-describedby={message ? errorId : undefined}
+                  role={suggestible ? "combobox" : undefined}
+                  aria-autocomplete={suggestible ? "list" : undefined}
+                  aria-expanded={suggestible ? showSuggestions : undefined}
+                  aria-controls={showSuggestions ? panelId : undefined}
+                  aria-activedescendant={showSuggestions && suggestIndex >= 0 ? `${panelId}-${suggestIndex}` : undefined}
+                  onFocus={suggestible ? (event) => {
+                    setSuggestQuery({ field: field.name as SuggestionField, value: event.currentTarget.value });
+                    setSuggestions([]);
+                    setSuggestStatus("idle");
+                    setSuggestIndex(-1);
+                  } : undefined}
+                  onBlur={suggestible ? () => setSuggestQuery(null) : undefined}
+                  onKeyDown={suggestible ? handleSuggestionKeyDown : undefined}
                   className={`${FIELD_CLASS} ${message ? FIELD_BAD : FIELD_OK}`}
                 />
+                {showSuggestions ? (
+                  <div
+                    id={panelId}
+                    role="listbox"
+                    aria-label={`Подсказки для поля «${field.label}»`}
+                    className="absolute top-[calc(var(--lead-field-h,56px)+8px)] right-16 left-16 z-20 max-h-[288px] overflow-y-auto rounded-16 border border-border-default bg-white p-8 shadow-drop-md md:right-48 md:left-48"
+                  >
+                    {suggestStatus === "loading" ? (
+                      <p role="status" className="px-12 py-8 text-body-m text-text-secondary">Ищем организации…</p>
+                    ) : suggestStatus === "error" ? (
+                      <p role="status" className="px-12 py-8 text-body-m text-text-secondary">Подсказки недоступны. Заполните поля вручную.</p>
+                    ) : suggestions.length ? (
+                      <>
+                        {suggestions.map((item, index) => (
+                          <button
+                            key={`${item.inn}-${index}`}
+                            id={`${panelId}-${index}`}
+                            type="button"
+                            role="option"
+                            aria-selected={index === suggestIndex}
+                            onPointerDown={(event) => event.preventDefault()}
+                            onClick={() => selectSuggestion(item)}
+                            className={`flex w-full flex-col gap-4 rounded-8 px-12 py-8 text-left transition-colors hover:bg-bg-page ${index === suggestIndex ? "bg-bg-page" : ""}`}
+                          >
+                            <span className="text-body-m text-text-primary">{item.name}</span>
+                            <span className="text-caption text-text-secondary">ИНН {item.inn}</span>
+                          </button>
+                        ))}
+                        <p className="px-12 pt-8 text-caption text-text-tertiary">Данные DaData</p>
+                      </>
+                    ) : (
+                      <p role="status" className="px-12 py-8 text-body-m text-text-secondary">Ничего не найдено. Можно заполнить вручную.</p>
+                    )}
+                  </div>
+                ) : null}
                 {message ? (
                   /*
                     `role="alert"` на самой подписи, а не общий live-region
