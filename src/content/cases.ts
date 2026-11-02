@@ -1,6 +1,6 @@
 /**
  * Справочник кейсов — один источник для трёх мест:
- *   • блок «Опыт клиентов» на главной (`sections/Cases.tsx`) — первые три;
+ *   • блок «Опыт клиентов» на главной (`sections/Cases.tsx`) — выбранные кейсы;
  *   • разводящая `/success-stories`;
  *   • детальная `/success-stories/[slug]`.
  *
@@ -514,8 +514,8 @@ export const CASES: CaseStudy[] = [
   {
     slug: "phosagro",
     company: "ФосАгро",
-    metric: "-93%",
-    metricCaption: "сокращение времени на поиск кандидата",
+    metric: ">93%",
+    metricCaption: "выше скорость поиска кандидата на 1 заявку",
     description:
       "ИИ-агент для анализа резюме и первичной оценки кандидатов – подключается к корпоративным системам вакансий и автоматически готовит заключение по каждому соискателю",
     logo: {
@@ -566,7 +566,7 @@ export const CASES: CaseStudy[] = [
     slug: "directum",
     company: "Directum",
     metric: "86%",
-    metricCaption: "компаний-клиентов выбирают отечественное решение",
+    metricCaption: "компаний-клиентов рассматривали только отечественное решение",
     description:
       "Встроили GigaChat API в Directum RX Intelligence: система сама готовит аннотации к документам, служебные записки и драфты исходящих писем",
     logo: {
@@ -590,7 +590,7 @@ export const CASES: CaseStudy[] = [
     slug: "bi-group",
     company: "BI Group",
     metric: "90%",
-    metricCaption: "консультаций автоматизировано",
+    metricCaption: "консультаций автоматизировано с помощью ИИ-помощника",
     description:
       "ИИ-помощник на базе ГигаЧат консультирует клиентов по объектам и условиям покупки, отвечает на типовые вопросы и записывает на встречу",
     logo: {
@@ -676,8 +676,10 @@ export const AVAILABLE_ROLES = ROLES.filter((role) =>
   VISIBLE_CASES.some((item) => item.role === role),
 );
 
-/** Блок «Опыт клиентов» на главной — первые три карточки (в макете их три). */
-export const HOME_CASES = VISIBLE_CASES.slice(0, 3);
+/** Блок «Опыт клиентов» на главной — выбранные три кейса. */
+export const HOME_CASES = VISIBLE_CASES.filter(
+  (item) => item.slug === "phosagro" || item.slug === "apri" || item.slug === "bi-group",
+);
 
 /** Кейсы, у которых есть детальная страница. */
 export const CASES_WITH_STORY = VISIBLE_CASES.filter(

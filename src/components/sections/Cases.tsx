@@ -64,24 +64,20 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
         ].join(" ")}
       >
         {/*
-          Fixed vertical rhythm instead of `justify-between`, so the logo row and
-          the description start at the SAME y in every card. Figma distributes the
-          slack evenly (I1927:15620 vs I1927:15622), which leaves the logos ~1px
-          apart in the mock and drifts much further once real logo heights differ.
-
-          Result 40..185 · logo slot 215..247 · description 277..379 · tags 408..464.
+          Ровная вертикальная сетка без `justify-between`: под метрику отведено
+          достаточно места для полной подписи, и логотипы стоят на одной линии.
+          Если подпись займёт больше места, карточка вырастет без обрезки текста.
         */}
 
-        {/* Result — I1927:15620;536:2353, 145 tall (96×1.21 + 12 + 14×1.2) */}
-        <div className="flex w-full shrink-0 flex-col items-start gap-12 overflow-hidden md:h-[145px]">
+        {/* Полная подпись метрики может занять несколько строк. */}
+        <div className="flex w-full shrink-0 flex-col items-start gap-12 md:min-h-[230px] xl:min-h-[180px]">
           <p className="text-display-l w-full font-normal text-text-primary">{study.metric}</p>
           <p className="text-body-m w-full text-text-secondary">{study.metricCaption}</p>
         </div>
 
         {/*
-          Logo — I1927:15620;516:222. The slot is a fixed 32px (the tallest logo)
-          with the mark centred, so ФосАгро 32, Frank Auto 29 and BI Group 26 all
-          share one centre line.
+          Logo — I1927:15620;516:222. Слот фиксированной высоты 32px, по
+          самому высокому логотипу.
         */}
         <div className="mt-24 flex h-[32px] shrink-0 items-center md:mt-[30px]">
           {/* Файла нет — в слоте название компании текстом. */}
@@ -99,8 +95,8 @@ function CaseCard({ study, lead = false }: { study: CaseStudy; lead?: boolean })
         </div>
 
         {/*
-          Description — I1927:15620;515:1150, начинается на y 277 во всех
-          карточках. Высота min, а не фиксированная: на макетных 332 текст
+          Description — I1927:15620;515:1150. Высота min, а не фиксированная:
+          на макетных 332 текст
           укладывается в 102, но между 768 и 1280 карточка ужимается, строк
           становится больше, и жёсткая высота отправляла хвост описания прямо
           на чипы.
