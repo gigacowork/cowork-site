@@ -5,6 +5,7 @@ import { MiniFooter } from "./MiniFooter";
 import LeadForm from "@/components/sections/LeadForm";
 import { Icon } from "@/components/ui/Icon";
 import { asset } from "@/lib/asset";
+import { workEmailError } from "@/lib/work-email";
 import styles from "./scenarios.module.css";
 
 type Kind = "news" | "contract" | "offers" | "report";
@@ -39,15 +40,6 @@ function articlesFrom(value: unknown): Article[] | null {
   });
   return items.slice(0, 6);
 }
-const personalDomains = new Set(["gmail.com", "googlemail.com", "mail.ru", "bk.ru", "list.ru", "inbox.ru", "internet.ru", "yandex.ru", "yandex.com", "ya.ru", "rambler.ru", "yahoo.com", "outlook.com", "hotmail.com", "live.com", "msn.com", "icloud.com", "me.com", "proton.me", "protonmail.com", "tuta.com", "tutanota.com", "aol.com", "gmx.com", "gmx.de", "web.de", "qq.com", "163.com", "126.com"]);
-function workEmailError(value: string) {
-  const email = value.trim().toLowerCase();
-  if (!/^[^\s@]{1,64}@[a-z0-9а-яё-]+(?:\.[a-z0-9а-яё-]+)+$/i.test(email) || email.length > 254) return "Проверьте адрес: например, name@company.ru";
-  const domain = email.split("@")[1];
-  if (domain.split(".").some((label) => label.startsWith("-") || label.endsWith("-")) || domain.split(".").at(-1)!.length < 2) return "Проверьте адрес: например, name@company.ru";
-  return personalDomains.has(domain) ? "Укажите почту на домене компании" : "";
-}
-
 function LeadContent({ idPrefix }: { idPrefix: string }) {
   const [sent, setSent] = useState(false);
   return <>

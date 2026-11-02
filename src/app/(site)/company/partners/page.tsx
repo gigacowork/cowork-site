@@ -922,8 +922,10 @@ export default function PartnersPage() {
             */
             labels={{
               name: { label: "Имя и фамилия", empty: "Укажите имя и фамилию" },
+              email: { label: "Корпоративная почта", empty: "Укажите корпоративную почту" },
             }}
             requireAll
+            corporateEmailOnly
             idPrefix="partner"
             submitLabel="Стать партнером"
             successText={

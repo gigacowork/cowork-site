@@ -5,6 +5,7 @@ import Button from "@/components/ui/Button";
 import { LegalLink } from "@/components/ui/LegalLink";
 import { LEGAL_PDF } from "@/lib/legal";
 import { sendLead, type LeadFields, type LeadTarget } from "@/lib/crm";
+import { workEmailError } from "@/lib/work-email";
 
 /**
  * Form / Lead CTA — I2397:43444 (desktop) / I2397:43460 (mobile)
@@ -228,6 +229,8 @@ type LeadFormProps = {
   className?: string;
   /** Встроенная форма внутри собственной промо-плашки. */
   embedded?: boolean;
+  /** Отклонять адреса общедоступных почтовых сервисов до отправки заявки. */
+  corporateEmailOnly?: boolean;
   validateEmail?: (value: string) => string;
   onSuccess?: () => void;
 };
@@ -243,6 +246,7 @@ export function LeadForm({
   idPrefix = "lead",
   className = "",
   embedded = false,
+  corporateEmailOnly = false,
   validateEmail,
   onSuccess,
 }: LeadFormProps = {}) {
@@ -288,7 +292,8 @@ export function LeadForm({
     const value = raw.trim();
     if (!value) return isRequired(field.name) ? field.empty : "";
     const error = field.error(value);
-    return error || (field.name === "email" ? validateEmail?.(value) ?? "" : "");
+    if (error || field.name !== "email") return error;
+    return (corporateEmailOnly ? workEmailError(value) : "") || validateEmail?.(value) || "";
   };
 
   /** Ошибки всей формы по текущим значениям полей. Скрытые не проверяем. */
