@@ -118,8 +118,8 @@ const NAV_ITEMS: NavItem[] = [
  * Навигация-«таблетка» из макета 3607:37216: белая подложка, размытие 11,
  * скругление 98, отступ внутрь от краёв страницы. Раньше так выглядела шапка
  * только над hero, а дальше по странице превращалась в сплошную полосу — теперь
- * форма одна на всю страницу. Ниже md таблетки нет: там полоса во всю ширину,
- * на неё же опирается выезжающее меню.
+ * форма одна на всю страницу, включая мобильную навигацию. При открытии
+ * мобильного меню подложка снова занимает всю ширину, соединяясь с панелью.
  *
  * Одна строка на откат: `false` возвращает сплошную полосу на всех ширинах.
  */
@@ -297,9 +297,8 @@ export function Header() {
         узких экранах контейнер шире окна — там `max` оставляет те же 10. По
         вертикали — 8 от краёв шапки.
 
-        Ниже md таблетки нет: полоса во всю ширину и размытие 6 — этого
-        хватает, чтобы пункты читались поверх проезжающего контента, а фон
-        под шапкой оставался узнаваемым (на 14 он превращался в ровное пятно).
+        На телефоне плашка отступает от краёв окна на 8px, чтобы скругление
+        было видно и кнопки оставались внутри неё.
 
         Подложка ограничена высотой строки навигации: раскрывающаяся панель
         не должна растягивать таблетку. При открытии мобильного/планшетного
@@ -308,14 +307,12 @@ export function Header() {
       */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-x-0 top-[var(--home-promo-h,0px)] -z-10 h-[var(--header-h)] transition-opacity duration-300 ${
+        className={`pointer-events-none absolute -z-10 transition-opacity duration-300 ${
           menuOpen
-            ? "bg-bg-page"
-            : `bg-bg-page/85 backdrop-blur-[6px] ${
-                PILL_NAV
-                  ? "md:inset-x-[max(10px,calc((100%_-_1280px)/2_+_10px))] md:top-[calc(var(--home-promo-h,0px)+8px)] md:h-[calc(var(--header-h)-16px)] md:rounded-[98px] md:bg-[rgba(255,255,255,0.78)] md:backdrop-blur-[11px]"
-                  : ""
-              }`
+            ? "inset-x-0 top-[var(--home-promo-h,0px)] h-[var(--header-h)] bg-bg-page"
+            : PILL_NAV
+              ? "inset-x-[8px] top-[calc(var(--home-promo-h,0px)+8px)] h-[calc(var(--header-h)-16px)] rounded-[98px] bg-[rgba(255,255,255,0.78)] backdrop-blur-[11px] md:inset-x-[max(10px,calc((100%_-_1280px)/2_+_10px))]"
+              : "inset-x-0 top-[var(--home-promo-h,0px)] h-[var(--header-h)] bg-bg-page/85 backdrop-blur-[6px]"
         } ${surface ? "opacity-100" : "opacity-0"}`}
       />
 

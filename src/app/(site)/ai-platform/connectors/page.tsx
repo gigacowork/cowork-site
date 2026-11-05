@@ -104,7 +104,7 @@ const CATEGORIES: Category[] = [
     products: [
       { label: "Google Calendar", slug: "google-calendar" },
       { label: "Яндекс Календарь", slug: "yandex-calendar" },
-      { label: "Calendly", slug: "calendly" },
+      { label: "Mail Календарь", slug: "mail-calendar" },
       { label: "Zoom", slug: "zoom" },
     ],
   },
@@ -114,15 +114,19 @@ const CATEGORIES: Category[] = [
       { label: "Google Drive", slug: "google-drive" },
       { label: "Яндекс Диск", slug: "yandex-disk" },
       { label: "Microsoft OneDrive", slug: "onedrive" },
+      { label: "Mail Облако", slug: "mail-cloud" },
+      { label: "S3", slug: "s3" },
     ],
+  },
+  {
+    title: <>Карты и&nbsp;геосервисы</>,
+    products: [{ label: "2ГИС", slug: "2gis" }],
   },
   {
     title: <>CRM-системы</>,
     products: [
       { label: "amoCRM", slug: "amocrm" },
       { label: "Битрикс24", slug: "bitrix24" },
-      { label: "RetailCRM", slug: "retailcrm" },
-      { label: "СБИС CRM", slug: "sbis-crm" },
       { label: "YClients", slug: "yclients" },
     ],
   },
@@ -131,7 +135,6 @@ const CATEGORIES: Category[] = [
     products: [
       { label: "1С", slug: "1c" },
       { label: "МойСклад", slug: "moysklad" },
-      { label: "ПланФакт", slug: "planfact" },
       { label: "Мое Дело", slug: "moe-delo" },
       { label: "InSales", slug: "insales" },
     ],
@@ -153,19 +156,14 @@ const CATEGORIES: Category[] = [
   {
     title: <>Телефония и&nbsp;мессенджеры</>,
     products: [
-      { label: "UIS", slug: "uis" },
-      { label: "Wazzup", slug: "wazzup" },
       { label: "Telegram", slug: "telegram" },
-      { label: "TextBack", slug: "textback" },
       { label: "MAX", slug: "max" },
     ],
   },
   {
     title: <>Обучение и&nbsp;рекрутинг</>,
     products: [
-      { label: "iSpring Learn", slug: "ispring-learn" },
-      { label: "ProgressMe", slug: "progressme" },
-      { label: "Skillaz", slug: "skillaz" },
+      { label: "HeadHunter", slug: "headhunter" },
       { label: "Huntflow", slug: "huntflow" },
     ],
   },
@@ -175,14 +173,6 @@ const CATEGORIES: Category[] = [
       { label: "MPSTATS", slug: "mpstats" },
       { label: "Mindbox", slug: "mindbox" },
       { label: "Unisender", slug: "unisender" },
-      { label: "BotHelp", slug: "bothelp" },
-    ],
-  },
-  {
-    title: <>Help Desk и&nbsp;поддержка</>,
-    products: [
-      { label: "HelpDeskEddy", slug: "helpdeskeddy" },
-      { label: "Юздеск", slug: "usedesk" },
     ],
   },
   {
@@ -193,16 +183,8 @@ const CATEGORIES: Category[] = [
     ],
   },
   {
-    title: <>Рестораны и&nbsp;логистика</>,
-    products: [
-      { label: "iiko", slug: "iiko" },
-      { label: "Почта России", slug: "pochta-rossii" },
-    ],
-  },
-  {
     title: <>Вебинары и&nbsp;мероприятия</>,
     products: [
-      { label: "MTS Link", slug: "mts-link" },
       { label: "Яндекс Телемост", slug: "yandex-telemost" },
     ],
   },
@@ -457,7 +439,7 @@ export default function ConnectorsPage() {
           <div className="flex flex-col gap-12 md:gap-16">
             <Kicker>Интеграции</Kicker>
             <h2 className="text-h3 font-medium text-text-primary md:text-h2">
-              40+ готовых интеграций <br className="hidden md:inline" />
+              35+ готовых интеграций <br className="hidden md:inline" />
               уже на&nbsp;платформе
             </h2>
             <p className="text-body-l text-text-primary">
