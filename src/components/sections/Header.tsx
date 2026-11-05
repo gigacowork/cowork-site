@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import HomePromoBar from "@/components/sections/HomePromoBar";
 import { Icon } from "@/components/ui/Icon";
 import { SMB_COURSE_PATH } from "@/content/ai-for-smb";
 import { requestHeroReset } from "@/lib/hero-reset";
@@ -191,6 +192,7 @@ function isActive(pathname: string, href: string) {
 }
 
 export function Header() {
+  const [promoVisible, setPromoVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   /** label раскрытого пункта на десктопе (одновременно открыт только один) */
@@ -199,6 +201,13 @@ export function Header() {
   const [openMobile, setOpenMobile] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
+  const showHomePromo =
+    promoVisible &&
+    (pathname === "/" ||
+      pathname === "/ai-for-smb" ||
+      pathname.startsWith("/ai-for-smb/") ||
+      pathname === "/ai-academy/course-smb" ||
+      pathname.startsWith("/ai-academy/course-smb/"));
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -265,7 +274,7 @@ export function Header() {
     };
   }, []);
 
-  const surface = scrolled || menuOpen;
+  const surface = scrolled || menuOpen || pathname.startsWith("/special-project");
 
   return (
     /*
@@ -273,6 +282,7 @@ export function Header() {
       страницы поверх первого экрана лежала бы полоса во всю ширину.
     */
     <header className="fixed inset-x-0 top-0 z-50 w-full">
+      {showHomePromo && <HomePromoBar onClose={() => setPromoVisible(false)} />}
       {/*
         Подложка навигации — «таблетка» из макета 3607:37216: белая, размытие
         11, скругление 98. Был вариант с градиентом (3607:37388, #e4faff →
@@ -298,12 +308,12 @@ export function Header() {
       */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-x-0 top-0 -z-10 h-[var(--header-h)] transition-opacity duration-300 ${
+        className={`pointer-events-none absolute inset-x-0 top-[var(--home-promo-h,0px)] -z-10 h-[var(--header-h)] transition-opacity duration-300 ${
           menuOpen
             ? "bg-bg-page"
             : `bg-bg-page/85 backdrop-blur-[6px] ${
                 PILL_NAV
-                  ? "md:inset-x-[max(10px,calc((100%_-_1280px)/2_+_10px))] md:top-[8px] md:h-[calc(var(--header-h)-16px)] md:rounded-[98px] md:bg-[rgba(255,255,255,0.78)] md:backdrop-blur-[11px]"
+                  ? "md:inset-x-[max(10px,calc((100%_-_1280px)/2_+_10px))] md:top-[calc(var(--home-promo-h,0px)+8px)] md:h-[calc(var(--header-h)-16px)] md:rounded-[98px] md:bg-[rgba(255,255,255,0.78)] md:backdrop-blur-[11px]"
                   : ""
               }`
         } ${surface ? "opacity-100" : "opacity-0"}`}
@@ -575,7 +585,7 @@ export function Header() {
       <div
         className={`overflow-hidden bg-bg-page transition-[max-height,opacity] duration-300 xl:hidden ${
           menuOpen
-            ? "max-h-[calc(100dvh-var(--header-h))] overflow-y-auto opacity-100"
+            ? "max-h-[calc(100dvh-var(--header-h)-var(--home-promo-h,0px))] overflow-y-auto opacity-100"
             : "max-h-0 opacity-0"
         }`}
       >

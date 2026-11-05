@@ -4,18 +4,19 @@ import Link from "next/link";
 import { useMemo, useState, type CSSProperties } from "react";
 
 import { Image } from "@/components/ui/Image";
+import { Kicker } from "@/components/ui/Kicker";
 import { asset } from "@/lib/asset";
 import { keepRussianShortWords } from "@/lib/typography";
 import type { CaseStudy } from "@/content/cases";
 import styles from "./office-cases.module.css";
 
 const departments = [
-  { id: "hr", label: "HR и кадры", icon: "/img/icons/users-round.svg", x: 17, y: 12, robotX: 19, robotY: 37, activityX: 25, activityY: 29, glowX: 17, glowY: 33, before: "Резюме", after: "Подбор готов", companies: ["ФосАгро"] },
-  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg", x: 44, y: 12, robotX: 51, robotY: 37, activityX: 59, activityY: 29, glowX: 48, glowY: 32, before: "Данные", after: "Отчёт готов", companies: ["АПРИ"] },
-  { id: "legal", label: "Юристы", icon: "/img/icons/document.svg", x: 78, y: 12, robotX: 90, robotY: 40, activityX: 91, activityY: 29, glowX: 78, glowY: 33, before: "Договор", after: "Проверено", companies: [] },
-  { id: "it", label: "ИТ", icon: "/img/icons/cpu.svg", x: 18, y: 88, robotX: 29, robotY: 67, activityX: 26, activityY: 54, glowX: 18, glowY: 69, before: "Код", after: "Запуск готов", companies: ["Directum"] },
-  { id: "procurement", label: "Закупки", icon: "/img/icons/supplier.svg", x: 56, y: 89, robotX: 65, robotY: 66, activityX: 69, activityY: 55, glowX: 56, glowY: 69, before: "Заявка", after: "Заказ готов", companies: [] },
-  { id: "service", label: "Клиентский сервис", icon: "/img/icons/messages-square.svg", x: 83, y: 90, robotX: 91, robotY: 73, activityX: 91, activityY: 56, glowX: 83, glowY: 72, before: "Запрос", after: "Ответ готов", companies: ["BI Group", "versta.io"] },
+  { id: "hr", label: "HR и кадры", icon: "/img/icons/users-round.svg", x: 17, y: 12, robotX: 19, robotY: 37, activityX: 25, activityY: 29, glowX: 17, glowY: 33, task: "Подбор кандидатов", companies: ["ФосАгро"] },
+  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg", x: 44, y: 12, robotX: 51, robotY: 37, activityX: 59, activityY: 29, glowX: 48, glowY: 32, task: "Подготовка отчета", companies: ["АПРИ"] },
+  { id: "legal", label: "Юристы", icon: "/img/icons/document.svg", x: 78, y: 12, robotX: 90, robotY: 40, activityX: 91, activityY: 29, glowX: 78, glowY: 33, task: "Проверка договора", companies: [] },
+  { id: "it", label: "ИТ", icon: "/img/icons/cpu.svg", x: 18, y: 88, robotX: 29, robotY: 67, activityX: 26, activityY: 54, glowX: 18, glowY: 69, task: "Проверка кода", companies: ["Directum"] },
+  { id: "procurement", label: "Закупки", icon: "/img/icons/supplier.svg", x: 56, y: 89, robotX: 65, robotY: 66, activityX: 69, activityY: 55, glowX: 56, glowY: 69, task: "Подбор поставщиков", companies: [] },
+  { id: "service", label: "Клиентский сервис", icon: "/img/icons/messages-square.svg", x: 83, y: 90, robotX: 91, robotY: 73, activityX: 91, activityY: 56, glowX: 83, glowY: 72, task: "Обработка обращений", companies: ["BI Group", "versta.io"] },
 ] as const;
 
 type DepartmentId = (typeof departments)[number]["id"];
@@ -34,14 +35,6 @@ const caseFilters = [
 
 const departmentCompanies = new Set<string>(departments.flatMap((item) => item.companies));
 
-const caseImages: Record<string, string> = {
-  "ФосАгро": "/img/cases/phosagro-card.webp",
-  "АПРИ": "/img/use-cases/finance-documents-poster.webp",
-  "Directum": "/img/use-cases/legal-review.webp",
-  "BI Group": "/img/use-cases/smb-customer-hero.webp",
-  "versta.io": "/img/use-cases/salesforce-feedback.webp",
-};
-
 const caseTitles: Record<string, string> = {
   "ФосАгро": "ИИ-агент помогает подбирать персонал",
   "АПРИ": "Проверка строительных документов",
@@ -56,14 +49,21 @@ function ProjectCaseCard({ study }: { study: CaseStudy }) {
   return (
     <article className={styles.caseCard}>
       <div className={styles.cardVisual}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset(caseImages[study.company] ?? "/img/cases/case-hero.webp")}
-          alt=""
-          loading="lazy"
-        />
+        {study.photo ? (
+          <picture>
+            {study.photo.mobile ? <source media="(max-width: 1023.98px)" srcSet={asset(study.photo.mobile)} /> : null}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={asset(study.photo.desktop)}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className={study.photo.fit === "contain" ? styles.cardVisualContain : undefined}
+            />
+          </picture>
+        ) : null}
         <span className={styles.cardCategory}>{keepRussianShortWords(study.tags[1].label)}</span>
-        {href ? <span className={styles.cardArrow} aria-hidden="true">↗</span> : null}
+        {href ? <span className={styles.cardArrow} aria-hidden="true">→</span> : null}
       </div>
       <div className={styles.cardBody}>
         <div className={styles.cardCompany}>
@@ -140,8 +140,8 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
         <div className="container-page">
           <div className={styles.sectionHeading}>
             <div>
-              <span className={styles.eyebrow}>{keepRussianShortWords("За кулисами бизнеса")}</span>
-              <h2 id="office-title" className={styles.heading}>{keepRussianShortWords("Выберите отдел и узнайте, как ИИ-агенты меняют его повседневную работу")}</h2>
+              <Kicker className="self-center md:self-start">За кулисами бизнеса</Kicker>
+              <h2 id="office-title" className={styles.heading}>{keepRussianShortWords("Выберите отдел и посмотрите, как ИИ-агенты помогают сотрудникам реальных компаний")}</h2>
             </div>
           </div>
 
@@ -181,10 +181,7 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
                   />
                   <span className={styles.processCard}>
                     <span className={styles.processSymbol}>✦</span>
-                    <span className={styles.processState}>
-                      <span className={styles.processBefore}>{activeRoom.before}</span>
-                      <span className={styles.processAfter}>{activeRoom.after}</span>
-                    </span>
+                    <span className={styles.processState}>{activeRoom.task}</span>
                     <span className={styles.processCheck}>✓</span>
                     <span className={styles.processProgress} />
                   </span>

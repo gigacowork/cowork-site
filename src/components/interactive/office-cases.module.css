@@ -21,22 +21,17 @@
   line-height: 1.45;
 }
 
-.eyebrow {
-  display: block;
-  margin-bottom: 12px;
-  color: #657588;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+.sectionHeading .heading {
+  margin-top: 24px;
 }
 
 .heading {
   max-width: 770px;
   color: #171f2d;
-  font-size: clamp(32px, 4vw, 48px);
-  font-weight: 500;
-  line-height: 1.13;
-  letter-spacing: -0.035em;
+  font-size: var(--text-h2);
+  font-weight: var(--text-h2--font-weight);
+  line-height: var(--text-h2--line-height);
+  letter-spacing: var(--text-h2--letter-spacing);
   text-wrap: balance;
 }
 
@@ -95,7 +90,7 @@
   top: var(--activity-y);
   left: var(--activity-x);
   display: flex;
-  width: clamp(140px, 13%, 164px);
+  width: clamp(170px, 15%, 210px);
   min-height: 44px;
   align-items: center;
   gap: 6px;
@@ -126,28 +121,10 @@
 }
 
 .processState {
-  position: relative;
   min-width: 0;
-  height: 12px;
   flex: 1;
-}
-
-.processBefore,
-.processAfter {
-  position: absolute;
-  inset: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.processBefore {
-  color: #677586;
-  animation: stateBefore 1.15s ease-in forwards;
-}
-
-.processAfter {
-  opacity: 0;
-  animation: stateAfter 1.15s ease-out forwards;
 }
 
 .processCheck {
@@ -200,11 +177,6 @@
 @keyframes robotFloat {
   from { transform: translate(-50%, -50%) translateY(2px); }
   to { transform: translate(-50%, -50%) translateY(-5px); }
-}
-
-@keyframes stateBefore {
-  0%, 43% { opacity: 1; }
-  70%, 100% { opacity: 0; }
 }
 
 @keyframes stateAfter {
@@ -404,11 +376,20 @@
   background: linear-gradient(135deg, #e5e9ff, #c8e8fa 65%, #d6f7ec);
 }
 
+.cardVisual picture,
 .cardVisual img {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.cardVisual img {
   object-fit: cover;
+}
+
+.cardVisual img.cardVisualContain {
+  background: #fff;
+  object-fit: contain;
 }
 
 .cardCategory {
@@ -463,6 +444,7 @@
 .cardTitle {
   display: -webkit-box;
   overflow: hidden;
+  min-height: 2.4em;
   margin-bottom: 12px;
   color: #171f2d;
   font-size: 23px;
@@ -470,7 +452,7 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
 }
 
 .cardDescription {
@@ -482,7 +464,7 @@
   line-height: 1.45;
   text-wrap: pretty;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
 }
 
 .cardMetric {
@@ -574,7 +556,9 @@
   }
 
   .heading {
-    font-size: 34px;
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--text-h3--letter-spacing);
   }
 
   .officeScroller {
@@ -635,8 +619,8 @@
 }
 
 @media (max-width: 390px) {
-  .heading {
-    font-size: 30px;
+  .cardTitle {
+    font-size: 20px;
   }
 }
 
@@ -644,18 +628,11 @@
   .roomEffect,
   .roomLight,
   .agentRobot,
-  .processBefore,
-  .processAfter,
   .processCheck,
   .processProgress::after {
     animation: none;
   }
 
-  .processBefore {
-    opacity: 0;
-  }
-
-  .processAfter,
   .processCheck {
     opacity: 1;
   }

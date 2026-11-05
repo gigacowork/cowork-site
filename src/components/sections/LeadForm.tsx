@@ -219,6 +219,10 @@ type LeadFormProps = {
   requireAll?: boolean;
   /** Подпись кнопки. */
   submitLabel?: string;
+  /** Текст маркетингового согласия в варианте формы GigaB2B. */
+  consentCopy?: "default" | "gigab2b";
+  /** Только внешний вид формы, без отправки и экрана подтверждения. */
+  previewOnly?: boolean;
   /** Текст под заголовком экрана «Заявка отправлена». */
   successText?: string;
   /**
@@ -245,6 +249,8 @@ export function LeadForm({
   labels,
   requireAll = false,
   submitLabel = "Попробовать бесплатно",
+  consentCopy = "default",
+  previewOnly = false,
   successText,
   successIcon = false,
   idPrefix = "lead",
@@ -402,6 +408,7 @@ export function LeadForm({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (previewOnly) return;
     if (status === "sending") return;
 
     const form = event.currentTarget;
@@ -517,6 +524,7 @@ export function LeadForm({
               */
               <div
                 key={field.name}
+                data-lead-field
                 className="relative flex w-full flex-col gap-8 px-16 md:px-48"
               >
                 <label
@@ -604,7 +612,7 @@ export function LeadForm({
           })}
 
           {/* Consent — I2397:43444;1866:16715 */}
-          <div className="flex w-full items-start gap-12 px-16 md:px-48">
+          <div data-lead-consent className="flex w-full items-start gap-12 px-16 md:px-48">
             <span className="flex size-[24px] shrink-0 items-center justify-center">
               <input
                 id={`${idPrefix}-consent`}
@@ -622,13 +630,27 @@ export function LeadForm({
               htmlFor={`${idPrefix}-consent`}
               className="flex-1 cursor-pointer text-left text-caption text-text-secondary"
             >
-              Даю <LegalLink href={LEGAL_PDF.materials}>согласие</LegalLink>{" "}
-              на&nbsp;получение материалов о&nbsp;сервисе, приглашений
-              на&nbsp;мероприятия и&nbsp;рекламных сообщений в&nbsp;соответствии{" "}
-              <LegalLink href={LEGAL_PDF.privacy}>
-                с&nbsp;Политикой конфиденциальности
-              </LegalLink>
-              .
+              {consentCopy === "gigab2b" ? (
+                <>
+                  Даю <LegalLink href={LEGAL_PDF.materials}>согласие</LegalLink>{" "}
+                  на получение рекламных сообщений и маркетинговых предложений
+                  в соответствии с{" "}
+                  <LegalLink href={LEGAL_PDF.privacy}>
+                    Политикой конфиденциальности
+                  </LegalLink>
+                  .
+                </>
+              ) : (
+                <>
+                  Даю <LegalLink href={LEGAL_PDF.materials}>согласие</LegalLink>{" "}
+                  на&nbsp;получение материалов о&nbsp;сервисе, приглашений
+                  на&nbsp;мероприятия и&nbsp;рекламных сообщений в&nbsp;соответствии{" "}
+                  <LegalLink href={LEGAL_PDF.privacy}>
+                    с&nbsp;Политикой конфиденциальности
+                  </LegalLink>
+                  .
+                </>
+              )}
             </label>
           </div>
 

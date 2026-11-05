@@ -363,6 +363,16 @@
     --header-h: 62px;
   }
 
+  body:has(#home-promo-bar) {
+    --home-promo-h: 120px;
+  }
+
+  @media (min-width: 900px) {
+    body:has(#home-promo-bar) {
+      --home-promo-h: 48px;
+    }
+  }
+
   @media (min-width: 768px) {
     :root {
       --header-h: 81px;

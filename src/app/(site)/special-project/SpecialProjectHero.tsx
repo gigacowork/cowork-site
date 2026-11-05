@@ -39,29 +39,29 @@ function city(name: string, lon: number, lat: number, at: number, label = false)
 
 const cities = {
   kaliningrad: city("Калининград", 20.4522, 54.7104, 0, true),
-  petersburg: { ...city("Санкт-Петербург", 30.3158, 59.9391, 0.10, true), x: 389, y: 248 },
-  moscow: { ...city("Москва", 37.6176, 55.7558, 0.13, true), x: 410, y: 390 },
+  petersburg: { ...city("Санкт-Петербург", 30.3158, 59.9391, 0.10), x: 389, y: 248 },
+  moscow: { ...city("Москва", 37.6176, 55.7558, 0.13), x: 410, y: 390 },
   murmansk: city("Мурманск", 33.0827, 68.9707, 0.18),
   arkhangelsk: city("Архангельск", 40.5433, 64.5393, 0.20),
   nizhny: city("Нижний Новгород", 44.0020, 56.3269, 0.21),
-  kazan: city("Казань", 49.121, 55.7887, 0.26, true),
+  kazan: city("Казань", 49.121, 55.7887, 0.26),
   samara: city("Самара", 50.1008, 53.1959, 0.31),
   ufa: city("Уфа", 56.0389, 54.7388, 0.36),
-  ekaterinburg: city("Екатеринбург", 60.6122, 56.8389, 0.40, true),
+  ekaterinburg: city("Екатеринбург", 60.6122, 56.8389, 0.40),
   tyumen: city("Тюмень", 65.5343, 57.1522, 0.46),
   omsk: city("Омск", 73.3682, 54.9893, 0.51),
-  novosibirsk: city("Новосибирск", 82.9204, 55.0302, 0.57, true),
+  novosibirsk: city("Новосибирск", 82.9204, 55.0302, 0.57),
   tomsk: city("Томск", 84.9522, 56.4884, 0.61),
-  krasnoyarsk: city("Красноярск", 92.8725, 56.0106, 0.64, true),
+  krasnoyarsk: city("Красноярск", 92.8725, 56.0106, 0.64),
   // The far-north shore is heavily stylized; place the marker on its visible land.
   norilsk: { ...city("Норильск", 88.2014, 69.3535, 0.67), x: 950, y: 330 },
-  irkutsk: city("Иркутск", 104.2807, 52.2869, 0.71, true),
+  irkutsk: city("Иркутск", 104.2807, 52.2869, 0.71),
   ulanUde: city("Улан-Удэ", 107.5846, 51.8335, 0.75),
   chita: city("Чита", 113.497, 52.0340, 0.78),
   // Place Khabarovsk inland, northwest of the painted coastal peninsula.
-  khabarovsk: { ...city("Хабаровск", 135.0719, 48.4802, 0.91, true), x: 1345, y: 505 },
-  // Keep the destination point on the peninsula, without a small map label.
-  vladivostok: { ...city("Владивосток", 131.8855, 43.1155, 0.94), x: 1450, y: 690 },
+  khabarovsk: { ...city("Хабаровск", 135.0719, 48.4802, 0.91), x: 1345, y: 505 },
+  // Keep the destination point and its label on the peninsula.
+  vladivostok: { ...city("Владивосток", 131.8855, 43.1155, 0.94, true), x: 1450, y: 690 },
 } as const;
 
 type CityKey = keyof typeof cities;
@@ -169,24 +169,13 @@ const smooth = (start: number, end: number, value: number) => {
 };
 
 export function SpecialProjectHero() {
-  const journeyRef = useRef<HTMLElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
-  const copyRef = useRef<HTMLDivElement>(null);
-  const cueRef = useRef<HTMLDivElement>(null);
-  const endRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const journey = journeyRef.current;
     const map = mapRef.current;
-    const copy = copyRef.current;
-    const cue = cueRef.current;
-    const end = endRef.current;
-    const track = trackRef.current;
-    if (!journey || !map || !copy || !cue || !end || !track) return;
+    if (!map) return;
 
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (motion.matches) return;
 
     const beams = Array.from(map.querySelectorAll<SVGPathElement>("[data-route]"));
     const cores = Array.from(map.querySelectorAll<SVGPathElement>("[data-core]"));
@@ -197,34 +186,8 @@ export function SpecialProjectHero() {
     const branchPoints = Array.from(map.querySelectorAll<SVGCircleElement>("[data-branch-point]"));
     const lengths = cores.map((path) => path.getTotalLength());
     let frame = 0;
-    let startedAt = 0;
-    let progress = 0;
-    let touchY: number | null = null;
-    let state: "start" | "forward" | "end" | "reverse" = "start";
 
     const render = (progress: number) => {
-      const mobile = window.innerWidth <= 767;
-      // Only pan horizontally; the same timeline drives the network and camera.
-      const finalZoom = 1.045;
-      const zoom = 1.02 + 0.025 * progress;
-      const vladivostokX = map.offsetLeft + map.offsetWidth / 2 +
-        (cities.vladivostok.x / 1672 - 0.5) * map.offsetWidth * finalZoom;
-      const destination = window.innerWidth * (mobile ? 0.62 : 0.84);
-      const safeShift = map.offsetLeft + map.offsetWidth * (1 + finalZoom) / 2 - window.innerWidth * 1.08;
-      const finalShift = Math.min(Math.max(0, vladivostokX - destination), Math.max(0, safeShift));
-      const shift = finalShift * smooth(0.26, 0.96, progress);
-      const fixedLift = window.innerHeight * (mobile ? 0.08 : 0.06);
-      map.style.transform = `translate3d(${-shift}px, calc(-50% - ${fixedLift}px), 0) perspective(1800px) rotateY(${progress * 1.5}deg) scale(${zoom})`;
-      const introExit = smooth(0.08, 0.29, progress);
-      copy.style.opacity = String(1 - introExit);
-      copy.style.transform = `translateY(${-24 * introExit}px)`;
-      copy.style.pointerEvents = progress < 0.23 ? "auto" : "none";
-      cue.style.opacity = String(1 - introExit);
-      const endVisibility = smooth(0.84, 0.96, progress);
-      end.style.opacity = String(endVisibility);
-      end.style.transform = `translateY(${20 * (1 - endVisibility)}px)`;
-      track.style.setProperty("--journey-width", `${smooth(mobile ? 0.10 : 0.02, 0.91, progress) * 100}%`);
-
       beams.forEach((path) => {
         const index = Number(path.dataset.route);
         const reveal = smooth(routes[index].at, routes[index].at + 0.085, progress);
@@ -260,99 +223,62 @@ export function SpecialProjectHero() {
       });
     };
 
-    const duration = window.innerWidth <= 767 ? 4700 : 5400;
+    if (motion.matches || window.matchMedia("(max-width: 767px)").matches) {
+      render(1);
+      return;
+    }
+
+    const duration = 4800;
+    let startedAt: number | null = null;
+    let imageReady = false;
+    let inView = false;
+    let started = false;
+    const image = map.querySelector<HTMLImageElement>("img");
+    const hero = map.closest("section");
+
     const animate = (now: number) => {
-      if (state !== "forward" && state !== "reverse") return;
+      if (startedAt === null) startedAt = now;
       const elapsed = clamp((now - startedAt) / duration);
-      progress = state === "forward" ? smooth(0, 1, elapsed) : 1 - smooth(0, 1, elapsed);
-      render(progress);
+      render(elapsed);
       if (elapsed < 1) {
         frame = window.requestAnimationFrame(animate);
-      } else {
-        frame = 0;
-        state = state === "forward" ? "end" : "start";
       }
     };
 
-    const start = (direction: "forward" | "reverse") => {
-      if (direction === "forward" ? state !== "start" : state !== "end") return;
-      state = direction;
-      startedAt = performance.now();
+    render(0);
+    const startWhenReady = () => {
+      if (started || !imageReady || !inView || document.visibilityState !== "visible") return;
+      started = true;
       frame = window.requestAnimationFrame(animate);
     };
 
-    const isAtHero = () => {
-      const rect = journey.getBoundingClientRect();
-      return rect.top >= -2 && rect.top <= 32 && rect.bottom > window.innerHeight * 0.7;
+    const onImageReady = () => {
+      imageReady = true;
+      startWhenReady();
     };
+    if (image?.complete && image.naturalWidth > 0) {
+      onImageReady();
+    } else {
+      image?.addEventListener("load", onImageReady, { once: true });
+    }
 
-    const onWheel = (event: WheelEvent) => {
-      if (event.ctrlKey || !isAtHero()) return;
-      if (state === "forward" || state === "reverse") {
-        event.preventDefault();
-      } else if (state === "start" && event.deltaY > 0) {
-        event.preventDefault();
-        start("forward");
-      } else if (state === "end" && event.deltaY < 0) {
-        event.preventDefault();
-        start("reverse");
-      }
-    };
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      startWhenReady();
+    }, { threshold: 0.1 });
+    if (hero) observer.observe(hero);
+    document.addEventListener("visibilitychange", startWhenReady);
 
-    const onTouchStart = (event: TouchEvent) => {
-      touchY = isAtHero() ? event.touches[0]?.clientY ?? null : null;
-    };
-
-    const onTouchMove = (event: TouchEvent) => {
-      if (touchY === null || !isAtHero()) return;
-      const delta = touchY - event.touches[0].clientY;
-      if (state === "forward" || state === "reverse") {
-        event.preventDefault();
-      } else if (state === "start" && delta > 12) {
-        event.preventDefault();
-        start("forward");
-      } else if (state === "end" && delta < -12) {
-        event.preventDefault();
-        start("reverse");
-      }
-    };
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (!isAtHero() || event.altKey || event.ctrlKey || event.metaKey) return;
-      if (event.target instanceof Element && event.target.closest("a, button, input, textarea, select, [contenteditable]")) return;
-      const down = ["ArrowDown", "PageDown"].includes(event.key) || (event.key === " " && !event.shiftKey);
-      const up = ["ArrowUp", "PageUp"].includes(event.key) || (event.key === " " && event.shiftKey);
-      if (state === "forward" || state === "reverse") {
-        if (down || up) event.preventDefault();
-      } else if (state === "start" && down) {
-        event.preventDefault();
-        start("forward");
-      } else if (state === "end" && up) {
-        event.preventDefault();
-        start("reverse");
-      }
-    };
-
-    const onResize = () => render(progress);
-
-    render(0);
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("resize", onResize);
     return () => {
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("resize", onResize);
       if (frame) window.cancelAnimationFrame(frame);
+      image?.removeEventListener("load", onImageReady);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", startWhenReady);
     };
   }, []);
 
   return (
-    <section ref={journeyRef} className={styles.journey} aria-labelledby="special-project-title">
+    <section className={styles.journey} aria-labelledby="special-project-title">
       <div className={styles.stage}>
         <div ref={mapRef} className={styles.mapCanvas} aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -384,37 +310,21 @@ export function SpecialProjectHero() {
               <circle key={city} data-point={city} className={styles.cityPoint} cx={point.x} cy={point.y} r="3.4" />
             ))}
             {(Object.entries(cities) as [CityKey, typeof cities[CityKey]][]).filter(([, point]) => point.label).map(([city, point]) => (
-              <text key={city} data-label={city} className={styles.cityLabel} x={point.x + 9} y={point.y - 10}>{point.name}</text>
+              <text key={city} data-label={city} className={styles.cityLabel} x={point.x + (city === "vladivostok" ? -9 : 9)} y={point.y - 12} textAnchor={city === "vladivostok" ? "end" : "start"}>{point.name}</text>
             ))}
             <circle className={styles.originPoint} cx={cities.kaliningrad.x} cy={cities.kaliningrad.y} r="5" />
           </svg>
         </div>
 
         <div className={`container-page ${styles.copyWrap}`}>
-          <div ref={copyRef} className={styles.copy}>
+          <div className={styles.copy}>
             <h1 id="special-project-title" className={styles.title}>{keepRussianShortWords("От Калининграда до Владивостока")}</h1>
             <p className={styles.subtitle}>{keepRussianShortWords("как ИИ-агенты GigaCowork меняют российский бизнес")}</p>
             <div className={styles.actions}>
-              <Button href="#about-project" variant="secondary" size="lg" className={styles.primaryAction}>{keepRussianShortWords("О проекте")}</Button>
+              <Button href="#about-project" variant="secondary" size="lg">{keepRussianShortWords("О проекте")}</Button>
+              <Button href="/lead/" variant="primary" size="lg">{keepRussianShortWords("Попробовать GigaCowork")}</Button>
             </div>
           </div>
-          <div ref={cueRef} className={styles.scrollCue} aria-hidden="true">
-            <span className={styles.scrollMouse} />
-          </div>
-        </div>
-
-        <div ref={endRef} className={styles.endCaption} aria-hidden="true">
-          <strong>Владивосток</strong>
-          <div className={styles.endPrompt}>
-            <span className={styles.scrollMouse} />
-            <span>Кейсы</span>
-          </div>
-        </div>
-
-        <div className={styles.journeyBar} aria-hidden="true">
-          <span>Калининград</span>
-          <div ref={trackRef} className={styles.track}><i className={styles.trackDot} /></div>
-          <span>Владивосток</span>
         </div>
 
         <div className={`container-page ${styles.disclaimerWrap}`}>

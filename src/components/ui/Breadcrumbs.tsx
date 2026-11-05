@@ -127,7 +127,7 @@ export function Breadcrumbs({
         страниц идут ещё и декоративные слои — без явного уровня крошки
         оказывались под ними и не кликались.
       */
-      className={`absolute inset-x-0 top-[calc(var(--header-h)+24px)] z-10 md:top-[calc(var(--header-h)+32px)] ${className}`}
+      className={`absolute inset-x-0 top-[calc(var(--header-h)+var(--home-promo-h,0px)+24px)] z-10 md:top-[calc(var(--header-h)+var(--home-promo-h,0px)+32px)] ${className}`}
     >
       <div className="container-page">
         <Row items={items} />

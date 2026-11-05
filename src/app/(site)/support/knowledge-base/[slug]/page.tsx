@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import FaqAccordion from "@/components/interactive/FaqAccordion";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -70,7 +72,35 @@ export default async function KnowledgeBaseArticlePage({ params }: Props) {
           <FaqAccordion
             items={article.questions.map(({ question, answer }) => ({
               question,
-              answer: <p>{answer}</p>,
+              answer: (
+                <div className="min-w-0 space-y-16 overflow-x-auto">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      a: ({ children, ...props }) => (
+                        <a {...props} className="underline underline-offset-2 hover:text-text-primary">
+                          {children}
+                        </a>
+                      ),
+                      ul: ({ children }) => <ul className="list-disc space-y-8 pl-24">{children}</ul>,
+                      ol: ({ children }) => <ol className="list-decimal space-y-8 pl-24">{children}</ol>,
+                      table: ({ children }) => (
+                        <table className="w-full min-w-[520px] border-collapse text-left text-body-m">
+                          {children}
+                        </table>
+                      ),
+                      th: ({ children }) => (
+                        <th className="border border-border-subtle bg-bg-page p-12 font-medium text-text-primary">
+                          {children}
+                        </th>
+                      ),
+                      td: ({ children }) => <td className="border border-border-subtle p-12 align-top">{children}</td>,
+                    }}
+                  >
+                    {answer}
+                  </ReactMarkdown>
+                </div>
+              ),
             }))}
           />
         </div>

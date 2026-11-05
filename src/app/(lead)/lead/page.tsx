@@ -3,7 +3,9 @@ import { pageMetadata } from "@/lib/site";
 import Image from "@/components/ui/Image";
 import Link from "next/link";
 import LeadForm from "@/components/sections/LeadForm";
+import Icon from "@/components/ui/Icon";
 import { LEGAL_LINES } from "@/lib/legal";
+import { LEAD_COPY } from "@/content/lead-copy";
 
 /**
  * «Оставить заявку» — /lead
@@ -19,8 +21,7 @@ import { LEGAL_LINES } from "@/lib/legal";
 
 export const metadata: Metadata = pageMetadata({
   title: "Оставить заявку\u00A0— GigaCowork",
-  description:
-    "Оставьте заявку, чтобы получить 7\u00A0дней пробного доступа к\u00A0GigaCowork: безлимитные токены и готовое решение без\u00A0изменения ИТ-систем.",
+  description: LEAD_COPY.description,
   path: "/lead/",
 });
 
@@ -28,13 +29,6 @@ export const metadata: Metadata = pageMetadata({
 const PAGE_GRADIENT =
   "bg-[linear-gradient(67.445deg,#f0f8ff_7.1429%,#f7f7f8_78.571%)] " +
   "md:bg-[linear-gradient(27.277deg,#f0f8ff_7.1429%,#f7f7f8_78.571%)]";
-
-/** CTA / Copy — I2397:43441…43443 / 2397:43455…43459 */
-const BENEFITS = [
-  "7\u00A0дней пробного доступа к\u00A0GigaCowork",
-  "Безлимитное количество токенов",
-  "Готовое решение без\u00A0изменения ИТ-систем",
-];
 
 export default function LeadPage() {
   return (
@@ -75,24 +69,29 @@ export default function LeadPage() {
         {/* CTA / Left Column 2397:43436 — Hero / Intro 2397:43450 на мобильном */}
         <div className="flex w-full flex-col items-center gap-24 text-text-primary lg:min-w-0 lg:flex-1 lg:items-start lg:gap-64">
           <div className="flex w-full flex-col items-center gap-24 lg:items-start lg:gap-32">
-            <h1 className="w-full max-w-[522px] text-center text-h2 font-medium lg:text-left">
-              Готовы делегировать работу ИИ-агентам?
+            <h1 className="w-full max-w-[522px] text-center text-[26px] leading-[1.2] font-medium tracking-[-0.02em] md:text-h2 lg:text-left">
+              {LEAD_COPY.titleStart}<br />{LEAD_COPY.titleEnd}
             </h1>
             {/*
               Текст занимает доступную ширину левой колонки до 522 px.
               На узких экранах форма переходит под текст, чтобы обе колонки
               не сжимались до нескольких слов в строке.
             */}
-            <p className="w-full max-w-[522px] text-center text-body-l lg:text-left lg:text-pretty">
-              Оставьте заявку, чтобы получить <br className="md:hidden" />
-              пробный доступ к&nbsp;GigaCowork на&nbsp;7&nbsp;дней
+            <p className="w-full max-w-[522px] whitespace-pre-line text-center text-body-m min-[360px]:text-body-l lg:text-left lg:text-pretty">
+              {LEAD_COPY.intro}
             </p>
           </div>
 
           <ul className="flex w-full flex-col gap-16 md:gap-24">
-            {BENEFITS.map((item) => (
-              <li key={item} className="ms-24 list-disc text-body-l">
-                {item}
+            {LEAD_COPY.benefits.map((item) => (
+              <li key={item} className="flex items-start gap-12 text-body-l">
+                <span
+                  aria-hidden="true"
+                  className="flex size-[20px] shrink-0 items-center justify-center rounded-full bg-[image:var(--gradient-omni-neuton-2)] shadow-[inset_0_0_0_1px_rgba(23,31,45,0.12)]"
+                >
+                  <Icon src="/img/icons/check.svg" className="size-[18px] text-text-primary" />
+                </span>
+                <span>{item}</span>
               </li>
             ))}
           </ul>

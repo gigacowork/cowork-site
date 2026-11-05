@@ -28,6 +28,7 @@ export function UseCaseHero({
   breadcrumb,
   intro,
   ctaLabel = "Попробовать бесплатно",
+  ctaAriaLabel,
   ctaHref = "/lead",
   ctaNewTab = false,
   titleWidth = "720px",
@@ -42,6 +43,8 @@ export function UseCaseHero({
   intro: string[];
   /** Текст и адрес кнопки для страниц с собственным следующим шагом. */
   ctaLabel?: ReactNode;
+  /** Доступное название кнопки, когда вместо текста используется логотип. */
+  ctaAriaLabel?: string;
   ctaHref?: string | null;
   ctaNewTab?: boolean;
   /** Ширина заголовка от md и выше. */
@@ -69,7 +72,7 @@ export function UseCaseHero({
         («ИИ-агенты для финансов» в одну строку) блок схлопывался до 544 и
         срезал картинку почти вдвое.
       */
-      className={`relative isolate flex min-h-[720px] w-full flex-col justify-center overflow-hidden pt-[150px] pb-[72px] md:min-h-[760px] md:pt-[180px] md:pb-120 ${
+      className={`relative isolate flex min-h-[720px] w-full flex-col justify-center overflow-hidden pt-[calc(150px+var(--home-promo-h,0px))] pb-[72px] md:min-h-[760px] md:pt-[calc(180px+var(--home-promo-h,0px))] md:pb-120 ${
         image ? "bg-bg-page" : HERO_GRADIENT
       }`}
     >
@@ -123,7 +126,7 @@ export function UseCaseHero({
 
         <div className="flex">
           {ctaHref === null ? (
-            <Button variant="primary" size="lg" className="text-body-m!" disabled>
+            <Button variant="primary" size="lg" className="text-body-m!" aria-label={ctaAriaLabel} disabled>
               {ctaLabel}
             </Button>
           ) : (
@@ -134,6 +137,7 @@ export function UseCaseHero({
               variant="primary"
               size="lg"
               className="text-body-m!"
+              aria-label={ctaAriaLabel}
             >
               {ctaLabel}
             </Button>

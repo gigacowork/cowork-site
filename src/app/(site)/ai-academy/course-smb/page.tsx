@@ -17,7 +17,7 @@ export const metadata: Metadata = pageMetadata({
 export default function SmbCoursePage() {
   return (
     <>
-      <section className="relative isolate flex min-h-[594px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[152px] pb-80 md:min-h-[760px] md:pt-[272px] md:pb-96">
+      <section className="relative isolate flex min-h-[594px] w-full flex-col justify-center overflow-hidden bg-bg-page pt-[calc(152px+var(--home-promo-h,0px))] pb-80 md:min-h-[760px] md:pt-[calc(272px+var(--home-promo-h,0px))] md:pb-96">
         <Breadcrumbs items={[{ label: SMB_COURSE_BREADCRUMB_TITLE }]} />
         <HeroImage
           desktop="/img/academy/smb-course-hero.webp"
@@ -40,7 +40,7 @@ export default function SmbCoursePage() {
 
       <section
         id="start"
-        className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-120"
+        className="w-full scroll-mt-[calc(var(--header-h)+var(--home-promo-h,0px)+24px)] bg-bg-page py-64 md:py-120"
       >
         <div className="container-page flex flex-col gap-16">
           <Kicker>Обучение</Kicker>
@@ -60,7 +60,7 @@ export default function SmbCoursePage() {
 
       <section
         id="lessons"
-        className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-[linear-gradient(198.41deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)] py-64 md:py-120"
+        className="w-full scroll-mt-[calc(var(--header-h)+var(--home-promo-h,0px)+24px)] bg-[linear-gradient(198.41deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)] py-64 md:py-120"
       >
         <div className="container-page flex flex-col gap-32 md:gap-48">
           <div className="flex flex-col gap-16">

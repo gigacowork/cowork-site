@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { OfficeCases } from "@/components/interactive/OfficeCases";
+import { FinalCta } from "@/components/sections/FinalCta";
 import { VISIBLE_CASES } from "@/content/cases";
 import { pageMetadata } from "@/lib/site";
 import { AboutSpecialProject } from "./AboutSpecialProject";
@@ -19,6 +20,8 @@ export default function SpecialProjectPage() {
       <SpecialProjectHero />
 
       <AboutSpecialProject />
+
+      <FinalCta background="slab" />
 
       <OfficeCases cases={VISIBLE_CASES} />
     </>

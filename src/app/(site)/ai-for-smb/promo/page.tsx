@@ -127,7 +127,7 @@ const FAQ: FaqItem[] = [
 export default function SmbPromoPage() {
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-bg-page pt-[152px] pb-80 md:pt-[200px] md:pb-120">
+      <section className="relative isolate overflow-hidden bg-bg-page pt-[calc(152px+var(--home-promo-h,0px))] pb-80 md:pt-[calc(200px+var(--home-promo-h,0px))] md:pb-120">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(198.41deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)]" />
         <Breadcrumbs items={[{ label: "ИИ-команда в подарок" }]} />
         <div className="container-page grid items-center gap-48 lg:grid-cols-[minmax(0,1fr)_420px]">
@@ -207,7 +207,7 @@ export default function SmbPromoPage() {
 
       <section
         id="conditions"
-        className="scroll-mt-[calc(var(--header-h)+24px)] bg-[linear-gradient(198.41deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)] py-64 md:py-120"
+        className="scroll-mt-[calc(var(--header-h)+var(--home-promo-h,0px)+24px)] bg-[linear-gradient(198.41deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)] py-64 md:py-120"
       >
         <div className="container-page grid gap-32 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-64">
           <div className="flex flex-col items-start gap-16">
@@ -250,7 +250,7 @@ export default function SmbPromoPage() {
 
       <section
         id="how-to-join"
-        className="scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-120"
+        className="scroll-mt-[calc(var(--header-h)+var(--home-promo-h,0px)+24px)] bg-bg-page py-64 md:py-120"
       >
         <div className="container-page flex flex-col gap-32 md:gap-48">
           <div className="flex flex-col gap-16">

@@ -169,7 +169,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
 
   return (
     <>
-      <section className="w-full bg-[linear-gradient(206.5deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)] pt-[calc(var(--header-h)+32px)] pb-64 md:pt-[calc(var(--header-h)+48px)] md:pb-96">
+      <section className="w-full bg-[linear-gradient(206.5deg,#d4e2ff_10.994%,#b3ebf6_79.923%,#b3f6e1_101.64%)] pt-[calc(var(--header-h)+var(--home-promo-h,0px)+32px)] pb-64 md:pt-[calc(var(--header-h)+var(--home-promo-h,0px)+48px)] md:pb-96">
         <div className="container-page">
           <Breadcrumbs
             variant="inline"
@@ -406,7 +406,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
           ) : null}
 
           <div className="flex min-w-0 flex-col gap-24 md:gap-32">
-          <section id={lesson.number === 2 ? "first-task" : undefined} className={`flex scroll-mt-[calc(var(--header-h)+24px)] flex-col gap-16 ${LESSON_HIGHLIGHT_CLASS}`}>
+          <section id={lesson.number === 2 ? "first-task" : undefined} className={`flex scroll-mt-[calc(var(--header-h)+var(--home-promo-h,0px)+24px)] flex-col gap-16 ${LESSON_HIGHLIGHT_CLASS}`}>
             <h2 className="text-h3 font-medium text-text-primary">
               {lesson.practiceTitle ?? "Практика"}
             </h2>
@@ -546,7 +546,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
           </nav>
         </article>
 
-        <aside className="self-start lg:sticky lg:top-[calc(var(--header-h)+24px)]">
+        <aside className="self-start lg:sticky lg:top-[calc(var(--header-h)+var(--home-promo-h,0px)+24px)]">
           <div className="rounded-24 border border-border-subtle bg-bg-card p-24 shadow-elevation-xs">
             <h2 className="text-h4 font-medium text-text-primary">
               Содержание курса
