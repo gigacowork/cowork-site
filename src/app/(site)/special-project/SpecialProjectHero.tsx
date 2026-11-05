@@ -187,6 +187,17 @@ export function SpecialProjectHero() {
     const lengths = cores.map((path) => path.getTotalLength());
     let frame = 0;
 
+    const keepKaliningradBelowHeader = () => {
+      const label = map.querySelector<SVGTextElement>('[data-label="kaliningrad"]');
+      const svg = label?.ownerSVGElement;
+      const header = document.querySelector("header");
+      if (!label || !svg || !header) return;
+      label.setAttribute("dy", "0");
+      const overlap = header.getBoundingClientRect().bottom + 12 - label.getBoundingClientRect().top;
+      const scale = svg.getBoundingClientRect().height / 941;
+      if (overlap > 0 && scale > 0) label.setAttribute("dy", String(overlap / scale));
+    };
+
     const render = (progress: number) => {
       beams.forEach((path) => {
         const index = Number(path.dataset.route);
@@ -223,9 +234,12 @@ export function SpecialProjectHero() {
       });
     };
 
+    keepKaliningradBelowHeader();
+    window.addEventListener("resize", keepKaliningradBelowHeader);
+
     if (motion.matches || window.matchMedia("(max-width: 767px)").matches) {
       render(1);
-      return;
+      return () => window.removeEventListener("resize", keepKaliningradBelowHeader);
     }
 
     const duration = 4800;
@@ -274,6 +288,7 @@ export function SpecialProjectHero() {
       image?.removeEventListener("load", onImageReady);
       observer.disconnect();
       document.removeEventListener("visibilitychange", startWhenReady);
+      window.removeEventListener("resize", keepKaliningradBelowHeader);
     };
   }, []);
 
@@ -310,7 +325,7 @@ export function SpecialProjectHero() {
               <circle key={city} data-point={city} className={styles.cityPoint} cx={point.x} cy={point.y} r="3.4" />
             ))}
             {(Object.entries(cities) as [CityKey, typeof cities[CityKey]][]).filter(([, point]) => point.label).map(([city, point]) => (
-              <text key={city} data-label={city} className={styles.cityLabel} x={point.x + (city === "vladivostok" ? -9 : 9)} y={point.y - 12} textAnchor={city === "vladivostok" ? "end" : "start"}>{point.name}</text>
+              <text key={city} data-label={city} className={styles.cityLabel} x={point.x + (city === "vladivostok" ? -9 : 9)} y={point.y + (city === "kaliningrad" ? 25 : -12)} textAnchor={city === "vladivostok" ? "end" : "start"}>{point.name}</text>
             ))}
             <circle className={styles.originPoint} cx={cities.kaliningrad.x} cy={cities.kaliningrad.y} r="5" />
           </svg>
@@ -321,7 +336,6 @@ export function SpecialProjectHero() {
             <h1 id="special-project-title" className={styles.title}>{keepRussianShortWords("От Калининграда до Владивостока")}</h1>
             <p className={styles.subtitle}>{keepRussianShortWords("как ИИ-агенты GigaCowork меняют российский бизнес")}</p>
             <div className={styles.actions}>
-              <Button href="#about-project" variant="secondary" size="lg">{keepRussianShortWords("О проекте")}</Button>
               <Button href="/lead/" variant="primary" size="lg">{keepRussianShortWords("Попробовать GigaCowork")}</Button>
             </div>
           </div>

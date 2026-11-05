@@ -92,7 +92,6 @@ const CATEGORIES: Category[] = [
       { label: "Exchange", slug: "exchange" },
       { label: "Mail Почта", slug: "mail-pochta" },
       { label: "Яндекс Почта", slug: "yandex-mail" },
-      { label: "IMAP", slug: "imap" },
     ],
   },
   {

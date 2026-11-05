@@ -1,6 +1,6 @@
 .journey{position:relative;height:680px;background:#0b2054}
 .stage{position:relative;width:100%;height:100%;min-height:0;overflow:hidden;isolation:isolate;background:#0b2054}
-.mapCanvas{position:absolute;z-index:0;top:50%;left:50%;width:max(100%,1220px);aspect-ratio:1672/941;transform:translate(-50%,-50%);pointer-events:none}
+.mapCanvas{position:absolute;z-index:0;top:50%;left:50%;width:max(100%,1220px);aspect-ratio:1672/941;transform:translate(-50%,-50%);filter:saturate(.82) brightness(.96);pointer-events:none}
 .mapImage{display:block;width:100%;height:100%;object-fit:fill}
 .uralsRelief{position:absolute;top:31.8%;left:38.3%;display:block;width:10%;height:auto;opacity:.58;mix-blend-mode:soft-light;filter:brightness(.58) saturate(1.25) blur(.35px);pointer-events:none}
 .routes{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
@@ -10,7 +10,7 @@
 .branchBeam{fill:none;stroke:#c7f4ff;stroke-width:1;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:.72;filter:drop-shadow(0 0 3px #8aeaff)}
 .branchPoint{fill:#e9fbff;opacity:0;filter:drop-shadow(0 0 4px #83eaff)}
 .cityPoint{fill:#fff;opacity:0;filter:drop-shadow(0 0 5px #60e7ff) drop-shadow(0 0 12px #f0baff)}
-.cityLabel{fill:#fff;stroke:#28447f;stroke-width:3px;paint-order:stroke fill;opacity:0;font-family:var(--font-sans);font-size:14px;font-weight:650;filter:drop-shadow(0 0 3px #74e8ff)}
+.cityLabel{fill:#fff;opacity:0;font-family:var(--font-sans);font-size:14px;font-weight:650;filter:drop-shadow(0 1px 3px rgba(9,24,61,.75))}
 .pulsePoint{fill:#fff;opacity:0;filter:drop-shadow(0 0 7px #fff) drop-shadow(0 0 14px #80eaff)}
 .originPoint{fill:#fff;filter:drop-shadow(0 0 7px #fff) drop-shadow(0 0 19px #8deaff)}
 .copyWrap{position:absolute;z-index:2;inset:0;display:flex;align-items:flex-end;padding-top:var(--header-h);padding-bottom:58px;pointer-events:none}
@@ -20,7 +20,7 @@
 .actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:34px}
 .disclaimerWrap{position:absolute;z-index:2;right:0;bottom:12px;left:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .disclaimerWrap::-webkit-scrollbar{display:none}
-.disclaimer{display:block;width:max-content;margin-left:auto;color:#d8e6ff;font-family:var(--font-sans);font-size:12px;font-weight:500;line-height:1.4;white-space:nowrap}
+.disclaimer{display:block;width:max-content;margin-left:auto;color:#d8e6ff;font-family:var(--font-sans);font-size:12px;font-weight:500;line-height:1.4;white-space:nowrap;text-shadow:0 1px 3px rgba(8,24,58,.5)}
 @media(min-width:768px) and (max-width:1023px){
 .mapCanvas{width:1040px;mask-image:linear-gradient(180deg,transparent 0%,#000 13%,#000 87%,transparent 100%)}
 }
