@@ -86,6 +86,7 @@ export default async function SmbUseCasePage({
         ctaNewTab
         image={item.heroImage}
         imageMobile={item.heroImageMobile}
+        imageClassName={item.heroImageClassName}
       />
 
       <section

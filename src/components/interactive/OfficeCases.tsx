@@ -11,12 +11,15 @@ import type { CaseStudy } from "@/content/cases";
 import styles from "./office-cases.module.css";
 
 const departments = [
-  { id: "hr", label: "HR и кадры", icon: "/img/icons/users-round.svg", x: 17, y: 12, robotX: 19, robotY: 37, activityX: 25, activityY: 29, glowX: 17, glowY: 33, task: "Подбор кандидатов", companies: ["ФосАгро"] },
-  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg", x: 44, y: 12, robotX: 51, robotY: 37, activityX: 59, activityY: 29, glowX: 48, glowY: 32, task: "Подготовка отчета", companies: ["АПРИ"] },
-  { id: "legal", label: "Юристы", icon: "/img/icons/document.svg", x: 78, y: 12, robotX: 90, robotY: 40, activityX: 91, activityY: 29, glowX: 78, glowY: 33, task: "Проверка договора", companies: [] },
-  { id: "it", label: "ИТ", icon: "/img/icons/cpu.svg", x: 18, y: 88, robotX: 29, robotY: 67, activityX: 26, activityY: 54, glowX: 18, glowY: 69, task: "Проверка кода", companies: ["Directum"] },
-  { id: "procurement", label: "Закупки", icon: "/img/icons/supplier.svg", x: 56, y: 89, robotX: 65, robotY: 66, activityX: 69, activityY: 55, glowX: 56, glowY: 69, task: "Подбор поставщиков", companies: [] },
-  { id: "service", label: "Клиентский сервис", icon: "/img/icons/messages-square.svg", x: 83, y: 90, robotX: 91, robotY: 73, activityX: 91, activityY: 56, glowX: 83, glowY: 72, task: "Обработка обращений", companies: ["BI Group", "versta.io"] },
+  { id: "hr", label: "HR", icon: "/img/icons/users-round.svg", x: 15, y: 10, robotX: 16, robotY: 31, activityX: 20, activityY: 24, glowX: 15, glowY: 29, task: "Подбор кандидатов", companies: ["ФосАгро"] },
+  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg", x: 33, y: 10, robotX: 34, robotY: 31, activityX: 39, activityY: 24, glowX: 33, glowY: 29, task: "Подготовка отчета", companies: ["АПРИ"] },
+  { id: "legal", label: "Юридический отдел", icon: "/img/icons/document.svg", x: 50, y: 10, robotX: 51, robotY: 31, activityX: 56, activityY: 24, glowX: 50, glowY: 29, task: "Проверка договора", companies: [] },
+  { id: "marketing", label: "Маркетинг", icon: "/img/icons/chart-no-axes-combined.svg", x: 68, y: 10, robotX: 69, robotY: 31, activityX: 74, activityY: 24, glowX: 68, glowY: 29, task: "Анализ конкурентов", companies: [] },
+  { id: "project", label: "Проектный офис", icon: "/img/icons/reports.svg", x: 86, y: 10, robotX: 86, robotY: 31, activityX: 91, activityY: 24, glowX: 86, glowY: 29, task: "Планирование проекта", companies: [] },
+  { id: "sales", label: "Продажи", icon: "/img/icons/commercial-offer.svg", x: 19, y: 87, robotX: 19, robotY: 66, activityX: 24, activityY: 59, glowX: 19, glowY: 66, task: "Подготовка предложения", companies: ["BI Group"] },
+  { id: "procurement", label: "Закупки", icon: "/img/icons/supplier.svg", x: 40, y: 87, robotX: 40, robotY: 66, activityX: 45, activityY: 59, glowX: 40, glowY: 66, task: "Подбор поставщиков", companies: [] },
+  { id: "logistics", label: "Логистика", icon: "/img/icons/truck.svg", x: 61, y: 87, robotX: 61, robotY: 66, activityX: 66, activityY: 59, glowX: 61, glowY: 66, task: "Планирование поставки", companies: [] },
+  { id: "production", label: "Производство и сервис", icon: "/img/icons/factory.svg", x: 82, y: 87, robotX: 82, robotY: 66, activityX: 87, activityY: 59, glowX: 82, glowY: 66, task: "Контроль качества", companies: [] },
 ] as const;
 
 type DepartmentId = (typeof departments)[number]["id"];
@@ -24,12 +27,15 @@ type FilterId = DepartmentId | "all" | "other";
 
 const caseFilters = [
   { id: "all", label: "Бэк-офис", icon: "/img/icons/building.svg" },
-  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg" },
   { id: "hr", label: "HR", icon: "/img/icons/users-round.svg" },
+  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg" },
   { id: "legal", label: "Юридический отдел", icon: "/img/icons/document.svg" },
+  { id: "marketing", label: "Маркетинг", icon: "/img/icons/chart-no-axes-combined.svg" },
+  { id: "project", label: "Проектный офис", icon: "/img/icons/reports.svg" },
+  { id: "sales", label: "Продажи", icon: "/img/icons/commercial-offer.svg" },
   { id: "procurement", label: "Закупки", icon: "/img/icons/supplier.svg" },
-  { id: "it", label: "ИТ", icon: "/img/icons/cpu.svg" },
-  { id: "service", label: "Клиентский сервис", icon: "/img/icons/messages-square.svg" },
+  { id: "logistics", label: "Логистика", icon: "/img/icons/truck.svg" },
+  { id: "production", label: "Производство и сервис", icon: "/img/icons/factory.svg" },
   { id: "other", label: "Другие направления", icon: "/img/icons/network.svg" },
 ] as const;
 
@@ -154,8 +160,8 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
             <div className={styles.officeFrame}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={asset("/img/special-project/office-open-plan.webp")}
-                alt="Изометрическая схема офиса с шестью отделами компании"
+                src={asset("/img/special-project/pic_office.webp")}
+                alt="Изометрическая схема офиса с девятью отделами компании"
                 className={styles.officeImage}
               />
               {activeRoom ? (

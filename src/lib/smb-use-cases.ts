@@ -14,6 +14,7 @@ export type SmbUseCase = {
   heroTitleWidth?: string;
   heroImage: string;
   heroImageMobile: string;
+  heroImageClassName?: string;
   scenariosTitle: string;
   scenarios: UseCaseScenario[];
   stepsTitle: string;
@@ -31,6 +32,7 @@ export const SMB_USE_CASES: SmbUseCase[] = [
     ],
     heroImage: "/img/use-cases/smb-customer-hero.webp",
     heroImageMobile: "/img/use-cases/smb-customer-hero.webp",
+    heroImageClassName: "md:origin-top-left md:scale-[1.26]",
     scenariosTitle: "Быстрее обрабатывайте и забирайте в работу входящие заказы",
     scenarios: [
       {

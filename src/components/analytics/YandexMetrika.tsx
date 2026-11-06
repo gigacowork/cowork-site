@@ -21,9 +21,21 @@ import { Suspense, useEffect, useRef } from "react";
  *    отрабатывает один раз. Поэтому на смену адреса шлём `hit` сами — так
  *    считается каждая страница, а не только та, с которой начали.
  *
- * Идентификатор держим здесь одной константой: он же нужен вызову `hit`.
+ * Оба счётчика получают просмотры страниц. Вебвизор остаётся только у
+ * основного счётчика, как рекомендует Яндекс для нескольких счётчиков.
  */
-const COUNTER_ID = 109302007;
+const PRIMARY_COUNTER_ID = 109302007;
+const ADDITIONAL_COUNTER_ID = 31643078;
+const COUNTER_IDS = [PRIMARY_COUNTER_ID, ADDITIONAL_COUNTER_ID] as const;
+
+function loader(counterId: number) {
+  return `(function(m,e,t,r,i,k,a){
+   m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+})(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=${counterId}', 'ym');`;
+}
 
 function MetrikaHits() {
   const pathname = usePathname();
@@ -41,10 +53,12 @@ function MetrikaHits() {
     }
     const ym = (window as unknown as { ym?: (...args: unknown[]) => void }).ym;
     if (typeof ym !== "function") return;
-    ym(COUNTER_ID, "hit", window.location.href, {
-      referer: document.referrer,
-      title: document.title,
-    });
+    for (const counterId of COUNTER_IDS) {
+      ym(counterId, "hit", window.location.href, {
+        referer: document.referrer,
+        title: document.title,
+      });
+    }
   }, [pathname, searchParams]);
 
   return null;
@@ -54,13 +68,10 @@ export function YandexMetrika() {
   return (
     <>
       <Script id="yandex-metrika" strategy="afterInteractive">
-        {`(function(m,e,t,r,i,k,a){
-   m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-   m[i].l=1*new Date();
-   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-})(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=${COUNTER_ID}', 'ym');
-ym(${COUNTER_ID}, 'init', {ssr:true, webvisor:true, clickmap:true, referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});`}
+        {`${loader(PRIMARY_COUNTER_ID)}
+ym(${PRIMARY_COUNTER_ID}, 'init', {ssr:true, webvisor:true, clickmap:true, referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+${loader(ADDITIONAL_COUNTER_ID)}
+ym(${ADDITIONAL_COUNTER_ID}, 'init', {ssr:true, clickmap:true, referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});`}
       </Script>
 
       {/*
@@ -73,11 +84,14 @@ ym(${COUNTER_ID}, 'init', {ssr:true, webvisor:true, clickmap:true, referrer: doc
 
       <noscript>
         <div>
-          <img
-            src={`https://mc.yandex.ru/watch/${COUNTER_ID}`}
-            style={{ position: "absolute", left: "-9999px" }}
-            alt=""
-          />
+          {COUNTER_IDS.map((counterId) => (
+            <img
+              key={counterId}
+              src={`https://mc.yandex.ru/watch/${counterId}`}
+              style={{ position: "absolute", left: "-9999px" }}
+              alt=""
+            />
+          ))}
         </div>
       </noscript>
     </>

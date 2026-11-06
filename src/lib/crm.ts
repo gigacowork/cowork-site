@@ -21,10 +21,6 @@ import { absoluteUrl } from "@/lib/site";
 export const CRM_WEBHOOK =
   "https://app.sbercrm.com/react-gateway/api/webhook/22f4c432-27f6-4862-bae2-d1298f3bd468";
 
-/** Отдельный вебхук мероприятия — заявки со стенда GigaConf. */
-export const GIGACONF_WEBHOOK =
-  "https://app.sbercrm.com/react-gateway/api/webhook/baf83ad4-8876-4515-8a35-e87122a115dd";
-
 /** Значения полей формы — ровно то, что ввёл пользователь. */
 export type LeadFields = {
   name: string;
@@ -60,28 +56,6 @@ export const PARTNER_LEAD: LeadTarget = {
   title: "Новый лид - партнер",
   source: "enterprisegigachatpartners",
   relationType: "Partner",
-};
-
-/**
- * Форма мероприятия — /lead-gigaconf/
- *
- * Свой вебхук: заявки со стенда не смешиваются с партнёрскими. Полей всего
- * три, поэтому ни компании, ни ИНН в теле нет — менеджер уточняет их при
- * созвоне.
- *
- * `source` — значение из справочника `istochnik_lida` на стороне CRM. Список
- * закрытый: на любое слово не из справочника вебхук отвечает 400 и «Не найдено
- * значение … в справочнике istochnik_lida», заявка при этом не создаётся.
- * Поэтому произвольную метку сюда писать нельзя.
- *
- * `event` — карточка мероприятия в CRM, к которой подшиваются заявки.
- */
-export const GIGACONF_LEAD: LeadTarget = {
-  title: "Новый лид - GigaConf",
-  source: "event_konferencziya",
-  event: "acb5b017-400e-42f1-a13c-c8136a36e75b",
-  endpoint: GIGACONF_WEBHOOK,
-  page: "/lead-gigaconf/",
 };
 
 /**
