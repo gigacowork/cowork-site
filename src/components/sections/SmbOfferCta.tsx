@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/Button";
 import { HeroImage } from "@/components/ui/HeroImage";
-import { SberBusinessIdLogo } from "@/components/ui/SberBusinessIdLogo";
 import { PROMO_TERMS_URL } from "@/lib/legal";
 
-export const SMB_CTA_URL = "https://cowork.ru/lead/?loginDCB=true&userType=WEB";
+export const SMB_CTA_URL =
+  "https://www.sberbank.ru/ru/s_m_business/nbs/gigacowork?utm_source=gigacowork&utm_medium=site&utm_campaign=185mmb-gigacowork";
 export const SMB_RKO_URL =
   process.env.NEXT_PUBLIC_SMB_RKO_URL?.trim() ||
   "https://www.sberbank.ru/ru/s_m_business/bankingservice/rko";
@@ -46,9 +46,8 @@ export function SmbOfferCta() {
               rel="noopener noreferrer"
               variant="primary"
               size="lg"
-              aria-label="Войти через СберБизнес ID"
             >
-              <SberBusinessIdLogo />
+              Оставить заявку
             </Button>
           </div>
 

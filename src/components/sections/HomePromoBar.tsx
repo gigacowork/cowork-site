@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/Button";
-import { SberBusinessIdLogo } from "@/components/ui/SberBusinessIdLogo";
 import { SMB_CTA_URL, SMB_RKO_URL } from "@/components/sections/SmbOfferCta";
 import { asset } from "@/lib/asset";
 import { PROMO_TERMS_URL } from "@/lib/legal";
@@ -26,10 +25,9 @@ export function HomePromoBar({ onClose }: { onClose: () => void }) {
           rel="noopener noreferrer"
           variant="ghost"
           size="sm"
-          aria-label="Войти через СберБизнес ID"
           className="h-32 shrink-0 max-[900px]:bg-action-primary-disabled! max-[900px]:hover:bg-action-primary-disabled!"
         >
-          <SberBusinessIdLogo size="small" />
+          Оставить заявку
         </Button>
 
         <div className="flex min-w-0 items-center gap-12 text-caption leading-[1.2] tracking-[-0.02em] min-[900px]:gap-[14px] min-[900px]:text-body-m">

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import AcademyLessons from "@/components/academy/AcademyLessons";
-import ScenarioVideos from "@/components/academy/ScenarioVideos";
+import ScenarioVideos, { TutorialVideos } from "@/components/academy/ScenarioVideos";
 import SmbLessonCard from "@/components/academy/SmbLessonCard";
 import {
   CourseModules,
@@ -57,10 +57,6 @@ const COURSES_GRADIENT =
 /** Карточка формата обучения — Gradient/Omni/Blue_light (5265:82951). */
 const PROCESS_CARD_GRADIENT =
   "bg-[linear-gradient(227.17deg,#edf6ff_10.474%,#d4eeef_94.872%)]";
-/** Карточка туториала — Gradient/Omni/Neuton_Light_3 (5272:83063). */
-const WORKSPACE_CARD_GRADIENT =
-  "bg-[linear-gradient(54.73deg,#c5f8e5_0.952%,#dcf9ff_50.802%,#e4f5ff_101.64%)]";
-
 /* ──────────────────────────────── данные ───────────────────────────────── */
 
 type Format = {
@@ -90,33 +86,6 @@ const FORMATS: Format[] = [
     title: "Курсы",
     text: "Последовательно осваивайте GigaCowork: от базовых возможностей до комплексных рабочих процессов",
     illustration: <CourseModules modules={2} />,
-  },
-];
-
-type Tutorial = {
-  title: React.ReactNode;
-  text: string;
-};
-
-/** «Туториалы» — 5272:83062. */
-const TUTORIALS: Tutorial[] = [
-  {
-    title: (
-      <>
-        Скоринг
-        <br />
-        кандидатов
-      </>
-    ),
-    text: "Как автоматически определить наиболее подходящего кандидата и направить приглашение на интервью",
-  },
-  {
-    title: "Анализ клиентской базы",
-    text: "Как сегментировать клиентскую базу, выявлять перспективных клиентов и вовремя возвращать неактивных",
-  },
-  {
-    title: "Автоматизация процесса закупок",
-    text: "Как оценивать потребности, сравнивать предложения поставщиков и вовремя планировать закупки",
   },
 ];
 
@@ -278,6 +247,27 @@ export default function AiAcademyPage() {
         </div>
       </section>
 
+      {/* Туториалы (5196:54326 / 5340:37593). */}
+      <section
+        id="tutorials"
+        className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-96"
+      >
+        <div className="container-page flex flex-col gap-32 md:gap-48">
+          <SectionHeader
+            title="Туториалы"
+            text={
+              <>
+                Разбирайтесь в&nbsp;широких возможностях продукта{" "}
+                <br className="hidden md:block" />
+                с&nbsp;помощью коротких видео и&nbsp;понятных пошаговых
+                инструкций
+              </>
+            }
+          />
+          <TutorialVideos />
+        </div>
+      </section>
+
       {/* ── Курс для малого бизнеса: горизонтальная лента уроков ── */}
       <NativeScrollCards>
         <section
@@ -291,7 +281,7 @@ export default function AiAcademyPage() {
             </h2>
             <p className="max-w-[740px] text-body-l text-text-secondary">
               Идите по порядку или начните с темы, которая сейчас важнее для
-              вашего бизнеса. В каждом уроке есть рабочий пример и задание для
+              вашего бизнеса. В каждом уроке есть рабочий пример и&nbsp;задание для
               практики.
             </p>
           </div>
@@ -356,42 +346,6 @@ export default function AiAcademyPage() {
                 <p className="relative z-10 text-body-m text-text-secondary">
                   {format.text}
                 </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* Временно скрыто: Туториалы (5196:54326). */}
-      <section
-        hidden
-        id="tutorials"
-        className="w-full scroll-mt-[calc(var(--header-h)+24px)] bg-bg-page py-64 md:py-96"
-      >
-        <div className="container-page flex flex-col gap-32 md:gap-48">
-          <SectionHeader
-            title="Туториалы"
-            text={
-              <>
-                Разбирайтесь в&nbsp;широких возможностях продукта{" "}
-                <br className="hidden md:block" />
-                с&nbsp;помощью коротких видео и&nbsp;понятных пошаговых
-                инструкций
-              </>
-            }
-          />
-          <ul className="grid gap-24 lg:grid-cols-3">
-            {TUTORIALS.map((item) => (
-              <li
-                key={item.text}
-                className={`flex min-h-[324px] flex-col overflow-hidden rounded-24 px-40 pt-40 pb-24 ${WORKSPACE_CARD_GRADIENT}`}
-              >
-                <div className="flex flex-col gap-16">
-                  <h3 className="text-h3 font-medium text-text-primary">
-                    {item.title}
-                  </h3>
-                  <p className="text-body-l text-text-secondary">{item.text}</p>
-                </div>
               </li>
             ))}
           </ul>

@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { SMB_CTA_URL, SmbOfferCta } from "@/components/sections/SmbOfferCta";
 import { Button } from "@/components/ui/Button";
 import { Kicker } from "@/components/ui/Kicker";
-import { SberBusinessIdLogo } from "@/components/ui/SberBusinessIdLogo";
 import { Lines } from "@/components/use-cases/Lines";
 import { ScenarioStack } from "@/components/use-cases/ScenarioStack";
 import { UseCaseHero } from "@/components/use-cases/UseCaseHero";
@@ -80,8 +79,7 @@ export default async function SmbUseCasePage({
         breadcrumb={item.navLabel}
         intro={item.intro}
         titleWidth={item.heroTitleWidth}
-        ctaLabel={<SberBusinessIdLogo />}
-        ctaAriaLabel="Войти через СберБизнес ID"
+        ctaLabel="Оставить заявку"
         ctaHref={SMB_CTA_URL}
         ctaNewTab
         image={item.heroImage}
