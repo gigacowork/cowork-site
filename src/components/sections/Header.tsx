@@ -273,7 +273,7 @@ export function Header() {
     };
   }, []);
 
-  const surface = scrolled || menuOpen || pathname.startsWith("/special-project");
+  const surface = scrolled || menuOpen;
 
   return (
     /*

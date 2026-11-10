@@ -4,6 +4,12 @@
 
 **Стек:** Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS v4 (CSS-first `@theme`, без `tailwind.config.js`).
 
+## Исключения Git-релиза
+
+При переносе изменений из мастер-папки не добавляйте маршрут `/special-project/`,
+уведомление о нём и изображения `public/img/special-project/`. Документация
+`public/docs/` и `public/ai-platform/docs/` публикуется отдельно.
+
 ## Запуск
 
 ```bash

@@ -18,7 +18,6 @@ import StackingCards from "@/components/interactive/StackingCards";
 import CountUp from "@/components/interactive/CountUp";
 import RevealCards from "@/components/interactive/RevealCards";
 import TokenIllustrations from "@/components/interactive/TokenIllustrations";
-import { SpecialProjectNotice } from "@/components/interactive/SpecialProjectNotice";
 
 /* Шапка и подвал — в src/app/layout.tsx, они общие для всех страниц. */
 
@@ -32,7 +31,6 @@ export default function Home() {
   return (
     <>
       <JsonLd data={PAGE_SEO.home.jsonLd!} />
-      <SpecialProjectNotice />
 
       {/* 2 — Hero + анимированный чат */}
       <HeroWithChat />

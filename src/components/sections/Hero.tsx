@@ -32,7 +32,7 @@ import { Button } from "@/components/ui/Button";
  * Полоса подложки.
  *
  * Мобильный: слой равен секции, работает обычный cover. Отдельный кадр
- * pic_home_mob.webp (1170×1680) уже обрезан под вертикальный экран, поэтому
+ * pic_home_mob-no-arc.webp (1170×1677) уже обрезан под вертикальный экран, поэтому
  * сдвигать и растягивать слой, как раньше, не нужно.
  * Десктоп: слой во всю ширину и высотой под hero с раскрытым чатом (≈1183px).
  */
@@ -75,7 +75,7 @@ export function Hero({ chat }: HeroProps) {
         <div className={`absolute ${BKG_BAND}`}>
           <HeroImage
             desktop="/img/pic_home.webp"
-            mobile="/img/pic_home_mob.webp"
+            mobile="/img/pic_home_mob-no-arc.webp"
             className="absolute inset-0 size-full object-cover [object-position:center_top]"
           />
         </div>
