@@ -18,10 +18,11 @@ permissions:
   pages: write
   id-token: write
 
-# Параллельные деплои не нужны: держим один, лишние отменяем.
+# Параллельные деплои не нужны: держим один, следующий ждёт завершения.
+# Расписание не должно отменять публикацию, если GitHub Pages отвечает медленно.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -63,3 +64,5 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          timeout: 1200000

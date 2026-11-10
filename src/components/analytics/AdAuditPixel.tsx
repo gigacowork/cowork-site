@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 /**
  * Пиксели аудита размещения из файлов «Пиксель ERID».
@@ -17,18 +18,20 @@ function pixelUrl(id: AdAuditPixelId, random: string, tail?: string) {
 }
 
 export function AdAuditPixel({ id }: { id: AdAuditPixelId }) {
+  const pathname = usePathname();
   const [src, setSrc] = useState<string | null>(null);
-  const loadedId = useRef<AdAuditPixelId | null>(null);
+  const loadedPage = useRef<string | null>(null);
 
   useEffect(() => {
-    if (loadedId.current === id) return;
-    loadedId.current = id;
+    const page = `${id}:${pathname}`;
+    if (loadedPage.current === page) return;
+    loadedPage.current = page;
     const random = String(Math.round(Math.random() * 1_000_000_000));
     const tail = document.referrer
       ? encodeURIComponent(document.referrer)
       : "unknown";
     setSrc(pixelUrl(id, random, tail));
-  }, [id]);
+  }, [id, pathname]);
 
   return (
     <>
