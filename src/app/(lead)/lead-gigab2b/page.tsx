@@ -77,15 +77,14 @@ export default function LeadGigaB2BPage() {
         <section className={styles.copy} aria-labelledby="lead-gigab2b-title">
           <div className={styles.intro}>
             <h1 id="lead-gigab2b-title">{LEAD_COPY.titleStart}<br />{LEAD_COPY.titleEnd}</h1>
-            <p className={styles.desktopSubtitle}>{LEAD_COPY.intro}</p>
+            <p className={styles.subtitle}>{LEAD_COPY.intro}</p>
           </div>
           <ul className={styles.benefits}>
-            <li className={styles.mobileBenefit}><Check mobile /><span>{LEAD_COPY.intro}</span></li>
-            {LEAD_COPY.benefits.map((benefit, index) => (
+            {LEAD_COPY.benefits.map((benefit) => (
               <li key={benefit}>
                 <span className={styles.desktopCheck}><Check /></span>
                 <span className={styles.mobileCheck}><Check mobile /></span>
-                <span>{index === 2 ? <>Готовое решение без изменения <br className={styles.mobileTitleBreak} />ИТ-систем</> : benefit}</span>
+                <span>{benefit}</span>
               </li>
             ))}
           </ul>

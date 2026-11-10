@@ -69,7 +69,7 @@ export default function LeadPage() {
         {/* CTA / Left Column 2397:43436 — Hero / Intro 2397:43450 на мобильном */}
         <div className="flex w-full flex-col items-center gap-24 text-text-primary lg:min-w-0 lg:flex-1 lg:items-start lg:gap-64">
           <div className="flex w-full flex-col items-center gap-24 lg:items-start lg:gap-32">
-            <h1 className="w-full max-w-[522px] text-center text-[26px] leading-[1.2] font-medium tracking-[-0.02em] md:text-h2 lg:text-left">
+            <h1 className="w-full max-w-[522px] text-left text-[26px] leading-[1.2] font-medium tracking-[-0.02em] md:text-h2">
               {LEAD_COPY.titleStart}<br />{LEAD_COPY.titleEnd}
             </h1>
             {/*
@@ -77,7 +77,7 @@ export default function LeadPage() {
               На узких экранах форма переходит под текст, чтобы обе колонки
               не сжимались до нескольких слов в строке.
             */}
-            <p className="w-full max-w-[522px] whitespace-pre-line text-center text-body-m min-[360px]:text-body-l lg:text-left lg:text-pretty">
+            <p className="w-full max-w-[522px] whitespace-pre-line text-left text-body-m min-[360px]:text-body-l lg:text-pretty">
               {LEAD_COPY.intro}
             </p>
           </div>

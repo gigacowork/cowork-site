@@ -79,7 +79,18 @@ export default async function SmbUseCasePage({
         breadcrumb={item.navLabel}
         intro={item.intro}
         titleWidth={item.heroTitleWidth}
-        ctaLabel="Оставить заявку"
+        ctaLabel={
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={asset("/img/cta/sber-business-mark.svg")}
+              alt=""
+              aria-hidden="true"
+              className="size-[19px] shrink-0"
+            />
+            Оставить заявку
+          </>
+        }
         ctaHref={SMB_CTA_URL}
         ctaNewTab
         image={item.heroImage}

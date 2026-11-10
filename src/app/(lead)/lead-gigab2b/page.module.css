@@ -75,7 +75,7 @@
   line-height: 1.2;
   letter-spacing: -.02em;
 }
-.desktopSubtitle {
+.subtitle {
   max-width: 380px;
   font-size: 16px;
   line-height: 1.2;
@@ -85,10 +85,7 @@
 .benefits { display: flex; flex-direction: column; gap: 20px; }
 .benefits li { display: flex; gap: 12px; align-items: center; font-size: 16px; line-height: 1.2; letter-spacing: -.02em; }
 .benefits img { display: block; flex: none; }
-.mobileBenefit,
 .mobileCheck { display: none !important; }
-.mobileBenefit span { white-space: pre-line; }
-.mobileTitleBreak,
 .mobileLegal { display: none; }
 
 .card {
@@ -167,17 +164,15 @@
     flex-direction: column;
     flex: none;
     gap: 40px;
-    padding: 40px 20px;
+    padding: 40px 16px;
   }
   .copy { width: 100%; gap: 24px; }
+  .intro { gap: 16px; }
   .intro h1 { max-width: 100%; }
-  .desktopSubtitle { display: none; }
-  .mobileTitleBreak { display: inline; }
   .mobileLegal { display: block; }
   .desktopLegal { display: none; }
   .benefits { gap: 16px; }
   .benefits li { align-items: flex-start; }
-  .mobileBenefit,
   .mobileCheck { display: flex !important; }
   .desktopCheck { display: none; }
   .card { width: 100%; max-width: 100%; border-radius: 20px; padding-block: 22.5px; box-shadow: 0 16px 20px rgb(63 110 158 / 16%), inset 0 1px rgb(255 255 255 / 80%); }
