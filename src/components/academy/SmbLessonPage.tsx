@@ -10,7 +10,6 @@ import { Icon } from "@/components/ui/Icon";
 import { Image } from "@/components/ui/Image";
 import { Kicker } from "@/components/ui/Kicker";
 import { FinalCta } from "@/components/sections/FinalCta";
-import { SMB_CTA_URL } from "@/components/sections/SmbOfferCta";
 import {
   SMB_COURSE_BREADCRUMB_TITLE,
   SMB_COURSE_PATH,
@@ -576,7 +575,7 @@ export default function SmbLessonPage({ lesson, index }: { lesson: SmbLesson; in
           </div>
         </aside>
       </div>
-      <FinalCta buttonLabel="Оставить заявку" buttonHref={SMB_CTA_URL} buttonNewTab />
+      <FinalCta buttonLabel="Оставить заявку" buttonHref="/lead/" />
     </>
   );
 }

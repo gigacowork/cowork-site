@@ -206,8 +206,7 @@ export function Header() {
     (pathname === "/" ||
       pathname === "/ai-for-smb" ||
       pathname.startsWith("/ai-for-smb/") ||
-      pathname === "/ai-academy/course-smb" ||
-      pathname.startsWith("/ai-academy/course-smb/"));
+      trimSlash(pathname) === "/ai-academy/course-smb");
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";

@@ -125,6 +125,12 @@ function CompanyCard({ study }: { study: CaseStudy }) {
         <p className="text-body-l text-text-secondary">{company.automation}</p>
       </div>
 
+      {company.territorialBank ? (
+        <span className="max-w-full self-start whitespace-pre-line rounded-16 bg-bg-tag px-12 py-8 text-caption text-text-primary">
+          {company.territorialBank}
+        </span>
+      ) : null}
+
       {/* Технологии ещё не согласованы — пока список пуст, блока нет. */}
       {company.technologies.length ? (
         <div className="flex flex-col gap-12">
@@ -232,7 +238,7 @@ function Block({ block }: { block: StoryBlock }) {
             ))}
           </blockquote>
           <figcaption className="flex flex-col text-body-m text-text-tertiary">
-            <span>{block.author}</span>
+            {block.author ? <span>{block.author}</span> : null}
             <span>{block.role}</span>
           </figcaption>
         </figure>

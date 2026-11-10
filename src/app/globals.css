@@ -367,7 +367,7 @@
     --home-promo-h: 120px;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 1200px) {
     body:has(#home-promo-bar) {
       --home-promo-h: 48px;
     }

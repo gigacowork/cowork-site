@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import AcademyLessons from "@/components/academy/AcademyLessons";
 import SmbLessonCard from "@/components/academy/SmbLessonCard";
 import { FinalCta } from "@/components/sections/FinalCta";
-import { SMB_CTA_URL } from "@/components/sections/SmbOfferCta";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import Button from "@/components/ui/Button";
 import { HeroImage } from "@/components/ui/HeroImage";
@@ -86,7 +85,7 @@ export default function SmbCoursePage() {
           </ol>
         </div>
       </section>
-      <FinalCta buttonLabel="Оставить заявку" buttonHref={SMB_CTA_URL} buttonNewTab />
+      <FinalCta buttonLabel="Оставить заявку" buttonHref="/lead/" />
     </>
   );
 }

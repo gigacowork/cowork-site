@@ -12,8 +12,8 @@ import styles from "./office-cases.module.css";
 
 const departments = [
   { id: "hr", label: "HR", icon: "/img/icons/users-round.svg", x: 15, y: 10, robotX: 16, robotY: 31, activityX: 20, activityY: 24, glowX: 15, glowY: 29, task: "Подбор кандидатов", companies: ["ФосАгро"] },
-  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg", x: 33, y: 10, robotX: 34, robotY: 31, activityX: 39, activityY: 24, glowX: 33, glowY: 29, task: "Подготовка отчета", companies: ["АПРИ"] },
-  { id: "legal", label: "Юридический отдел", icon: "/img/icons/document.svg", x: 50, y: 10, robotX: 51, robotY: 31, activityX: 56, activityY: 24, glowX: 50, glowY: 29, task: "Проверка договора", companies: [] },
+  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg", x: 33, y: 10, robotX: 34, robotY: 31, activityX: 39, activityY: 24, glowX: 33, glowY: 29, task: "Подготовка отчета", companies: ["АПРИ", "Уралметхим"] },
+  { id: "legal", label: "Юридический отдел", icon: "/img/icons/document.svg", x: 50, y: 10, robotX: 51, robotY: 31, activityX: 56, activityY: 24, glowX: 50, glowY: 29, task: "Проверка договора", companies: ["Уралметхим"] },
   { id: "marketing", label: "Маркетинг", icon: "/img/icons/chart-no-axes-combined.svg", x: 68, y: 10, robotX: 69, robotY: 31, activityX: 74, activityY: 24, glowX: 68, glowY: 29, task: "Анализ конкурентов", companies: [] },
   { id: "project", label: "Проектный офис", icon: "/img/icons/reports.svg", x: 86, y: 10, robotX: 86, robotY: 31, activityX: 91, activityY: 24, glowX: 86, glowY: 29, task: "Планирование проекта", companies: [] },
   { id: "sales", label: "Продажи", icon: "/img/icons/commercial-offer.svg", x: 19, y: 87, robotX: 19, robotY: 66, activityX: 24, activityY: 59, glowX: 19, glowY: 66, task: "Подготовка предложения", companies: ["BI Group"] },
@@ -44,6 +44,7 @@ const departmentCompanies = new Set<string>(departments.flatMap((item) => item.c
 const caseTitles: Record<string, string> = {
   "ФосАгро": "ИИ-агент помогает подбирать персонал",
   "АПРИ": "Проверка строительных документов",
+  "Уралметхим": "Обработка писем и документов",
   "Directum": "Подготовка документов с GigaChat API",
   "BI Group": "Консультации клиентов по недвижимости",
   "versta.io": "Контроль качества клиентских диалогов",
