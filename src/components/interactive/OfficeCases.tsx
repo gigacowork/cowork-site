@@ -151,7 +151,7 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
             <h2 id="about-project-title" className={styles.introTitle}>{keepRussianShortWords("Большие перемены начинаются с повседневных задач")}</h2>
             <div className={styles.introCopy}>
               <p>{keepRussianShortWords("Документы, отчёты и согласования отнимают у специалистов время, которого не хватает на главное.")}</p>
-              <p id="office-instruction">{keepRussianShortWords("Выберите отдел и изучите реальные кейсы, чтобы узнать, как меняются рабочие процессы и каких результатов удаётся достичь.")}</p>
+              <p id="office-instruction">{keepRussianShortWords("Выберите отдел и посмотрите, как ИИ-агенты берут на себя рутинные задачи в разных отделах компаний")}</p>
             </div>
           </div>
 
