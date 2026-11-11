@@ -81,9 +81,13 @@ function Metric({ metric }: { metric: StoryMetric }) {
           сравнения и суффикс не пересчитывались вместе с ними.
         */}
         <span className="text-display-l font-normal">
-          <span data-counter data-counter-value={metric.value}>
-            {metric.value}
-          </span>
+          {metric.animate === false ? (
+            metric.value
+          ) : (
+            <span data-counter data-counter-value={metric.value}>
+              {metric.value}
+            </span>
+          )}
         </span>
         {metric.suffix ? (
           <span className="text-h1 font-medium">{metric.suffix}</span>
@@ -106,15 +110,13 @@ function CompanyCard({ study }: { study: CaseStudy }) {
 
   return (
     <div className="flex flex-col gap-32 rounded-24 border border-border-subtle bg-[linear-gradient(60.08deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)] p-24 shadow-drop-md">
-      {/*
-        Слот логотипа — только когда файл есть: без него `LogoSlot` вывел бы
-        название компании, а оно тут же стоит строкой ниже, и получалось два
-        одинаковых «versta.io» подряд.
-      */}
+      {/* Название текстом нужно только кейсам без логотипа. */}
       {study.logo ? <LogoSlot study={study} /> : null}
 
       <div className="flex flex-col gap-12">
-        <p className="text-h3 font-medium text-text-primary">{keepLegalFormWithName(company.name)}</p>
+        {!study.logo ? (
+          <p className="text-h3 font-medium text-text-primary">{keepLegalFormWithName(company.name)}</p>
+        ) : null}
         <p className="text-body-m text-text-secondary">{company.description}</p>
       </div>
 

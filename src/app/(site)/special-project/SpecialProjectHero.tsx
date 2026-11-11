@@ -61,7 +61,7 @@ const cities = {
   // Place Khabarovsk inland, northwest of the painted coastal peninsula.
   khabarovsk: { ...city("Хабаровск", 135.0719, 48.4802, 0.91), x: 1345, y: 505 },
   // Keep the destination point and its label on the peninsula.
-  vladivostok: { ...city("Владивосток", 131.8855, 43.1155, 0.94, true), x: 1450, y: 690 },
+  vladivostok: { ...city("Владивосток", 131.8855, 43.1155, 0.94, true), x: 1450, y: 760 },
 } as const;
 
 type CityKey = keyof typeof cities;
@@ -103,7 +103,6 @@ const routes: Route[] = [
 // Small unnamed endpoints turn the main routes into a network across the map.
 const branches: Branch[] = [
   { from: "petersburg", dx: -38, dy: 32, at: 0.15 },
-  { from: "petersburg", dx: 32, dy: -36, at: 0.17 },
   { from: "petersburg", dx: 66, dy: 14, at: 0.19 },
   { from: "moscow", dx: -56, dy: -34, at: 0.16 },
   { from: "moscow", dx: -73, dy: 8, at: 0.17 },
@@ -237,9 +236,45 @@ export function SpecialProjectHero() {
     keepKaliningradBelowHeader();
     window.addEventListener("resize", keepKaliningradBelowHeader);
 
-    if (motion.matches || window.matchMedia("(max-width: 767px)").matches) {
+    if (motion.matches) {
       render(1);
       return () => window.removeEventListener("resize", keepKaliningradBelowHeader);
+    }
+
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      render(1);
+      const stage = map.parentElement;
+      const hero = map.closest("section");
+      let current = 0;
+      let target = 0;
+      let panFrame = 0;
+
+      const animatePan = () => {
+        current += (target - current) * 0.14;
+        if (Math.abs(target - current) < 0.25) current = target;
+        map.style.transform = `translate3d(${current}px, 0, 0)`;
+        panFrame = current === target ? 0 : window.requestAnimationFrame(animatePan);
+      };
+
+      const updatePan = () => {
+        if (!stage || !hero) return;
+        const bounds = hero.getBoundingClientRect();
+        const progress = clamp(-bounds.top / Math.max(bounds.height, 1));
+        target = (stage.clientWidth - map.offsetWidth - map.offsetLeft) * progress;
+        if (!panFrame) panFrame = window.requestAnimationFrame(animatePan);
+      };
+
+      updatePan();
+      window.addEventListener("scroll", updatePan, { passive: true });
+      window.addEventListener("resize", updatePan);
+
+      return () => {
+        if (panFrame) window.cancelAnimationFrame(panFrame);
+        window.removeEventListener("scroll", updatePan);
+        window.removeEventListener("resize", updatePan);
+        window.removeEventListener("resize", keepKaliningradBelowHeader);
+        map.style.transform = "";
+      };
     }
 
     const duration = 4800;

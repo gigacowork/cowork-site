@@ -203,8 +203,7 @@ export function Header() {
   const pathname = usePathname();
   const showHomePromo =
     promoVisible &&
-    (pathname === "/" ||
-      pathname === "/ai-for-smb" ||
+    (pathname === "/ai-for-smb" ||
       pathname.startsWith("/ai-for-smb/") ||
       trimSlash(pathname) === "/ai-academy/course-smb");
 

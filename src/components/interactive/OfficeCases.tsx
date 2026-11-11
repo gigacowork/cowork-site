@@ -26,7 +26,7 @@ type DepartmentId = (typeof departments)[number]["id"];
 type FilterId = DepartmentId | "all" | "other";
 
 const caseFilters = [
-  { id: "all", label: "Бэк-офис", icon: "/img/icons/building.svg" },
+  { id: "all", label: "Все кейсы", icon: null },
   { id: "hr", label: "HR", icon: "/img/icons/users-round.svg" },
   { id: "finance", label: "Финансы", icon: "/img/icons/money.svg" },
   { id: "legal", label: "Юридический отдел", icon: "/img/icons/document.svg" },
@@ -52,6 +52,7 @@ const caseTitles: Record<string, string> = {
 
 function ProjectCaseCard({ study }: { study: CaseStudy }) {
   const href = study.slug && study.story ? `/success-stories/${study.slug}/` : null;
+  const title = caseTitles[study.company] ?? study.story?.title ?? study.company;
 
   return (
     <article className={styles.caseCard}>
@@ -86,7 +87,7 @@ function ProjectCaseCard({ study }: { study: CaseStudy }) {
             <span>{study.company}</span>
           )}
         </div>
-        <h3 className={styles.cardTitle}>{keepRussianShortWords(caseTitles[study.company] ?? study.company)}</h3>
+        <h3 className={styles.cardTitle}>{keepRussianShortWords(title)}</h3>
         <p className={styles.cardDescription}>{keepRussianShortWords(study.cardDescription ?? study.description)}</p>
         <div className={styles.cardMetric}>
           <strong>{keepRussianShortWords(study.metric)}</strong>
@@ -97,7 +98,7 @@ function ProjectCaseCard({ study }: { study: CaseStudy }) {
         <Link
           href={href}
           className={styles.cardLink}
-          aria-label={`Открыть кейс — ${caseTitles[study.company] ?? study.company}`}
+          aria-label={`Открыть кейс — ${title}`}
         />
       ) : null}
     </article>
@@ -143,12 +144,14 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
 
   return (
     <>
-      <section id="special-project-office" className={styles.officeSection} aria-labelledby="office-title">
+      <section id="special-project-office" className={styles.officeSection} aria-labelledby="about-project-title">
         <div className="container-page">
-          <div className={styles.sectionHeading}>
-            <div>
-              <Kicker className="self-center md:self-start">За кулисами бизнеса</Kicker>
-              <h2 id="office-title" className={styles.heading}>{keepRussianShortWords("Выберите отдел и посмотрите, как ИИ-агенты помогают сотрудникам реальных компаний")}</h2>
+          <div id="about-project" className={styles.officeIntro}>
+            <Kicker className="self-start">О спецпроекте</Kicker>
+            <h2 id="about-project-title" className={styles.introTitle}>{keepRussianShortWords("Большие перемены начинаются с повседневных задач")}</h2>
+            <div className={styles.introCopy}>
+              <p>{keepRussianShortWords("Документы, отчёты и согласования отнимают у специалистов время, которого не хватает на главное.")}</p>
+              <p id="office-instruction">{keepRussianShortWords("Выберите отдел и изучите реальные кейсы, чтобы узнать, как меняются рабочие процессы и каких результатов удаётся достичь.")}</p>
             </div>
           </div>
 
@@ -156,6 +159,7 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
             className={styles.officeScroller}
             role="region"
             aria-label="Схема офиса, прокручивается горизонтально"
+            aria-describedby="office-instruction"
             tabIndex={0}
           >
             <div className={styles.officeFrame}>
@@ -238,7 +242,7 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
               <h2 id="project-cases-title" className={styles.heading}>Опыт компаний</h2>
               <p>{keepRussianShortWords("Познакомьтесь с лучшими практиками использования ИИ-агентов и узнайте, каких результатов уже добились ведущие игроки.")}</p>
               <span className="sr-only" aria-live="polite">
-                {selected === "all" ? "Показаны все кейсы." : `Выбран фильтр «${caseFilters.find((item) => item.id === selected)?.label}». Кейсов: ${shownCases.length}.`}
+                {selected === "all" ? "Выбран фильтр «Все кейсы». Показаны все кейсы." : `Выбран фильтр «${caseFilters.find((item) => item.id === selected)?.label}». Кейсов: ${shownCases.length}.`}
               </span>
             </div>
           </div>
@@ -254,14 +258,16 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
                 aria-controls="case-results"
                 onClick={() => setSelected(filter.id)}
               >
-                <span
-                  className={styles.caseFilterIcon}
-                  style={{
-                    maskImage: `url(${asset(filter.icon)})`,
-                    WebkitMaskImage: `url(${asset(filter.icon)})`,
-                  }}
-                  aria-hidden="true"
-                />
+                {filter.icon ? (
+                  <span
+                    className={styles.caseFilterIcon}
+                    style={{
+                      maskImage: `url(${asset(filter.icon)})`,
+                      WebkitMaskImage: `url(${asset(filter.icon)})`,
+                    }}
+                    aria-hidden="true"
+                  />
+                ) : null}
                 {keepRussianShortWords(filter.label)}
               </button>
             ))}

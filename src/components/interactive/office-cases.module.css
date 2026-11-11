@@ -1,10 +1,9 @@
 .officeSection {
   scroll-margin-top: calc(var(--header-h) + 24px);
   padding: 88px 0 72px;
-  background: linear-gradient(180deg, #fff 0%, #f6fbff 54%, #f7fbff 100%);
+  background: linear-gradient(180deg, #f1f7ff 0%, #fff 58%, #f7fbff 100%);
 }
 
-.sectionHeading,
 .casesHeading {
   display: flex;
   align-items: end;
@@ -13,7 +12,6 @@
   margin-bottom: 36px;
 }
 
-.sectionHeading > p,
 .casesHeading p {
   max-width: 350px;
   color: #596371;
@@ -21,8 +19,37 @@
   line-height: 1.45;
 }
 
-.sectionHeading .heading {
-  margin-top: 24px;
+.officeIntro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.introTitle {
+  max-width: 970px;
+  color: var(--color-text-primary);
+  font-size: var(--text-h1);
+  font-weight: var(--text-h1--font-weight);
+  line-height: var(--text-h1--line-height);
+  letter-spacing: var(--text-h1--letter-spacing);
+  text-wrap: balance;
+}
+
+.introCopy {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px;
+  max-width: 1100px;
+  margin-top: 8px;
+}
+
+.introCopy p {
+  color: var(--color-text-secondary);
+  font-size: 20px;
+  line-height: 1.45;
+  text-wrap: pretty;
 }
 
 .heading {
@@ -37,6 +64,7 @@
 
 .officeScroller {
   width: min(100vw, 1600px);
+  margin-top: 52px;
   margin-left: 50%;
   transform: translateX(-50%);
 }
@@ -572,13 +600,11 @@
     padding: 64px 0 56px;
   }
 
-  .sectionHeading,
   .casesHeading {
     display: block;
     margin-bottom: 24px;
   }
 
-  .sectionHeading > p,
   .casesHeading p {
     max-width: 460px;
     margin-top: 16px;
@@ -589,6 +615,30 @@
     font-size: var(--text-h3);
     line-height: var(--text-h3--line-height);
     letter-spacing: var(--text-h3--letter-spacing);
+  }
+
+  .officeIntro {
+    gap: 18px;
+  }
+
+  .introTitle {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+  }
+
+  .introCopy {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 4px;
+  }
+
+  .introCopy p {
+    font-size: 17px;
+  }
+
+  .officeScroller {
+    margin-top: 36px;
   }
 
   .casesSection {
