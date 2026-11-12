@@ -540,6 +540,7 @@ const URALMETKHIM_STORY: CaseStory = {
     name: "ООО «Уралметхим»",
     description: "Екатеринбургская компания, поставляющая медесодержащую продукцию и промышленную химию.",
     automation: "Обработка писем и подготовка документов",
+    territorialBank: "Уральский банк\nПАО Сбербанк",
     technologies: [],
   },
   blocks: [
