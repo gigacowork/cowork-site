@@ -720,7 +720,7 @@ export const CASES: CaseStudy[] = [
     role: "Документооборот",
     gradientClassName:
       "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
-    photo: { desktop: "/img/cases/uralmetkhim-cover.svg" },
+    photo: { desktop: "/img/cases/uralmetkhim-cover.webp" },
     story: URALMETKHIM_STORY,
   },
   {
@@ -742,7 +742,7 @@ export const CASES: CaseStudy[] = [
     industry: "ИТ и коммуникации",
     role: "Контент и коммуникации",
     gradientClassName: "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
-    photo: { desktop: "/img/cases/ametist-radio-cover.svg" },
+    photo: { desktop: "/img/cases/ametist-radio-studio-v2.webp" },
     story: AMETIST_STORY,
   },
   {

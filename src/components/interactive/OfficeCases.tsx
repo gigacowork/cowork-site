@@ -11,15 +11,15 @@ import type { CaseStudy } from "@/content/cases";
 import styles from "./office-cases.module.css";
 
 const departments = [
-  { id: "hr", label: "HR", icon: "/img/icons/users-round.svg", x: 15, y: 10, robotX: 16, robotY: 31, activityX: 20, activityY: 24, glowX: 15, glowY: 29, task: "Подбор кандидатов", companies: ["ФосАгро"] },
-  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg", x: 33, y: 10, robotX: 34, robotY: 31, activityX: 39, activityY: 24, glowX: 33, glowY: 29, task: "Подготовка отчета", companies: ["АПРИ", "Уралметхим"] },
-  { id: "legal", label: "Юридический отдел", icon: "/img/icons/document.svg", x: 50, y: 10, robotX: 51, robotY: 31, activityX: 56, activityY: 24, glowX: 50, glowY: 29, task: "Проверка договора", companies: ["Уралметхим"] },
-  { id: "marketing", label: "Маркетинг", icon: "/img/icons/chart-no-axes-combined.svg", x: 68, y: 10, robotX: 69, robotY: 31, activityX: 74, activityY: 24, glowX: 68, glowY: 29, task: "Анализ конкурентов", companies: [] },
-  { id: "project", label: "Проектный офис", icon: "/img/icons/reports.svg", x: 86, y: 10, robotX: 86, robotY: 31, activityX: 91, activityY: 24, glowX: 86, glowY: 29, task: "Планирование проекта", companies: [] },
-  { id: "sales", label: "Продажи", icon: "/img/icons/commercial-offer.svg", x: 19, y: 87, robotX: 19, robotY: 66, activityX: 24, activityY: 59, glowX: 19, glowY: 66, task: "Подготовка предложения", companies: ["BI Group"] },
-  { id: "procurement", label: "Закупки", icon: "/img/icons/supplier.svg", x: 40, y: 87, robotX: 40, robotY: 66, activityX: 45, activityY: 59, glowX: 40, glowY: 66, task: "Подбор поставщиков", companies: [] },
-  { id: "logistics", label: "Логистика", icon: "/img/icons/truck.svg", x: 61, y: 87, robotX: 61, robotY: 66, activityX: 66, activityY: 59, glowX: 61, glowY: 66, task: "Планирование поставки", companies: [] },
-  { id: "production", label: "Производство и сервис", icon: "/img/icons/factory.svg", x: 82, y: 87, robotX: 82, robotY: 66, activityX: 87, activityY: 59, glowX: 82, glowY: 66, task: "Контроль качества", companies: [] },
+  { id: "hr", label: "HR", icon: "/img/icons/users-round.svg", x: 15, y: 10, mobileX: 21, mobileY: 10, robotX: 16, robotY: 31, activityX: 20, activityY: 24, glowX: 15, glowY: 29, task: "Подбор кандидатов", companies: ["ФосАгро"] },
+  { id: "finance", label: "Финансы", icon: "/img/icons/money.svg", x: 33, y: 10, mobileX: 79, mobileY: 21, robotX: 34, robotY: 31, activityX: 39, activityY: 24, glowX: 33, glowY: 29, task: "Подготовка отчета", companies: ["АПРИ", "Уралметхим"] },
+  { id: "legal", label: "Юридический отдел", icon: "/img/icons/document.svg", x: 50, y: 10, mobileX: 21, mobileY: 31, robotX: 51, robotY: 31, activityX: 56, activityY: 24, glowX: 50, glowY: 29, task: "Проверка договора", companies: ["Уралметхим"] },
+  { id: "marketing", label: "Маркетинг", icon: "/img/icons/chart-no-axes-combined.svg", x: 68, y: 10, mobileX: 79, mobileY: 40, robotX: 69, robotY: 31, activityX: 74, activityY: 24, glowX: 68, glowY: 29, task: "Анализ конкурентов", companies: [] },
+  { id: "project", label: "Проектный офис", icon: "/img/icons/reports.svg", x: 86, y: 10, mobileX: 21, mobileY: 50, robotX: 86, robotY: 31, activityX: 91, activityY: 24, glowX: 86, glowY: 29, task: "Планирование проекта", companies: [] },
+  { id: "sales", label: "Продажи", icon: "/img/icons/commercial-offer.svg", x: 19, y: 87, mobileX: 79, mobileY: 59, robotX: 19, robotY: 66, activityX: 24, activityY: 59, glowX: 19, glowY: 66, task: "Подготовка предложения", companies: ["BI Group"] },
+  { id: "procurement", label: "Закупки", icon: "/img/icons/supplier.svg", x: 40, y: 87, mobileX: 21, mobileY: 68, robotX: 40, robotY: 66, activityX: 45, activityY: 59, glowX: 40, glowY: 66, task: "Подбор поставщиков", companies: [] },
+  { id: "logistics", label: "Логистика", icon: "/img/icons/truck.svg", x: 61, y: 87, mobileX: 79, mobileY: 77, robotX: 61, robotY: 66, activityX: 66, activityY: 59, glowX: 61, glowY: 66, task: "Планирование поставки", companies: [] },
+  { id: "production", label: "Производство и сервис", icon: "/img/icons/factory.svg", x: 82, y: 87, mobileX: 39, mobileY: 88, robotX: 82, robotY: 66, activityX: 87, activityY: 59, glowX: 82, glowY: 66, task: "Контроль качества", companies: [] },
 ] as const;
 
 type DepartmentId = (typeof departments)[number]["id"];
@@ -158,17 +158,20 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
           <div
             className={styles.officeScroller}
             role="region"
-            aria-label="Схема офиса, прокручивается горизонтально"
+            aria-label="Интерактивная схема офиса"
             aria-describedby="office-instruction"
             tabIndex={0}
           >
             <div className={styles.officeFrame}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={asset("/img/special-project/pic_office.webp")}
-                alt="Изометрическая схема офиса с девятью отделами компании"
-                className={styles.officeImage}
-              />
+              <picture>
+                <source media="(max-width: 767px)" srcSet={asset("/img/special-project/pic_office_mob.webp")} />
+                <img
+                  src={asset("/img/special-project/pic_office.webp")}
+                  alt="Изометрическая схема офиса с девятью отделами компании"
+                  className={styles.officeImage}
+                />
+              </picture>
               {activeRoom ? (
                 <div
                   key={activeRoom.id}
@@ -180,6 +183,12 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
                     "--robot-y": `${activeRoom.robotY}%`,
                     "--activity-x": `${activeRoom.activityX}%`,
                     "--activity-y": `${activeRoom.activityY}%`,
+                    "--mobile-glow-x": `${activeRoom.mobileX}%`,
+                    "--mobile-glow-y": `${activeRoom.mobileY}%`,
+                    "--mobile-robot-x": `${activeRoom.mobileX}%`,
+                    "--mobile-robot-y": `${activeRoom.mobileY + 3}%`,
+                    "--mobile-activity-x": `${activeRoom.mobileX}%`,
+                    "--mobile-activity-y": `${activeRoom.mobileY - 5}%`,
                   } as CSSProperties}
                   aria-hidden="true"
                 >
@@ -204,7 +213,7 @@ export function OfficeCases({ cases }: { cases: CaseStudy[] }) {
                     key={department.id}
                     type="button"
                     className={`${styles.hotspot} ${selected === department.id || hovered === department.id ? styles.hotspotActive : ""}`}
-                    style={{ left: `${department.x}%`, top: `${department.y}%` }}
+                    style={{ "--desktop-x": `${department.x}%`, "--desktop-y": `${department.y}%`, "--mobile-x": `${department.mobileX}%`, "--mobile-y": `${department.mobileY}%` } as CSSProperties}
                     onClick={() => choose(department.id)}
                     onPointerEnter={(event) => {
                       if (event.pointerType === "mouse" || event.pointerType === "pen") setHovered(department.id);

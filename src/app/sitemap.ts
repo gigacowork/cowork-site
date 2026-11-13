@@ -47,6 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: url("/"), changeFrequency: "monthly", priority: 1 },
+    { url: url("/agents-new-year/"), changeFrequency: "yearly", priority: 0.5 },
     { url: url("/ai-platform/"), changeFrequency: "monthly", priority: 0.9 },
     {
       url: url("/ai-platform/workspace/"),

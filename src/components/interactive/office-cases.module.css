@@ -81,6 +81,12 @@
   aspect-ratio: 3975 / 1600;
 }
 
+.officeFrame picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .officeImage {
   display: block;
   width: 100%;
@@ -223,6 +229,8 @@
 
 .hotspot {
   position: absolute;
+  top: var(--desktop-y);
+  left: var(--desktop-x);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -598,6 +606,65 @@
 @media (max-width: 767px) {
   .officeSection {
     padding: 64px 0 56px;
+  }
+
+  .officeScroller {
+    overflow: visible;
+  }
+
+  .officeFrame {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+  }
+
+  .officeFrame picture {
+    transform: scaleX(1.4);
+    transform-origin: center;
+  }
+
+  .hotspot {
+    top: calc(var(--mobile-y) - 4.5%);
+    left: var(--mobile-x);
+    width: min(33%, 120px);
+    min-height: 34px;
+    gap: 4px;
+    padding: 4px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+  }
+
+  .hotspotIcon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .roomLight {
+    background: radial-gradient(ellipse 30% 9% at var(--mobile-glow-x) var(--mobile-glow-y), #9ceaf380 0%, #c3d5ff3b 60%, transparent 100%);
+  }
+
+  .agentRobot {
+    top: var(--mobile-robot-y);
+    left: var(--mobile-robot-x);
+    width: 9%;
+  }
+
+  .processCard {
+    top: var(--mobile-activity-y);
+    left: var(--mobile-activity-x);
+    width: min(38%, 140px);
+    min-height: 32px;
+    padding: 5px 6px 9px;
+    font-size: 9px;
+  }
+
+  .processSymbol {
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+  }
+
+  .officeScrollHint {
+    display: none;
   }
 
   .casesHeading {
