@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Kicker } from "@/components/ui/Kicker";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
@@ -66,13 +65,11 @@ export default function ItAccreditationPage() {
         <div className="container-page">
           <Breadcrumbs items={[{ label: "ИТ-аккредитация" }]} variant="inline" />
           <div className="flex max-w-[900px] flex-col gap-16 pt-32 md:gap-24 md:pt-64">
-            <Kicker>ООО «Салют для Бизнеса»</Kicker>
             <h1 className="text-[40px] leading-[1.2] tracking-[-0.02em] font-medium text-text-primary md:text-h1">
               ИТ-аккредитация
             </h1>
             <p className="max-w-[720px] text-body-l text-text-secondary">
-              Сведения об организации, программном обеспечении, стоимости и
-              разработке.
+              Сведения об&nbsp;организации, программном обеспечении, стоимости и&nbsp;разработке.
             </p>
           </div>
           <nav
@@ -99,15 +96,15 @@ export default function ItAccreditationPage() {
           className="scroll-mt-[var(--header-h)] bg-bg-page py-64 md:py-96"
         >
           <div className="container-page flex flex-col gap-32 md:gap-48">
-            <SectionHeading number="01" title="Сведения об организации" id="org-title" />
+            <SectionHeading number="01" title={"Сведения об\u00A0организации"} id="org-title" />
             <div className="rounded-24 bg-[linear-gradient(59.96deg,#c5f8e5_0.95%,#dcf9ff_50.8%,#e4f5ff_101.64%)] p-24 md:p-40">
               <h3 className="text-h3 font-medium text-text-primary">
-                ООО «Салют для Бизнеса»
+                ООО «Салют для&nbsp;Бизнеса»
               </h3>
               <p className="mt-16 max-w-[940px] text-body-l text-text-primary">
-                Общество с ограниченной ответственностью «Салют для Бизнеса»
-                разрабатывает и развивает корпоративную ИИ-платформу ГигаЧат
-                Бизнес на основе собственной нейросетевой модели.
+                Общество с&nbsp;ограниченной ответственностью «Салют для&nbsp;Бизнеса»
+                разрабатывает и&nbsp;развивает корпоративную ИИ-платформу ГигаЧат
+                Бизнес на&nbsp;основе собственной нейросетевой модели.
               </p>
             </div>
             <dl className="grid gap-16 md:grid-cols-2 md:gap-24">
@@ -128,7 +125,7 @@ export default function ItAccreditationPage() {
                 58.29 — Издание прочих программных продуктов
               </DetailCard>
               <DetailCard
-                label="Вид деятельности в соответствии с приказом Минцифры от 11 мая 2023 г. № 449"
+                label={"Вид деятельности в\u00A0соответствии с\u00A0приказом Минцифры от\u00A011 мая 2023 г. № 449"}
                 wide
               >
                 1.01, 2.01, 27.01
@@ -146,23 +143,30 @@ export default function ItAccreditationPage() {
             <SectionHeading number="02" title="Программное обеспечение" id="software-title" />
             <div className="flex max-w-[940px] flex-col gap-16 text-body-l text-text-secondary">
               <p>
-                ПО «ГигаЧат для бизнеса» — собственная разработка ООО «Салют
-                для Бизнеса».
+                ПО «ГигаЧат для&nbsp;бизнеса» — собственная разработка ООО «Салют
+                для&nbsp;Бизнеса».
               </p>
               <p>
-                Информация об исключительных правах на разработанные
-                организацией программы для ЭВМ, базы данных, включении в Реестр
+                Информация об&nbsp;исключительных правах на&nbsp;разработанные
+                организацией программы для&nbsp;ЭВМ, базы данных, включении в&nbsp;Реестр
                 российского ПО, способах предоставления права использования
                 указанных программ:
               </p>
             </div>
             <dl className="grid gap-16 md:grid-cols-2 md:gap-24">
-              <DetailCard label="Программа">ГигаЧат для Бизнеса</DetailCard>
+              <DetailCard label="Программа">ГигаЧат для&nbsp;Бизнеса</DetailCard>
               <DetailCard label="Правообладатель">
-                ООО «Салют для Бизнеса»
+                ООО «Салют для&nbsp;Бизнеса»
               </DetailCard>
-              <DetailCard label="Регистрационный номер в Реестре российского ПО">
-                —
+              <DetailCard label={"Регистрационный номер в\u00A0Реестре российского ПО"}>
+                <a
+                  className="text-link"
+                  href="https://reestr.digital.gov.ru/reestr/16354591/?sphrase_id=29519271"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  № 35471 от&nbsp;05.10.2026
+                </a>
               </DetailCard>
               <DetailCard label="Способы предоставления права использования">
                 Лицензия
@@ -189,10 +193,10 @@ export default function ItAccreditationPage() {
                   </span>
                   <div className="flex flex-col gap-8">
                     <h3 className="text-h4 font-medium text-text-primary">
-                      ГигаЧат для Бизнеса
+                      ГигаЧат для&nbsp;Бизнеса
                     </h3>
                     <p className="text-body-l text-text-primary">
-                      от 2,5 млн рублей в год
+                      от&nbsp;2,5 млн рублей в&nbsp;год
                     </p>
                   </div>
                 </li>
@@ -202,10 +206,10 @@ export default function ItAccreditationPage() {
                   </span>
                   <div className="flex flex-col gap-8">
                     <h3 className="text-h4 font-medium text-text-primary">
-                      ГигаЧат для Бизнеса
+                      ГигаЧат для&nbsp;Бизнеса
                     </h3>
                     <p className="text-body-l text-text-primary">
-                      от 15 млн рублей в год
+                      от&nbsp;15 млн рублей в&nbsp;год
                     </p>
                   </div>
                 </li>
@@ -215,19 +219,19 @@ export default function ItAccreditationPage() {
                   </span>
                   <div className="flex flex-col gap-8">
                     <h3 className="text-h4 font-medium text-text-primary">
-                      ГигаЧат для Бизнеса
+                      ГигаЧат для&nbsp;Бизнеса
                     </h3>
                     <p className="text-body-l text-text-primary">
-                      от 67 млн рублей в год
+                      от&nbsp;67 млн рублей в&nbsp;год
                     </p>
                   </div>
                 </li>
               </ul>
               <p className="mt-8 max-w-[940px] text-body-l text-text-secondary">
-                Конкретная стоимость продукта рассчитывается индивидуально для
-                каждого клиента. Приведенные значения носят ориентировочный
-                характер. Для уточнения стоимости вы можете связаться с нами по
-                адресу{" "}
+                Конкретная стоимость продукта рассчитывается индивидуально
+                для&nbsp;каждого клиента. Приведенные значения носят ориентировочный
+                характер. Для&nbsp;уточнения стоимости вы можете связаться с&nbsp;нами
+                по&nbsp;адресу{" "}
                 <a className="text-link" href="mailto:info@gigab2b.ru">
                   info@gigab2b.ru
                 </a>
@@ -244,23 +248,23 @@ export default function ItAccreditationPage() {
         >
           <div className="container-page flex flex-col gap-32 md:gap-48">
             <SectionHeading number="04" title="Разработка" id="dev-title" />
-            <div className="flex max-w-[940px] flex-col gap-24 text-body-l text-text-primary">
-              <p className="font-medium">
-                Языки программирования, ПО или наборы правил и инструментов,
-                которые используются для разработки ПО или построения процессов
-                в программировании:
+            <div className="flex flex-col gap-24 text-body-l text-text-primary">
+              <p className="max-w-[940px] font-medium">
+                Языки программирования, ПО или наборы правил и&nbsp;инструментов,
+                которые используются для&nbsp;разработки ПО или построения процессов
+                в&nbsp;программировании:
               </p>
               <div className="grid gap-16 md:grid-cols-3 md:gap-24">
                 <p className="rounded-24 bg-[#f7f8fa] p-24 md:p-32">
-                  Разработка ведется с использованием внутренних регламентов
+                  Разработка ведется с&nbsp;использованием внутренних регламентов
                   организации производства программного обеспечения.
                 </p>
                 <p className="rounded-24 bg-[#f7f8fa] p-24 md:p-32">
-                  Программные продукты создаются с использованием внутренней
-                  платформы хранения и развертывания ПО — GitLab.
+                  Программные продукты создаются с&nbsp;использованием внутренней
+                  платформы хранения и&nbsp;развертывания ПО — GitLab.
                 </p>
                 <p className="rounded-24 bg-[#f7f8fa] p-24 md:p-32">
-                  Команды разработки используют для написания исходного кода
+                  Команды разработки используют для&nbsp;написания исходного кода
                   различные языки программирования. Основные: Python, Golang,
                   JavaScript.
                 </p>
