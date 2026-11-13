@@ -74,6 +74,7 @@ export default function SuccessStoriesPage() {
             variant="primary"
             size="lg"
             className="text-body-m!"
+            data-metrica-goal="footer-try"
           >
             Попробовать бесплатно
           </Button>

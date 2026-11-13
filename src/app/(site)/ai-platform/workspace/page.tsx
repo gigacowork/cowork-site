@@ -245,6 +245,7 @@ export default function WorkspacePage() {
             variant="primary"
             size="lg"
             className="text-body-m!"
+            data-metrica-goal="main-try"
           >
             Попробовать бесплатно
           </Button>
@@ -327,6 +328,7 @@ export default function WorkspacePage() {
             variant="primary"
             size="lg"
             className="text-body-m!"
+            data-metrica-goal="footer-try"
           >
             Попробовать бесплатно
           </Button>

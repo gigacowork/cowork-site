@@ -3,6 +3,7 @@
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef } from "react";
+import { BASE_PATH } from "@/lib/asset";
 
 /**
  * Яндекс.Метрика.
@@ -27,6 +28,27 @@ import { Suspense, useEffect, useRef } from "react";
 const PRIMARY_COUNTER_ID = 109302007;
 const ADDITIONAL_COUNTER_ID = 31643078;
 const COUNTER_IDS = [PRIMARY_COUNTER_ID, ADDITIONAL_COUNTER_ID] as const;
+
+// Цели из прометки отправляются только в основной счётчик. Для /skill/
+// идентификатор строится по его адресу: в таблице там повторён /workspace/.
+const MAIN_CTA_PATHS = new Set([
+  "/ai-platform",
+  "/ai-platform/workspace",
+  "/ai-platform/agents",
+  "/ai-platform/skill",
+  "/ai-platform/connectors",
+  "/ai-platform/quick-commands",
+  "/ai-platform/schedule",
+  "/use_cases/ceo",
+  "/use_cases/finance",
+  "/use_cases/salesforce",
+  "/use_cases/procurement",
+  "/use_cases/legal-team",
+  "/use_cases/hr-team",
+  "/use_cases/accounting",
+  "/use_cases/it-support",
+  "/trust-and-safety",
+]);
 
 function loader(counterId: number) {
   return `(function(m,e,t,r,i,k,a){
@@ -64,6 +86,53 @@ function MetrikaHits() {
   return null;
 }
 
+function MetrikaGoals() {
+  useEffect(() => {
+    function onClick(event: MouseEvent) {
+      if (!(event.target instanceof Element)) return;
+      const element = event.target.closest<HTMLElement>("[data-metrica-goal]");
+      const placement = element?.dataset.metricaGoal;
+      if (!placement) return;
+
+      const ym = (window as unknown as { ym?: (...args: unknown[]) => void }).ym;
+      if (typeof ym !== "function") return;
+
+      const rawPathname = window.location.pathname;
+      const sitePathname = BASE_PATH && (rawPathname === BASE_PATH || rawPathname.startsWith(`${BASE_PATH}/`))
+        ? rawPathname.slice(BASE_PATH.length) || "/"
+        : rawPathname;
+      const pathname = sitePathname.replace(/\/+$/, "") || "/";
+      if (placement === "header-try") {
+        ym(PRIMARY_COUNTER_ID, "reachGoal", "cowork.ru_click_button_Попробовать_header", {
+          "cowork.ru": { click_button: { Попробовать_header: window.location.href } },
+        });
+      } else if (placement === "footer-try") {
+        ym(PRIMARY_COUNTER_ID, "reachGoal", "cowork.ru_click_button_Попробовать_бесплатно_footer", {
+          "cowork.ru": { click_button: { Попробовать_бесплатно_footer: window.location.href } },
+        });
+      } else if (placement === "home-platform" && pathname === "/") {
+        ym(PRIMARY_COUNTER_ID, "reachGoal", "cowork.ru_click_button_О платформе", {
+          "cowork.ru": { click_button: "О платформе" },
+        });
+      } else if (placement === "pricing-lead" && pathname === "/pricing") {
+        ym(PRIMARY_COUNTER_ID, "reachGoal", "cowork.ru.pricing_click_button_Оставить заявку", {
+          "cowork.ru.pricing": { click_button: "Оставить заявку" },
+        });
+      } else if (placement === "main-try" && MAIN_CTA_PATHS.has(pathname)) {
+        const pageKey = `cowork.ru${pathname.replaceAll("/", ".")}`;
+        ym(PRIMARY_COUNTER_ID, "reachGoal", `${pageKey}_click_button_Попробовать бесплатно_main`, {
+          [pageKey]: { click_button: "Попробовать бесплатно_main" },
+        });
+      }
+    }
+
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+
+  return null;
+}
+
 export function YandexMetrika() {
   return (
     <>
@@ -81,6 +150,7 @@ ym(${ADDITIONAL_COUNTER_ID}, 'init', {ssr:true, clickmap:true, referrer: documen
       <Suspense fallback={null}>
         <MetrikaHits />
       </Suspense>
+      <MetrikaGoals />
 
       <noscript>
         <div>

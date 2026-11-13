@@ -94,6 +94,7 @@ export function FinalCta({
                 variant="primary"
                 size="lg"
                 className="text-body-m!"
+                data-metrica-goal={buttonLabel === "Попробовать бесплатно" ? "footer-try" : undefined}
               >
                 {buttonLabel}
               </Button>

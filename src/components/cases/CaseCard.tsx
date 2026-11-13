@@ -66,13 +66,16 @@ export function LogoSlot({ study }: { study: CaseStudy }) {
   return (
     <div className="flex h-[32px] shrink-0 items-center">
       {study.logo ? (
-        <Image
-          src={study.logo.src}
-          alt={study.company}
-          width={study.logo.width}
-          height={study.logo.height}
-          className={`${study.logo.className} max-h-[32px] w-auto object-contain object-left`}
-        />
+        <>
+          <Image
+            src={study.logo.src}
+            alt={study.logoWordmark ? "" : study.company}
+            width={study.logo.width}
+            height={study.logo.height}
+            className={`${study.logo.className} max-h-[32px] w-auto object-contain object-left`}
+          />
+          {study.logoWordmark ? <span className="ml-2 text-[18px] font-semibold tracking-[0.06em] text-text-primary">{study.logoWordmark}</span> : null}
+        </>
       ) : (
         <span className="text-h4 font-medium text-text-primary">
           {keepLegalFormWithName(study.company)}

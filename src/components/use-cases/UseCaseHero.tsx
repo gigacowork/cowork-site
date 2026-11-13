@@ -138,6 +138,7 @@ export function UseCaseHero({
               size="lg"
               className="text-body-m!"
               aria-label={ctaAriaLabel}
+              data-metrica-goal="main-try"
             >
               {ctaLabel}
             </Button>

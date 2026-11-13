@@ -617,11 +617,6 @@
     aspect-ratio: 2 / 3;
   }
 
-  .officeFrame picture {
-    transform: scaleX(1.4);
-    transform-origin: center;
-  }
-
   .hotspot {
     top: calc(var(--mobile-y) - 4.5%);
     left: var(--mobile-x);
@@ -631,6 +626,10 @@
     padding: 4px 6px;
     border-radius: 10px;
     font-size: 10px;
+  }
+
+  .hotspot:not(:first-child) {
+    top: calc(var(--mobile-y) - 8.5%);
   }
 
   .hotspotIcon {

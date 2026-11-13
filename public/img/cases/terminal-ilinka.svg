@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="58 16 500 550" width="500" height="550" role="img" aria-label="Терминал Ильинка — знак">
+<title>Терминал Ильинка</title>
+<desc>Чистая векторная реконструкция логотипа на прозрачном фоне. Все элементы построены из прямых и кривых Безье.</desc>
+<path fill="#384251" fill-rule="evenodd" d="
+M 303 28
+C 300 47 298 67 298 87
+C 363 79 420 102 456 135
+L 244 348
+L 244 40
+C 141 83 78 170 72 257
+C 59 374 116 481 215 530
+C 260 552 311 561 365 557
+L 365 499
+C 301 505 250 494 215 459
+L 419 254
+L 419 543
+C 527 508 591 414 592 302
+C 594 168 514 65 405 38
+C 372 30 338 24 303 28 Z
+M 185 147
+L 185 434
+C 147 390 127 337 127 290
+C 127 231 145 184 185 147 Z
+M 476 147
+C 515 190 536 245 536 293
+C 536 351 516 398 476 438 Z
+"/>
+<path d="M 638 143 H 686 M 662 143 V 242" fill="none" stroke="#384251" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 758 143 H 709 V 242 H 758 M 709 187 H 756" fill="none" stroke="#384251" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 784 242 V 143 H 816 C 845 143 845 191 816 191 H 784" fill="none" stroke="#384251" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 867 242 V 143 L 913 228 L 958 143 V 242" fill="none" stroke="#384251" stroke-width="11" stroke-linecap="butt" stroke-linejoin="round"/>
+<path d="M 994 143 V 242 L 1064 143 V 242" fill="none" stroke="#384251" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 1099 143 V 242 M 1099 188 H 1159 M 1159 143 V 242" fill="none" stroke="#384251" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter"/>
+<path d="M 1188 242 L 1228 143 L 1268 242 M 1204 204 H 1252" fill="none" stroke="#384251" stroke-width="11" stroke-linecap="butt" stroke-linejoin="round"/>
+<path d="M 1292 242 L 1328 143 L 1367 242" fill="none" stroke="#384251" stroke-width="11" stroke-linecap="butt" stroke-linejoin="round"/>
+<path fill="#384251" fill-rule="evenodd" d="M 652 264 H 687 V 370 L 743 264 H 775 V 440 H 741 V 334 L 683 440 H 652 Z"/>
+<path fill="#384251" fill-rule="evenodd" d="M 794 440 L 859 264 H 891 L 953 440 H 915 L 875 320 L 828 440 Z"/>
+<path fill="#384251" fill-rule="evenodd" d="M 968 264 H 1003 V 327 H 1015 C 1056 327 1075 347 1075 383
+       C 1075 422 1055 440 1015 440 H 968 Z
+       M 1003 366 V 402 H 1017 C 1032 402 1039 395 1039 384
+       C 1039 373 1032 366 1017 366 Z"/>
+<path fill="#384251" fill-rule="evenodd" d="M 1097 263 H 1133 V 367 L 1191 263 H 1221 V 440 H 1186 V 334 L 1128 440 H 1097 Z"/>
+<path fill="#384251" fill-rule="evenodd" d="M 1254 263 H 1291 V 326 H 1340 V 263 H 1376 V 440 H 1340 V 365 H 1291 V 440 H 1254 Z"/>
+<path fill="#384251" fill-rule="evenodd" d="M 1410 263 H 1447 V 321 L 1491 263 H 1534 L 1473 339 L 1534 439 H 1491 L 1447 375 V 439 H 1410 Z"/>
+<path fill="#384251" fill-rule="evenodd" d="M 1542 439 L 1607 262 H 1640 L 1702 439 H 1664 L 1651 400 H 1591 L 1575 439 Z M 1603 363 H 1637 L 1619 319 Z"/>
+</svg>

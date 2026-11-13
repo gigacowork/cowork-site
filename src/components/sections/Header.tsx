@@ -519,7 +519,7 @@ export function Header() {
             })}
           </ul>
           <div className="flex items-center gap-16">
-            <Button href="/lead" variant="primary" size="md">
+            <Button href="/lead" variant="primary" size="md" data-metrica-goal="header-try">
               Попробовать
             </Button>
           </div>
@@ -533,7 +533,7 @@ export function Header() {
             навигацией, чтобы не дублироваться.
           */}
           {!menuOpen && (
-            <Button href="/lead" variant="primary" size="sm">
+            <Button href="/lead" variant="primary" size="sm" data-metrica-goal="header-try">
               Попробовать
             </Button>
           )}
@@ -720,6 +720,7 @@ export function Header() {
               variant="primary"
               size="lg"
               className="w-[212px]"
+              data-metrica-goal="header-try"
               onClick={() => setMenuOpen(false)}
             >
               Попробовать

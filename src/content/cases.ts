@@ -1,3 +1,5 @@
+import { ADDITIONAL_CASES } from "./additional-cases";
+
 /**
  * Справочник кейсов — один источник для трёх мест:
  *   • блок «Опыт клиентов» на главной (`sections/Cases.tsx`) — выбранные кейсы;
@@ -10,6 +12,7 @@
  *
  * Тексты исходных кейсов — из «Кейсы прод.docx» (версия от 22.09.2026).
  * Кейс АПРИ — из обновлённого «Кейсы прод.docx» (12.10.2026).
+ * Новые кейсы — из папки «Исходники кейсы/Тексты кейсов».
  */
 
 /* ────────────────────────────── фильтры ────────────────────────────────── */
@@ -34,6 +37,7 @@ export const INDUSTRIES = [
   "Транспорт и логистика",
   "Агропром",
   "Строительство и недвижимость",
+  "Юридические услуги",
 ] as const;
 
 /*
@@ -53,6 +57,7 @@ export const ROLES = [
   "Клиентский сервис",
   "Документооборот",
   "Контент и коммуникации",
+  "Проектный офис",
 ] as const;
 
 export type Industry = (typeof INDUSTRIES)[number];
@@ -140,6 +145,8 @@ export type CaseStudy = {
   /** Короткое описание для карточки в ленте кейсов, если оно своё. */
   cardDescription?: string;
   logo?: CaseLogo;
+  /** Текст рядом с фирменным знаком, если SVG содержит только знак. */
+  logoWordmark?: string;
   tags: [CaseTag, CaseTag];
   industry: Industry;
   role: Role;
@@ -812,6 +819,7 @@ export const CASES: CaseStudy[] = [
     photo: { desktop: "/img/cases/versta-io-wide.webp", fit: "contain" },
     story: VERSTA_STORY,
   },
+  ...ADDITIONAL_CASES,
   {
     /*
       Frank Auto: 22.09.2026 снят с главной (его место занял Directum) и

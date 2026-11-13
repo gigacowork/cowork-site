@@ -487,6 +487,7 @@ export default function PricingPage() {
             variant="primary"
             size="lg"
             className="w-[230px] text-body-m! md:w-auto"
+            data-metrica-goal="pricing-lead"
           >
             Оставить заявку
           </Button>
@@ -660,6 +661,7 @@ export default function PricingPage() {
             variant="primary"
             size="lg"
             className="text-body-m!"
+            data-metrica-goal="footer-try"
           >
             Попробовать бесплатно
           </Button>

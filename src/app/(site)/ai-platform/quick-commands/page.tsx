@@ -168,6 +168,7 @@ export default function QuickCommandsPage() {
             variant="primary"
             size="lg"
             className="w-[230px] text-body-m! md:w-auto"
+            data-metrica-goal="main-try"
           >
             Попробовать бесплатно
           </Button>
@@ -228,6 +229,7 @@ export default function QuickCommandsPage() {
             variant="primary"
             size="lg"
             className="text-body-m!"
+            data-metrica-goal="footer-try"
           >
             Попробовать бесплатно
           </Button>

@@ -336,6 +336,7 @@ export default async function CaseStoryPage({
             variant="primary"
             size="lg"
             className="text-body-m!"
+            data-metrica-goal="footer-try"
           >
             Попробовать бесплатно
           </Button>

@@ -215,6 +215,7 @@ export function PartOfTeam() {
                   variant="primary"
                   size="md"
                   className="w-[160px] py-12!"
+                  data-metrica-goal="home-platform"
                 >
                   О&nbsp;платформе
                 </Button>
