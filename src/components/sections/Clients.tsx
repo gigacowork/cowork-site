@@ -1,16 +1,10 @@
 import Image from "@/components/ui/Image";
+import type { CSSProperties } from "react";
 
 /**
- * Clients — полоса логотипов клиентов
- * Figma desktop: 1927:15582 (All_clients — px 80 / py 64, ряд 1203×84, justify-between)
- * Figma mobile:  1927:17385 (All_clients — px 16 / py 64, два ряда: gap 12 и gap 24,
- *                            размеры логотипов = desktop × 0.625)
- *
- * Ниже md вместо двух рядов уменьшенных логотипов идёт бегущая строка: ряд
- * такой же, как на десктопе, и логотипы в полный размер — в две строки по 390
- * они помещались только уменьшенными до 62%, и мелкие начертания («Sber Auto»,
- * «Directum») читались с трудом. Прокрутка бесконечная, поэтому список не
- * упирается в край экрана.
+ * Clients — логотипы клиентов после блока «Не тратьте часы…».
+ * Исходный ряд Figma 1927:15582 дополнен логотипами из кейсов.
+ * Три независимые дорожки показывают весь набор на любой ширине экрана.
  */
 
 type ClientLogo = {
@@ -23,51 +17,88 @@ type ClientLogo = {
   sizeClassName: string;
 };
 
-/** Порядок — как в десктопном ряду (1927:15582), слева направо. */
-const LOGOS: ClientLogo[] = [
+/** Исходный ряд из макета остаётся первым. */
+const FEATURED_LOGOS: ClientLogo[] = [
   {
     name: "PhosAgro",
     src: "/img/clients/phosagro.svg",
-    width: 132,
-    height: 32,
-    sizeClassName: "h-[32px] w-[132px]",
+    width: 150,
+    height: 36,
+    sizeClassName: "h-[36px] w-[150px]",
   },
   {
     name: "Frank Auto",
     src: "/img/clients/frank-auto.svg",
-    width: 111,
-    height: 29,
-    sizeClassName: "h-[29px] w-[110.941px]",
+    width: 135,
+    height: 35,
+    sizeClassName: "h-[35px] w-[135px]",
   },
   {
     name: "Sber Auto",
     src: "/img/clients/sber-auto.svg",
-    width: 134,
-    height: 22,
-    sizeClassName: "h-[21.203px] w-[134px]",
+    width: 158,
+    height: 26,
+    sizeClassName: "h-[26px] w-[158px]",
   },
   {
     name: "Directum",
     src: "/img/clients/directum.svg",
-    width: 116,
-    height: 30,
-    sizeClassName: "h-[30px] w-[116px]",
+    width: 135,
+    height: 35,
+    sizeClassName: "h-[35px] w-[135px]",
   },
   {
     name: "BI Group",
     src: "/img/clients/bi-group.svg",
-    width: 134,
-    height: 26,
-    sizeClassName: "h-[26px] w-[134px]",
+    width: 148,
+    height: 29,
+    sizeClassName: "h-[29px] w-[148px]",
   },
   {
     name: "АПРИ",
     src: "/img/clients/apri.svg",
-    width: 88,
-    height: 28,
-    sizeClassName: "h-[28px] w-[88px]",
+    width: 112,
+    height: 36,
+    sizeClassName: "h-[36px] w-[112px]",
   },
 ];
+
+/** Логотипы из кейсов: те же тёмные одноцветные SVG и прозрачный фон, что у первого ряда. */
+const caseLogo = (name: string, slug: string, width: number, height: number): ClientLogo => ({
+  name,
+  src: `/img/clients/cases/${slug}.svg`,
+  width,
+  height,
+  sizeClassName: "h-auto max-w-full object-contain",
+});
+
+const CASE_LOGOS: ClientLogo[] = [
+  caseLogo("АСП", "asp", 105, 105),
+  caseLogo("Fishstat", "fishstat", 90, 46),
+  caseLogo("Победа", "pobeda", 82, 59),
+  caseLogo("Телефоника", "telefonika", 150, 33),
+  caseLogo("Универсал", "universal", 70, 70),
+  caseLogo("Element", "element", 210, 19),
+  caseLogo("АКС", "aks", 90, 36),
+  caseLogo("Алека", "aleka", 200, 14),
+  caseLogo("Альянс", "alliance", 135, 37),
+  caseLogo("ВМЕСТЕ", "vmeste", 150, 38),
+  caseLogo("ЛогЛаб", "loglab", 117, 46),
+  caseLogo("НВМ", "nvm", 185, 22),
+  caseLogo("Национальная юридическая коллегия", "nyuk", 105, 53),
+  caseLogo("ПЛАТО", "plato", 170, 22),
+  caseLogo("РАЗУМ", "razum", 145, 32),
+  caseLogo("СМИТ", "smit", 135, 30),
+  caseLogo("Терминал Ильинка", "terminal-ilyinka", 135, 45),
+  caseLogo("Тренд-Групп", "trend-group", 115, 95),
+  caseLogo("УралМетХим", "uralmetkhim", 67, 61),
+  caseLogo("Эволента", "evolenta", 160, 54),
+  caseLogo("Элси", "elsi", 46, 60),
+];
+
+const LOGOS = [...FEATURED_LOGOS, ...CASE_LOGOS];
+const logoRows = (logos: ClientLogo[]) =>
+  Array.from({ length: 3 }, (_, row) => logos.filter((_, index) => index % 3 === row));
 
 /**
  * Логотипы партнёров (страница «Партнёрам»). Макет — All Partners / Logo
@@ -192,10 +223,21 @@ export const PARTNER_LOGOS: ClientLogo[] = [
 function LogoItem({
   logo,
   className = "",
+  marquee = false,
 }: {
   logo: ClientLogo;
   className?: string;
+  marquee?: boolean;
 }) {
+  const marqueeSize = marquee
+    ? ({
+        "--logo-width": `${logo.width}px`,
+        "--logo-height": `${logo.height}px`,
+        "--logo-mobile-width": `${Math.round(logo.width * 0.72)}px`,
+        "--logo-mobile-height": `${Math.round(logo.height * 0.72)}px`,
+      } as CSSProperties)
+    : undefined;
+
   return (
     <li className={`flex shrink-0 items-center justify-center ${className}`}>
       <Image
@@ -203,7 +245,8 @@ function LogoItem({
         alt={logo.name}
         width={logo.width}
         height={logo.height}
-        className={logo.sizeClassName}
+        className={marquee ? "clients-logo-image" : logo.sizeClassName}
+        style={marqueeSize}
       />
     </li>
   );
@@ -223,15 +266,15 @@ function MarqueeGroup({
       className="marquee-group flex shrink-0 items-center"
     >
       {logos.map((logo) => (
-        <LogoItem key={logo.src} logo={logo} />
+        <LogoItem key={logo.src} logo={logo} marquee className="h-[80px] md:h-[108px]" />
       ))}
     </ul>
   );
 }
 
 /**
- * По умолчанию — ряд логотипов клиентов. На странице «Партнёрам» тот же набор
- * элементов выводится неподвижной плиткой.
+ * По умолчанию — три бегущие строки клиентов. На странице «Партнёрам»
+ * переданный набор выводится неподвижной плиткой.
  */
 export function Clients({
   logos = LOGOS,
@@ -244,10 +287,7 @@ export function Clients({
   /** Неподвижная сетка логотипов на странице партнёров. */
   tiled?: boolean;
   /**
-   * Вертикальные отступы секции. По умолчанию 64 сверху и снизу; на главной
-   * снизу больше — там выше стоит блок с прокруткой, он оставляет за собой
-   * свой хвост, и при равных отступах воздух над логотипами читался вдвое
-   * шире, чем под ними.
+   * Вертикальные отступы секции.
    */
   paddingClassName?: string;
 } = {}) {
@@ -269,34 +309,24 @@ export function Clients({
 
   return (
     <section id={id} className={`bg-bg-page ${paddingClassName}`}>
-      {/*
-        Бегущая строка — ниже md. Она идёт во всю ширину экрана, без
-        container-page: полоса, обрезанная по колонке, читалась бы как
-        сломанная вёрстка, а не как прокрутка. Края растворяются маской,
-        поэтому логотипы не обрубаются на границе.
-      */}
-      <div
-        className="overflow-hidden md:hidden"
-        style={{
-          maskImage:
-            "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
-          WebkitMaskImage:
-            "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
-        }}
-      >
-        <div className="marquee flex w-max items-center">
-          <MarqueeGroup logos={logos} />
-          <MarqueeGroup logos={logos} clone />
-        </div>
-      </div>
-
-      {/* На планшете шесть логотипов занимают два ряда; на десктопе — один. */}
-      <div className="container-page hidden md:block">
-        <ul className="grid grid-cols-3 items-center justify-items-center gap-24 lg:flex lg:h-[84px] lg:justify-between">
-          {logos.map((logo) => (
-            <LogoItem key={logo.src} logo={logo} />
-          ))}
-        </ul>
+      <div className="flex flex-col gap-6 md:gap-10">
+        {logoRows(logos).map((row, index) => (
+          <div
+            key={index}
+            className="overflow-hidden motion-reduce:overflow-x-auto"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
+            }}
+          >
+            <div className={`marquee clients-marquee flex w-max items-center ${index === 1 ? "clients-marquee-reverse" : ""}`}>
+              <MarqueeGroup logos={row} />
+              <MarqueeGroup logos={row} clone />
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

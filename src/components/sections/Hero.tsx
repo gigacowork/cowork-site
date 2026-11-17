@@ -81,7 +81,7 @@ export function Hero({ chat }: HeroProps) {
         </div>
       </div>
 
-      <div className="container-page flex flex-col items-center gap-32 pb-64 pt-[calc(16px+var(--header-h)+var(--home-promo-h,0px))] md:gap-40 md:pb-80 md:pt-[calc(160px+var(--home-promo-h,0px))]">
+      <div className="container-page flex flex-col items-center gap-32 pb-[calc(64px+var(--hero-promo-backfill-h))] pt-[calc(16px+var(--header-h)+var(--home-promo-h,0px))] md:gap-40 md:pb-[calc(80px+var(--hero-promo-backfill-h))] md:pt-[calc(160px+var(--home-promo-h,0px))]">
 
         {/* Hero / Content */}
         <div className="flex flex-col items-center gap-16 text-center text-text-primary md:gap-24">

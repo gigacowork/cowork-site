@@ -181,7 +181,7 @@ export function NoHours() {
     <section
       id="audience"
       data-cards-section
-      className="bg-bg-page flex w-full flex-col items-center gap-40 py-64 md:gap-48 md:pt-96 md:pb-64"
+      className="bg-bg-page flex w-full flex-col items-center gap-40 pt-64 pb-0 md:gap-48 md:pt-96"
     >
       {/* Header — Role Carousel / in (1927:15564 / 1927:17371) */}
       {/*

@@ -19,6 +19,7 @@ import StackingCards from "@/components/interactive/StackingCards";
 import CountUp from "@/components/interactive/CountUp";
 import RevealCards from "@/components/interactive/RevealCards";
 import TokenIllustrations from "@/components/interactive/TokenIllustrations";
+import SpecialProjectCapsule from "@/components/interactive/SpecialProjectCapsule";
 
 /* Шапка и подвал — в src/app/layout.tsx, они общие для всех страниц. */
 
@@ -33,6 +34,7 @@ export default function Home() {
     <>
       <LegacyHomeFragmentRedirect />
       <JsonLd data={PAGE_SEO.home.jsonLd!} />
+      <SpecialProjectCapsule />
 
       {/* 2 — Hero + анимированный чат */}
       <HeroWithChat />
@@ -43,12 +45,7 @@ export default function Home() {
       </HorizontalScrollCards>
 
       {/* 4 — Логотипы клиентов */}
-      {/*
-        Снизу отступ больше: выше стоит блок с горизонтальной прокруткой, он
-        оставляет за собой собственный хвост воздуха, и при равных 64 сверху
-        над логотипами выходило 220, а под ними 90. Здесь оба зазора равны.
-      */}
-      <Clients paddingClassName="pt-64 pb-[194px]" />
+      <Clients paddingClassName="pt-32 pb-48 md:pt-40 md:pb-64" />
 
       {/* 5 — «Как работают ИИ-агенты» со stacking-скроллом */}
       <StackingCards>

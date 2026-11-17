@@ -15,10 +15,10 @@ const departments = [
   { id: "finance", label: "Финансы", icon: "/img/icons/money.svg", x: 33, y: 10, mobileX: 79, mobileY: 21, robotX: 34, robotY: 31, activityX: 39, activityY: 24, glowX: 33, glowY: 29, task: "Подготовка отчета", companies: ["АПРИ", "Уралметхим", "Альянс", "ПЛАТО Девелопмент", "PERMEGI", "ГК СМИТ", "ГК «Вместе»", "Тренд Групп"] },
   { id: "legal", label: "Юридический отдел", icon: "/img/icons/document.svg", x: 50, y: 10, mobileX: 21, mobileY: 31, robotX: 51, robotY: 31, activityX: 56, activityY: 24, glowX: 50, glowY: 29, task: "Проверка договора", companies: ["Уралметхим", "Национальная юридическая коллегия", "Тренд Групп", "ЛогЛаб"] },
   { id: "marketing", label: "Маркетинг", icon: "/img/icons/chart-no-axes-combined.svg", x: 68, y: 10, mobileX: 79, mobileY: 40, robotX: 69, robotY: 31, activityX: 74, activityY: 24, glowX: 68, glowY: 29, task: "Анализ конкурентов", companies: ["Эволента", "ГК «ПОБЕДА»", "ГК СМИТ", "ГК «Вместе»", "Тренд Групп"] },
-  { id: "project", label: "Проектный офис", icon: "/img/icons/reports.svg", x: 86, y: 10, mobileX: 21, mobileY: 50, robotX: 86, robotY: 31, activityX: 91, activityY: 24, glowX: 86, glowY: 29, task: "Планирование проекта", companies: ["ГК ЭЛСИ", "Терминал Ильинка", "ГК «Вместе»"] },
-  { id: "sales", label: "Продажи", icon: "/img/icons/commercial-offer.svg", x: 19, y: 87, mobileX: 79, mobileY: 59, robotX: 19, robotY: 66, activityX: 24, activityY: 59, glowX: 19, glowY: 66, task: "Подготовка предложения", companies: ["BI Group", "ALEKA GROUP", "ГК НВМ", "PERMEGI", "ГК «ПОБЕДА»", "ГК СМИТ", "ГК «Вместе»", "Тренд Групп", "ЛогЛаб"] },
+  { id: "project", label: "Проектный офис", icon: "/img/icons/reports.svg", x: 86, y: 10, mobileX: 21, mobileY: 50, robotX: 86, robotY: 31, activityX: 91, activityY: 24, glowX: 86, glowY: 29, task: "Планирование проекта", companies: ["ГК ЭЛСИ", "Терминал Ильинка", "ГК «Вместе»", "Element"] },
+  { id: "sales", label: "Продажи", icon: "/img/icons/commercial-offer.svg", x: 19, y: 87, mobileX: 79, mobileY: 59, robotX: 19, robotY: 66, activityX: 24, activityY: 59, glowX: 19, glowY: 66, task: "Подготовка предложения", companies: ["BI Group", "ALEKA GROUP", "ГК НВМ", "PERMEGI", "ГК «ПОБЕДА»", "ГК СМИТ", "ГК «Вместе»", "Тренд Групп", "ЛогЛаб", "Телефоника", "Element"] },
   { id: "procurement", label: "Закупки", icon: "/img/icons/supplier.svg", x: 40, y: 87, mobileX: 21, mobileY: 68, robotX: 40, robotY: 66, activityX: 45, activityY: 59, glowX: 40, glowY: 66, task: "Подбор поставщиков", companies: ["Альянс", "PERMEGI", "ТК «Универсал»", "РАЗУМ", "Арктик Катеринг Сервис", "Тренд Групп"] },
-  { id: "logistics", label: "Логистика", icon: "/img/icons/truck.svg", x: 61, y: 87, mobileX: 79, mobileY: 77, robotX: 61, robotY: 66, activityX: 66, activityY: 59, glowX: 61, glowY: 66, task: "Планирование поставки", companies: ["ТК «Универсал»", "Терминал Ильинка", "Арктик Катеринг Сервис", "ЛогЛаб"] },
+  { id: "logistics", label: "Логистика", icon: "/img/icons/truck.svg", x: 61, y: 87, mobileX: 79, mobileY: 77, robotX: 61, robotY: 66, activityX: 66, activityY: 59, glowX: 61, glowY: 66, task: "Планирование поставки", companies: ["ТК «Универсал»", "Терминал Ильинка", "Арктик Катеринг Сервис", "ЛогЛаб", "АСП Логистический Оператор"] },
   { id: "production", label: "Производство и сервис", icon: "/img/icons/factory.svg", x: 82, y: 87, mobileX: 39, mobileY: 88, robotX: 82, robotY: 66, activityX: 87, activityY: 59, glowX: 82, glowY: 66, task: "Контроль качества", companies: ["ГК ЭЛСИ", "PERMEGI", "Терминал Ильинка", "Арктик Катеринг Сервис", "ГК «Вместе»"] },
 ] as const;
 
@@ -65,6 +65,9 @@ const caseTitles: Record<string, string> = {
   "ГК «Вместе»": "Отчётность и контроль проектов",
   "Тренд Групп": "Договоры, закупки и запросы",
   "ЛогЛаб": "Документы международной логистики",
+  "Телефоника": "Аналитика продаж магазинов",
+  "АСП Логистический Оператор": "Оформление заказов на перевозку",
+  "Element": "Аналитика и прогноз продаж",
 };
 
 function ProjectCaseCard({ study }: { study: CaseStudy }) {
