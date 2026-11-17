@@ -133,22 +133,6 @@ function CompanyCard({ study }: { study: CaseStudy }) {
         </span>
       ) : null}
 
-      {/* Технологии ещё не согласованы — пока список пуст, блока нет. */}
-      {company.technologies.length ? (
-        <div className="flex flex-col gap-12">
-          <p className="text-h4 font-medium text-text-primary">Технологии</p>
-          <ul className="flex flex-wrap gap-8">
-            {company.technologies.map((item) => (
-              <li
-                key={item}
-                className="rounded-full bg-bg-tag p-8 text-caption text-text-primary"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -173,6 +157,9 @@ function Block({ block }: { block: StoryBlock }) {
           {block.text}
         </h2>
       );
+
+    case "subheading":
+      return <h3 className="text-h4 font-medium text-text-primary">{block.text}</h3>;
 
     case "text":
       return <p className="text-body-l text-text-primary">{block.text}</p>;
@@ -271,7 +258,7 @@ export default async function CaseStoryPage({
       <section className="relative isolate flex min-h-[539px] w-full flex-col justify-end overflow-hidden bg-bg-page pt-[120px] pb-80 md:min-h-[500px] md:pt-[160px] md:pb-[73px]">
         <Breadcrumbs
           items={[
-            { label: "Кейсы", href: "/success-stories" },
+            { label: "Кейсы", href: "/special-project/" },
             { label: study.company },
           ]}
         />

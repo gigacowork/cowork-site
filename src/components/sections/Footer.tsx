@@ -110,7 +110,7 @@ const NAV_GROUPS: NavGroup[] = [
     links: [
       { label: "О\u00A0компании", href: "/company/about" },
       { label: "ИТ-аккредитация", href: "/it_accreditation" },
-      { label: "Кейсы", href: "/success-stories" },
+      { label: "Кейсы", href: "/special-project/" },
       { label: "Блог", href: "#blog", hidden: true },
       { label: "Партнёрам", href: "/company/partners" },
       { label: "Карьера", href: "#career", hidden: true },

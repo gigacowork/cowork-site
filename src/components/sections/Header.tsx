@@ -108,7 +108,7 @@ const NAV_ITEMS: NavItem[] = [
     label: "Центр знаний",
     children: [
       { label: "Академия", href: "/ai-academy" },
-      { label: "Кейсы", href: "/success-stories" },
+      { label: "Кейсы", href: "/special-project/" },
       { label: "Медиа", href: "/media" },
     ],
   },

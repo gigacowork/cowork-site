@@ -103,7 +103,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
       priority: 0.6,
     })),
-    { url: url("/success-stories/"), changeFrequency: "monthly", priority: 0.8 },
+    { url: url("/special-project/"), changeFrequency: "monthly", priority: 0.8 },
     ...CASES_WITH_STORY.map((item) => ({
       url: url(`/success-stories/${item.slug}/`),
       changeFrequency: "yearly" as const,

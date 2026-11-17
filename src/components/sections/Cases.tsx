@@ -159,7 +159,7 @@ export function Cases() {
           {/* Ссылка на раздел кейсов (иконка — Icon / arrow up-right 418:4735, 9×9). */}
           <div className="flex pt-8 md:absolute md:top-0 md:right-0 md:pt-0">
             <Link
-              href="/success-stories"
+              href="/special-project/"
               className="flex items-center justify-center gap-8 rounded-full py-12 text-body-m text-text-primary transition-colors hover:bg-neutral-100 md:px-24"
             >
               <span className="whitespace-nowrap">Все кейсы</span>
