@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { VOTING_QUESTIONS, type VoteAnswer } from "@/content/voting";
-import { loadVoteSnapshot, submitQuestionVote, type VoteSnapshot } from "@/lib/voting";
+import { loadVoteSnapshot, submitQuestionVote, VOTING_RELOAD_MESSAGE, type VoteSnapshot } from "@/lib/voting";
 import styles from "../voting.module.css";
 
 type Question = (typeof VOTING_QUESTIONS)[number];
@@ -30,7 +30,7 @@ export function QuestionVote({ question, index }: { question: Question; index: n
           setError("");
         }
       } catch (cause) {
-        if (active) setError(cause instanceof Error ? cause.message : "Не удалось загрузить голосование.");
+        if (active) setError(cause instanceof Error ? cause.message : VOTING_RELOAD_MESSAGE);
       }
     }
     const onStorage = () => { void refresh(); };
@@ -55,7 +55,7 @@ export function QuestionVote({ question, index }: { question: Question; index: n
       setSnapshot(await submitQuestionVote(question.id, selected));
       setError("");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Не удалось сохранить голос.");
+      setError(cause instanceof Error ? cause.message : VOTING_RELOAD_MESSAGE);
       try {
         const latest = await loadVoteSnapshot();
         setSnapshot(latest);

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { VOTING_QUESTIONS, type VoteResults } from "@/content/voting";
-import { loadVoteResults } from "@/lib/voting";
+import { loadVoteResults, VOTING_RELOAD_MESSAGE } from "@/lib/voting";
 import styles from "../../voting.module.css";
 
 type Question = (typeof VOTING_QUESTIONS)[number];
@@ -37,7 +37,7 @@ export function StageResults({ question, index }: { question: Question; index: n
           setError("");
         }
       } catch (cause) {
-        if (active) setError(cause instanceof Error ? cause.message : "Не удалось загрузить результаты.");
+        if (active) setError(cause instanceof Error ? cause.message : VOTING_RELOAD_MESSAGE);
       } finally {
         inFlight = false;
       }

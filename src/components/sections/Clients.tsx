@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 /**
  * Clients — логотипы клиентов после блока «Не тратьте часы…».
  * Исходный ряд Figma 1927:15582 дополнен логотипами из кейсов.
- * Три независимые дорожки показывают весь набор на любой ширине экрана.
+ * Две независимые дорожки показывают весь набор на любой ширине экрана.
  */
 
 type ClientLogo = {
@@ -98,7 +98,7 @@ const CASE_LOGOS: ClientLogo[] = [
 
 const LOGOS = [...FEATURED_LOGOS, ...CASE_LOGOS];
 const logoRows = (logos: ClientLogo[]) =>
-  Array.from({ length: 3 }, (_, row) => logos.filter((_, index) => index % 3 === row));
+  Array.from({ length: 2 }, (_, row) => logos.filter((_, index) => index % 2 === row));
 
 /**
  * Логотипы партнёров (страница «Партнёрам»). Макет — All Partners / Logo
@@ -273,7 +273,7 @@ function MarqueeGroup({
 }
 
 /**
- * По умолчанию — три бегущие строки клиентов. На странице «Партнёрам»
+ * По умолчанию — две бегущие строки клиентов. На странице «Партнёрам»
  * переданный набор выводится неподвижной плиткой.
  */
 export function Clients({

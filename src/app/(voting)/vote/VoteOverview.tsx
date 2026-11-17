@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { VOTING_QUESTIONS, type VoteAnswers } from "@/content/voting";
-import { isSharedVotingEnabled, loadVoteSnapshot } from "@/lib/voting";
+import { isSharedVotingEnabled, loadVoteSnapshot, VOTING_RELOAD_MESSAGE } from "@/lib/voting";
 import styles from "./voting.module.css";
 
 export function VoteOverview() {
@@ -20,7 +20,7 @@ export function VoteOverview() {
           setError("");
         }
       } catch (cause) {
-        if (active) setError(cause instanceof Error ? cause.message : "Не удалось прочитать голоса.");
+        if (active) setError(cause instanceof Error ? cause.message : VOTING_RELOAD_MESSAGE);
       }
     }
     const onStorage = () => { void refresh(); };

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { VOTING_QUESTIONS, type VoteResults } from "@/content/voting";
-import { loadVoteResults } from "@/lib/voting";
+import { loadVoteResults, VOTING_RELOAD_MESSAGE } from "@/lib/voting";
 import styles from "../voting.module.css";
 
 const percent = (count: number, total: number) => total ? Math.round((count / total) * 100) : 0;
@@ -17,7 +17,7 @@ export function VoteReport() {
       setResults(await loadVoteResults());
       setError("");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Не удалось загрузить результаты.");
+      setError(cause instanceof Error ? cause.message : VOTING_RELOAD_MESSAGE);
     }
   }, []);
 

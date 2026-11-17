@@ -742,7 +742,7 @@ input[type="checkbox"].checkbox-tick:checked {
 
   .clients-marquee {
     --marquee-gap: 80px;
-    animation-duration: 38s;
+    animation-duration: 58s;
   }
 
   .clients-marquee-reverse {
