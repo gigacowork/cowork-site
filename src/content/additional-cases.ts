@@ -636,8 +636,7 @@ const additionalCasesDraft: CaseStudy[] = [
     metricCaption: "экономия рабочего времени команды",
     description: "Пять ИИ-агентов помогают логистам переводить спецификации, готовить предложения, проверять договоры, габариты грузов и сканы.",
     cardDescription: "Агенты ускоряют работу с документами, коммерческими предложениями и данными о грузах.",
-    logo: { src: "/img/cases/loglab-mark.svg", width: 650, height: 691, className: "max-w-[30px]" },
-    logoWordmark: "ЛогЛаб",
+    logo: { src: "/img/cases/loglab-wordmark.svg", width: 1406, height: 270, className: "max-w-[145px]" },
     tags: [{ label: "Логистика", icon: "truck" }, { label: "Документооборот", icon: "document" }],
     industry: "Транспорт и логистика",
     role: "Документооборот",
@@ -787,5 +786,14 @@ const additionalCasesDraft: CaseStudy[] = [
 const sourceStories: Record<string, NonNullable<CaseStudy["story"]>> = SOURCE_CASE_STORIES;
 export const ADDITIONAL_CASES: CaseStudy[] = additionalCasesDraft.map((item) => ({
   ...item,
-  story: sourceStories[item.slug ?? ""] ?? item.story,
+  story: sourceStories[item.slug ?? ""]
+    ? {
+        ...sourceStories[item.slug ?? ""],
+        company: {
+          ...sourceStories[item.slug ?? ""].company,
+          automation: item.story?.company.automation,
+          territorialBank: sourceStories[item.slug ?? ""].company.territorialBank ?? item.story?.company.territorialBank,
+        },
+      }
+    : item.story,
 }));

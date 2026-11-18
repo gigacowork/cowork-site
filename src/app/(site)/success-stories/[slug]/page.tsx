@@ -60,48 +60,31 @@ export async function generateMetadata({
 
 /** Metric / Content 1562:3014 — число Display/XL и подпись Body/L. */
 function Metric({ metric }: { metric: StoryMetric }) {
-  return (
-    <li className="flex min-w-0 flex-1 basis-[307px] flex-col items-center gap-16">
-      {/*
-        Число — Display/L (96), а не Display/XL (160) из макета. В макете
-        метрики набраны без знаков сравнения и без трёхзначных чисел; с «≥»
-        и «100» на 160 px три колонки по 294 px (статья 894) смыкаются
-        вплотную, и числа соседних метрик слипаются.
+  const displayValue = metric.sourceValue ?? `${metric.prefix ?? ""}${metric.value}${metric.suffix ?? ""}`;
+  const parts = /^(\D*?)(\d+(?:[.,]\d+)?(?:[–-]\d+(?:[.,]\d+)?)?%?)(.*)$/u.exec(displayValue);
+  const prefix = parts?.[1] ?? "";
+  const number = parts?.[2] ?? displayValue;
+  const suffix = parts?.[3] ?? "";
+  const canAnimate = !metric.sourceValue && metric.animate !== false && /^\d+$/.test(metric.value);
+  const numberClass = prefix.trim().length > 1 || number.length > 3 || suffix.trim().length > 3
+    ? "text-display-l lg:text-[clamp(80px,7vw,112px)]"
+    : "text-display-l lg:text-[clamp(96px,8vw,128px)]";
 
-        Знак сравнения набран кеглем суффикса, а не числа, — по той же
-        причине: на крупном кегле «≥» съедает треть колонки.
-      */}
-      <p className="flex items-baseline whitespace-nowrap text-text-primary">
-        {metric.sourceValue ? (
-          <span className="text-[clamp(32px,3vw,56px)] font-normal leading-none">
-            {metric.sourceValue}
-          </span>
-        ) : (
-          <>
-        {metric.prefix ? (
-          <span className="text-h1 font-medium">{metric.prefix}</span>
-        ) : null}
-        {/*
-          Счётчик — тот же, что в блоках метрик на главной и на страницах
-          «Для кого»: `data-counter` оборачивает ТОЛЬКО цифры, чтобы знак
-          сравнения и суффикс не пересчитывались вместе с ними.
-        */}
-        <span className="text-display-l font-normal">
-          {metric.animate === false ? (
-            metric.value
-          ) : (
-            <span data-counter data-counter-value={metric.value}>
-              {metric.value}
-            </span>
-          )}
+  return (
+    <li className="flex w-full min-w-0 flex-none flex-col items-center gap-16 lg:w-auto lg:flex-1 lg:basis-0">
+      <p className="flex max-w-full items-baseline justify-center whitespace-nowrap text-text-primary">
+        {prefix ? <span className="mr-4 text-h3 font-normal lg:text-h2">{prefix}</span> : null}
+        <span className={`${numberClass} font-normal leading-none`}>
+          {canAnimate ? (
+            <>
+              <span data-counter data-counter-value={metric.value}>{metric.value}</span>
+              {number.slice(metric.value.length)}
+            </>
+          ) : number}
         </span>
-        {metric.suffix ? (
-          <span className="text-h1 font-medium">{metric.suffix}</span>
-        ) : null}
-          </>
-        )}
+        {suffix ? <span className="ml-4 text-h4 font-normal lg:text-h3">{suffix}</span> : null}
       </p>
-      <p className="w-full text-center text-body-l text-text-primary">
+      <p className="w-full max-w-[307px] text-center text-body-l text-text-primary">
         {metric.label.split("\n").map((line) => (
           <span key={line} className="block">
             {line}
@@ -161,9 +144,17 @@ function ArticlePlaceholder() {
 
 function Block({ block }: { block: StoryBlock }) {
   switch (block.type) {
+    case "task":
+      return (
+        <div className="flex flex-col gap-12 md:gap-16">
+          <h2 className="text-h3 font-medium text-text-primary md:text-h2">Задача</h2>
+          <h3 className="text-h4 font-medium text-text-primary">{block.text}</h3>
+        </div>
+      );
+
     case "heading":
       return (
-        <h2 className="text-h3 font-medium text-text-primary md:text-h2">
+        <h2 className="mt-12 text-h3 font-medium text-text-primary md:mt-16 md:text-h2">
           {block.text}
         </h2>
       );
@@ -173,6 +164,15 @@ function Block({ block }: { block: StoryBlock }) {
 
     case "text":
       return <p className="text-body-l text-text-primary">{block.text}</p>;
+
+    case "richText":
+      return (
+        <p className="text-body-l text-text-primary">
+          {block.parts.map((part, index) => (
+            <span key={index} className={part.bold ? "font-semibold" : undefined}>{part.text}</span>
+          ))}
+        </p>
+      );
 
     /* Article Callout 5173:54004 — Heading/H4 на подложке bg-footer */
     case "callout":
@@ -217,7 +217,7 @@ function Block({ block }: { block: StoryBlock }) {
     /* Info Card 5173:54044 — цитата с кавычкой */
     case "quote":
       return (
-        <figure className="flex flex-col gap-20 rounded-24 bg-bg-footer p-24 md:p-[30px]">
+        <figure className="flex flex-col gap-16 rounded-24 bg-bg-footer p-24 md:gap-24 md:p-[30px]">
           {/*
             Кавычка — не через `Icon`: в макете она залита градиентом
             (#00B8CA → #1CBBF3 → #9FB6F8), а маска взяла бы один цвет.
@@ -293,13 +293,12 @@ export default async function CaseStoryPage({
       </section>
 
       {/* ── Контент (5136:52440 / 5136:51893) ── */}
-      <section className="w-full bg-bg-page pt-48 pb-64 md:py-64">
+      <section className="w-full bg-bg-page pt-64 pb-64 md:py-64">
         <div className="container-page lg:grid lg:grid-cols-[894fr_282fr] lg:items-start lg:gap-24">
-          <div className="flex flex-col gap-32 md:gap-40">
+          <div className="flex flex-col gap-16 md:gap-24">
             {/* Metrics — 5160:53327 / 5173:54064 */}
-            {/* Зазор 24, а не 8 из макета: колонки уже макетных 307. */}
             <CountUp>
-              <ul className="flex flex-col items-center gap-40 py-64 lg:flex-row lg:justify-center lg:gap-24 lg:py-0 lg:pb-32">
+              <ul className="flex flex-col items-center gap-40 pb-48 lg:flex-row lg:justify-center lg:gap-24 lg:pb-32">
                 {story.metrics.map((metric) => (
                   <Metric key={metric.label} metric={metric} />
                 ))}

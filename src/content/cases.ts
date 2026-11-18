@@ -1,4 +1,5 @@
 import { ADDITIONAL_CASES } from "./additional-cases";
+import { SOURCE_CASE_STORIES } from "./source-case-stories";
 
 /**
  * Справочник кейсов — один источник для трёх мест:
@@ -93,9 +94,11 @@ export type CaseLogo = {
 
 /** Блок текста детальной страницы. Порядок в массиве = порядок на странице. */
 export type StoryBlock =
+  | { type: "task"; text: string }
   | { type: "heading"; text: string }
   | { type: "subheading"; text: string }
   | { type: "text"; text: string }
+  | { type: "richText"; parts: { text: string; bold: boolean }[] }
   /** Врезка на светло-серой подложке — Article Callout 5173:54004 */
   | { type: "callout"; text: string }
   /** Кадр интерфейса с подписью — Article Image 5173:53988 */
@@ -727,7 +730,14 @@ export const CASES: CaseStudy[] = [
     gradientClassName:
       "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
     photo: { desktop: "/img/cases/uralmetkhim-cover.webp" },
-    story: URALMETKHIM_STORY,
+    story: {
+      ...SOURCE_CASE_STORIES.uralmetkhim,
+      company: {
+        ...SOURCE_CASE_STORIES.uralmetkhim.company,
+        automation: URALMETKHIM_STORY.company.automation,
+        territorialBank: URALMETKHIM_STORY.company.territorialBank,
+      },
+    },
   },
   {
     slug: "ametist-radio-scripts",
@@ -749,7 +759,14 @@ export const CASES: CaseStudy[] = [
     role: "Контент и коммуникации",
     gradientClassName: "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]",
     photo: { desktop: "/img/cases/ametist-radio-studio-v2.webp" },
-    story: AMETIST_STORY,
+    story: {
+      ...SOURCE_CASE_STORIES["ametist-radio-scripts"],
+      company: {
+        ...SOURCE_CASE_STORIES["ametist-radio-scripts"].company,
+        automation: AMETIST_STORY.company.automation,
+        territorialBank: SOURCE_CASE_STORIES["ametist-radio-scripts"].company.territorialBank ?? AMETIST_STORY.company.territorialBank,
+      },
+    },
   },
   {
     slug: "directum",
