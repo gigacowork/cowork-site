@@ -72,6 +72,12 @@ function Metric({ metric }: { metric: StoryMetric }) {
         причине: на крупном кегле «≥» съедает треть колонки.
       */}
       <p className="flex items-baseline whitespace-nowrap text-text-primary">
+        {metric.sourceValue ? (
+          <span className="text-[clamp(32px,3vw,56px)] font-normal leading-none">
+            {metric.sourceValue}
+          </span>
+        ) : (
+          <>
         {metric.prefix ? (
           <span className="text-h1 font-medium">{metric.prefix}</span>
         ) : null}
@@ -92,6 +98,8 @@ function Metric({ metric }: { metric: StoryMetric }) {
         {metric.suffix ? (
           <span className="text-h1 font-medium">{metric.suffix}</span>
         ) : null}
+          </>
+        )}
       </p>
       <p className="w-full text-center text-body-l text-text-primary">
         {metric.label.split("\n").map((line) => (
@@ -110,22 +118,24 @@ function CompanyCard({ study }: { study: CaseStudy }) {
 
   return (
     <div className="flex flex-col gap-32 rounded-24 border border-border-subtle bg-[linear-gradient(60.08deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)] p-24 shadow-drop-md">
-      {/* Название текстом нужно только кейсам без логотипа. */}
+      {/* В кейсах из DOCX название компании — часть исходного текста. */}
       {study.logo ? <LogoSlot study={study} /> : null}
 
       <div className="flex flex-col gap-12">
-        {!study.logo ? (
+        {!study.logo || study.story?.sourceCategory ? (
           <p className="text-h3 font-medium text-text-primary">{keepLegalFormWithName(company.name)}</p>
         ) : null}
         <p className="text-body-m text-text-secondary">{company.description}</p>
       </div>
 
-      <div className="flex flex-col gap-8">
-        <p className="text-h4 font-medium text-text-primary">
-          Область автоматизации
-        </p>
-        <p className="text-body-l text-text-secondary">{company.automation}</p>
-      </div>
+      {company.automation ? (
+        <div className="flex flex-col gap-8">
+          <p className="text-h4 font-medium text-text-primary">
+            Область автоматизации
+          </p>
+          <p className="text-body-l text-text-secondary">{company.automation}</p>
+        </div>
+      ) : null}
 
       {company.territorialBank ? (
         <span className="max-w-full self-start whitespace-pre-line rounded-16 bg-bg-tag px-12 py-8 text-caption text-text-primary">
@@ -272,6 +282,9 @@ export default async function CaseStoryPage({
           className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"
         />
         <div className="container-page flex flex-col items-center gap-16 text-center md:items-start md:gap-24 md:text-left">
+          {story.sourceCategory ? (
+            <p className="w-full text-body-m text-text-secondary">{story.sourceCategory}</p>
+          ) : null}
           <h1 className="w-full text-h2 font-medium text-text-primary md:text-h1">
             {story.title}
           </h1>
@@ -299,6 +312,16 @@ export default async function CaseStoryPage({
             {story.blocks.map((block, index) => (
               <Block key={`${block.type}-${index}`} block={block} />
             ))}
+
+            <div className="pt-8">
+              <Button
+                href="/special-project/#special-project-cases"
+                variant="secondary"
+                size="lg"
+              >
+                Читать другие кейсы
+              </Button>
+            </div>
           </div>
 
           <aside className="hidden lg:block">{company}</aside>

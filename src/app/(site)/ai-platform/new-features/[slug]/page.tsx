@@ -327,14 +327,13 @@ export default async function ReleasePage({
             >
               Попробовать продукт
             </Button>
-            {/* Пока «Академия» скрыта, показываем старую страницу видео. */}
             <Button
-              href="/guides"
+              href="/ai-academy/"
               variant="secondary"
               size="lg"
               className="text-body-m!"
             >
-              Обучающие видео
+              Академия
             </Button>
           </div>
         </div>

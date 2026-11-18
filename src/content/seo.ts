@@ -17,13 +17,10 @@
  *    главной стоял ещё не существующий /og/home.jpg, у «О платформе» —
  *    незаполненная заглушка.
  *
- * 3. Для «Обучающих видео» микроразметка берёт названия, описания и адреса
- *    из общего списка уроков. uploadDate — дата подготовки текущих роликов
- *    в проекте; её стоит заменить на настоящую дату публикации.
  */
 
-import { GUIDES, guidePoster } from "@/content/guides";
 import { SMB_COURSE_TITLE } from "@/content/ai-for-smb";
+import { GUIDES, guidePoster } from "@/content/guides";
 
 export type PageSeo = {
   /** Адрес страницы от корня сайта. */
@@ -232,107 +229,11 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       ],
     },
   },
-  guides: {
-    path: "/guides/",
-    title: "Как работать с GigaCowork — видеоинструкции",
-    description:
-      "Короткие видеоинструкции по работе с платформой GigaCowork: агенты, задачи, пространства, интеграции.",
-    keywords:
-      "видеоинструкции gigacowork, как работать с gigacowork, обучение работе с ии агентами, подключение коннекторов gigacowork, быстрые команды gigacowork, GigaCowork, ГигаКоворк, Коворк, Cowork",
-    ogTitle: "Как работать с GigaCowork — видеоинструкции",
-    ogDescription:
-      "Короткие видео о ключевых возможностях платформы: постановка задач, навыки агентов, команды, интеграции и совместные пространства.",
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "@id": "https://cowork.ru/#organization",
-          name: "Салют для Бизнеса",
-          legalName: "ООО «Салют для Бизнеса»",
-          url: "https://cowork.ru/",
-        },
-        {
-          "@type": "Brand",
-          "@id": "https://cowork.ru/#brand",
-          name: "GigaCowork",
-          url: "https://cowork.ru/",
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://cowork.ru/#website",
-          url: "https://cowork.ru/",
-          name: "GigaCowork",
-          inLanguage: "ru-RU",
-          publisher: {
-            "@id": "https://cowork.ru/#organization",
-          },
-        },
-        {
-          "@type": "WebPage",
-          "@id": "https://cowork.ru/guides#webpage",
-          url: "https://cowork.ru/guides/",
-          name: "Как работать с GigaCowork — видеоинструкции",
-          description:
-            "Короткие видеоинструкции по работе с платформой GigaCowork: агенты, задачи, пространства, интеграции.",
-          inLanguage: "ru-RU",
-          isPartOf: {
-            "@id": "https://cowork.ru/#website",
-          },
-          mainEntity: {
-            "@id": "https://cowork.ru/guides#collection",
-          },
-          breadcrumb: {
-            "@id": "https://cowork.ru/guides#breadcrumb",
-          },
-          publisher: {
-            "@id": "https://cowork.ru/#organization",
-          },
-        },
-        {
-          "@type": "CollectionPage",
-          "@id": "https://cowork.ru/guides#collection",
-          name: "Видеоинструкции по работе с GigaCowork",
-          hasPart: GUIDES.map((guide) => ({
-            "@type": "VideoObject",
-            name: guide.title,
-            description: guide.paragraphs.join(" "),
-            thumbnailUrl: `https://cowork.ru${guidePoster(guide.id)}`,
-            uploadDate: "2026-10-09",
-            contentUrl: `https://cowork.ru${guide.video}`,
-          })),
-        },
-        {
-          "@type": "BreadcrumbList",
-          "@id": "https://cowork.ru/guides#breadcrumb",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "Главная",
-              item: "https://cowork.ru/",
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Обучающие видео",
-              item: "https://cowork.ru/guides/",
-            },
-          ],
-        },
-      ],
-    },
-  },
   /*
     «Академия» — /ai-academy.
 
     Документа от SEO-специалиста на эту страницу ещё нет: тексты ниже
     написаны по макету (5196:54152) в той же манере, что у соседних страниц.
-
-    Роликов в графе нет намеренно, хотя на странице они те же: VideoObject
-    для них уже объявлен на /guides, и второй такой же набор на другом адресе
-    поисковику пришлось бы считать дублем. Здесь вместо него ItemList
-    форматов обучения — то, чего на /guides нет.
   */
   aiAcademy: {
     path: "/ai-academy/",
@@ -387,6 +288,14 @@ export const PAGE_SEO: Record<string, PageSeo> = {
           mainEntity: {
             "@id": "https://cowork.ru/ai-academy#formats",
           },
+          hasPart: GUIDES.map((guide) => ({
+            "@type": "VideoObject",
+            name: guide.title,
+            description: guide.paragraphs.join(" "),
+            thumbnailUrl: `https://cowork.ru${guidePoster(guide.id)}`,
+            uploadDate: "2026-10-09",
+            contentUrl: `https://cowork.ru${guide.video}`,
+          })),
           breadcrumb: {
             "@id": "https://cowork.ru/ai-academy#breadcrumb",
           },

@@ -60,7 +60,7 @@ export function StageResults({ question, index }: { question: Question; index: n
   return (
     <section className={styles.stagePage}>
       <div className={styles.stageShell}>
-        <span className={styles.stageKicker}>Итоги голосования · Вопрос {String(index + 1).padStart(2, "0")}</span>
+        <span className={styles.stageKicker}>Вопрос {String(index + 1).padStart(2, "0")}</span>
         <h1 className={styles.stageTitle}>{question.text}</h1>
 
         {error && <p className={styles.stageError} role="alert">{error}</p>}

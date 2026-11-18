@@ -6,6 +6,7 @@ Google Таблице по инструкции в [VOTING_GOOGLE_SHEET.md](VOTI
 
 Страницы участников: `/vote/question-1/` … `/vote/question-4/`.
 Сценические страницы с итогами: `/vote/question-1/results/` … `/vote/question-4/results/`.
+Сводный сценический экран: `/vote/results/stage/`.
 Общий отчёт: `/vote/results/`.
 
 По умолчанию фронтенд обращается напрямую к опубликованному Apps Script.

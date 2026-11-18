@@ -109,7 +109,6 @@ const NAV_GROUPS: NavGroup[] = [
     width: "xl:w-[101px]",
     links: [
       { label: "О\u00A0компании", href: "/company/about" },
-      { label: "ИТ-аккредитация", href: "/it_accreditation" },
       { label: "Кейсы", href: "/special-project/" },
       { label: "Блог", href: "#blog", hidden: true },
       { label: "Партнёрам", href: "/company/partners" },
@@ -128,6 +127,19 @@ const CONTACTS = [
   { title: "Поддержка", email: "support_cowork@gigab2b.ru" },
   { title: "Остались вопросы", email: "info@gigab2b.ru" },
   { title: "Контакты для\u00A0СМИ", email: "press@gigab2b.ru" },
+];
+
+const TELEGRAM_LINKS = [
+  {
+    label: "Канал про ИИ",
+    href: "https://t.me/GenAIeffect",
+    image: "/img/footer/telegram-channel.svg",
+  },
+  {
+    label: "Сообщество",
+    href: "https://t.me/+r9RKQYQnJ7JlMTli",
+    image: "/img/footer/telegram-community.svg",
+  },
 ];
 
 /**
@@ -215,27 +227,22 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
-
-              {/*
-                Телеграм остаётся под адресами. Отступ у него свой, 16 вместо
-                общих 24: иконка мельче строки с почтой, и на общем шаге она
-                отрывалась от блока контактов и висела сама по себе.
-              */}
-              <a
-                href="https://t.me/GenAIeffect"
-                aria-label="Telegram-канал @GenAIeffect"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="-mt-8 block size-[27px] transition-opacity hover:opacity-70"
-              >
-                <Image
-                  src="/img/footer/telegram.svg"
-                  alt="Telegram"
-                  width={27}
-                  height={27}
-                  className="size-[27px]"
-                />
-              </a>
+              <ul className="flex flex-col items-start gap-[16px]">
+                {TELEGRAM_LINKS.map((item) => (
+                  <li key={item.href}>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-flex items-center gap-[18px] rounded-full bg-white p-[8px] text-caption tracking-[-0.02em] text-text-secondary transition-colors hover:bg-white/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary"
+                    >
+                      <Image src={item.image} alt="" width={27} height={27} className="block size-[27px] shrink-0" />
+                      <span className="whitespace-nowrap">{item.label}</span>
+                      <Image src="/img/footer/telegram-link.svg" alt="" width={27} height={27} className="block size-[27px] shrink-0" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </nav>
         </div>
@@ -254,11 +261,15 @@ export function Footer() {
           </p>
 
           {/*
-            Footer / Policy Links — 746:2735 (desktop) / 748:2735 (mobile).
-            Обычные <a>, а не next/link: это PDF из public, маршрутизация
-            роутера им не нужна, а открываются они в новой вкладке.
+            Ссылка на ИТ-аккредитацию и документы. Страница открывается
+            внутри сайта, PDF — в новой вкладке.
           */}
-          <ul className="flex flex-col gap-12 md:flex-row md:gap-32">
+          <ul className="flex flex-col gap-12 md:flex-row md:flex-wrap md:justify-end md:gap-x-32 md:gap-y-12">
+            <li>
+              <Link href="/it_accreditation/" className="text-link whitespace-nowrap">
+                ИТ-аккредитация
+              </Link>
+            </li>
             {POLICY_LINKS.map((link) => (
               <li key={link.href}>
                 <a

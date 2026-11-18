@@ -333,8 +333,6 @@ export function SpecialProjectHero() {
         <div ref={mapRef} className={styles.mapCanvas} aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className={styles.mapImage} src={asset("/img/special-project/hero-orbit-journey-v5.webp")} alt="" fetchPriority="high" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className={styles.uralsRelief} src={asset("/img/special-project/urals-relief-v1.webp")} alt="" />
           <svg className={styles.routes} viewBox="0 0 1672 941" preserveAspectRatio="none">
             <defs>
               <linearGradient id="journey-beam" x1="0" y1="0" x2="1" y2="1">

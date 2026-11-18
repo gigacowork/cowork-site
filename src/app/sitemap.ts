@@ -116,7 +116,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.6,
     },
-    { url: url("/guides/"), changeFrequency: "monthly", priority: 0.7 },
     { url: url("/ai-academy/"), changeFrequency: "monthly", priority: 0.7 },
     {
       url: url(`${SMB_COURSE_PATH}/`),

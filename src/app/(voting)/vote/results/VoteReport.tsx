@@ -32,85 +32,47 @@ export function VoteReport() {
     };
   }, [refresh]);
 
-  function downloadCsv() {
-    if (!results || results.total === 0) return;
-    const quote = (value: string | number) => `"${String(value).replaceAll('"', '""')}"`;
-    const rows = [
-      ["Вопрос", "Да", "Да, %", "Нет", "Нет, %", "Всего ответов"],
-      ...VOTING_QUESTIONS.map(({ id, text }) => {
-        const { yes, no } = results.questions[id];
-        const total = yes + no;
-        return [text, yes, percent(yes, total), no, percent(no, total), total];
-      }),
-    ];
-    const csv = `\uFEFF${rows.map((row) => row.map(quote).join(";")).join("\r\n")}`;
-    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "voting-results.csv";
-    document.body.append(link);
-    link.click();
-    link.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 0);
-  }
-
   return (
-    <section className={`${styles.page} ${styles.reportPage}`}>
-      <div className="container-page">
-        <div className={styles.reportHeader}>
-          <div className={styles.heading}>
-            <span className={styles.eyebrow}>Отчёт о голосовании</span>
-            <h1 className={styles.title}>Результаты</h1>
-          </div>
-          <div className={styles.reportHeaderActions}>
-            <Link href="/vote/" className={styles.secondaryButton}>К вопросам <span aria-hidden="true">↗</span></Link>
-            <button type="button" className={styles.secondaryButton} onClick={downloadCsv} disabled={!results || results.total === 0}>Скачать CSV</button>
+    <section className={styles.stagePage}>
+      <div className={styles.stageOverviewShell}>
+        <div className={styles.stageReportHeader}>
+          <h1 className={styles.stageOverviewTitle}>Сводные результаты голосования</h1>
+          <div className={styles.stageReportActions}>
+            <Link href="/vote/" className={styles.stageReportButton}>К вопросам <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
 
-        {error && <div className={styles.errorBox} role="alert">{error}</div>}
-        {!results && !error && <p className={styles.loading}>Загружаем результаты…</p>}
+        {error && <p className={styles.stageError} role="alert">{error}</p>}
+        {!results && !error && <p className={styles.stageLoading}>Загружаем результаты…</p>}
 
         {results && (
-          <>
-            {results.total === 0 ? (
-              <div className={styles.empty}>
-                <h2>Ответов пока нет</h2>
-                <p>Проголосуйте по одному из вопросов, чтобы увидеть результаты.</p>
-                <Link href="/vote/" className={styles.primaryButton}>Перейти к вопросам <span aria-hidden="true">↗</span></Link>
-              </div>
-            ) : (
-              <div className={styles.resultsList}>
-                {VOTING_QUESTIONS.map(({ id, text }, index) => {
-                  const { yes, no } = results.questions[id];
-                  const total = yes + no;
-                  return (
-                    <article className={styles.resultCard} key={id}>
-                      <div className={styles.resultTop}>
-                        <span className={styles.number}>{String(index + 1).padStart(2, "0")}</span>
-                        <h2><Link href={`/vote/${id}/`}>{text}</Link></h2>
-                      </div>
-                      <div className={styles.resultRows}>
-                        <div className={styles.resultRow}>
-                          <span className={styles.answerName}>Да</span>
-                          <div className={styles.barTrack} aria-hidden="true"><div className={styles.barYes} style={{ width: `${percent(yes, total)}%` }} /></div>
-                          <strong>{percent(yes, total)}%</strong>
-                          <span className={styles.count}>{yes}</span>
+          <div className={styles.stageOverviewGrid}>
+            {VOTING_QUESTIONS.map(({ id, text }, index) => {
+              const tally = results.questions[id];
+              const total = tally.yes + tally.no;
+              return (
+                <article className={styles.stageOverviewCard} key={id}>
+                  <div className={styles.stageOverviewQuestion}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <h2><Link href={`/vote/${id}/results/`} className={styles.stageReportQuestionLink}>{text}</Link></h2>
+                  </div>
+                  <div className={styles.stageOverviewStats}>
+                    {(["yes", "no"] as const).map((answer) => (
+                      <div className={styles.stageOverviewRow} key={answer}>
+                        <span>{answer === "yes" ? "Да" : "Нет"}</span>
+                        <div className={styles.stageOverviewTrack} aria-hidden="true">
+                          <div className={answer === "yes" ? styles.stageBarYes : styles.stageBarNo} style={{ width: `${percent(tally[answer], total)}%` }} />
                         </div>
-                        <div className={styles.resultRow}>
-                          <span className={styles.answerName}>Нет</span>
-                          <div className={styles.barTrack} aria-hidden="true"><div className={styles.barNo} style={{ width: `${percent(no, total)}%` }} /></div>
-                          <strong>{percent(no, total)}%</strong>
-                          <span className={styles.count}>{no}</span>
-                        </div>
+                        <strong>{percent(tally[answer], total)}%</strong>
+                        <span className={styles.stageOverviewCount}>{tally[answer]}</span>
                       </div>
-                    </article>
-                  );
-                })}
-              </div>
-            )}
-
-          </>
+                    ))}
+                    <p className={styles.stageOverviewTotal}>Всего ответов: {total}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         )}
       </div>
     </section>

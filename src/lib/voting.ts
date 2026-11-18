@@ -9,10 +9,15 @@ import {
 const STORAGE_KEY = "gigacowork-voting-demo-v2";
 const LEGACY_STORAGE_KEY = "gigacowork-voting-demo-v1";
 const VOTER_ID_KEY = "gigacowork-voting-voter-id-v1";
+// Меняйте номер раунда при сбросе таблицы, чтобы старые отметки браузеров не блокировали новый опрос.
+const VOTING_ROUND_ID = "conference-1";
+const BROWSER_VOTE_KEY_PREFIX = `gigacowork-voting-${VOTING_ROUND_ID}-`;
 const API_BASE_URL = process.env.NEXT_PUBLIC_VOTING_API_BASE_URL?.replace(/\/+$/, "");
 const DEFAULT_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3fnef6NNMLLSMIfYSqXP0uCPhD_T49zEFATv6VUzpYh9tq8DSUmz5G_5L_PN3ehFJvg/exec";
 const APPS_SCRIPT_URL = (process.env.NEXT_PUBLIC_VOTING_APPS_SCRIPT_URL ?? DEFAULT_APPS_SCRIPT_URL).trim();
 export const isSharedVotingEnabled = Boolean(APPS_SCRIPT_URL || API_BASE_URL);
+// Включать только после развертывания версии Code.gs с очередью и запуска setupVotingSheet().
+export const isQueuedVotingEnabled = process.env.NEXT_PUBLIC_VOTING_QUEUE_MODE === "true" && Boolean(APPS_SCRIPT_URL);
 export const VOTING_RELOAD_MESSAGE = "Не удалось загрузить данные. Перезагрузите страницу.";
 let jsonpCounter = 0;
 
@@ -187,21 +192,64 @@ async function requestApi(path: string, init?: RequestInit): Promise<unknown> {
   }
 }
 
+function createVoterId(): string {
+  if (typeof window.crypto.randomUUID === "function") {
+    return window.crypto.randomUUID();
+  }
+  const bytes = window.crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
 function getVoterId(): string {
   const saved = window.localStorage.getItem(VOTER_ID_KEY);
   if (saved && /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(saved)) return saved;
-  let id: string;
-  if (typeof window.crypto.randomUUID === "function") {
-    id = window.crypto.randomUUID();
-  } else {
-    const bytes = window.crypto.getRandomValues(new Uint8Array(16));
-    bytes[6] = (bytes[6] & 0x0f) | 0x40;
-    bytes[8] = (bytes[8] & 0x3f) | 0x80;
-    const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
-    id = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-  }
+  const id = createVoterId();
   window.localStorage.setItem(VOTER_ID_KEY, id);
   return id;
+}
+
+export function getBrowserVoteAnswer(questionId: QuestionId): VoteAnswer | null {
+  try {
+    const answer = window.localStorage.getItem(BROWSER_VOTE_KEY_PREFIX + questionId);
+    return isAnswer(answer) ? answer : null;
+  } catch {
+    return null;
+  }
+}
+
+export function queueQuestionVote(questionId: QuestionId, answer: VoteAnswer): VoteAnswer {
+  if (!isQuestionId(questionId) || !isAnswer(answer)) throw new Error("Выберите ответ «Да» или «Нет».");
+  const previous = getBrowserVoteAnswer(questionId);
+  if (previous) return previous;
+
+  let voterId: string;
+  try {
+    voterId = getVoterId();
+  } catch {
+    voterId = createVoterId();
+  }
+  try {
+    window.localStorage.setItem(BROWSER_VOTE_KEY_PREFIX + questionId, answer);
+  } catch {
+    // Голос всё равно отправляем, если браузер запретил локальное хранилище.
+  }
+
+  if (APPS_SCRIPT_URL) {
+    try {
+      void fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        keepalive: true,
+        body: new URLSearchParams({ voterId, questionId, answer }),
+      }).catch(() => {});
+    } catch {
+      // В быстром режиме участник видит успех независимо от ответа сервиса.
+    }
+  }
+  return answer;
 }
 
 function requestAppsScript(action: "snapshot" | "results", voterId?: string): Promise<unknown> {
@@ -255,13 +303,12 @@ async function requestAppsScriptData(action: "snapshot" | "results", voterId?: s
 async function submitAppsScriptVote(questionId: QuestionId, answer: VoteAnswer): Promise<VoteSnapshot> {
   if (!APPS_SCRIPT_URL) throw new Error(VOTING_RELOAD_MESSAGE);
   const voterId = getVoterId();
-  const before = parseApiSnapshot(await requestAppsScriptData("snapshot", voterId));
-  if (before.ownAnswers[questionId]) throw new Error("Вы уже голосовали по этому вопросу. Изменить ответ нельзя.");
 
   try {
     await fetch(APPS_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
+      keepalive: true,
       body: new URLSearchParams({ voterId, questionId, answer }),
     });
   } catch {
@@ -269,8 +316,8 @@ async function submitAppsScriptVote(questionId: QuestionId, answer: VoteAnswer):
   }
 
   // Ответ на cross-origin POST непрозрачен: подтверждаем запись отдельным запросом.
-  for (let attempt = 0; attempt < 12; attempt += 1) {
-    await new Promise((resolve) => window.setTimeout(resolve, attempt === 0 ? 300 : 1000));
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    await new Promise((resolve) => window.setTimeout(resolve, attempt === 0 ? 1500 : 2000));
     const next = parseApiSnapshot(await requestAppsScriptData("snapshot", voterId));
     if (next.ownAnswers[questionId] === answer) return next;
     if (next.ownAnswers[questionId]) throw new Error("Вы уже голосовали по этому вопросу. Изменить ответ нельзя.");

@@ -151,6 +151,7 @@ export function CaseCard({
                 loading="lazy"
                 decoding="async"
                 className={`h-[220px] w-full lg:h-[432px] lg:w-[564px] lg:rounded-16 ${study.photo.fit === "contain" ? "bg-white object-contain" : "object-cover"}`}
+                style={study.photo.objectPosition ? { objectPosition: study.photo.objectPosition } : undefined}
               />
             </picture>
           ) : (

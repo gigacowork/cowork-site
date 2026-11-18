@@ -87,6 +87,7 @@ function ProjectCaseCard({ study }: { study: CaseStudy }) {
               loading="lazy"
               decoding="async"
               className={study.photo.fit === "contain" ? styles.cardVisualContain : undefined}
+              style={study.photo.objectPosition ? { objectPosition: study.photo.objectPosition } : undefined}
             />
           </picture>
         ) : null}

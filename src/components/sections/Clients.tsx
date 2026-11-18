@@ -74,7 +74,6 @@ const caseLogo = (name: string, slug: string, width: number, height: number): Cl
 
 const CASE_LOGOS: ClientLogo[] = [
   caseLogo("АСП", "asp", 105, 105),
-  caseLogo("Fishstat", "fishstat", 90, 46),
   caseLogo("Победа", "pobeda", 82, 59),
   caseLogo("Телефоника", "telefonika", 150, 33),
   caseLogo("Универсал", "universal", 70, 70),
@@ -97,6 +96,8 @@ const CASE_LOGOS: ClientLogo[] = [
 ];
 
 const LOGOS = [...FEATURED_LOGOS, ...CASE_LOGOS];
+const MARQUEE_LOGO_SCALE = 0.68;
+const MOBILE_MARQUEE_LOGO_SCALE = 0.72 * MARQUEE_LOGO_SCALE;
 const logoRows = (logos: ClientLogo[]) =>
   Array.from({ length: 2 }, (_, row) => logos.filter((_, index) => index % 2 === row));
 
@@ -231,10 +232,10 @@ function LogoItem({
 }) {
   const marqueeSize = marquee
     ? ({
-        "--logo-width": `${logo.width}px`,
-        "--logo-height": `${logo.height}px`,
-        "--logo-mobile-width": `${Math.round(logo.width * 0.72)}px`,
-        "--logo-mobile-height": `${Math.round(logo.height * 0.72)}px`,
+        "--logo-width": `${Math.round(logo.width * MARQUEE_LOGO_SCALE)}px`,
+        "--logo-height": `${Math.round(logo.height * MARQUEE_LOGO_SCALE)}px`,
+        "--logo-mobile-width": `${Math.round(logo.width * MOBILE_MARQUEE_LOGO_SCALE)}px`,
+        "--logo-mobile-height": `${Math.round(logo.height * MOBILE_MARQUEE_LOGO_SCALE)}px`,
       } as CSSProperties)
     : undefined;
 
@@ -245,6 +246,7 @@ function LogoItem({
         alt={logo.name}
         width={logo.width}
         height={logo.height}
+        loading={marquee ? "eager" : undefined}
         className={marquee ? "clients-logo-image" : logo.sizeClassName}
         style={marqueeSize}
       />

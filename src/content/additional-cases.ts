@@ -1,4 +1,5 @@
 import type { CaseStudy, StoryBlock } from "./cases";
+import { SOURCE_CASE_STORIES } from "./source-case-stories";
 
 /** Материалы из «Исходники кейсы/Тексты кейсов», ноябрь 2026. */
 const GRADIENT = "md:bg-[image:linear-gradient(68.54deg,#C5F8E5_0.95%,#DCF9FF_50.8%,#E4F5FF_101.64%)]";
@@ -6,7 +7,7 @@ const DISCLAIMER =
   "Все приведённые в данном материале количественные показатели улучшения качества работы не являются гарантированными, зависят от особенностей конкретной бизнес-модели и приведены исключительно в ознакомительных целях на примере ранее реализованных проектов, не являются обещанием достижения финансовой либо иной выгоды, а также не являются соглашением об уровне услуг либо иными установленными и гарантированными клиенту условиями обслуживания.";
 const closing = { type: "disclaimer", text: DISCLAIMER } satisfies StoryBlock;
 
-export const ADDITIONAL_CASES: CaseStudy[] = [
+const additionalCasesDraft: CaseStudy[] = [
   {
     slug: "aleka-group",
     company: "ALEKA GROUP",
@@ -717,7 +718,7 @@ export const ADDITIONAL_CASES: CaseStudy[] = [
     tags: [{ label: "Логистика", icon: "truck" }, { label: "Документооборот", icon: "document-set" }],
     industry: "Транспорт и логистика",
     role: "Документооборот",
-    photo: { desktop: "/img/cases/asp-logistics-cover.webp" },
+    photo: { desktop: "/img/cases/asp-logistics-cover.webp", objectPosition: "76% center" },
     gradientClassName: GRADIENT,
     story: {
       title: "ИИ-агент для оформления заказов на перевозку без ручного переноса данных",
@@ -780,3 +781,11 @@ export const ADDITIONAL_CASES: CaseStudy[] = [
     },
   },
 ];
+
+// The DOCX files are the approved copy for these detail pages. The draft
+// descriptions above remain available to case cards and filters.
+const sourceStories: Record<string, NonNullable<CaseStudy["story"]>> = SOURCE_CASE_STORIES;
+export const ADDITIONAL_CASES: CaseStudy[] = additionalCasesDraft.map((item) => ({
+  ...item,
+  story: sourceStories[item.slug ?? ""] ?? item.story,
+}));
