@@ -324,8 +324,8 @@ const additionalCasesDraft: CaseStudy[] = [
   {
     slug: "universal-tenders",
     company: "ТК «Универсал»",
-    metric: "15 мин",
-    metricCaption: "на анализ одного тендерного лота",
+    metric: ">30%",
+    metricCaption: "сократилось количество отклоненных заявок",
     description: "ИИ-агент TenderOps отслеживает закупки, разбирает документацию и помогает транспортной компании готовить заявки.",
     cardDescription: "Агент находит подходящие тендеры, проверяет риски и готовит заявки к согласованию.",
     logo: { src: "/img/cases/universal.svg", width: 240, height: 310, className: "max-w-[28px]" },

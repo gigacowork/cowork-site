@@ -126,8 +126,8 @@ export const SMB_USE_CASES: SmbUseCase[] = [
       "ИИ-агенты подготовят план-факт, проанализируют ближайшие платежи\nи соберут наглядный отчёт по всем статьям расходов.",
     ],
     heroTitleWidth: "780px",
-    heroImage: "/img/use-cases/smb-analytics-hero.webp",
-    heroImageMobile: "/img/use-cases/smb-analytics-hero.webp",
+    heroImage: "/img/use-cases/smb-financial-analysis-hero.webp",
+    heroImageMobile: "/img/use-cases/smb-financial-analysis-hero-mobile.webp",
     scenariosTitle: "Какие задачи бизнес\nделегирует ИИ",
     scenarios: [
       {
