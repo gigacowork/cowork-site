@@ -125,6 +125,7 @@
 .agentSection:nth-child(even) .intro { flex-direction: row-reverse; }
 .agentImage { display: block; flex: 0 0 496px; width: 496px; height: 496px; border-radius: 32px; overflow: hidden; }
 .agentImage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.agentSection:nth-child(even) .agentImage img { transform: scaleX(-1); }
 .agentContent { min-width: 0; flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
 .kicker {
   display: inline-flex;
