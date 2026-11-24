@@ -1,0 +1,284 @@
+.hero,
+.teams,
+.contacts,
+.hiring {
+  background: linear-gradient(
+    var(--section-angle),
+    #dafde4 4.33%,
+    #e4faff 22.94%,
+    #e6f6ff 92.89%
+  );
+}
+
+.hero {
+  --section-angle: 42deg;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 613px;
+  padding-block: 152px 80px;
+  overflow: hidden;
+}
+
+.heroImage,
+.ctaImage {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  pointer-events: none;
+}
+
+.anchor {
+  scroll-margin-top: var(--header-h);
+}
+
+.stat,
+.benefit {
+  background: linear-gradient(43deg, #c5f8e4 1.03%, #c9f5ff 50.72%, #cfedff 101.64%);
+}
+
+.stat {
+  box-shadow: 0 2px 4px #0000000d;
+}
+
+.teams {
+  --section-angle: 87deg;
+}
+
+.team {
+  display: grid;
+  gap: 24px;
+}
+
+.role {
+  max-width: 100%;
+  padding: 10px 12px;
+  border-radius: 9999px;
+  background: linear-gradient(197deg, #d4e2ff 10.47%, #b3ebf6 94.87%);
+  font-size: var(--text-body-m);
+  line-height: var(--text-body-m--line-height);
+  letter-spacing: var(--text-body-m--letter-spacing);
+}
+
+.teamIllustration {
+  position: relative;
+  width: min(100%, 482px);
+  height: 220px;
+  justify-self: center;
+}
+
+.teamIllustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.teamIllustration[data-team="business"] img {
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.vacanciesPanel {
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+.contacts {
+  --section-angle: 68deg;
+}
+
+.contactCard,
+.featureIllustration {
+  border: 1px solid rgb(13 172 224 / 22%);
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 2px 4px #0000000d;
+}
+
+.feature {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 24px;
+  overflow: hidden;
+  padding: 24px;
+  border-radius: 24px;
+  background: linear-gradient(58deg, #c5f8e5 0.95%, #dcf9ff 50.8%, #e4f5ff 101.64%);
+}
+
+.featureIllustration {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-width: 1.5px;
+  border-radius: 16px;
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  letter-spacing: var(--text-caption--letter-spacing);
+}
+
+.growthTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: rgb(13 172 224 / 16%);
+}
+
+.growthTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #0dace0;
+}
+
+.growthChip {
+  padding-inline: 8px;
+  border-radius: 9999px;
+  background: #0dace0;
+  color: var(--color-text-inverse);
+}
+
+.technologyTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.technologyTabs li {
+  padding: 4px 8px;
+  border-radius: 9999px;
+  background: var(--color-bg-glass);
+}
+
+.technologyTabs li:first-child {
+  background: #0dace0;
+  color: var(--color-text-inverse);
+}
+
+.technologyLayers {
+  display: grid;
+  gap: 8px;
+}
+
+.technologyLayers li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid rgb(13 172 224 / 22%);
+  border-radius: 8px;
+  background: var(--color-bg-glass);
+}
+
+.technologyLayers li::before {
+  width: 6px;
+  height: 16px;
+  border-radius: 9999px;
+  background: rgb(13 172 224 / 16%);
+  content: "";
+}
+
+.benefit {
+  border-radius: 12px;
+}
+
+.hiring {
+  --section-angle: 79deg;
+}
+
+.stepNumber {
+  width: fit-content;
+  background: linear-gradient(90deg, #00b8ca, #1cbbf3 54%, #9fb6f8);
+  background-clip: text;
+  color: transparent;
+}
+
+.cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(254deg, #f0f8ff 20.71%, #f7f7f8 94.87%);
+}
+
+.ctaImage {
+  object-fit: fill;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    min-height: 760px;
+    padding-block: 0 96px;
+  }
+
+  .teams {
+    --section-angle: 72deg;
+  }
+
+  .team {
+    grid-template-columns: minmax(0, 588fr) minmax(0, 482fr);
+    column-gap: min(9vw, 130px);
+    align-items: center;
+  }
+
+  .teamIllustration {
+    height: auto;
+    aspect-ratio: 482 / 300;
+  }
+
+  .teamIllustration[data-team="business"] img {
+    position: absolute;
+    top: -3.47%;
+    left: 8.35%;
+    width: 88.74%;
+    height: 106.93%;
+    object-fit: contain;
+  }
+
+  .contactRow {
+    align-items: end;
+  }
+
+  .contacts {
+    --section-angle: 25deg;
+  }
+
+  .hiring {
+    --section-angle: 36deg;
+  }
+
+  .cta {
+    background: linear-gradient(233deg, #f0f8ff 20.71%, #f7f7f8 94.87%);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stat {
+    min-height: 165px;
+  }
+
+  .benefit {
+    min-height: 214px;
+  }
+
+  .feature {
+    min-height: 291px;
+    padding: 40px 36% 24px 40px;
+    background: linear-gradient(40deg, #c5f8e5 0.95%, #dcf9ff 50.8%, #e4f5ff 101.64%);
+  }
+
+  .featureIllustration {
+    position: absolute;
+    top: 40px;
+    left: 64.8%;
+    width: 300px;
+  }
+}
+
+@media (forced-colors: active) {
+  .stepNumber {
+    color: CanvasText;
+  }
+}

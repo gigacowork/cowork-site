@@ -1,4 +1,5 @@
 import { ADDITIONAL_CASES } from "./additional-cases";
+import { SEAFOOD_CASES } from "./seafood-cases";
 import { SOURCE_CASE_STORIES } from "./source-case-stories";
 
 /**
@@ -39,6 +40,8 @@ export const INDUSTRIES = [
   "Агропром",
   "Строительство и недвижимость",
   "Юридические услуги",
+  "Рыболовство и аквакультура",
+  "Рыбная отрасль",
 ] as const;
 
 /*
@@ -836,6 +839,7 @@ export const CASES: CaseStudy[] = [
     story: VERSTA_STORY,
   },
   ...ADDITIONAL_CASES,
+  ...SEAFOOD_CASES,
   {
     /*
       Frank Auto: 22.09.2026 снят с главной (его место занял Directum) и

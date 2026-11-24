@@ -110,6 +110,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     })),
     { url: url("/company/about/"), changeFrequency: "yearly", priority: 0.6 },
+    { url: url("/company/careers/"), changeFrequency: "monthly", priority: 0.6 },
     { url: url("/it_accreditation/"), changeFrequency: "yearly", priority: 0.5 },
     {
       url: url("/company/partners/"),

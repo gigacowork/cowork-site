@@ -274,6 +274,38 @@ function MarqueeGroup({
   );
 }
 
+export function ClientLogoMarquee({
+  logos = LOGOS,
+  singleRow = false,
+}: {
+  logos?: ClientLogo[];
+  singleRow?: boolean;
+} = {}) {
+  const rows = singleRow ? [logos] : logoRows(logos);
+
+  return (
+    <div className="flex w-full flex-col gap-6 md:gap-10">
+      {rows.map((row, index) => (
+        <div
+          key={index}
+          className="overflow-hidden motion-reduce:overflow-x-auto"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
+          }}
+        >
+          <div className={`marquee clients-marquee flex w-max items-center ${index === 1 ? "clients-marquee-reverse" : ""}`}>
+            <MarqueeGroup logos={row} />
+            <MarqueeGroup logos={row} clone />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /**
  * По умолчанию — две бегущие строки клиентов. На странице «Партнёрам»
  * переданный набор выводится неподвижной плиткой.
@@ -311,25 +343,7 @@ export function Clients({
 
   return (
     <section id={id} className={`bg-bg-page ${paddingClassName}`}>
-      <div className="flex flex-col gap-6 md:gap-10">
-        {logoRows(logos).map((row, index) => (
-          <div
-            key={index}
-            className="overflow-hidden motion-reduce:overflow-x-auto"
-            style={{
-              maskImage:
-                "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
-              WebkitMaskImage:
-                "linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent)",
-            }}
-          >
-            <div className={`marquee clients-marquee flex w-max items-center ${index === 1 ? "clients-marquee-reverse" : ""}`}>
-              <MarqueeGroup logos={row} />
-              <MarqueeGroup logos={row} clone />
-            </div>
-          </div>
-        ))}
-      </div>
+      <ClientLogoMarquee logos={logos} />
     </section>
   );
 }

@@ -61,26 +61,27 @@ export async function generateMetadata({
 /** Metric / Content 1562:3014 — число Display/XL и подпись Body/L. */
 function Metric({ metric }: { metric: StoryMetric }) {
   const displayValue = metric.sourceValue ?? `${metric.prefix ?? ""}${metric.value}${metric.suffix ?? ""}`;
-  const parts = /^(\D*?)(\d+(?:[.,]\d+)?(?:[–-]\d+(?:[.,]\d+)?)?%?)(.*)$/u.exec(displayValue);
+  const parts = /^([^\d]*)(\d+(?:[.,]\d+)?)(?:([–-])(\d+(?:[.,]\d+)?))?(%?)(.*)$/u.exec(displayValue);
   const prefix = parts?.[1] ?? "";
   const number = parts?.[2] ?? displayValue;
-  const suffix = parts?.[3] ?? "";
-  const canAnimate = !metric.sourceValue && metric.animate !== false && /^\d+$/.test(metric.value);
-  const numberClass = prefix.trim().length > 1 || number.length > 3 || suffix.trim().length > 3
-    ? "text-display-l lg:text-[clamp(80px,7vw,112px)]"
-    : "text-display-l lg:text-[clamp(96px,8vw,128px)]";
+  const rangeSeparator = parts?.[3] ?? "";
+  const rangeEnd = parts?.[4] ?? "";
+  const percent = parts?.[5] ?? "";
+  const suffix = parts?.[6] ?? "";
+  const canAnimate = Boolean(parts) && metric.animate !== false;
+
+  const renderNumber = (value: string) => canAnimate ? (
+    <span data-counter data-counter-value={value}>{value}</span>
+  ) : value;
 
   return (
     <li className="flex w-full min-w-0 flex-none flex-col items-center gap-16 lg:w-auto lg:flex-1 lg:basis-0">
       <p className="flex max-w-full items-baseline justify-center whitespace-nowrap text-text-primary">
         {prefix ? <span className="mr-4 text-h3 font-normal lg:text-h2">{prefix}</span> : null}
-        <span className={`${numberClass} font-normal leading-none`}>
-          {canAnimate ? (
-            <>
-              <span data-counter data-counter-value={metric.value}>{metric.value}</span>
-              {number.slice(metric.value.length)}
-            </>
-          ) : number}
+        <span className="text-display-l font-normal leading-none lg:text-[clamp(72px,8vw,120px)]">
+          {renderNumber(number)}
+          {rangeEnd ? <>{rangeSeparator}{renderNumber(rangeEnd)}</> : null}
+          {percent}
         </span>
         {suffix ? <span className="ml-4 text-h4 font-normal lg:text-h3">{suffix}</span> : null}
       </p>

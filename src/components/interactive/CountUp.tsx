@@ -23,7 +23,7 @@ const DURATION = 1400;
  */
 const START_DELAY = 420;
 /** Доля секции во вьюпорте, после которой отсчитывается задержка. */
-const THRESHOLD = 0.5;
+const THRESHOLD = 0.15;
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
 export function CountUp({
@@ -52,8 +52,13 @@ export function CountUp({
 
     const targets = nodes.map((n) => {
       const raw = n.dataset.counterValue ?? n.textContent ?? "0";
-      const value = Number.parseFloat(raw);
-      return Number.isFinite(value) ? value : 0;
+      const value = Number.parseFloat(raw.replace(",", "."));
+      const fractional = raw.split(/[.,]/)[1];
+      return {
+        value: Number.isFinite(value) ? value : 0,
+        decimals: fractional?.length ?? 0,
+        separator: raw.includes(",") ? "," : ".",
+      };
     });
 
     // Lock the rendered width so the layout does not jump while counting.
@@ -71,8 +76,13 @@ export function CountUp({
     });
 
     /* `data-counter-group` — разбивать ли разряды по дороге и в конце. */
-    const render = (node: HTMLElement, value: number) =>
-      "counterGroup" in node.dataset ? groupDigits(value) : String(value);
+    const render = (node: HTMLElement, value: number, index: number) => {
+      const { decimals, separator } = targets[index];
+      const fixed = value.toFixed(decimals).replace(".", separator);
+      if (!("counterGroup" in node.dataset)) return fixed;
+      const [whole, fractional] = fixed.split(separator);
+      return `${groupDigits(Number(whole))}${fractional === undefined ? "" : `${separator}${fractional}`}`;
+    };
 
     let raf = 0;
     let start = 0;
@@ -84,13 +94,13 @@ export function CountUp({
       const t = Math.min(1, (now - start) / DURATION);
       const eased = easeOutCubic(t);
       nodes.forEach((n, i) => {
-        n.textContent = render(n, Math.round(targets[i] * eased));
+        n.textContent = render(n, targets[i].value * eased, i);
       });
       if (t < 1) {
         raf = requestAnimationFrame(tick);
       } else {
         nodes.forEach((n, i) => {
-          n.textContent = render(n, targets[i]);
+          n.textContent = render(n, targets[i].value, i);
         });
       }
     };
@@ -119,7 +129,7 @@ export function CountUp({
       window.clearTimeout(delayTimer);
       if (raf) cancelAnimationFrame(raf);
       nodes.forEach((n, i) => {
-        n.textContent = render(n, targets[i]);
+        n.textContent = render(n, targets[i].value, i);
       });
     };
   }, []);
