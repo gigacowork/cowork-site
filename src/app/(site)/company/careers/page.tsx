@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Fragment, type ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 
 import { ClientLogoMarquee } from "@/components/sections/Clients";
 import Button from "@/components/ui/Button";
@@ -21,6 +21,7 @@ import {
   VACANCIES_URL,
 } from "./content";
 import styles from "./careers.module.css";
+import { TeamStory } from "./TeamStory";
 import VacanciesWidget from "./VacanciesWidget";
 
 const IMAGE_ROOT = "/img/careers";
@@ -159,49 +160,72 @@ export default function CareersPage() {
       </section>
 
       <section id="vacancies" className={`${styles.teams} ${styles.anchor} py-64 md:py-96`}>
-        <div className="container-page flex flex-col gap-32 md:gap-64">
-          <SectionHeading
-            kicker="Вакансии"
-            title="Открытые вакансии"
-            description="Мы растем, и новые позиции открываются регулярно"
-          />
-          <div className="flex flex-col gap-64">
-            {TEAMS.map(({ title, image, paragraphs, roles, note }) => (
-              <article key={title} className={styles.team}>
-                <div className="flex min-w-0 flex-col items-start gap-24">
-                  <h3 className="text-h4 md:text-h3">{title}</h3>
-                  <div className="flex flex-col gap-[14px] text-body-m text-text-secondary">
-                    {paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+        <div className="container-page">
+          <TeamStory
+            count={TEAMS.length}
+            heading={
+              <SectionHeading
+                kicker="Вакансии"
+                title="Открытые вакансии"
+                description="Мы растем, и новые позиции открываются регулярно"
+              />
+            }
+          >
+            {TEAMS.map(({ title, image, paragraphs, roles, note }, index) => (
+              <div key={image} className={`${styles.team} ${styles.teamChapter}`}>
+                <div className={styles.teamTextSlot}>
+                  <div className={styles.teamText} data-team-text>
+                    <article className="flex min-w-0 flex-col items-start gap-24" aria-labelledby={`career-team-${image}`}>
+                      <h3 id={`career-team-${image}`} className="text-h4 md:text-h3">{title}</h3>
+                      <div data-team-description className="flex flex-col gap-[14px] text-body-m text-text-secondary">
+                        {paragraphs.map((paragraph) =>
+                          typeof paragraph === "string" ? (
+                            <p key={paragraph}>{paragraph}</p>
+                          ) : (
+                            <p key={paragraph.desktop}>
+                              <span className="md:hidden">{paragraph.mobile}</span>
+                              <span className="hidden md:inline">{paragraph.desktop}</span>
+                            </p>
+                          ),
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-12">
+                        <p className="text-caption">Сейчас ищем</p>
+                        <ul className="flex flex-wrap gap-8">
+                          {roles.map((role) => <li key={role} className={styles.role}>{role}</li>)}
+                        </ul>
+                        {note && <p className="text-caption text-text-secondary">{note}</p>}
+                      </div>
+                      <Button
+                        href={VACANCIES_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        size="lg"
+                        variant="secondary"
+                        aria-label={`Смотреть вакансии — ${title}`}
+                      >
+                        Смотреть вакансии
+                      </Button>
+                    </article>
                   </div>
-                  <div className="flex flex-col gap-12">
-                    <p className="text-caption">Сейчас ищем</p>
-                    <ul className="flex flex-wrap gap-8">
-                      {roles.map((role) => <li key={role} className={styles.role}>{role}</li>)}
-                    </ul>
-                    {note && <p className="text-caption text-text-secondary">{note}</p>}
+                </div>
+                <div
+                  className={styles.teamMedia}
+                  data-team-card
+                  style={{ "--team-row": index + 1 } as CSSProperties}
+                >
+                  <div className={styles.teamIllustration} data-team={image}>
+                    <Image
+                      src={`${IMAGE_ROOT}/${image}.webp`}
+                      alt=""
+                      width={image === "business" ? 1600 : 964}
+                      height={image === "business" ? 1200 : 600}
+                    />
                   </div>
-                  <Button
-                    href={VACANCIES_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    size="lg"
-                    variant="secondary"
-                    aria-label={`Смотреть вакансии — ${title}`}
-                  >
-                    Смотреть вакансии
-                  </Button>
                 </div>
-                <div className={styles.teamIllustration} data-team={image}>
-                  <Image
-                    src={`${IMAGE_ROOT}/${image}.webp`}
-                    alt=""
-                    width={image === "business" ? 1600 : 964}
-                    height={image === "business" ? 1200 : 600}
-                  />
-                </div>
-              </article>
+              </div>
             ))}
-          </div>
+          </TeamStory>
         </div>
       </section>
 

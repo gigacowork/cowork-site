@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { keepLegalFormWithName } from "@/lib/typography";
+import { keepLegalFormWithName, keepRussianShortWords } from "@/lib/typography";
 
 import { Button } from "@/components/ui/Button";
 import { CTA_FALLBACK, CtaBackground } from "@/components/ui/CtaBackground";
@@ -88,7 +88,7 @@ function Metric({ metric }: { metric: StoryMetric }) {
       <p className="w-full max-w-[307px] text-center text-body-l text-text-primary">
         {metric.label.split("\n").map((line) => (
           <span key={line} className="block">
-            {line}
+            {keepRussianShortWords(line)}
           </span>
         ))}
       </p>
@@ -109,7 +109,7 @@ function CompanyCard({ study }: { study: CaseStudy }) {
         {!study.logo || study.story?.sourceCategory ? (
           <p className="text-h3 font-medium text-text-primary">{keepLegalFormWithName(company.name)}</p>
         ) : null}
-        <p className="text-body-m text-text-secondary">{company.description}</p>
+        <p className="text-body-m text-text-secondary">{keepRussianShortWords(company.description)}</p>
       </div>
 
       {company.automation ? (
@@ -117,7 +117,7 @@ function CompanyCard({ study }: { study: CaseStudy }) {
           <p className="text-h4 font-medium text-text-primary">
             Область автоматизации
           </p>
-          <p className="text-body-l text-text-secondary">{company.automation}</p>
+          <p className="text-body-l text-text-secondary">{keepRussianShortWords(company.automation)}</p>
         </div>
       ) : null}
 
@@ -149,28 +149,28 @@ function Block({ block }: { block: StoryBlock }) {
       return (
         <div className="flex flex-col gap-12 md:gap-16">
           <h2 className="text-h3 font-medium text-text-primary md:text-h2">Задача</h2>
-          <h3 className="text-h4 font-medium text-text-primary">{block.text}</h3>
+          <h3 className="text-h4 font-medium text-text-primary">{keepRussianShortWords(block.text)}</h3>
         </div>
       );
 
     case "heading":
       return (
         <h2 className="mt-12 text-h3 font-medium text-text-primary md:mt-16 md:text-h2">
-          {block.text}
+          {keepRussianShortWords(block.text)}
         </h2>
       );
 
     case "subheading":
-      return <h3 className="text-h4 font-medium text-text-primary">{block.text}</h3>;
+      return <h3 className="text-h4 font-medium text-text-primary">{keepRussianShortWords(block.text)}</h3>;
 
     case "text":
-      return <p className="text-body-l text-text-primary">{block.text}</p>;
+      return <p className="text-body-l text-text-primary">{keepRussianShortWords(block.text)}</p>;
 
     case "richText":
       return (
         <p className="text-body-l text-text-primary">
           {block.parts.map((part, index) => (
-            <span key={index} className={part.bold ? "font-semibold" : undefined}>{part.text}</span>
+            <span key={index} className={part.bold ? "font-semibold" : undefined}>{keepRussianShortWords(part.text)}</span>
           ))}
         </p>
       );
@@ -179,7 +179,7 @@ function Block({ block }: { block: StoryBlock }) {
     case "callout":
       return (
         <div className="rounded-24 bg-bg-footer p-24 md:p-[30px]">
-          <p className="text-h4 font-medium text-text-primary">{block.text}</p>
+          <p className="text-h4 font-medium text-text-primary">{keepRussianShortWords(block.text)}</p>
         </div>
       );
 
@@ -233,13 +233,13 @@ function Block({ block }: { block: StoryBlock }) {
           <blockquote className="flex flex-col gap-16">
             {block.text.map((paragraph) => (
               <p key={paragraph} className="text-body-l text-text-primary">
-                {paragraph}
+                {keepRussianShortWords(paragraph)}
               </p>
             ))}
           </blockquote>
           <figcaption className="flex flex-col text-body-m text-text-tertiary">
-            {block.author ? <span>{block.author}</span> : null}
-            <span>{block.role}</span>
+            {block.author ? <span>{keepRussianShortWords(block.author)}</span> : null}
+            <span>{keepRussianShortWords(block.role)}</span>
           </figcaption>
         </figure>
       );
@@ -287,9 +287,9 @@ export default async function CaseStoryPage({
             <p className="w-full text-body-m text-text-secondary">{story.sourceCategory}</p>
           ) : null}
           <h1 className="w-full text-h2 font-medium text-text-primary md:text-h1">
-            {story.title}
+            {keepRussianShortWords(story.title)}
           </h1>
-          <p className="w-full text-body-l text-text-secondary">{story.lead}</p>
+          <p className="w-full text-body-l text-text-secondary">{keepRussianShortWords(story.lead)}</p>
         </div>
       </section>
 

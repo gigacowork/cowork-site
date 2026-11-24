@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import digest from "@/data/kommersant-promo.json";
 import { ScenarioChat } from "./ScenarioChat";
 import { LEGAL_LINES } from "@/lib/legal";
-import styles from "./scenarios.module.css";
+import styles from "@/components/interactive/scenario-demo/ScenarioDemo.module.css";
 
 export const metadata: Metadata = {
   title: "Читайте главное, делегируйте остальное — GigaCowork × Коммерсантъ",

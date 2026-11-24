@@ -1,0 +1,36 @@
+@media (min-width: 768px) {
+  .hero {
+    --home-chat-resize: 360ms cubic-bezier(.22, .61, .36, 1);
+  }
+
+  /* Extend the background below the composer while the chat is idle. */
+  .hero::after {
+    display: block;
+    height: 0;
+    content: "";
+    transition: height var(--home-chat-resize);
+  }
+
+  .hero:has([data-home-scenario="idle"])::after {
+    height: 48px;
+  }
+
+  .copy {
+    transform-origin: top center;
+    transition: transform 600ms cubic-bezier(.22, 1, .36, 1);
+  }
+
+  .hero:has([data-home-scenario="open"]) .copy {
+    transform: translateY(-24px) scale(.88);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    --home-chat-resize: 0ms;
+  }
+
+  .copy {
+    transition: none;
+  }
+}

@@ -2,6 +2,7 @@ import { HeroImage } from "@/components/ui/HeroImage";
 /* Icon вернётся вместе с кнопкой «Войти» — см. закомментированный блок ниже. */
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
+import styles from "./Hero.module.css";
 
 /**
  * Hero
@@ -21,7 +22,7 @@ import { Button } from "@/components/ui/Button";
  * Картинка масштабируется под ВЫСОТУ РАСКРЫТОГО ЧАТА сразу и дальше не
  * пересчитывается. Слой имеет фиксированную высоту `BKG_BAND` и прижат к верху,
  * `object-cover` считается от него, а не от самой секции — поэтому рост hero
- * (чат раскрывается на ~470px) ничего не меняет в масштабе, а просто открывает
+ * ничего не меняет в масштабе, а просто открывает
  * нижнюю часть уже отрисованной подложки.
  *
  * Мобильный: у картинки другая пропорция, чем у узкого высокого экрана, и hero
@@ -64,7 +65,7 @@ export function Hero({ chat }: HeroProps) {
     <section
       id="hero"
       aria-labelledby="hero-title"
-      className="relative isolate overflow-hidden"
+      className={`${styles.hero} relative isolate overflow-hidden`}
     >
       {/* bkg — Figma 1927:15555 / 1927:17360 */}
       <div
@@ -84,7 +85,7 @@ export function Hero({ chat }: HeroProps) {
       <div className="container-page flex flex-col items-center gap-32 pb-[calc(64px+var(--hero-promo-backfill-h))] pt-[calc(16px+var(--header-h)+var(--home-promo-h,0px))] md:gap-40 md:pb-[calc(80px+var(--hero-promo-backfill-h))] md:pt-[calc(160px+var(--home-promo-h,0px))]">
 
         {/* Hero / Content */}
-        <div className="flex flex-col items-center gap-16 text-center text-text-primary md:gap-24">
+        <div className={`${styles.copy} flex flex-col items-center gap-16 text-center text-text-primary md:gap-24`}>
           <h1
             id="hero-title"
             className="max-w-[358px] text-h2 font-medium md:max-w-none md:text-h1"

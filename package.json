@@ -6,6 +6,7 @@
     "dev": "next dev",
     "prebuild": "npm run sync:kommersant-promo",
     "build": "next build",
+    "postbuild": "node scripts/write-legacy-video-redirects.mjs",
     "sync:kommersant-promo": "node scripts/sync-kommersant-promo.mjs",
     "sync:catalog": "node scripts/sync-cowork-hub.mjs",
     "start": "next start",

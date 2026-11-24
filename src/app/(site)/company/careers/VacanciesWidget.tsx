@@ -11,7 +11,7 @@ import {
   loadVacancies,
   vacancySalary,
   vacancySummary,
-  type VacanciesPage,
+  type Vacancy,
 } from "./vacancies-feed";
 import styles from "./careers.module.css";
 
@@ -30,8 +30,8 @@ function getPageSize() {
 const getServerPageSize = () => null;
 
 type Result =
-  | { key: string; status: "ready"; data: VacanciesPage }
-  | { key: string; status: "error" };
+  | { attempt: number; status: "ready"; vacancies: Vacancy[] }
+  | { attempt: number; status: "error" };
 
 export default function VacanciesWidget() {
   const pageSize = useSyncExternalStore<number | null>(
@@ -43,32 +43,26 @@ export default function VacanciesWidget() {
   const [attempt, setAttempt] = useState(0);
   const [result, setResult] = useState<Result>();
   const panelRef = useRef<HTMLDivElement>(null);
-  const page = pageSize === null ? 0 : Math.floor(offset / pageSize);
-  const requestKey = `${pageSize}:${page}:${attempt}`;
-  const current = result?.key === requestKey ? result : undefined;
-  const data = current?.status === "ready" ? current.data : undefined;
+  const current = result?.attempt === attempt ? result : undefined;
+  const vacancies = current?.status === "ready" ? current.vacancies : [];
+  const pageCount = pageSize === null ? 0 : Math.ceil(vacancies.length / pageSize);
+  const page = pageSize === null ? 0 : Math.min(Math.floor(offset / pageSize), Math.max(0, pageCount - 1));
+  const first = page * (pageSize ?? 0);
+  const items = pageSize === null ? [] : vacancies.slice(first, first + pageSize);
+  const loading = pageSize === null || !current;
 
   useEffect(() => {
-    if (pageSize === null) return;
-
     const controller = new AbortController();
     let active = true;
     const timeout = window.setTimeout(() => controller.abort(), 10000);
 
-    loadVacancies(page, pageSize, controller.signal)
-      .then((data) => {
-        if (!active) return;
-
-        const lastPage = Math.max(0, data.pages - 1);
-        if (page > lastPage) {
-          setOffset(lastPage * pageSize);
-          return;
-        }
-
-        setResult({ key: requestKey, status: "ready", data });
+    loadVacancies(controller.signal)
+      .then((vacancies) => {
+        if (active) setResult({ attempt, status: "ready", vacancies });
       })
       .catch(() => {
-        if (active) setResult({ key: requestKey, status: "error" });
+        controller.abort();
+        if (active) setResult({ attempt, status: "error" });
       })
       .finally(() => window.clearTimeout(timeout));
 
@@ -77,7 +71,7 @@ export default function VacanciesWidget() {
       window.clearTimeout(timeout);
       controller.abort();
     };
-  }, [page, pageSize, requestKey]);
+  }, [attempt]);
 
   function goToPage(nextPage: number) {
     if (pageSize === null) return;
@@ -87,11 +81,6 @@ export default function VacanciesWidget() {
     panelRef.current?.scrollIntoView({ block: "start" });
   }
 
-  const first = page * (pageSize ?? 0) + 1;
-  const last = first + (data?.items.length ?? 0) - 1;
-  const hasVacancies = Boolean(data?.items.length);
-  const canBrowse = page > 0 || (data?.pages ?? 0) > 1;
-
   return (
     <div
       ref={panelRef}
@@ -100,10 +89,10 @@ export default function VacanciesWidget() {
       tabIndex={-1}
       className={`${styles.vacanciesPanel} flex flex-col gap-24`}
     >
-      <div aria-busy={!current}>
-        {data && hasVacancies ? (
+      <div aria-busy={loading}>
+        {items.length > 0 ? (
           <ul className="grid gap-16 md:grid-cols-2 md:gap-24 lg:grid-cols-3">
-            {data.items.map((vacancy) => {
+            {items.map((vacancy) => {
               const summary = vacancySummary(vacancy.snippet);
               const salary = vacancySalary(vacancy.salary);
               const details = [vacancy.area?.name, vacancy.experience?.name && `Опыт: ${vacancy.experience.name}`];
@@ -135,8 +124,8 @@ export default function VacanciesWidget() {
           </ul>
         ) : (
           <div className="flex min-h-[96px] flex-wrap items-center gap-16 rounded-24 bg-bg-glass p-24 text-body-m text-text-secondary">
-            {!current && <p role="status">Загружаем вакансии…</p>}
-            {current?.status === "ready" && <p role="status">Сейчас нет открытых вакансий в списке.</p>}
+            {loading && <p role="status">Загружаем вакансии…</p>}
+            {!loading && current?.status === "ready" && <p role="status">Сейчас нет открытых вакансий в списке.</p>}
             {current?.status === "error" && (
               <>
                 <p role="status">Не удалось загрузить вакансии.</p>
@@ -150,21 +139,21 @@ export default function VacanciesWidget() {
       </div>
 
       <p className="sr-only" aria-live="polite">
-        {data && hasVacancies ? `Вакансии ${first}–${last} из ${data.found}` : ""}
+        {items.length > 0 ? `Вакансии ${first + 1}–${first + items.length} из ${vacancies.length}` : ""}
       </p>
       <div className="flex flex-col items-center gap-16 md:grid md:grid-cols-[1fr_auto_1fr]">
-        {canBrowse && (
+        {pageCount > 1 && (
           <div className="flex items-center justify-center gap-8 md:col-start-2">
             <CarouselControl
               direction="previous"
               label="Предыдущие вакансии"
-              disabled={!current || page === 0}
+              disabled={page === 0}
               onClick={() => goToPage(page - 1)}
             />
             <CarouselControl
               direction="next"
               label="Следующие вакансии"
-              disabled={!data || page + 1 >= data.pages}
+              disabled={page + 1 >= pageCount}
               onClick={() => goToPage(page + 1)}
             />
           </div>

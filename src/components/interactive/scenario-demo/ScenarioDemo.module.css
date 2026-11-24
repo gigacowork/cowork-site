@@ -100,6 +100,9 @@
 .tableWrap thead th { font-weight: 500; }
 .tableWrap tbody th { font-weight: 500; width: 26%; }
 .tableWrap td span { display: block; margin-top: 4px; color: #59616e; }
+.compactTable table { table-layout: fixed; min-width: 0; }
+.compactTable caption, .compactTable th, .compactTable td { padding: 10px 14px; }
+.compactTable td span { font-size: 12px; line-height: 16px; }
 .caution { background-color: #fff1cf; transition: background-color 500ms ease; }
 .positive { background-color: #def4e9; transition: background-color 500ms ease; }
 .document { border: 1px solid #d5dce7; border-radius: 16px; background: rgb(255 255 255 / 65%); padding: 20px; animation: arrive 350ms ease both; }
@@ -108,11 +111,34 @@
 .clause, .clauseFlagged { background: #fff; }
 .clause p, .clauseFlagged p { margin: 0; font-size: 14px; }
 .clauseFlagged aside { margin-top: 12px; color: #7a5a20; font-size: 14px; line-height: 24px; animation: arrive 300ms ease both; }
-.clauseFlagged mark { padding: 2px 5px; border-radius: 4px; background: #fff1cf; color: inherit; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.clause mark, .clauseFlagged mark { padding: 2px 5px; border-radius: 4px; background: #fff1cf; color: #7a5a20; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .result { margin-top: 24px; animation: arrive 400ms ease both; }
 .result > p { color: #59616e; margin: 0 0 12px; }
 .result .done { display: flex; align-items: center; gap: 6px; margin: 12px 0 0; color: #3c7760; font-size: 14px; }
+.contractSummary ul { display: grid; gap: 4px; padding-inline-start: 20px; list-style: disc; color: #59616e; font-size: 14px; }
+.customerActions { display: grid; gap: 12px; }
+.customerAction {
+  display: grid;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid #d5dce7;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 75%);
+  font-size: 14px;
+  line-height: 20px;
+  animation: arrive 350ms ease both;
+}
+.customerAction h3 { font-size: 16px; font-weight: 600; }
+.customerAction p { margin: 0; }
+.customerActionDetails { display: grid; gap: 4px; color: #414c5e; }
+.customerActionDetails strong { font-weight: 500; }
+.customerActionDecision { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; border-top: 1px solid #d5dce7; padding-top: 8px; }
+.customerActionQuestion { font-weight: 500; }
+.customerActionConfirmation { display: flex; align-items: center; gap: 6px; color: #59616e; font-size: 12px; }
+.customerActionConfirmation span { border-radius: 999px; padding: 2px 8px; background: #e5edfb; color: #25314a; font-size: 14px; }
+.customerActionDone { display: flex; align-items: center; gap: 6px; color: #316753; font-weight: 500; }
 .connectors { display: flex; flex-wrap: wrap; gap: 12px; }
+.connectors + .reasoning { margin-top: 16px; }
 .connector { display: flex; align-items: center; gap: 10px; min-width: 174px; padding: 12px 14px; border: 1px solid #d5dce7; border-radius: 12px; background: rgb(255 255 255 / 65%); animation: arrive 350ms ease both; }
 .connector > img { flex: none; object-fit: contain; }
 .connector b { display: block; font-size: 14px; font-weight: 500; }
@@ -233,6 +259,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .footerReveal { transition: none; }
+  .customerAction { animation: none; }
   .page *, .page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 @media (min-width: 701px) and (max-width: 767px) {
@@ -246,4 +273,108 @@
 @media (min-width: 701px) and (max-width: 900px) {
   .choices { gap: 8px; }
   .chip { font-size: 12px; padding-inline: 8px; }
+}
+
+/* The homepage keeps the dimensions of its original chat slot, independently
+   of the prompt choices and the conversation growing inside it. */
+.homeDemo {
+  --chat-status-size: 14px;
+  --home-controls-height: 141.59375px;
+  display: none;
+  width: min(100%, 900px);
+  flex-direction: column;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.homeDemoViewport {
+  height: 0;
+  overflow: hidden;
+  overflow-anchor: none;
+  scrollbar-width: thin;
+  transition: height var(--home-chat-resize);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--chat-fade-top, 0px),
+    #000 calc(100% - var(--chat-fade-bottom, 0px)),
+    transparent
+  );
+}
+.homeDemo[data-home-scenario="open"] .homeDemoViewport {
+  height: calc(469px + var(--home-controls-height));
+  overflow-y: auto;
+}
+.homeDemoConversation {
+  max-width: 840px;
+  margin-inline: auto;
+  padding: 4px 6px 12px;
+}
+.homeDemoControls {
+  position: relative;
+  height: var(--home-controls-height);
+  transition: height var(--home-chat-resize);
+}
+.homeDemoChoicePanel {
+  position: absolute;
+  inset: -12px 0 auto;
+}
+.homeDemo[data-home-scenario="open"] .homeDemoControls {
+  height: 0;
+}
+.homeDemo .more {
+  margin-top: 24px;
+}
+.homeDemo .more .status {
+  margin-bottom: 12px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .homeDemo .more { animation: none; }
+}
+.homeDemo .choices {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.homeDemo .chip {
+  padding-inline: 8px;
+}
+.homeDemo .composer {
+  max-width: 840px;
+  margin: 16px auto 0;
+}
+.homeDemo .input {
+  padding: 12px 20px;
+}
+.homeDemo .input textarea {
+  height: 44px;
+  min-height: 44px;
+  font-size: 16px;
+  line-height: 22px;
+}
+.homeDemo .composerFooter {
+  padding: 8px 16px;
+}
+.homeDemo :is(button, a, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 2px;
+}
+.homeDemo .homeDemoViewport:focus-visible {
+  border-radius: 12px;
+  outline-color: var(--color-border-strong);
+  outline-offset: -2px;
+}
+
+@media (min-width: 768px) {
+  .homeDemo { display: flex; }
+}
+
+@media (width > 900px) {
+  .homeDemo .more .chip { font-size: 14px; }
+}
+
+@media (900px < width < 976px) {
+  .homeDemo .chip { font-size: 14px; }
+}
+
+@media (768px <= width < 825px) {
+  .homeDemo { --home-controls-height: 194.390625px; }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import styles from "./scenarios.module.css";
+import styles from "@/components/interactive/scenario-demo/ScenarioDemo.module.css";
 
 export function MiniFooter({ children, enabled }: { children: ReactNode; enabled: boolean }) {
   const [revealed, setRevealed] = useState(false);

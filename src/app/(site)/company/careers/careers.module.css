@@ -55,6 +55,34 @@
   gap: 24px;
 }
 
+.teamStory {
+  display: grid;
+  gap: 32px;
+}
+
+.teamStorySteps {
+  display: grid;
+  gap: 64px;
+}
+
+.teamChapter {
+  min-width: 0;
+}
+
+.teamTextSlot,
+.teamMedia {
+  min-width: 0;
+}
+
+.teamMedia {
+  display: grid;
+  align-items: center;
+}
+
+.teamStorySpacer {
+  display: none;
+}
+
 .role {
   max-width: 100%;
   padding: 10px 12px;
@@ -207,6 +235,12 @@
   object-fit: fill;
 }
 
+@media (width < 768px) {
+  .teamChapter > .teamMedia {
+    order: -1;
+  }
+}
+
 @media (min-width: 768px) {
   .hero {
     min-height: 760px;
@@ -215,6 +249,10 @@
 
   .teams {
     --section-angle: 72deg;
+  }
+
+  .teamStory {
+    gap: 64px;
   }
 
   .team {
@@ -274,6 +312,75 @@
     top: 40px;
     left: 64.8%;
     width: 300px;
+  }
+}
+
+@media (min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  .teamStory[data-layered] {
+    --team-row-gap: 64px;
+    --team-step-top: calc(var(--team-heading-top) + var(--team-content-offset));
+    grid-template-columns: minmax(0, 588fr) minmax(0, 482fr);
+    grid-template-rows: calc(var(--team-content-offset) - var(--team-row-gap)) repeat(var(--team-rows), auto);
+    row-gap: var(--team-row-gap);
+    column-gap: min(9vw, 130px);
+    isolation: isolate;
+  }
+
+  .teamStory[data-layered] .teamHeadingSlot {
+    grid-area: 1 / 1 / -1 / -1;
+    pointer-events: none;
+  }
+
+  .teamStory[data-layered] .teamHeading {
+    position: sticky;
+    top: var(--team-heading-top);
+  }
+
+  .teamStory[data-layered] .teamStorySteps,
+  .teamStory[data-layered] .teamChapter {
+    display: contents;
+  }
+
+  .teamStory[data-layered] .teamTextSlot {
+    grid-area: 2 / 1 / -1 / 2;
+    pointer-events: none;
+  }
+
+  .teamStory[data-layered] .teamText {
+    position: sticky;
+    top: var(--team-step-top);
+    pointer-events: auto;
+  }
+
+  .teamStory[data-layered] .teamText[inert] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .teamStory[data-layered] .teamMedia {
+    position: sticky;
+    top: var(--team-step-top);
+    grid-column: 2;
+    grid-row: calc(var(--team-row) + 1);
+    z-index: var(--team-row);
+    align-self: start;
+  }
+
+  .teamStory[data-layered] .teamIllustration {
+    translate: 0 calc(var(--team-description-offset, 0px) - var(--team-art-inset, 0%));
+  }
+
+  /* Transparent inset above the artwork, as a share of the illustration box. */
+  .teamIllustration[data-team="product"] { --team-art-inset: 15.17%; }
+  .teamIllustration[data-team="infrastructure"] { --team-art-inset: 8.33%; }
+  .teamIllustration[data-team="commercial"] { --team-art-inset: 11.83%; }
+  .teamIllustration[data-team="support"] { --team-art-inset: 6%; }
+  .teamIllustration[data-team="business"] { --team-art-inset: 8.47%; }
+
+  .teamStory[data-layered] .teamStorySpacer {
+    display: block;
+    height: 40svh;
+    grid-column: 2;
   }
 }
 
