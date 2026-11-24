@@ -27,11 +27,9 @@
   top: 0;
   width: 100%;
   height: 640px;
-  background-image:
-    url("/cowork-site/agents-new-year/figma/desktop/imgHeroGiftBoxPhoto1.png"),
-    url("/cowork-site/agents-new-year/figma/desktop/imgHeroGiftBoxPhoto.png");
-  background-size: 119.71% auto, 124.05% auto;
-  background-position: left 0 top -22px, left 0 top -39px;
+  background-image: url("/cowork-site/agents-new-year/figma/desktop/imgHeroGiftBoxPhoto1.webp");
+  background-size: 119.71% auto;
+  background-position: left 0 top -22px;
   background-repeat: no-repeat;
 }
 .header { height: 80px; padding: 28px 40px 24px; position: relative; }
@@ -279,8 +277,8 @@
 @media (max-width: 950px) and (min-width: 768px) {
   .heroBackdrop {
     height: 702px;
-    background-size: auto 100%, cover;
-    background-position: left -20px top 0, left top;
+    background-size: auto 100%;
+    background-position: left -20px top 0;
   }
   .hero { height: 580px; }
 }
@@ -307,7 +305,7 @@
     width: 1035px;
     height: 518px;
     transform: rotate(6.18deg);
-  background: url("/cowork-site/agents-new-year/figma/mobile/imgHeroGiftBoxPhoto.png") center / cover no-repeat;
+    background: url("/cowork-site/agents-new-year/figma/mobile/imgHeroGiftBoxPhoto1.webp") center / cover no-repeat;
     pointer-events: none;
   }
   .hero::after {

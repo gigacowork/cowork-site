@@ -23,8 +23,8 @@ function AgentSection({ agent, index }: { agent: (typeof agents)[number]; index:
     <section id={agent.id} className={styles.agentSection} aria-labelledby={`${agent.id}-title`}>
       <div className={styles.intro}>
         <picture className={styles.agentImage}>
-          <source media="(max-width: 767px)" srcSet={`${figmaAsset}/mobile/imgChocolateAgents${agent.image}.png`} />
-          <img src={`${figmaAsset}/desktop/imgChocolateAgents${agent.image}.png`} width="496" height="496" alt={`Шоколадный агент «${agent.name}»`} loading={index === 0 ? "eager" : "lazy"} />
+          <source media="(max-width: 767px)" srcSet={`${figmaAsset}/mobile/imgChocolateAgents${agent.image}.webp`} />
+          <img src={`${figmaAsset}/desktop/imgChocolateAgents${agent.image}.webp`} width="496" height="496" alt={`Шоколадный агент «${agent.name}»`} loading={index === 0 ? "eager" : "lazy"} />
         </picture>
         <div className={styles.agentContent}>
           <span className={styles.kicker}>
