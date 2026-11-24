@@ -13,12 +13,11 @@ import {
   BENEFITS,
   EMPLOYER_URL,
   HIRING_STEPS,
-  RECRUITER_TELEGRAM_URL,
-  RECRUITMENT_EMAIL,
   RECRUITMENT_MAILTO,
   STATS,
   TEAMS,
   VACANCIES_URL,
+  WORK_PRINCIPLES,
 } from "./content";
 import styles from "./careers.module.css";
 import { TeamStory } from "./TeamStory";
@@ -36,14 +35,16 @@ function SectionHeading({
   kicker,
   title,
   description,
+  centered = false,
 }: {
-  kicker: string;
+  kicker?: string;
   title: ReactNode;
   description?: ReactNode;
+  centered?: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-16">
-      <Kicker>{kicker}</Kicker>
+    <div className={`flex flex-col gap-16${centered ? " items-center text-center" : ""}`}>
+      {kicker && <Kicker>{kicker}</Kicker>}
       <h2 className="text-h3 md:text-h2">{title}</h2>
       {description && <p className="text-body-l text-text-secondary">{description}</p>}
     </div>
@@ -148,133 +149,7 @@ export default function CareersPage() {
         </ul>
       </section>
 
-      <section aria-label="Клиенты GigaCowork" className="flex flex-col items-center pb-64">
-        <ClientLogoMarquee singleRow />
-        <Link
-          href="/special-project/"
-          className="inline-flex items-center gap-8 rounded-full px-24 py-12 text-body-m transition-colors hover:bg-action-secondary-hover focus-visible:outline-2 focus-visible:outline-offset-2"
-        >
-          Все&nbsp;кейсы
-          <Icon src="/img/icons/arrow-up-right.svg" className="size-[10px]" />
-        </Link>
-      </section>
-
-      <section id="vacancies" className={`${styles.teams} ${styles.anchor} py-64 md:py-96`}>
-        <div className="container-page">
-          <TeamStory
-            count={TEAMS.length}
-            heading={
-              <SectionHeading
-                kicker="Вакансии"
-                title="Открытые вакансии"
-                description="Мы растем, и новые позиции открываются регулярно"
-              />
-            }
-          >
-            {TEAMS.map(({ title, image, paragraphs, roles, note }, index) => (
-              <div key={image} className={`${styles.team} ${styles.teamChapter}`}>
-                <div className={styles.teamTextSlot}>
-                  <div className={styles.teamText} data-team-text>
-                    <article className="flex min-w-0 flex-col items-start gap-24" aria-labelledby={`career-team-${image}`}>
-                      <h3 id={`career-team-${image}`} className="text-h4 md:text-h3">{title}</h3>
-                      <div data-team-description className="flex flex-col gap-[14px] text-body-m text-text-secondary">
-                        {paragraphs.map((paragraph) =>
-                          typeof paragraph === "string" ? (
-                            <p key={paragraph}>{paragraph}</p>
-                          ) : (
-                            <p key={paragraph.desktop}>
-                              <span className="md:hidden">{paragraph.mobile}</span>
-                              <span className="hidden md:inline">{paragraph.desktop}</span>
-                            </p>
-                          ),
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-12">
-                        <p className="text-caption">Сейчас ищем</p>
-                        <ul className="flex flex-wrap gap-8">
-                          {roles.map((role) => <li key={role} className={styles.role}>{role}</li>)}
-                        </ul>
-                        {note && <p className="text-caption text-text-secondary">{note}</p>}
-                      </div>
-                      <Button
-                        href={VACANCIES_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        size="lg"
-                        variant="secondary"
-                        aria-label={`Смотреть вакансии — ${title}`}
-                      >
-                        Смотреть вакансии
-                      </Button>
-                    </article>
-                  </div>
-                </div>
-                <div
-                  className={styles.teamMedia}
-                  data-team-card
-                  style={{ "--team-row": index + 1 } as CSSProperties}
-                >
-                  <div className={styles.teamIllustration} data-team={image}>
-                    <Image
-                      src={`${IMAGE_ROOT}/${image}.webp`}
-                      alt=""
-                      width={image === "business" ? 1600 : 964}
-                      height={image === "business" ? 1200 : 600}
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </TeamStory>
-        </div>
-      </section>
-
-      <section className="container-page flex flex-col gap-32 py-64 md:gap-48 md:py-96">
-        <SectionHeading kicker="hh.ru" title="Посмотреть все вакансии" />
-        <VacanciesWidget />
-      </section>
-
-      <section className={`${styles.contacts} py-64 md:py-96`}>
-        <div className="container-page">
-          <div className={`${styles.team} ${styles.contactRow}`}>
-            <div className="flex flex-col gap-24">
-              <SectionHeading
-                kicker="Контакты"
-                title={<a href={RECRUITMENT_MAILTO}>Не&nbsp;нашли свою роль?</a>}
-                description="Напишите нам и расскажите о себе"
-              />
-              <div className="flex flex-col gap-16 md:flex-row">
-                <Button href={RECRUITMENT_MAILTO} size="lg">Отправить резюме</Button>
-                <Button href={EMPLOYER_URL} target="_blank" rel="noopener noreferrer" size="lg" variant="secondary">
-                  Мы&nbsp;на&nbsp;hh.ru
-                </Button>
-              </div>
-            </div>
-            <div className={`${styles.contactCard} flex flex-col items-start gap-24 rounded-16 p-24 text-caption text-text-secondary`}>
-              <div className="flex w-full flex-col items-start gap-8">
-                <p>Наша почта, отвечаем быстро</p>
-                <a className="py-4 hover:underline md:text-status-accent" href={RECRUITMENT_MAILTO}>
-                  {RECRUITMENT_EMAIL}
-                </a>
-              </div>
-              <div className="flex w-full flex-col items-start gap-8">
-                <p>Telegram</p>
-                <a
-                  href={RECRUITER_TELEGRAM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-8 hover:underline md:text-status-accent"
-                >
-                  <Image src={`${IMAGE_ROOT}/telegram.svg`} alt="" width={27} height={27} className="shrink-0" />
-                  Написать рекрутеру
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="container-page flex flex-col gap-32 py-64 md:py-96">
+      <section className="container-page flex flex-col gap-32 pb-64 md:pb-96">
         <SectionHeading kicker="Преимущества" title="Почему у нас хорошо" />
         <div className="grid gap-16 md:grid-cols-2 md:gap-24">
           {BENEFITS.slice(0, 2).map(({ title, paragraphs }, index) => (
@@ -301,7 +176,107 @@ export default function CareersPage() {
         </div>
       </section>
 
-      <section id="hiring" className={`${styles.hiring} ${styles.anchor} py-64 md:py-96`}>
+      <section aria-label="Клиенты GigaCowork" className="flex flex-col items-center pb-64">
+        <ClientLogoMarquee singleRow />
+        <Link
+          href="/special-project/"
+          className="inline-flex items-center gap-8 rounded-full px-24 py-12 text-body-m transition-colors hover:bg-action-secondary-hover focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          Все&nbsp;кейсы
+          <Icon src="/img/icons/arrow-up-right.svg" className="size-[10px]" />
+        </Link>
+      </section>
+
+      <section id="vacancies" className={`${styles.teams} ${styles.anchor} py-64 md:py-96`}>
+        <div className="container-page">
+          <TeamStory
+            count={TEAMS.length}
+            heading={
+              <SectionHeading
+                kicker="Команды"
+                title="Кто развивает GigaCowork"
+                description="Мы растем, и новые позиции открываются регулярно"
+              />
+            }
+          >
+            {TEAMS.map(({ title, image, paragraphs }, index) => (
+              <div key={image} className={`${styles.team} ${styles.teamChapter}`}>
+                <div className={styles.teamTextSlot}>
+                  <div className={styles.teamText} data-team-text>
+                    <article className="flex min-w-0 flex-col items-start gap-24" aria-labelledby={`career-team-${image}`}>
+                      <h3 id={`career-team-${image}`} className="text-h4 md:text-h3">{title}</h3>
+                      <div data-team-description className="flex flex-col gap-[14px] text-body-m text-text-secondary">
+                        {paragraphs.map((paragraph) =>
+                          typeof paragraph === "string" ? (
+                            <p key={paragraph}>{paragraph}</p>
+                          ) : (
+                            <p key={paragraph.desktop}>
+                              <span className="md:hidden">{paragraph.mobile}</span>
+                              <span className="hidden md:inline">{paragraph.desktop}</span>
+                            </p>
+                          ),
+                        )}
+                      </div>
+                    </article>
+                  </div>
+                </div>
+                <div
+                  className={styles.teamMedia}
+                  data-team-card
+                  style={{ "--team-row": index + 1 } as CSSProperties}
+                >
+                  <div className={styles.teamIllustration} data-team={image}>
+                    <Image
+                      src={`${IMAGE_ROOT}/${image}.webp`}
+                      alt=""
+                      width={image === "business" ? 1600 : 964}
+                      height={image === "business" ? 1200 : 600}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </TeamStory>
+        </div>
+      </section>
+
+      <section className="container-page flex flex-col gap-32 py-64 md:gap-48 md:py-96">
+        <SectionHeading kicker="Вакансии" title="Посмотреть все вакансии" />
+        <VacanciesWidget />
+      </section>
+
+      <section className={`${styles.contacts} py-64 md:py-96`}>
+        <div className="container-page flex flex-col items-center gap-24">
+          <SectionHeading
+            title={<a href={RECRUITMENT_MAILTO}>Не&nbsp;нашли свою роль?</a>}
+            description="Напишите нам и расскажите о себе"
+            centered
+          />
+          <div className="flex flex-col gap-16 md:flex-row">
+            <Button href={RECRUITMENT_MAILTO} size="lg">Отправить резюме</Button>
+            <Button href={EMPLOYER_URL} target="_blank" rel="noopener noreferrer" size="lg" variant="secondary">
+              Мы&nbsp;на&nbsp;hh.ru
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <section className="container-page flex flex-col gap-32 pt-64 md:pt-96">
+        <SectionHeading kicker="Принципы" title="Как мы работаем" />
+        <div className="grid gap-16 md:grid-cols-6 md:gap-x-24 md:gap-y-32">
+          {WORK_PRINCIPLES.map(({ title, description }, index) => (
+            <article
+              key={title}
+              className={`${styles.benefit} flex flex-col gap-12 p-24 ${index < 2 ? "md:col-span-3" : "md:col-span-2"}`}
+            >
+              <h3 className={index < 2 ? "text-h4 md:text-h3" : "text-h4"}>{title}</h3>
+              <p className="text-body-l text-text-secondary">{description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="hiring" className={`${styles.anchor} bg-bg-page py-64 md:py-96`}>
         <div className="container-page flex flex-col gap-32 md:gap-48">
           <SectionHeading
             kicker="Процесс найма"

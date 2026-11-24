@@ -1,7 +1,6 @@
 .hero,
 .teams,
-.contacts,
-.hiring {
+.contacts {
   background: linear-gradient(
     var(--section-angle),
     #dafde4 4.33%,
@@ -83,16 +82,6 @@
   display: none;
 }
 
-.role {
-  max-width: 100%;
-  padding: 10px 12px;
-  border-radius: 9999px;
-  background: linear-gradient(197deg, #d4e2ff 10.47%, #b3ebf6 94.87%);
-  font-size: var(--text-body-m);
-  line-height: var(--text-body-m--line-height);
-  letter-spacing: var(--text-body-m--letter-spacing);
-}
-
 .teamIllustration {
   position: relative;
   width: min(100%, 482px);
@@ -119,7 +108,6 @@
   --section-angle: 68deg;
 }
 
-.contactCard,
 .featureIllustration {
   border: 1px solid rgb(13 172 224 / 22%);
   background: rgb(255 255 255 / 72%);
@@ -213,10 +201,6 @@
   border-radius: 12px;
 }
 
-.hiring {
-  --section-angle: 79deg;
-}
-
 .stepNumber {
   width: fit-content;
   background: linear-gradient(90deg, #00b8ca, #1cbbf3 54%, #9fb6f8);
@@ -275,16 +259,8 @@
     object-fit: contain;
   }
 
-  .contactRow {
-    align-items: end;
-  }
-
   .contacts {
     --section-angle: 25deg;
-  }
-
-  .hiring {
-    --section-angle: 36deg;
   }
 
   .cta {
