@@ -200,31 +200,29 @@ export default function CareersPage() {
             }
           >
             {TEAMS.map(({ title, image, paragraphs }, index) => (
-              <div key={image} className={`${styles.team} ${styles.teamChapter}`}>
-                <div className={styles.teamTextSlot}>
-                  <div className={styles.teamText} data-team-text>
-                    <article className="flex min-w-0 flex-col items-start gap-24" aria-labelledby={`career-team-${image}`}>
-                      <h3 id={`career-team-${image}`} className="text-h4 md:text-h3">{title}</h3>
-                      <div data-team-description className="flex flex-col gap-[14px] text-body-m text-text-secondary">
-                        {paragraphs.map((paragraph) =>
-                          typeof paragraph === "string" ? (
-                            <p key={paragraph}>{paragraph}</p>
-                          ) : (
-                            <p key={paragraph.desktop}>
-                              <span className="md:hidden">{paragraph.mobile}</span>
-                              <span className="hidden md:inline">{paragraph.desktop}</span>
-                            </p>
-                          ),
-                        )}
-                      </div>
-                    </article>
+              <article
+                key={image}
+                className={styles.teamCard}
+                data-team-card
+                style={{ "--team-row": index + 2, zIndex: index + 1 } as CSSProperties}
+                aria-labelledby={`career-team-${image}`}
+              >
+                <div className={styles.teamCardContent}>
+                  <div className="flex min-w-0 flex-col items-start gap-24">
+                    <h3 id={`career-team-${image}`} className="text-h4 md:text-h3">{title}</h3>
+                    <div className="flex flex-col gap-[14px] text-body-m text-text-secondary">
+                      {paragraphs.map((paragraph) =>
+                        typeof paragraph === "string" ? (
+                          <p key={paragraph}>{paragraph}</p>
+                        ) : (
+                          <p key={paragraph.desktop}>
+                            <span className="md:hidden">{paragraph.mobile}</span>
+                            <span className="hidden md:inline">{paragraph.desktop}</span>
+                          </p>
+                        ),
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div
-                  className={styles.teamMedia}
-                  data-team-card
-                  style={{ "--team-row": index + 1 } as CSSProperties}
-                >
                   <div className={styles.teamIllustration} data-team={image}>
                     <Image
                       src={`${IMAGE_ROOT}/${image}.webp`}
@@ -234,7 +232,7 @@ export default function CareersPage() {
                     />
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
           </TeamStory>
         </div>
